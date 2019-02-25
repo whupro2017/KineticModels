@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="181768b9-d30e-4d90-92e2-81cb469e2a6f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_0.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_10.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_11.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_12.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_13.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_14.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_15.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_16.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_17.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_18.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_19.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_20.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_21.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_22.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_23.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_24.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_25.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_26.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_27.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_3.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_4.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_5.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_6.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_7.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_8.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/IAU2006_XYS/IAU2006_XYS_9.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Images/bing_maps_credit.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Images/cesium_credit.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Images/google_earth_credit.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Images/ion-credit.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/LensFlare/DirtMask.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/LensFlare/StarBurst.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/0/0/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/0/1/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/1/0/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/1/0/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/1/1/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/1/1/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/1/2/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/1/2/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/1/3/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/1/3/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/0/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/0/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/0/2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/0/3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/1/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/1/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/1/2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/1/3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/2/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/2/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/2/2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/2/3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/3/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/3/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/3/2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/3/3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/4/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/4/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/4/2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/4/3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/5/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/5/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/5/2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/5/3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/6/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/6/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/6/2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/6/3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/7/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/7/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/7/2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/2/7/3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/NaturalEarthII/tilemapresource.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/SkyBox/tycho2t3_80_my.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/SkyBox/tycho2t3_80_px.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/SkyBox/tycho2t3_80_py.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/SkyBox/tycho2t3_80_pz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/airfield.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/airport.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/alcohol-shop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/america-football.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/art-gallery.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/bakery.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/bank.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/bar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/baseball.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/basketball.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/beer.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/bicycle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/building.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/bus.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/cafe.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/camera.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/campsite.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/car.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/cemetery.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/cesium.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/chemist.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/cinema.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/circle-stroked.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/circle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/city.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/clothing-store.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/college.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/commercial.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/cricket.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/cross.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/dam.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/danger.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/disability.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/dog-park.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/embassy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/emergency-telephone.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/entrance.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/farm.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/fast-food.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/ferry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/fire-station.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/fuel.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/garden.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/gift.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/golf.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/grocery.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/hairdresser.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/harbor.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/heart.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/heliport.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/hospital.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/ice-cream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/industrial.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/land-use.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/laundry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/library.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/lighthouse.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/lodging.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/logging.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/london-underground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/marker-stroked.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/marker.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/minefield.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/mobilephone.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/monument.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/museum.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/music.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/oil-well.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/park.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/park2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/parking-garage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/parking.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/pharmacy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/pitch.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/place-of-worship.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/playground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/police.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/polling-place.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/post.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/prison.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/rail-above.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/rail-light.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/rail-metro.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/rail-underground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/rail.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/religious-christian.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/religious-jewish.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/religious-muslim.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/restaurant.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/roadblock.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/rocket.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/school.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/scooter.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/shop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/skiing.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/slaughterhouse.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/soccer.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/square-stroked.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/square.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/star-stroked.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/star.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/suitcase.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/swimming.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/telephone.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/tennis.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/theatre.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/toilets.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/town-hall.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/town.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/triangle-stroked.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/triangle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/village.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/warehouse.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/waste-basket.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/water.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/wetland.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/maki/zoo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/moonSmall.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/pin.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/waterNormals.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/waterNormalsSmall.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/approximateTerrainHeights.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cesium.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumAir/0_Cesium_Air.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumAir/1_Cesium_Air_Prop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumAir/Cesium_Air.dae" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumAir/Cesium_Air.glb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumAir/Cesium_Air.gltf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumAir/Cesium_Air11.gltf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumBalloon/CesiumBalloon.dae" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumBalloon/CesiumBalloon.glb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumBalloon/CesiumBalloonPrint_singleDot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumBalloon/FlameGrate.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumBalloon/WickerRepeat.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumMan/Cesium_Man.dae" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumMan/Cesium_Man.glb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumMan/Cesium_Man.gltf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumMan/Cesium_Man.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumMilkTruck/CesiumMilkTruck-kmc.glb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumMilkTruck/CesiumMilkTruck-kmc.gltf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumMilkTruck/CesiumMilkTruck.dae" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumMilkTruck/CesiumMilkTruck.glb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumMilkTruck/CesiumMilkTruck.gltf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CesiumMilkTruck/CesiumMilkTruck.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/GroundVehicle/GroundVehicle.glb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/house.gltf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/soldier.gltf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestHtml/HelloWorld.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestHtml/HelloWorld2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestHtml/HelloWorld3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ThirdParty/Workers/deflate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ThirdParty/Workers/draco_decoder.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ThirdParty/Workers/draco_wasm_wrapper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ThirdParty/Workers/inflate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ThirdParty/draco_decoder.wasm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ThirdParty/google-earth-dbroot-parser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Animation/Animation.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Animation/lighter.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/BaseLayerPicker/BaseLayerPicker.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/BaseLayerPicker/lighter.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Cesium3DTilesInspector/Cesium3DTilesInspector.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/CesiumInspector/CesiumInspector.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/CesiumWidget/CesiumWidget.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/CesiumWidget/lighter.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/FullscreenButton/FullscreenButton.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Geocoder/Geocoder.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Geocoder/lighter.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/bingAerial.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/bingAerialLabels.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/bingRoads.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/blueMarble.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/earthAtNight.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/esriNationalGeographic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/esriWorldImagery.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/esriWorldStreetMap.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/mapQuestOpenStreetMap.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/mapboxSatellite.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/mapboxStreets.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/mapboxTerrain.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/naturalEarthII.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/openStreetMap.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/sentinel-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/stamenToner.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/ImageryProviders/stamenWatercolor.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/NavigationHelp/Mouse.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/NavigationHelp/MouseLeft.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/NavigationHelp/MouseMiddle.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/NavigationHelp/MouseRight.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/NavigationHelp/Touch.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/NavigationHelp/TouchDrag.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/NavigationHelp/TouchRotate.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/NavigationHelp/TouchTilt.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/NavigationHelp/TouchZoom.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/TerrainProviders/CesiumWorldTerrain.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/TerrainProviders/Ellipsoid.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/TimelineIcons.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Images/info-loading.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/InfoBox/InfoBox.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/InfoBox/InfoBoxDescription.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/NavigationHelpButton/NavigationHelpButton.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/NavigationHelpButton/lighter.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/PerformanceWatchdog/PerformanceWatchdog.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/ProjectionPicker/ProjectionPicker.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/SceneModePicker/SceneModePicker.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/SelectionIndicator/SelectionIndicator.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Timeline/Timeline.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Timeline/lighter.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/VRButton/VRButton.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Viewer/Viewer.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/lighter.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/lighterShared.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/shared.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/widgets.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/cesiumWorkerBootstrapper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/combineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createBoxGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createBoxOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createCircleGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createCircleOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createCoplanarPolygonGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createCoplanarPolygonOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createCorridorGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createCorridorOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createCylinderGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createCylinderOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createEllipseGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createEllipseOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createEllipsoidGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createEllipsoidOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createFrustumGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createFrustumOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createGroundPolylineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createPlaneGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createPlaneOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createPolygonGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createPolygonOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createPolylineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createPolylineVolumeGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createPolylineVolumeOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createRectangleGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createRectangleOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createSimplePolylineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createSphereGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createSphereOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createVectorTileGeometries.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createVectorTilePoints.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createVectorTilePolygons.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createVectorTilePolylines.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createVerticesFromGoogleEarthEnterpriseBuffer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createVerticesFromHeightmap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createVerticesFromQuantizedTerrainMesh.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createWallGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/createWallOutlineGeometry.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/decodeDraco.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/decodeGoogleEarthEnterprisePacket.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/transcodeCRNToDXT.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/transferTypedArrayTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/upsampleQuantizedTerrainMesh.js" beforeDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/out/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server1.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="433">
+              <caret line="33" column="3" lean-forward="true" selection-start-line="33" selection-start-column="3" selection-end-line="33" selection-end-column="3" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/HelloWorld2.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="297">
+              <caret line="11" column="9" lean-forward="true" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/HelloWorld.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="88" column="69" lean-forward="true" selection-start-line="88" selection-start-column="69" selection-end-line="88" selection-end-column="69" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="108">
+              <caret line="4" column="56" lean-forward="true" selection-start-line="4" selection-start-column="56" selection-end-line="4" selection-end-column="56" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/cesium/Cesium.js">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/HelloWorld1.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="298">
+              <caret line="91" column="33" selection-start-line="91" selection-start-column="33" selection-end-line="91" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
+    <dirStrings>
+      <dir>E:\Desktop\KineticModels</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Cesium.js" />
+        <option value="$PROJECT_DIR$/public/index.html" />
+        <option value="$PROJECT_DIR$/HelloWorld.html" />
+        <option value="$PROJECT_DIR$/test.html" />
+        <option value="$PROJECT_DIR$/server2.js" />
+        <option value="$PROJECT_DIR$/public/HelloWorld2.html" />
+        <option value="$PROJECT_DIR$/public/HelloWorld3.html" />
+        <option value="$PROJECT_DIR$/server.js" />
+        <option value="$PROJECT_DIR$/public/HelloWorld.html" />
+        <option value="$PROJECT_DIR$/server1.js" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="260" />
+    <option name="y" value="20" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="KineticModels" type="b2602c69:ProjectViewProjectNode" />
+              <item name="KineticModels" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="KineticModels" type="b2602c69:ProjectViewProjectNode" />
+              <item name="KineticModels" type="462c0819:PsiDirectoryNode" />
+              <item name="public" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551106989978" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Desktop\KineticModels\public" />
+      <recent name="E:\Desktop\KineticModels\public\cesium" />
+      <recent name="E:\Desktop\KineticModels" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Node.js.server1.js">
+    <configuration name="server1.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/server1.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <configuration name="server.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/server.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.server.js" />
+        <item itemvalue="Node.js.server1.js" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="181768b9-d30e-4d90-92e2-81cb469e2a6f" name="Default Changelist" comment="" />
+      <created>1551094987465</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1551094987465</updated>
+      <workItem from="1551094998341" duration="10197000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="10197000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="UI Designer" />
+      <window_info id="Capture Tool" />
+      <window_info id="Learn" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17857143" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Maven" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/HelloWorld2.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/test.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/Widgets/Images/NavigationHelp/Mouse.svg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Cesium.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-411">
+          <caret line="21698" column="25" selection-start-line="21698" selection-start-column="25" selection-end-line="21698" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/Cesium.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HelloWorld.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="10" column="50" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/Workers/decodeDraco.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/cesium/Cesium.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/HelloWorld2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="11" column="9" lean-forward="true" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="4" column="56" lean-forward="true" selection-start-line="4" selection-start-column="56" selection-end-line="4" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/HelloWorld1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="298">
+          <caret line="91" column="33" selection-start-line="91" selection-start-column="33" selection-end-line="91" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/HelloWorld.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="88" column="69" lean-forward="true" selection-start-line="88" selection-start-column="69" selection-end-line="88" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="433">
+          <caret line="33" column="3" lean-forward="true" selection-start-line="33" selection-start-column="3" selection-end-line="33" selection-end-column="3" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

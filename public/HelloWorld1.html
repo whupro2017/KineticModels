@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="cesium/Cesium.js"></script>
+    <style>
+      @import url(cesium/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+      }
+  </style>
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    /*var url='http://localhost:8080/geoserver/wms'; //Geoserver URL   
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+      baseLayerPicker: false,
+      imageryProvider:new Cesium.WebMapServiceImageryProvider({   
+          url : url,         
+          layers: 'nurc:Arc_Sample'// Here just give layer name   
+      }),  
+    });
+    var layers = viewer.imageryLayers;
+    layers.addImageryProvider(new Cesium.SingleTileImageryProvider({
+                          url : 'image/WhiteOnBlue.dib',
+                          rectangle : Cesium.Rectangle.fromDegrees(-180.0, -90.0, 180.0, 90.0)
+    }));  */ 
+    
+    
+    
+        /*var url='http:/localhost:8080/geoserver/wms'; //Geoserver URL  
+    	var viewer = new Cesium.Viewer('cesiumContainer',{ 
+    	    imageryProvider:new Cesium.WebMapServiceImageryProvider({  
+    	        url : url,        
+    	        layers: 'nurc:Arc_Sample'// Here just give layer name  
+    	    }), 
+    	    baseLayerPicker:false 
+    	}); 
+    	var layers = viewer.imageryLayers; 
+    	var blackMarble = layers.addImageryProvider(Cesium.createTileMapServiceImageryProvider({ 
+    	    url : 'googleTMS',
+    	}));  */
+    	
+    	
+    	var viewer = new Cesium.Viewer('cesiumContainer',{
+    	 shouldAnimate : true,       
+ 	       homeButton:false,       //是否显示home键
+ 	       //geocoder:false,         //是否显示地名查找控件        如果设置为true，则无法查询
+ 	       baseLayerPicker:false, //是否显示图层选择控件
+ 	       timeline:false,        //是否显示时间线控件
+ 	       fullscreenButton:false, //是否全屏显示
+ 	       scene3DOnly:true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+ 	       infoBox:true,         //是否显示点击要素之后显示的信息
+ 	       sceneModePicker:false,  //是否显示投影方式控件  三维/二维
+ 	       navigationInstructionsInitiallyVisible:false,
+ 	       navigationHelpButton:false,     //是否显示帮助信息控件
+ 	       selectionIndicator:false,        //是否显示指示器组件
+ 	       ///errainProvider : Cesium.createWorldTerrain(),
+ 	     /* imageryProvider:new Cesium.createTileMapServiceImageryProvider({ 
+ 	    	  url : 'googleTMS', 
+ 	    	  })*/
+	 	   /* imageryProvider : Cesium.createTileMapServiceImageryProvider({
+	  	        url : Cesium.buildModuleUrl('Assets/Textures/NaturalEarthII')
+	  	    }),
+	  	    baseLayerPicker : false,
+	  	    geocoder : false*/
+ 	       //加载谷歌卫星影像
+ 	       //imageryProvider : new Cesium.UrlTemplateImageryProvider({url:"http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"})
+ 	   });
+ 	       viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
+ 	       
+ 	      var clock = viewer.clock;
+ 	       
+ 	      /*var tileset = new Cesium.Cesium3DTileset({
+ 	    	    url: Cesium.IonResource.fromAssetId(6074)
+ 	    	});
+ 	     viewer.scene.primitives.add(tileset);
+ 	    viewer.zoomTo(tileset);*/
+  
+  var scene=viewer.scene;     
+	  var modelMatrix1 = Cesium.Transforms.eastNorthUpToFixedFrame(  
+        Cesium.Cartesian3.fromDegrees(110.62898254394531, 40.02804946899414, 500));        //gltf数据加载位置
+	  var model1 = scene.primitives.add(Cesium.Model.fromGltf({  
+     url : 'cesium/Models/house.gltf',        //如果为bgltf则为.bgltf
+     modelMatrix : modelMatrix1, 
+     scale : 200000.0     //放大倍数
+   }));   
+	  Cesium.when(model1.readyPromise).then(function(model1) {
+		    model1.activeAnimations.addAll({
+		        loop : Cesium.ModelAnimationLoop.REPEAT
+		    });
+		});
+	       /*var modelMatrix2 = Cesium.Transforms.eastNorthUpToFixedFrame(  
+		        Cesium.Cartesian3.fromDegrees(110.52898254394531, 40.02804946899414, 6));        //gltf数据加载位置
+			  var model2 = scene.primitives.add(Cesium.Model.fromGltf({  
+		     url : 'image/new_split1.gltf',        //如果为bgltf则为.bgltf     
+		     modelMatrix : modelMatrix2, 
+		     scale : 20000.0     //放大倍数
+		   })); 
+		        
+			  Cesium.when(model2.readyPromise).then(function(model2) {
+				    model2.activeAnimations.addAll({
+				        loop : Cesium.ModelAnimationLoop.REPEAT
+				    });
+				});
+			  var modelMatrix3 = Cesium.Transforms.eastNorthUpToFixedFrame(  
+				        Cesium.Cartesian3.fromDegrees(110.72898254394531, 40.02804946899414, 6));        //gltf数据加载位置
+					  var model3 = scene.primitives.add(Cesium.Model.fromGltf({  
+				     url : 'image/ferrari.glb',        //如果为bgltf则为.bgltf     
+				     modelMatrix : modelMatrix3, 
+				     scale : 1000    //放大倍数
+				   })); 
+					  Cesium.when(model3.readyPromise).then(function(model3) {
+						    model3.activeAnimations.addAll({
+						        loop : Cesium.ModelAnimationLoop.REPEAT,
+						        speedup : 0.5,
+						        reverse : true
+						    });
+						});
+					 
+					 /* var tileset = new Cesium.Cesium3DTileset({
+			 	    	    url: Cesium.IonResource.fromAssetId(6074)
+			 	    	});
+			 	      viewer.scene.primitives.add(tileset);
+			 	      viewer.zoomTo(tileset);*/
+				        
+    viewer.camera.flyTo({  
+      destination : Cesium.Cartesian3.fromDegrees(110.62898254394531, 40.02804946899414, 6000.0)     //相机飞入点
+  }); 
+	   
+  </script>
+</body>
+</html>

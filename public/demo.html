@@ -48,6 +48,8 @@
         // })
     });
     viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
+    var scene = viewer.scene;
+    var clock = viewer.clock;
 
     var czml = [{
         "id": "document",
@@ -126,8 +128,6 @@
         "name": "Cesium Fire_Model",
         "position": {
             "cartographicDegrees": [
-                "2018-07-19T15:18:40Z", -78.0045, 37, 10,
-                "2018-07-19T15:19:00Z", -78.0045, 37, 10
             ]
         },
         "model": {
@@ -164,10 +164,10 @@
         }
     }];
     var drawRoute = false;
-
+    var dataSourcePromise;
     function startCollision(CZML) {
         console.log(CZML[1].position.cartographicDegrees);
-        var dataSourcePromise = viewer.dataSources.add(Cesium.CzmlDataSource.load(CZML));
+        dataSourcePromise = viewer.dataSources.add(Cesium.CzmlDataSource.load(CZML));
         dataSourcePromise.then(function (dataSource) {
             console.log("开始碰撞演示");
             var mo1 = dataSource.entities.getById('GroundVehicle_model1');
@@ -180,13 +180,12 @@
     }
     function startDynRoute(CZML) {
         console.log(CZML[1].position.cartographicDegrees);
-        var dataSourcePromise = viewer.dataSources.add(Cesium.CzmlDataSource.load(CZML));
+        dataSourcePromise = viewer.dataSources.add(Cesium.CzmlDataSource.load(CZML));
         dataSourcePromise.then(function (dataSource) {
             console.log("开始动态路径演示");
             var mo3 = dataSource.entities.getById('GroundVehicle_model3');
             mo3.orientation = new Cesium.VelocityOrientationProperty(mo3.position);
             viewer.trackedEntity = mo3;
-            console.log("开始动态路径演示");
         });
     }
 
@@ -201,6 +200,18 @@
         show: true,
         colorBlendMode: Cesium.ColorBlendMode.MIX
     });
+    // if (scene.clampToHeightSupported) {
+    //     console.log("转换贴地坐标");
+    //     clock.shouldAnimate = true;
+    //     var objectsToExclude = [entity];
+    //     console.log("转换贴地坐标");
+    //     scene.postRender.addEventListener(function() {
+    //         var position = positionProperty.getValue(clock.currentTime);
+    //         entity.position = scene.clampToHeight(position, objectsToExclude);
+    //     });
+    // } else {
+    //     console.log('This browser does not support clampToHeight.');
+    // }
     var entity1 = viewer.entities.add({
         id: 'ferrari',
         position: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706, 0),
@@ -213,6 +224,7 @@
     //设置菜单按钮功能
     //viewer.trackedEntity = entity;
     Sandcastle.addToolbarButton('自定义路线', function () {
+        viewer.trackedEntity = null;
         viewer.entities.getById("GroundVehicle").show = true;
         viewer.camera.flyTo({
             destination: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706,100)     //相机飞入点
@@ -223,6 +235,17 @@
     Sandcastle.addToolbarButton('碰撞演示', function () {
         startCollision(czml);
     }, 'caseMenu');
+    Sandcastle.addToolbarMenu([{
+        text: '平面地球',
+        onselect: function () {
+            window.location.reload();
+        }
+    }, {
+        text: '三维地球',
+        onselect: function () {
+            viewer.terrainProvider=Cesium.createWorldTerrain();
+        }
+    }], 'modelMenu');
     Sandcastle.addToolbarMenu([{
         text: '装甲车模型',
         onselect: function () {
@@ -265,7 +288,6 @@
     }], 'modelMenu');
 
     //设置鼠标命令
-    var scene = viewer.scene;
     // var fragmentShaderSource =
     //     'uniform sampler2D colorTexture;\n' +
     //     'varying vec2 v_textureCoordinates;\n' +
@@ -409,16 +431,18 @@
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
     handler.setInputAction(function (movement) {
-        positions.pop();
-        dyn_czml[0].clock.interval = dyn_czml[0].clock.interval + endtime;
-        console.log(dyn_czml[0].clock.interval);
-        startDynRoute(dyn_czml);
-        handler.destroy();
-        viewer.entities.getById("GroundVehicle").show = false;
+        if (drawRoute == true) {
+            positions.pop();
+            dyn_czml[0].clock.interval = dyn_czml[0].clock.interval + endtime;
+            console.log(dyn_czml[0].clock.interval);
+            startDynRoute(dyn_czml);
+            handler.destroy();
+            viewer.entities.getById("GroundVehicle").show = false;
+        }
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
-    /*viewer.camera.flyTo({
-         destination : Cesium.Cartesian3.fromDegrees(-78, 37,6000.0)     //相机飞入点
-     }); */
+    // viewer.camera.flyTo({
+    //      destination : Cesium.Cartesian3.fromDegrees(-78, 37,6000.0)     //相机飞入点
+    //  });
 </script>
 </body>
 </html>

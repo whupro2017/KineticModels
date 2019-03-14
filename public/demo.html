@@ -33,7 +33,6 @@
     var viewer = new Cesium.Viewer('cesiumContainer', {
         shouldAnimate: true,
         homeButton: false,       //是否显示home键
-        baseLayerPicker: false, //是否显示图层选择控件d
         timeline: false,        //是否显示时间线控件
         fullscreenButton: false, //是否全屏显示
         scene3DOnly: true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
@@ -42,7 +41,7 @@
         navigationInstructionsInitiallyVisible: false,
         navigationHelpButton: false,     //是否显示帮助信息控件
         selectionIndicator: false,        //是否显示指示器组件
-        //terrainProvider : Cesium.createWorldTerrain(),   //加载地势
+        terrainProvider: Cesium.createWorldTerrain(),   //加载地势
         // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
         //     url: 'cesium/googleTMS',
         // })
@@ -50,7 +49,6 @@
     viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
     var scene = viewer.scene;
     var clock = viewer.clock;
-
     var czml = [{
         "id": "document",
         "name": "CZML_Model",
@@ -58,83 +56,64 @@
         "clock": {
             "interval": "2018-07-19T15:18:00Z/2018-07-19T15:19:00Z",
             "currentTime": "2018-07-19T15:18:00Z",
-            "multiplier": 5,
+            "multiplier": 10,
             "range": "LOOP_STOP",
             "step": "SYSTEM_CLOCK_MULTIPLIER"
         }
     }, {
-        "id": "aircraft_model",
-        "name": "Cesium Air",
-        "position": {
-            "cartographicDegrees": [
-                "2018-07-19T15:18:00Z", 78.01, 37, 1000,
-                "2018-07-19T15:19:00Z", 78.02, 37, 1000,
-            ]
-        },
-        "model": {
-            "gltf": "cesium/Models/CesiumAir/Cesium_Air.glb",
-            "scale": 2.0,
-            // "minimumPixelSize": 128
-        },
-
-    }, {
-        "id": "man_model",
-        "name": "Cesium Man",
-        "position": {
-            "cartographicDegrees": [-78, 38, 11]
-        },
-        "model": {
-            "gltf": "cesium/Models/CesiumMan/Cesium_Man.glb",
-            "scale": 20.0,
-        },
-    }, {
         "id": "GroundVehicle_model1",
         "name": "Cesium GroundVehicle",
         "position": {
-            "cartographicDegrees": [
-                // "2018-07-19T15:18:00Z", -78.01, 37, 10,
-                // "2018-07-19T15:18:40Z", -78.0052, 37, 10,
-                // "2018-07-19T15:19:00Z", -78.00519, 37, 10
-                "2018-07-19T15:18:00Z", -78.00242281641076,36.999381296457656,-0.06436469597136314,
-                "2018-07-19T15:18:40Z", -78.00190777893285,36.99962737273862,-0.016494937221925434,
-                "2018-07-19T15:19:00Z", -78.00190569,36.99962837,-0.016465996558971567
+            // "cartographicDegrees": [
+            //     // "2018-07-19T15:18:00Z", -78.01, 37, 10,
+            //     // "2018-07-19T15:18:40Z", -78.0052, 37, 10,
+            //     // "2018-07-19T15:19:00Z", -78.00519, 37, 10
+            //     "2018-07-19T15:18:00Z", -78.00242281641076,36.999381296457656,6,
+            //     "2018-07-19T15:18:40Z", -78.00190777893285,36.99962737273862,6,
+            //     "2018-07-19T15:19:00Z", -78.00190569,36.99962837,6
+            // ],
+            "interpolationAlgorithm": "LINEAR",
+            "forwardExtrapolationType": "HOLD",
+            "cartesian": [
+                "2018-07-19T15:18:00Z", 1060146.830612113, -4988635.971350105, 3817341.934846987,
+                "2018-07-19T15:18:40Z", 1060188.2574699132, -4988610.365637205, 3817363.7449174877,
+                "2018-07-19T15:19:00Z", 1060188.4255027345, -4988610.261834476, 3817363.833305958
+                // "2018-07-19T15:18:00Z",
+                // 1060147.49466802, -4988639.096137246, 3817344.3420725837,
+                // "2018-07-19T15:19:00Z",
+                // 1060188.2574699132, -4988610.365637205, 3817363.7449174877
             ]
+
         },
         "model": {
             "gltf": "cesium/Models/GroundVehicle/GroundVehicle.glb",
             "scale": 1.0,
-            //"minimumPixelSize": 128
+            "minimumPixelSize": 58
         },
     }, {
         "id": "GroundVehicle_model2",
         "name": "Cesium GroundVehicle",
         "position": {
-            "cartographicDegrees": [
-                // "2018-07-19T15:18:00Z", -78.00, 37, 10,
-                // "2018-07-19T15:18:40Z", -78.0040, 37, 10,
-                // "2018-07-19T15:19:00Z", -78.00401, 37, 10
-                "2018-07-19T15:18:00Z", -78.00146619105229,36.999840361386354,-0.059932343767712046,
-                "2018-07-19T15:18:40Z", -78.00185821083916,36.99965303971438,-0.016627335982995338,
-                "2018-07-19T15:19:00Z", -78.0018603,36.99965204,-0.016566470135387236
+            // "cartographicDegrees": [
+            //     // "2018-07-19T15:18:00Z", -78.00, 37, 10,
+            //     // "2018-07-19T15:18:40Z", -78.0040, 37, 10,
+            //     // "2018-07-19T15:19:00Z", -78.00401, 37, 10
+            //     // "2018-07-19T15:18:00Z", -78.00146619105229, 36.999840361386354, 6,
+            //     // "2018-07-19T15:18:40Z", -78.00185821083916, 36.99965303971438, 6,
+            //     // "2018-07-19T15:19:00Z", -78.0018603, 36.99965204, 6
+            // ]
+            "interpolationAlgorithm": "LINEAR",
+            "forwardExtrapolationType": "HOLD",
+            "cartesian": [
+                "2018-07-19T15:18:00Z", 1060223.7482783734, -4988588.280207378, 3817382.622330465,
+                "2018-07-19T15:18:40Z", 1060192.2168934273, -4988607.771653484, 3817366.019811927,
+                "2018-07-19T15:19:00Z", 1060192.0488749647, -4988607.875620845, 3817365.9312060727
             ]
         },
         "model": {
             "gltf": "cesium/Models/GroundVehicle/GroundVehicle.glb",
             "scale": 1.0,
-            //"minimumPixelSize": 128
-        },
-    }, {
-        "id": "Fire_Model",
-        "name": "Cesium Fire_Model",
-        "position": {
-            "cartographicDegrees": [
-            ]
-        },
-        "model": {
-            "gltf": "cesium/Models/house.gltf",
-            "scale": 0.10,
-            //"minimumPixelSize": 28,
-            "maxmumPixelSize": 200
+            "minimumPixelSize": 58
         },
     }];
     var dyn_czml = [{
@@ -160,13 +139,13 @@
         "model": {
             "gltf": "cesium/Models/GroundVehicle/GroundVehicle.glb",
             "scale": 1.0,
-            //"minimumPixelSize": 128
+            "minimumPixelSize": 128
         }
     }];
     var drawRoute = false;
     var dataSourcePromise;
+
     function startCollision(CZML) {
-        console.log(CZML[1].position.cartographicDegrees);
         dataSourcePromise = viewer.dataSources.add(Cesium.CzmlDataSource.load(CZML));
         dataSourcePromise.then(function (dataSource) {
             console.log("开始碰撞演示");
@@ -175,15 +154,47 @@
             console.log(mo1.id.toString());
             mo1.orientation = new Cesium.VelocityOrientationProperty(mo1.position);
             mo2.orientation = new Cesium.VelocityOrientationProperty(mo2.position);
-            viewer.trackedEntity = mo2;
+            var positionProperty1 = mo1.position;
+            var positionProperty2 = mo2.position;
+            if (scene.clampToHeightSupported) {
+                clock.shouldAnimate = true;
+                var objectsToExclude1 = [mo1];
+                var objectsToExclude2 = [mo2];
+                scene.postRender.addEventListener(function () {
+                    var position1 = positionProperty1.getValue(clock.currentTime);
+                    mo1.position = scene.clampToHeight(position1, objectsToExclude1);
+                    var position2 = positionProperty2.getValue(clock.currentTime);
+                    mo2.position = scene.clampToHeight(position2, objectsToExclude2);
+                });
+            } else {
+                console.log('This browser does not support clampToHeight.');
+            }
+            console.log('贴地完成');
+            viewer.camera.setView({
+                destination: new Cesium.Cartesian3(1060203.863393312, -4988683.797757099, 3817420.3150414284),
+                orientation: new Cesium.HeadingPitchRoll(4.2892217081808806, -0.4799070147502502, 6.279789177843313),
+                endTransform: Cesium.Matrix4.IDENTITY
+            });
         });
     }
+
     function startDynRoute(CZML) {
         console.log(CZML[1].position.cartographicDegrees);
         dataSourcePromise = viewer.dataSources.add(Cesium.CzmlDataSource.load(CZML));
         dataSourcePromise.then(function (dataSource) {
             console.log("开始动态路径演示");
             var mo3 = dataSource.entities.getById('GroundVehicle_model3');
+            var positionProperty = mo3.position;
+            if (scene.clampToHeightSupported) {
+                clock.shouldAnimate = true;
+                var objectsToExclude = [mo3];
+                scene.postRender.addEventListener(function () {
+                    var position = positionProperty.getValue(clock.currentTime);
+                    mo3.position = scene.clampToHeight(position, objectsToExclude);
+                });
+            } else {
+                console.log('This browser does not support clampToHeight.');
+            }
             mo3.orientation = new Cesium.VelocityOrientationProperty(mo3.position);
             viewer.trackedEntity = mo3;
         });
@@ -191,27 +202,16 @@
 
     var entity = viewer.entities.add({
         id: 'GroundVehicle',
-        position: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706, 0),
+        position: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706),
         model: {
-            uri: 'cesium/Models/GroundVehicle/GroundVehicle.glb'
+            uri: 'cesium/Models/GroundVehicle/GroundVehicle.glb',
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
         },
         scale: 1.0,
         minimumPixelSize: 100,
-        show: true,
+        show: false,
         colorBlendMode: Cesium.ColorBlendMode.MIX
     });
-    // if (scene.clampToHeightSupported) {
-    //     console.log("转换贴地坐标");
-    //     clock.shouldAnimate = true;
-    //     var objectsToExclude = [entity];
-    //     console.log("转换贴地坐标");
-    //     scene.postRender.addEventListener(function() {
-    //         var position = positionProperty.getValue(clock.currentTime);
-    //         entity.position = scene.clampToHeight(position, objectsToExclude);
-    //     });
-    // } else {
-    //     console.log('This browser does not support clampToHeight.');
-    // }
     var entity1 = viewer.entities.add({
         id: 'ferrari',
         position: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706, 0),
@@ -224,10 +224,10 @@
     //设置菜单按钮功能
     //viewer.trackedEntity = entity;
     Sandcastle.addToolbarButton('自定义路线', function () {
-        viewer.trackedEntity = null;
+        viewer.trackedEntity = entity;
         viewer.entities.getById("GroundVehicle").show = true;
         viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706,100)     //相机飞入点
+            destination: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706, 100)     //相机飞入点
         });
         alert("开始规划路线，左键点击经过点，右键结束");
         drawRoute = true;
@@ -235,17 +235,6 @@
     Sandcastle.addToolbarButton('碰撞演示', function () {
         startCollision(czml);
     }, 'caseMenu');
-    Sandcastle.addToolbarMenu([{
-        text: '平面地球',
-        onselect: function () {
-            window.location.reload();
-        }
-    }, {
-        text: '三维地球',
-        onselect: function () {
-            viewer.terrainProvider=Cesium.createWorldTerrain();
-        }
-    }], 'modelMenu');
     Sandcastle.addToolbarMenu([{
         text: '装甲车模型',
         onselect: function () {

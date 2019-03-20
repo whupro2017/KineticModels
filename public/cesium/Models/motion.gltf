@@ -1,0 +1,1700 @@
+{
+    "accessors": {
+        "accessor_16": {
+            "bufferView": "bufferView_146",
+            "byteOffset": 0,
+            "byteStride": 0,
+            "componentType": 5123,
+            "count": 2880,
+            "type": "SCALAR"
+        },
+        "accessor_18": {
+            "bufferView": "bufferView_147",
+            "byteOffset": 0,
+            "byteStride": 12,
+            "componentType": 5126,
+            "count": 2880,
+            "max": [
+                3.26714,
+                3.26714,
+                3.26714
+            ],
+            "min": [
+                -3.26714,
+                -3.26714,
+                -3.26714
+            ],
+            "type": "VEC3"
+        },
+        "accessor_20": {
+            "bufferView": "bufferView_147",
+            "byteOffset": 34560,
+            "byteStride": 12,
+            "componentType": 5126,
+            "count": 2880,
+            "max": [
+                1,
+                1,
+                1
+            ],
+            "min": [
+                -1,
+                -1,
+                -1
+            ],
+            "type": "VEC3"
+        }
+    },
+    "animations": {},
+    "asset": {
+        "generator": "collada2gltf@cf6371beb0bdc18ba603378d5e40c966da53d385",
+        "premultipliedAlpha": true,
+        "profile": {
+            "api": "WebGL",
+            "version": "1.0.2"
+        },
+        "version": "1.0"
+    },
+    "bufferViews": {
+        "bufferView_146": {
+            "buffer": "\\motion",
+            "byteLength": 5760,
+            "byteOffset": 0,
+            "target": 34963
+        },
+        "bufferView_147": {
+            "buffer": "\\motion",
+            "byteLength": 69120,
+            "byteOffset": 5760,
+            "target": 34962
+        }
+    },
+    "buffers": {
+        "\\motion": {
+            "byteLength": 74880,
+            "type": "arraybuffer",
+            "uri": "\\motion.bin"
+        }
+    },
+    "cameras": {
+        "_ncl1_52": {
+            "name": "_ncl1_52",
+            "perspective": {
+                "aspect_ratio": 1.33333,
+                "yfov": 0.589049,
+                "zfar": 4000,
+                "znear": 10
+            },
+            "type": "perspective"
+        }
+    },
+    "materials": {
+        "__glTF__defaultMaterial0": {
+            "name": "__glTF__defaultMaterial0",
+            "technique": "technique0",
+            "values": {
+                "diffuse": [
+                    1,
+                    1,
+                    1,
+                    1
+                ]
+            }
+        }
+    },
+    "meshes": {
+        "Sphere01-lib": {
+            "name": "Sphere01Mesh",
+            "primitives": [
+                {
+                    "attributes": {
+                        "NORMAL": "accessor_20",
+                        "POSITION": "accessor_18"
+                    },
+                    "indices": "accessor_16",
+                    "material": "__glTF__defaultMaterial0",
+                    "mode": 4
+                }
+            ]
+        }
+    },
+    "nodes": {
+        "AgeFBXASC032TestFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "AgeFBXASC032TestFBXASC03201"
+        },
+        "Bip01": {
+            "children": [
+                "Bip01FBXASC032Footsteps",
+                "Bip01FBXASC032Pelvis"
+            ],
+            "jointName": "Bip01",
+            "name": "Bip01",
+            "rotation": [
+                -0.706932,
+                -0.138246,
+                -0.015706,
+                0.693461
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                5.63035,
+                65.3106,
+                16.5868
+            ]
+        },
+        "Bip01FBXASC032Footsteps": {
+            "children": [],
+            "name": "Bip01FBXASC032Footsteps",
+            "rotation": [
+                0.00952584,
+                0.086649,
+                0.10886,
+                0.990228
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                -11.4209,
+                0,
+                -64.7593
+            ]
+        },
+        "Bip01FBXASC032Head": {
+            "children": [
+                "Bip01FBXASC032HeadNub"
+            ],
+            "jointName": "Bip01FBXASC032Head",
+            "name": "Bip01FBXASC032Head",
+            "rotation": [
+                0.219087,
+                -0.0212948,
+                0.258308,
+                0.940651
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                4.42583,
+                0,
+                0
+            ]
+        },
+        "Bip01FBXASC032HeadNub": {
+            "children": [],
+            "jointName": "Bip01FBXASC032HeadNub",
+            "matrix": [
+                1,
+                0,
+                -0,
+                0,
+                -0,
+                1,
+                0,
+                0,
+                0,
+                -0,
+                1,
+                0,
+                13.8676,
+                2e-006,
+                -2e-006,
+                1
+            ],
+            "name": "Bip01FBXASC032HeadNub"
+        },
+        "Bip01FBXASC032LFBXASC032Calf": {
+            "children": [
+                "Bip01FBXASC032LFBXASC032Foot"
+            ],
+            "jointName": "Bip01FBXASC032LFBXASC032Calf",
+            "name": "Bip01FBXASC032LFBXASC032Calf",
+            "rotation": [
+                0,
+                0,
+                -0.0923066,
+                0.995731
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                29.5055,
+                -1e-006,
+                -1e-006
+            ]
+        },
+        "Bip01FBXASC032LFBXASC032Clavicle": {
+            "children": [
+                "Bip01FBXASC032LFBXASC032UpperArm"
+            ],
+            "jointName": "Bip01FBXASC032LFBXASC032Clavicle",
+            "name": "Bip01FBXASC032LFBXASC032Clavicle",
+            "rotation": [
+                0.647172,
+                -0.123116,
+                0.721316,
+                -0.213806
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                0.058083,
+                -0.21875,
+                2.05257
+            ]
+        },
+        "Bip01FBXASC032LFBXASC032Finger0": {
+            "children": [
+                "Bip01FBXASC032LFBXASC032Finger0Nub"
+            ],
+            "jointName": "Bip01FBXASC032LFBXASC032Finger0",
+            "name": "Bip01FBXASC032LFBXASC032Finger0",
+            "rotation": [
+                -0.000398,
+                -0,
+                0,
+                1
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                7.37637,
+                -4e-006,
+                8e-006
+            ]
+        },
+        "Bip01FBXASC032LFBXASC032Finger0Nub": {
+            "children": [],
+            "jointName": "Bip01FBXASC032LFBXASC032Finger0Nub",
+            "matrix": [
+                1,
+                0,
+                -0,
+                0,
+                -0,
+                1,
+                0,
+                0,
+                0,
+                -0,
+                1,
+                0,
+                1.8441,
+                2e-006,
+                -0,
+                1
+            ],
+            "name": "Bip01FBXASC032LFBXASC032Finger0Nub"
+        },
+        "Bip01FBXASC032LFBXASC032Foot": {
+            "children": [
+                "Bip01FBXASC032LFBXASC032Toe0"
+            ],
+            "jointName": "Bip01FBXASC032LFBXASC032Foot",
+            "name": "Bip01FBXASC032LFBXASC032Foot",
+            "rotation": [
+                0.000796802,
+                -0.00925585,
+                0.00658068,
+                0.999935
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                29.5055,
+                0,
+                0
+            ]
+        },
+        "Bip01FBXASC032LFBXASC032Forearm": {
+            "children": [
+                "Bip01FBXASC032LFBXASC032Hand"
+            ],
+            "jointName": "Bip01FBXASC032LFBXASC032Forearm",
+            "name": "Bip01FBXASC032LFBXASC032Forearm",
+            "rotation": [
+                -0,
+                0,
+                0.90154,
+                -0.432696
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                17.7033,
+                0,
+                0
+            ]
+        },
+        "Bip01FBXASC032LFBXASC032Hand": {
+            "children": [
+                "Bip01FBXASC032LFBXASC032Finger0"
+            ],
+            "jointName": "Bip01FBXASC032LFBXASC032Hand",
+            "name": "Bip01FBXASC032LFBXASC032Hand",
+            "rotation": [
+                -0.764368,
+                -0.0263396,
+                0.0297169,
+                0.643556
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                17.7033,
+                -4e-006,
+                4e-006
+            ]
+        },
+        "Bip01FBXASC032LFBXASC032Thigh": {
+            "children": [
+                "Bip01FBXASC032LFBXASC032Calf"
+            ],
+            "jointName": "Bip01FBXASC032LFBXASC032Thigh",
+            "name": "Bip01FBXASC032LFBXASC032Thigh",
+            "rotation": [
+                0.0811197,
+                0.907909,
+                0.398697,
+                -0.100809
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                -6.77779,
+                1.28258,
+                5.75877
+            ]
+        },
+        "Bip01FBXASC032LFBXASC032Toe0": {
+            "children": [
+                "Bip01FBXASC032LFBXASC032Toe01"
+            ],
+            "jointName": "Bip01FBXASC032LFBXASC032Toe0",
+            "name": "Bip01FBXASC032LFBXASC032Toe0",
+            "rotation": [
+                -0,
+                0,
+                0.707107,
+                0.707107
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                6.78626,
+                8.73362,
+                -0
+            ]
+        },
+        "Bip01FBXASC032LFBXASC032Toe01": {
+            "children": [
+                "Bip01FBXASC032LFBXASC032Toe02"
+            ],
+            "jointName": "Bip01FBXASC032LFBXASC032Toe01",
+            "name": "Bip01FBXASC032LFBXASC032Toe01",
+            "rotation": [
+                0,
+                -0,
+                0,
+                1
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                0.885164,
+                0,
+                -0
+            ]
+        },
+        "Bip01FBXASC032LFBXASC032Toe02": {
+            "children": [
+                "Bip01FBXASC032LFBXASC032Toe0Nub"
+            ],
+            "jointName": "Bip01FBXASC032LFBXASC032Toe02",
+            "name": "Bip01FBXASC032LFBXASC032Toe02",
+            "rotation": [
+                0,
+                -0,
+                0,
+                1
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                0.885164,
+                0,
+                -0
+            ]
+        },
+        "Bip01FBXASC032LFBXASC032Toe0Nub": {
+            "children": [],
+            "jointName": "Bip01FBXASC032LFBXASC032Toe0Nub",
+            "matrix": [
+                1,
+                0,
+                -0,
+                0,
+                -0,
+                1,
+                0,
+                0,
+                -0,
+                -0,
+                -1,
+                0,
+                0.885166,
+                0,
+                -0,
+                1
+            ],
+            "name": "Bip01FBXASC032LFBXASC032Toe0Nub"
+        },
+        "Bip01FBXASC032LFBXASC032UpperArm": {
+            "children": [
+                "Bip01FBXASC032LFBXASC032Forearm"
+            ],
+            "jointName": "Bip01FBXASC032LFBXASC032UpperArm",
+            "name": "Bip01FBXASC032LFBXASC032UpperArm",
+            "rotation": [
+                0.19562,
+                0.347287,
+                -0.225983,
+                0.888851
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                7.67143,
+                -0,
+                -0
+            ]
+        },
+        "Bip01FBXASC032Neck": {
+            "children": [
+                "Bip01FBXASC032Head",
+                "Bip01FBXASC032LFBXASC032Clavicle",
+                "Bip01FBXASC032RFBXASC032Clavicle"
+            ],
+            "jointName": "Bip01FBXASC032Neck",
+            "name": "Bip01FBXASC032Neck",
+            "rotation": [
+                -0.0549071,
+                -0.00936983,
+                -0.0863334,
+                0.994708
+            ],
+            "scale": [
+                1,
+                0.999999,
+                1
+            ],
+            "translation": [
+                7.67081,
+                -0.003449,
+                0.000378
+            ]
+        },
+        "Bip01FBXASC032Pelvis": {
+            "children": [
+                "Bip01FBXASC032Spine"
+            ],
+            "jointName": "Bip01FBXASC032Pelvis",
+            "name": "Bip01FBXASC032Pelvis",
+            "rotation": [
+                -0.499547,
+                -0.499547,
+                -0.500453,
+                0.500453
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                0,
+                0,
+                0
+            ]
+        },
+        "Bip01FBXASC032RFBXASC032Calf": {
+            "children": [
+                "Bip01FBXASC032RFBXASC032Foot"
+            ],
+            "jointName": "Bip01FBXASC032RFBXASC032Calf",
+            "name": "Bip01FBXASC032RFBXASC032Calf",
+            "rotation": [
+                0,
+                0,
+                -0.0899572,
+                0.995946
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                29.5055,
+                -2e-006,
+                2e-006
+            ]
+        },
+        "Bip01FBXASC032RFBXASC032Clavicle": {
+            "children": [
+                "Bip01FBXASC032RFBXASC032UpperArm"
+            ],
+            "jointName": "Bip01FBXASC032RFBXASC032Clavicle",
+            "name": "Bip01FBXASC032RFBXASC032Clavicle",
+            "rotation": [
+                0.71812,
+                -0.0188047,
+                -0.680534,
+                0.144306
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                -0.058075,
+                0.225794,
+                -2.05257
+            ]
+        },
+        "Bip01FBXASC032RFBXASC032Finger0": {
+            "children": [
+                "Bip01FBXASC032RFBXASC032Finger0Nub"
+            ],
+            "jointName": "Bip01FBXASC032RFBXASC032Finger0",
+            "name": "Bip01FBXASC032RFBXASC032Finger0",
+            "rotation": [
+                0.000398,
+                0,
+                0,
+                1
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                7.37637,
+                -4e-006,
+                -0
+            ]
+        },
+        "Bip01FBXASC032RFBXASC032Finger0Nub": {
+            "children": [],
+            "jointName": "Bip01FBXASC032RFBXASC032Finger0Nub",
+            "matrix": [
+                1,
+                -0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                -0,
+                0,
+                -1,
+                0,
+                1.84409,
+                -4e-006,
+                0,
+                1
+            ],
+            "name": "Bip01FBXASC032RFBXASC032Finger0Nub"
+        },
+        "Bip01FBXASC032RFBXASC032Foot": {
+            "children": [
+                "Bip01FBXASC032RFBXASC032Toe0"
+            ],
+            "jointName": "Bip01FBXASC032RFBXASC032Foot",
+            "name": "Bip01FBXASC032RFBXASC032Foot",
+            "rotation": [
+                0.000113596,
+                0.00232267,
+                0.138583,
+                0.990348
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                29.5055,
+                1e-006,
+                0
+            ]
+        },
+        "Bip01FBXASC032RFBXASC032Forearm": {
+            "children": [
+                "Bip01FBXASC032RFBXASC032Hand"
+            ],
+            "jointName": "Bip01FBXASC032RFBXASC032Forearm",
+            "name": "Bip01FBXASC032RFBXASC032Forearm",
+            "rotation": [
+                0,
+                0,
+                -0.789986,
+                0.613125
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                17.7033,
+                4e-006,
+                0
+            ]
+        },
+        "Bip01FBXASC032RFBXASC032Hand": {
+            "children": [
+                "Bip01FBXASC032RFBXASC032Finger0"
+            ],
+            "jointName": "Bip01FBXASC032RFBXASC032Hand",
+            "name": "Bip01FBXASC032RFBXASC032Hand",
+            "rotation": [
+                0.728379,
+                0.0100977,
+                0.00476365,
+                0.685083
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                17.7033,
+                4e-006,
+                -4e-006
+            ]
+        },
+        "Bip01FBXASC032RFBXASC032Thigh": {
+            "children": [
+                "Bip01FBXASC032RFBXASC032Calf"
+            ],
+            "jointName": "Bip01FBXASC032RFBXASC032Thigh",
+            "name": "Bip01FBXASC032RFBXASC032Thigh",
+            "rotation": [
+                -0.0196076,
+                0.981433,
+                -0.189237,
+                0.024372
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                -6.69283,
+                0.370881,
+                -6.00784
+            ]
+        },
+        "Bip01FBXASC032RFBXASC032Toe0": {
+            "children": [
+                "Bip01FBXASC032RFBXASC032Toe01"
+            ],
+            "jointName": "Bip01FBXASC032RFBXASC032Toe0",
+            "name": "Bip01FBXASC032RFBXASC032Toe0",
+            "rotation": [
+                -0,
+                0,
+                0.707107,
+                0.707107
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                6.78626,
+                8.73362,
+                -2e-006
+            ]
+        },
+        "Bip01FBXASC032RFBXASC032Toe01": {
+            "children": [
+                "Bip01FBXASC032RFBXASC032Toe02"
+            ],
+            "jointName": "Bip01FBXASC032RFBXASC032Toe01",
+            "name": "Bip01FBXASC032RFBXASC032Toe01",
+            "rotation": [
+                -0,
+                -0,
+                0,
+                1
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                0.885166,
+                0,
+                -2e-006
+            ]
+        },
+        "Bip01FBXASC032RFBXASC032Toe02": {
+            "children": [
+                "Bip01FBXASC032RFBXASC032Toe0Nub"
+            ],
+            "jointName": "Bip01FBXASC032RFBXASC032Toe02",
+            "name": "Bip01FBXASC032RFBXASC032Toe02",
+            "rotation": [
+                -0,
+                -0,
+                0,
+                1
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                0.885162,
+                0,
+                2e-006
+            ]
+        },
+        "Bip01FBXASC032RFBXASC032Toe0Nub": {
+            "children": [],
+            "jointName": "Bip01FBXASC032RFBXASC032Toe0Nub",
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                -0,
+                1,
+                -0,
+                0,
+                -0,
+                0,
+                1,
+                0,
+                0.885162,
+                0,
+                -2e-006,
+                1
+            ],
+            "name": "Bip01FBXASC032RFBXASC032Toe0Nub"
+        },
+        "Bip01FBXASC032RFBXASC032UpperArm": {
+            "children": [
+                "Bip01FBXASC032RFBXASC032Forearm"
+            ],
+            "jointName": "Bip01FBXASC032RFBXASC032UpperArm",
+            "name": "Bip01FBXASC032RFBXASC032UpperArm",
+            "rotation": [
+                -0.371281,
+                -0.433112,
+                -0.0701057,
+                0.818321
+            ],
+            "scale": [
+                0.999999,
+                1,
+                1
+            ],
+            "translation": [
+                7.67142,
+                -1e-006,
+                8e-006
+            ]
+        },
+        "Bip01FBXASC032Spine": {
+            "children": [
+                "Bip01FBXASC032Spine1",
+                "Bip01FBXASC032LFBXASC032Thigh",
+                "Bip01FBXASC032RFBXASC032Thigh"
+            ],
+            "jointName": "Bip01FBXASC032Spine",
+            "name": "Bip01FBXASC032Spine",
+            "rotation": [
+                0.0383612,
+                0.00595055,
+                0.0609196,
+                0.997387
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                6.78699,
+                -0.006046,
+                0.011829
+            ]
+        },
+        "Bip01FBXASC032Spine1": {
+            "children": [
+                "Bip01FBXASC032Spine2"
+            ],
+            "jointName": "Bip01FBXASC032Spine1",
+            "name": "Bip01FBXASC032Spine1",
+            "rotation": [
+                -0,
+                -0,
+                0,
+                1
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                7.67142,
+                -0.006108,
+                1e-006
+            ]
+        },
+        "Bip01FBXASC032Spine2": {
+            "children": [
+                "Bip01FBXASC032Spine3"
+            ],
+            "jointName": "Bip01FBXASC032Spine2",
+            "name": "Bip01FBXASC032Spine2",
+            "rotation": [
+                0.00826248,
+                0.00126915,
+                0.01298,
+                0.999881
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                7.67159,
+                -0.006105,
+                -0.000102
+            ]
+        },
+        "Bip01FBXASC032Spine3": {
+            "children": [
+                "Bip01FBXASC032Neck"
+            ],
+            "jointName": "Bip01FBXASC032Spine3",
+            "name": "Bip01FBXASC032Spine3",
+            "rotation": [
+                0.00826249,
+                0.00126915,
+                0.01298,
+                0.999881
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                7.67158,
+                -0.006104,
+                -0.000102
+            ]
+        },
+        "BirthFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "BirthFBXASC03201"
+        },
+        "CacheFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "CacheFBXASC03201"
+        },
+        "Camera01": {
+            "camera": "_ncl1_52",
+            "children": [],
+            "matrix": [
+                0.654163,
+                -0.034899,
+                0.755548,
+                0,
+                0.022844,
+                0.999391,
+                0.026384,
+                0,
+                -0.756008,
+                -0,
+                0.654562,
+                0,
+                168.473,
+                54.3441,
+                199.824,
+                1
+            ],
+            "name": "Camera01"
+        },
+        "Camera01.Target": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                4.28713,
+                63.1033,
+                10.1922,
+                1
+            ],
+            "name": "Camera01.Target"
+        },
+        "DeleteFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "DeleteFBXASC03201"
+        },
+        "DisplayFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "DisplayFBXASC03201"
+        },
+        "DisplayFBXASC03202": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "DisplayFBXASC03202"
+        },
+        "Drag01": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                -20.117,
+                1
+            ],
+            "name": "Drag01"
+        },
+        "EventFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "EventFBXASC03201"
+        },
+        "EventFBXASC03202": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "EventFBXASC03202"
+        },
+        "ForceFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "ForceFBXASC03201"
+        },
+        "MaterialFBXASC032StaticFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "MaterialFBXASC032StaticFBXASC03201"
+        },
+        "PArray01": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                4.30496,
+                0,
+                16.2086,
+                1
+            ],
+            "name": "PArray01"
+        },
+        "PFFBXASC032Arrow01": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "PFFBXASC032Arrow01"
+        },
+        "PFFBXASC032Engine01": {
+            "children": [
+                "PFS_CigSmoke"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "PFFBXASC032Engine01"
+        },
+        "PFS_CigSmoke": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "PFS_CigSmoke"
+        },
+        "PFS_CigSmoke-FBXASC062EventFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "PFS_CigSmoke-FBXASC062EventFBXASC03201"
+        },
+        "PFS_CigSmoke-FBXASC062EventFBXASC03202": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "PFS_CigSmoke-FBXASC062EventFBXASC03202"
+        },
+        "PFS_CigSmoke-FBXASC062PFS_CigSmoke": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "PFS_CigSmoke-FBXASC062PFS_CigSmoke"
+        },
+        "ParticleFBXASC032ViewFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "ParticleFBXASC032ViewFBXASC03201"
+        },
+        "PositionFBXASC032ObjectFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "PositionFBXASC032ObjectFBXASC03201"
+        },
+        "RenderFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "RenderFBXASC03201"
+        },
+        "ScaleFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "ScaleFBXASC03201"
+        },
+        "ShapeFBXASC032FacingFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "ShapeFBXASC032FacingFBXASC03201"
+        },
+        "SpeedFBXASC03201": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "SpeedFBXASC03201"
+        },
+        "Sphere01": {
+            "children": [],
+            "matrix": [
+                0.158178,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -0.158178,
+                0,
+                0,
+                0.158178,
+                0,
+                0,
+                0.24246,
+                0,
+                0.242008,
+                1
+            ],
+            "meshes": [
+                "Sphere01-lib"
+            ],
+            "name": "Sphere01"
+        },
+        "Wind03": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                -30.1693,
+                0,
+                36.8505,
+                1
+            ],
+            "name": "Wind03"
+        },
+        "Wind04": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                -30.1693,
+                0,
+                54.7739,
+                1
+            ],
+            "name": "Wind04"
+        }
+    },
+    "programs": {
+        "program_0": {
+            "attributes": [
+                "a_normal",
+                "a_position"
+            ],
+            "fragmentShader": "\\motion0FS",
+            "vertexShader": "\\motion0VS"
+        }
+    },
+    "scene": "defaultScene",
+    "scenes": {
+        "defaultScene": {
+            "nodes": [
+                "Sphere01",
+                "PArray01",
+                "Drag01",
+                "Wind03",
+                "ParticleFBXASC032ViewFBXASC03201",
+                "PFFBXASC032Engine01",
+                "RenderFBXASC03201",
+                "EventFBXASC03201",
+                "BirthFBXASC03201",
+                "DisplayFBXASC03201",
+                "PFS_CigSmoke-FBXASC062EventFBXASC03201",
+                "ForceFBXASC03201",
+                "AgeFBXASC032TestFBXASC03201",
+                "EventFBXASC03202",
+                "DeleteFBXASC03201",
+                "DisplayFBXASC03202",
+                "PFFBXASC032Arrow01",
+                "PFS_CigSmoke-FBXASC062EventFBXASC03202",
+                "PositionFBXASC032ObjectFBXASC03201",
+                "SpeedFBXASC03201",
+                "CacheFBXASC03201",
+                "Bip01",
+                "Wind04",
+                "ShapeFBXASC032FacingFBXASC03201",
+                "Camera01",
+                "Camera01.Target",
+                "ScaleFBXASC03201",
+                "MaterialFBXASC032StaticFBXASC03201",
+                "PFS_CigSmoke-FBXASC062PFS_CigSmoke"
+            ]
+        }
+    },
+    "shaders": {
+        "\\motion0FS": {
+            "type": 35632,
+            "uri": "\\motion0FS.glsl"
+        },
+        "\\motion0VS": {
+            "type": 35633,
+            "uri": "\\motion0VS.glsl"
+        }
+    },
+    "skins": {},
+    "techniques": {
+        "technique0": {
+            "attributes": {
+                "a_normal": "normal",
+                "a_position": "position"
+            },
+            "parameters": {
+                "diffuse": {
+                    "type": 35666
+                },
+                "modelViewMatrix": {
+                    "semantic": "MODELVIEW",
+                    "type": 35676
+                },
+                "normal": {
+                    "semantic": "NORMAL",
+                    "type": 35665
+                },
+                "normalMatrix": {
+                    "semantic": "MODELVIEWINVERSETRANSPOSE",
+                    "type": 35675
+                },
+                "position": {
+                    "semantic": "POSITION",
+                    "type": 35665
+                },
+                "projectionMatrix": {
+                    "semantic": "PROJECTION",
+                    "type": 35676
+                }
+            },
+            "program": "program_0",
+            "states": {
+                "enable": [
+                    2929,
+                    2884
+                ]
+            },
+            "uniforms": {
+                "u_diffuse": "diffuse",
+                "u_modelViewMatrix": "modelViewMatrix",
+                "u_normalMatrix": "normalMatrix",
+                "u_projectionMatrix": "projectionMatrix"
+            }
+        }
+    }
+}

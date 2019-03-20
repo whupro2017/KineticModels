@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Hello World!</title>
+    <script src="cesium/Cesium.js"></script>
+    <style>
+        @import url(cesium/Widgets/widgets.css);
+        @import url(cesium/bucket.css);
+
+        html, body, #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="cesiumContainer"></div>
+<script>
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+        shouldAnimate: true,
+        homeButton: false,       //是否显示home键
+        // baseLayerPicker: false, //是否显示图层选择控件d
+        timeline: false,        //是否显示时间线控件
+        fullscreenButton: false, //是否全屏显示
+        scene3DOnly: true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+        infoBox: true,         //是否显示点击要素之后显示的信息
+        sceneModePicker: false,  //是否显示投影方式控件  三维/二维
+        navigationInstructionsInitiallyVisible: false,
+        navigationHelpButton: false,     //是否显示帮助信息控件
+        selectionIndicator: false,        //是否显示指示器组件
+        terrainProvider: Cesium.createWorldTerrain()
+    });
+    var scene = viewer.scene;
+    var PolyLinePrimitive = (function(){
+        function _(positions){
+            this.options = {
+                polyline : {
+                    show : true,
+                    // positions : Cesium.Cartesian3.fromDegreesArray(positions),
+                    positions : positions,
+                    clampToGround: true,
+                    material : Cesium.Color.RED,
+                    width : 5
+                }
+            };
+            this.positions = positions;
+            this._init();
+        }
+
+        _.prototype._init = function(){
+            var _self = this;
+            var _update = function(){
+                return _self.positions;
+            };
+            //实时更新polyline.positions
+            this.options.polyline.positions = new Cesium.CallbackProperty(_update,false);
+            viewer.entities.add(this.options);
+        };
+        return _;
+    })();
+
+
+    var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+    var positions = [];
+    var poly = undefined;
+
+    handler.setInputAction(function(movement){
+        var windowPosition = viewer.camera.getPickRay(movement.position);
+        var cartesianCoordinates = viewer.scene.globe.pick(windowPosition, viewer.scene);
+        var cartoCoordinates = viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesianCoordinates);
+        var longitude = Cesium.Math.toDegrees(cartoCoordinates.longitude);
+        var latitude = Cesium.Math.toDegrees(cartoCoordinates.latitude);
+        var height = 0;
+        var cartographic2 = Cesium.Cartographic.fromDegrees(longitude, latitude);
+        var promise = Cesium.sampleTerrainMostDetailed(viewer.scene.terrainProvider, [cartographic2]);
+        Cesium.when(promise, function (updatedPositions) {
+            if (updatedPositions.length > 0) {
+                height = updatedPositions[0].height;
+                console.log("经度"+longitude+"纬度"+latitude+'高度：:' + (updatedPositions[0].height ? updatedPositions[0].height : 0));
+            } else {
+                console.log('无法获取高程');
+            }
+            var ellipsoid=viewer.scene.globe.ellipsoid;
+            var cartographic=Cesium.Cartographic.fromDegrees(longitude,latitude,height);
+            var cartesian3=ellipsoid.cartographicToCartesian(cartographic);
+            if(positions.length == 0) {
+                positions.push(cartesian3.clone());
+            }
+            positions.push(cartesian3);
+        });
+    },Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+    handler.setInputAction(function(movement){
+        var windowPosition = viewer.camera.getPickRay(movement.endPosition);
+        var cartesian = viewer.scene.globe.pick(windowPosition, viewer.scene);
+        // var cartesian = viewer.camera.pickEllipsoid(movement.endPosition,scene.globe.ellipsoid);
+        var cartographic=scene.globe.ellipsoid.cartesianToCartographic(cartesian);
+        var longitude = Cesium.Math.toDegrees(cartographic.longitude);
+        var latitude = Cesium.Math.toDegrees(cartographic.latitude);
+        var height = 0;
+        var cartographic2 = Cesium.Cartographic.fromDegrees(longitude, latitude);
+        var promise = Cesium.sampleTerrainMostDetailed(viewer.scene.terrainProvider, [cartographic2]);
+        Cesium.when(promise, function (updatedPositions) {
+            var ellipsoid=viewer.scene.globe.ellipsoid;
+            var cartographic=Cesium.Cartographic.fromDegrees(longitude,latitude,height);
+            var cartesian3=ellipsoid.cartographicToCartesian(cartographic);
+            if(positions.length >= 2){
+                if (!Cesium.defined(poly)) {
+                    poly = new PolyLinePrimitive(positions);
+                }else{
+                    positions.pop();
+                    // cartesian3.y += (1 + Math.random());
+                    positions.push(cartesian3);
+                }
+            }
+        });
+    },Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+    handler.setInputAction(function(movement){
+        handler.destroy();
+    },Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+    viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(-112.38194878822117, 38.426207310426, 4000),
+        orientation: new Cesium.HeadingPitchRoll(4.2892217081808806, -0.4799070147502502, 6.279789177843313),
+        endTransform: Cesium.Matrix4.IDENTITY
+    });
+
+</script>
+</body>
+</html>

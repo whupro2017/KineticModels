@@ -29,7 +29,7 @@
     var viewer = new Cesium.Viewer('cesiumContainer', {
         shouldAnimate: true,
         homeButton: false,       //是否显示home键
-       // baseLayerPicker: false, //是否显示图层选择控件d
+        //baseLayerPicker: false, //是否显示图层选择控件d
         timeline: false,        //是否显示时间线控件
         fullscreenButton: false, //是否全屏显示
         scene3DOnly: true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
@@ -49,11 +49,9 @@
     // var lng = Cesium.Math.toDegrees(cartograhpinc.longitude);
     // var alt = cartographic.height;
     var ellipsoid = viewer.scene.globe.ellipsoid;
-    var cartographic = Cesium.Cartographic.fromDegrees(-78.00190569,36.99962837,6);
+    var cartographic = Cesium.Cartographic.fromDegrees(-78.00190569, 36.99962837, 6);
     var cartesian3 = ellipsoid.cartographicToCartesian(cartographic);
     console.log(cartesian3.x + "," + cartesian3.y + "," + cartesian3.z + ",");
-
-
     var entity;
     var positionProperty;
     var czml1 = [
@@ -113,6 +111,46 @@
             }
         }
     ];
+    var positions = [
+        Cesium.Cartographic.fromDegrees(-78.00242281641076, 36.999381296457656),
+        Cesium.Cartographic.fromDegrees(-78.00190569, 36.99962837)
+    ];
+    var promise = Cesium.sampleTerrain(viewer.terrainProvider, 11, positions);
+    Cesium.when(promise, function (updatedPositions) {
+        var longitude = Cesium.Math.toDegrees(updatedPositions[0].longitude);
+        var latitude = Cesium.Math.toDegrees(updatedPositions[0].latitude);
+        var height = Cesium.Math.toDegrees(updatedPositions[0].height);
+        console.log(updatedPositions);
+        console.log(longitude + "," + latitude + "," + height);
+        // positions[0].height and positions[1].height have been updated.
+        // updatedPositions is just a reference to positions.
+    });
+    viewer.entities.add({
+        polyline: {
+            positions: Cesium.Cartesian3.fromDegreesArray([
+                -112.38194878822117, 38.426207310426,
+                -112.38649174157557, 38.43731337536759
+            ]),
+            clampToGround: true,
+            width: 5,
+            material: Cesium.Color.CORNFLOWERBLUE,
+        }
+    });
+    var terrainSamplePositions = [];
+    var position = new Cesium.Cartographic(-78.00242281641076, 36.999381296457656);
+    terrainSamplePositions.push(position);
+    position = new Cesium.Cartographic(-78.00190569, 36.99962837);
+    terrainSamplePositions.push(position);
+    Cesium.when(Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, terrainSamplePositions), function (samples) {
+        var offset = 10.0;
+        for (var i = 0; i < samples.length; ++i) {
+            samples[i].height += offset;
+        }
+        console.log(samples);
+        var cartesian = Cesium.Ellipsoid.WGS84.cartographicArrayToCartesianArray(samples);
+        console.log(cartesian);
+        czml1[2].polyline.positions = cartesian;
+    });
     var dataSourcePromise = Cesium.CzmlDataSource.load(czml1);
     viewer.dataSources.add(dataSourcePromise).then(function (dataSource) {
         entity = dataSource.entities.getById('CesiumMilkTruck');
@@ -129,15 +167,62 @@
             console.log('This browser does not support clampToHeight.');
         }
     });
+    var PolyLinePrimitive = (function () {
+        function _(positions) {
+            this.options = {
+                polyline: {
+                    show: true,
+                    positions: [],
+                    material: Cesium.Color.CORNFLOWERBLUE,
+                    width: 5
+                }
+            };
+            this.positions = positions;
+            this._init();
+        }
 
-    // var tileset = scene.primitives.add(
-    //     new Cesium.Cesium3DTileset({
-    //         url: Cesium.IonResource.fromAssetId(6074)
-    //     })
-    // );
+        _.prototype._init = function () {
+            var _self = this;
+            var _update = function () {
+                return _self.positions;
+            };
+            //实时更新polyline.positions
+            this.options.polyline.positions = new Cesium.CallbackProperty(_update, false);
+            viewer.entities.add(this.options);
+        };
+
+        return _;
+    })();
+    var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+    var positions = [];
+    var poly = undefined;
+    handler.setInputAction(function (movement) {
+        var cartesian = scene.camera.pickEllipsoid(movement.position, scene.globe.ellipsoid);
+        if (positions.length == 0) {
+            positions.push(cartesian.clone());
+        }
+        positions.push(cartesian);
+    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+    handler.setInputAction(function (movement) {
+        var cartesian = scene.camera.pickEllipsoid(movement.endPosition, scene.globe.ellipsoid);
+        if (positions.length >= 2) {
+            if (!Cesium.defined(poly)) {
+                poly = new PolyLinePrimitive(positions);
+            } else {
+                positions.pop();
+                cartesian.y += (1 + Math.random());
+                positions.push(cartesian);
+            }
+        }
+    }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+    handler.setInputAction(function (movement) {
+        handler.destroy();
+    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
     viewer.camera.setView({
-        destination: new Cesium.Cartesian3(1060203.863393312, -4988683.797757099, 3817420.3150414284),
+        destination: Cesium.Cartesian3.fromDegrees(-112.38194878822117, 38.426207310426, 4000),
         orientation: new Cesium.HeadingPitchRoll(4.2892217081808806, -0.4799070147502502, 6.279789177843313),
         endTransform: Cesium.Matrix4.IDENTITY
     });

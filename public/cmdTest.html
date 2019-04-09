@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>cmd test!</title>
+</head>
+<script src="cesium/jquery-2.1.4.min.js"></script>
+<!--<script src="cesium/qq.js"></script>-->
+<body>
+<div id="toolbar">
+    <table>
+        <tr>
+            <td>案 件 id：</td>
+            <td><select id="case_id" style="width:150px"  >
+                <option value="volvo" hidden>请选择案件</option>
+            </select></td>
+        </tr>
+        <tr>
+            <td>场 景 id：</td>
+            <td><select id="scene_id" style="width:150px" >
+                <option value=""  hidden>请选择场景</option>
+            </select></td>
+        </tr>
+    </table>
+    <div id="caseMenu"></div>
+    <div id="modelMenu"></div>
+    <div id="DynRoute"></div>
+</div>
+</body>
+<script src="cesium/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+    var cases;
+    var scenes;
+    $.get("/get_cases", {"value": "get_cases"}, function (data) {
+        cases=data;
+        cases.forEach(function(json){
+            console.log(json);
+            $("#case_id").append('<option value='+json.case_id+' >'+json.case_id+'</option>');
+        });
+    })
+    $.get("/get_scenes", {"value": "get_scenes"}, function (data) {
+        scenes=data;
+        scenes.forEach(function(json){
+            console.log(json);
+            $("#scene_id").append('<option value='+json.id+' >'+json.id+'</option>');
+        });
+    })
+</script>
+</body>
+</html>

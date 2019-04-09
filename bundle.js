@@ -27,7 +27,7 @@
     1: [function (require, module, exports) {
 
     }, {}], 2: [function (require, module, exports) {
-        const exec = require('child_process').exec;
+        var exec = require('child_process').exec;
         exec('cd E:\\Desktop\\project\\cesiumJS\\node_modules\\obj2gltf && dir &&node bin\\obj2gltf.js -i box.obj -o box.gltf', function (err, stdout, stderr) {
             if (err) {
                 console.log("\n" + stderr);

@@ -10,6 +10,7 @@
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <title>Hello World!</title>
     <script src="cesium/Cesium.js"></script>
+    <script src="cesium/jquery-2.1.4.min.js"></script>
     <style>
         @import url(cesium/Widgets/widgets.css);
 
@@ -38,9 +39,9 @@
         navigationInstructionsInitiallyVisible: false,
         navigationHelpButton: false,     //是否显示帮助信息控件
         selectionIndicator: false,        //是否显示指示器组件
-        //terrainProvider : Cesium.createWorldTerrain(),
+        // terrainProvider: Cesium.createWorldTerrain(),
         imageryProvider: new Cesium.createTileMapServiceImageryProvider({
-            url: 'googleTMS',
+            url: 'cesium/xxxx',
         })
         /* imageryProvider : Cesium.createTileMapServiceImageryProvider({
               url : Cesium.buildModuleUrl('Assets/Textures/NaturalEarthII')
@@ -53,18 +54,48 @@
     viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
 
     var entity = viewer.entities.add({
-        id: 'GroundVehicle',
+        id: '321',
         position: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706, 0),
+        billboard: {
+            image: 'cesium/images/left_foot.JPG',
+            // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+            scale: 0.2,
+            color: Cesium.Color.WHITE
+        },
+    });
+
+
+    var entity1 = viewer.entities.add({
+        id: 'GroundVehicle',
+        position: Cesium.Cartesian3.fromDegrees(-122.0744619, 44.0503706, 0),
         model: {
-            uri: 'cesium/Models/mesh_final.gltf',
+            uri: 'cesium/Models/house1.gltf',
             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
         },
-        scale: 1000000,
-        minimumPixelSize: 1000,
-        show: false,
+        scale: 100.0,
+        minimumPixelSize: 100,
         colorBlendMode: Cesium.ColorBlendMode.MIX
     });
-    viewer.trackedEntity=entity;
+
+
+    viewer.trackedEntity = entity1;
+    var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+
+    handler.setInputAction(function (movement) {
+
+        var pick = viewer.scene.pick(movement.position);
+
+        if (Cesium.defined(pick)) {
+            console.log("点击广告牌");
+            var id=pick.id._id;
+            console.log(pick.id._id);
+            $.get("/get_mark_info", {"value": id}, function (data) {
+                alert("标记id："+id+"\n"+"标记信息："+data[0].info);
+            })
+        }
+
+    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 </script>
 </body>
 </html>

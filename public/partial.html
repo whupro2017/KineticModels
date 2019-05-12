@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Hello World!</title>
+    <script src="cesium/Cesium.js"></script>
+    <script src="cesium/Sandcastle-header.js"></script>
+</head>
+<body>
+<style>
+    @import url(cesium/Widgets/widgets.css);
+    @import url(cesium/bucket.css);
+
+    #toolbar {
+        background: rgba(42, 42, 42, 0.8);
+        padding: 4px;
+        border-radius: 4px;
+    }
+
+    #toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    #toolbar .header {
+        font-weight: bold;
+    }
+</style>
+<div id="cesiumContainer" class="fullSize"></div>
+<div id="loadingOverlay"><h1>Loading...</h1></div>
+<
+<script>
+    viewer = new Cesium.Viewer('cesiumContainer', {
+        imageryProvider: new Cesium.createTileMapServiceImageryProvider({
+            url: 'cesium/googleTMS',
+        }),
+    });
+
+    //Set the random number seed for consistent results.
+    // Cesium.Math.setRandomNumberSeed(3);
+
+    //Set bounds of our simulation time
+    var start = Cesium.JulianDate.fromDate(new Date(2015, 2, 25, 16));
+    var stop = Cesium.JulianDate.addSeconds(start, 120, new Cesium.JulianDate());
+    //
+    var pos1 = Cesium.Cartesian3.fromDegrees(-75.15787310614596, 39.97862668312678);
+    // var pos2 = Cesium.Cartesian3.fromDegrees(-75.1633691390455, 39.95355089912078);
+    var position = new Cesium.SampledPositionProperty();
+
+    position.addSample(start, pos1);
+    position.addSample(stop, pos1);
+
+    //Make sure viewer is at the desired time.
+    viewer.clock.startTime = start.clone();
+    viewer.clock.stopTime = stop.clone();
+    viewer.clock.currentTime = start.clone();
+    viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; //Loop at the end
+    viewer.clock.multiplier = 1;
+    viewer.clock.shouldAnimate = true;
+
+    //Set timeline to simulation bounds
+    viewer.timeline.zoomTo(start, stop);
+    var entity = viewer.entities.add({
+        availability : new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({
+            start : start,
+            stop : stop
+        })]),
+        model : {
+            uri : 'cesium/Models/CesiumMilkTruck/CesiumMilkTruck-kmc.glb',
+            minimumPixelSize : 64
+        },
+        viewFrom: new Cesium.Cartesian3(-100.0, 0.0, 100.0),
+        position : Cesium.Cartesian3.fromDegrees(-75.15787310614596, 39.97862668312678),
+        orientation : new Cesium.VelocityOrientationProperty(position),
+        show : false
+    });
+    // viewer.trackedEntity = entity;
+    viewer.camera.setView({
+        destination: new Cesium.Cartesian3.fromDegrees(-75.15787310614596, 39.97862668312678,50.0),
+    });
+    var viewModel = {
+        emissionRate : 0.0,
+        gravity : 0.0,
+        minimumParticleLife : 1,
+        maximumParticleLife : 1,
+        minimumSpeed : 0,
+        maximumSpeed : 0,
+        startScale : 0.1,
+        endScale : 10.0,
+        particleSize : 25.0
+    };
+
+
+    var entityPosition = new Cesium.Cartesian3();
+    var entityOrientation = new Cesium.Quaternion();
+    var rotationMatrix = new Cesium.Matrix3();
+    var modelMatrix = new Cesium.Matrix4();
+
+    function computeModelMatrix(entity, time) {
+        return entity.computeModelMatrix(time, new Cesium.Matrix4());
+    }
+
+    var emitterModelMatrix = new Cesium.Matrix4();
+    var translation = new Cesium.Cartesian3();
+    var rotation = new Cesium.Quaternion();
+    var hpr = new Cesium.HeadingPitchRoll();
+    var trs = new Cesium.TranslationRotationScale();
+
+    function computeEmitterModelMatrix() {
+        hpr = Cesium.HeadingPitchRoll.fromDegrees(0.0, 0.0, 0.0, hpr);
+        trs.translation = Cesium.Cartesian3.fromElements(0.0, 0.0,0.0, translation);
+        trs.rotation = Cesium.Quaternion.fromHeadingPitchRoll(hpr, rotation);
+
+        return Cesium.Matrix4.fromTranslationRotationScale(trs, emitterModelMatrix);
+    }
+
+    var scene = viewer.scene;
+    var viewModel = {
+        emissionRate : 0.0,
+        gravity : 0.0,
+        minimumParticleLife : 1,
+        maximumParticleLife : 1,
+        minimumSpeed : 0,
+        maximumSpeed : 0,
+        startScale : 0.1,
+        endScale : 10.0,
+        particleSize : 25.0
+    };
+    var particleSystem = scene.primitives.add(new Cesium.ParticleSystem({
+        image : 'cesium/Models/fire.png',
+
+        // startColor : Cesium.Color.LIGHTSEAGREEN.withAlpha(0.7),
+        // endColor : Cesium.Color.WHITE.withAlpha(0.0),
+
+        startScale : 0.1,
+        endScale : 10.0,
+
+
+        minimumParticleLife : 1,
+        maximumParticleLife : 1,
+
+        minimumSpeed : 0,
+        maximumSpeed : 0,
+
+        imageSize : new Cesium.Cartesian2(25, 25),
+
+        emissionRate : 0,
+
+        bursts : [
+            // these burst will occasionally sync to create a multicolored effect
+            new Cesium.ParticleBurst({time : 1.0, minimum : 10, maximum :10}),
+            new Cesium.ParticleBurst({time : 3.0, minimum : 10, maximum : 10}),
+            new Cesium.ParticleBurst({time : 5.0, minimum : 10, maximum : 10})
+        ],
+        lifetime : 16.0,
+
+        emitter : new Cesium.CircleEmitter(1.0),
+
+        emitterModelMatrix : computeEmitterModelMatrix()
+        // modelMatrix:computeModelMatrix(entity, time),
+
+    }));
+
+    var gravityScratch = new Cesium.Cartesian3();
+
+    function applyGravity(p, dt) {
+        // We need to compute a local up vector for each particle in geocentric space.
+        var position = p.position;
+
+        Cesium.Cartesian3.normalize(position, gravityScratch);
+        Cesium.Cartesian3.multiplyByScalar(gravityScratch, viewModel.gravity * dt, gravityScratch);
+
+        p.velocity = Cesium.Cartesian3.add(p.velocity, gravityScratch, p.velocity);
+    }
+
+    // viewer.scene.preUpdate.addEventListener(function(scene, time) {
+    //     particleSystem.modelMatrix = computeModelMatrix(entity, time);
+    //
+    //     // Account for any changes to the emitter model matrix.
+    //     particleSystem.emitterModelMatrix = computeEmitterModelMatrix();
+    //
+    //     // Spin the emitter if enabled.
+    //     if (viewModel.spin) {
+    //         viewModel.heading += 1.0;
+    //         viewModel.pitch += 1.0;
+    //         viewModel.roll += 1.0;
+    //     }
+    // });
+
+
+</script>
+</body>
+</html>

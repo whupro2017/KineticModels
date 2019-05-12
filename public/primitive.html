@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Hello World!</title>
+    <script src="cesium/Cesium.js"></script>
+    <style>
+        @import url(cesium/Widgets/widgets.css);
+
+        html, body, #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="cesiumContainer"></div>
+<script>
+    var viewer = new Cesium.Viewer('cesiumContainer');
+    var scene = viewer.scene;
+
+    var box = new Cesium.BoxGeometry({
+        vertexFormat : Cesium.VertexFormat.POSITION_ONLY,
+        maximum : new Cesium.Cartesian3(250000.0, 250000.0, 250000.0),
+        minimum : new Cesium.Cartesian3(-250000.0, -250000.0, -250000.0)
+    });
+    var geometry = Cesium.BoxGeometry.createGeometry(box);
+
+    scene.primitives.add(new Cesium.Primitive({
+        geometryInstances: new Cesium.GeometryInstance({
+            geometry: geometry,
+            attributes: {
+                color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom())
+            }
+        }),
+        appearance: new Cesium.PerInstanceColorAppearance()
+    }));
+    // viewer.camera.setView({
+    //     destination: Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883, 10000),
+    //     orientation: {
+    //         heading: 0.0,
+    //         pitch: Cesium.Math.toRadians(-90.0),
+    //         roll: 0.0
+    //     }
+    // });
+    // var viewer = new Cesium.Viewer('cesiumContainer');
+    // var scene = viewer.scene;
+    //
+    // var instances = [];
+    //
+    // for (var lon = -114.0; lon < -113.999; lon +=0.0001) {
+    //     for (var lat = 40; lat < 40.001; lat += 0.0001) {
+    //         instances.push(new Cesium.GeometryInstance({
+    //             geometry: Cesium.SphereGeometry.createGeometry(new Cesium.SphereGeometry({
+    //                 radius: 3.0,
+    //                 position: Cesium.Cartesian3.fromDegrees(lon, lat, 3.0),
+    //             })),
+    //             attributes: {
+    //                 color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({
+    //                     alpha: 0.5
+    //                 }))
+    //             }
+    //         }));
+    //     }
+    // }
+    //
+    // scene.primitives.add(new Cesium.Primitive({
+    //     geometryInstances: instances, //合并
+    //     //某些外观允许每个几何图形实例分别指定某个属性，例如：
+    //     appearance: new Cesium.PerInstanceColorAppearance()
+    // }));
+    // viewer.camera.setView({
+    //     destination: Cesium.Cartesian3.fromDegrees(-114, 40, 100),
+    //     orientation: {
+    //         heading: 0.0,
+    //         pitch: Cesium.Math.toRadians(-90.0),
+    //         roll: 0.0
+    //     }
+    // });
+    // var viewer = new Cesium.Viewer('cesiumContainer', {
+    //     infoBox: false,
+    //     selectionIndicator: false,
+    //     shadows: true,
+    //     shouldAnimate: true
+    // });
+    //
+    // // viewer.camera.setView({
+    // //     destination: Cesium.Cartesian3.fromDegrees(105.07224017290507, 36.56475804850547, 48),
+    // //     orientation: new Cesium.HeadingPitchRoll(4.2892217081808806, -0.4799070147502502, 6.279789177843313),
+    // //     endTransform: Cesium.Matrix4.IDENTITY
+    // // });
+    // var lon = -114;
+    // var lat = 40;
+    // var height=3;
+    // for (var i = 0; i < 10; i++) {
+    //     for (var j = 0; j < 10; j++) {
+    //         for (var k = 0; k < 10; k++) {
+    //             viewer.entities.add({
+    //                 name: 'Red sphere with black outline',
+    //                 position: Cesium.Cartesian3.fromDegrees(lon, lat,height),
+    //                 ellipsoid: {
+    //                     radii: new Cesium.Cartesian3(1.0, 1.0, 1.0),
+    //                     material: Cesium.Color.RED.withAlpha(0.5),
+    //                 }
+    //             });
+    //             height=height+12;
+    //         }
+    //         height=3;
+    //         lat = lat + 0.0001;
+    //     }
+    //     lat = 40;
+    //     lon = lon + 0.0001;
+    // }
+    // // var redSphere = viewer.entities.add({
+    // //     name : 'Red sphere with black outline',
+    // //     position: Cesium.Cartesian3.fromDegrees(-114.01, 40.0, 300.0),
+    // //     ellipsoid : {
+    // //         radii : new Cesium.Cartesian3(3.0, 3.0, 3.0),
+    // //         material : Cesium.Color.RED.withAlpha(0.5),
+    // //     }
+    // // });
+    // // viewer.trackedEntity=redSphere;
+    // viewer.zoomTo(viewer.entities);
+</script>
+</body>
+</html>

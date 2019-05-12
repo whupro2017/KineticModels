@@ -10,6 +10,8 @@
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <title>Hello World!</title>
     <script src="cesium/Cesium.js"></script>
+    <div id="nb" onClick="show('sb','nb')" style=" width:33px;cursor:pointer">展开</div>
+    <div id="sb" style=" background-color:#F99;width:50px;height:40px; display:none"></div>
     <style>
         @import url(cesium/Widgets/widgets.css);
 
@@ -23,110 +25,22 @@
     </style>
 </head>
 <body>
-<div id="cesiumContainer"></div>
 <script>
-    var viewer = new Cesium.Viewer('cesiumContainer', {
-        infoBox: false,
-        selectionIndicator: false,
-        shadows: true,
-        shouldAnimate: true
-    });
-    var scene = viewer.scene;
-    var clock = viewer.clock;
-
-    var house_czml = [{
-        "id": "document",
-        "name": "CZML_Model",
-        "version": "1.0",
-        "clock": {
-            "interval": "2019-03-05T15:00:00Z/",
-            "currentTime": "2019-03-05T15:00:12Z",
-            "multiplier": 1,
-            "range": "LOOP_STOP",
-            "step": "SYSTEM_CLOCK_MULTIPLIER"
+    function show(num,a)
+    {
+        var box = document.getElementById(num);
+        var message = document.getElementById(a);
+        if(box.style.display != "block")
+        {
+            box.style.display = "block";
+            message.innerHTML = '收起';
         }
-    }];
-
-    function timeFormat(date) {
-        var y = date.getFullYear();
-        var mon = date.getMonth() + 1;
-        if (mon.toString().length == 1) {
-            mon = "0" + mon;
+        else
+        {
+            box.style.display = "none";
+            message.innerHTML = '展开';
         }
-        ;
-        var d = date.getDay();
-        if (d.toString().length == 1) {
-            d = "0" + d;
-        }
-        ;
-        var h = date.getHours();
-        if (h.toString().length == 1) {
-            h = "0" + h;
-        }
-        ;
-        var min = date.getMinutes();
-        if (min.toString().length == 1) {
-            min = "0" + min;
-        }
-        ;
-        var s = date.getSeconds();
-        if (s.toString().length == 1) {
-            s = "0" + s;
-        }
-        ;
-        var mytimes = y + "-" + mon + "-" + d + "T" + h + ":" + min + ":" + s + "Z";
-        return mytimes;
     }
-
-    var entity;
-    var Maxlongitude = -122.8744619;
-    var Maxlatitude = 44.2503706;
-    var Minlongitude = -123.2744619;
-    var Minlatitude = 43.8503706;
-    var i, j, k;
-    var latitude;
-    var longitude;
-    var a = 0;
-    var date;
-    var time;
-    for (i = 0; i < 2; i++) {
-        var cartographicDegrees = [];
-        a = 0;
-        for (k = 0; k < 6; k++) {
-            latitude = Math.random() * (Maxlatitude - Minlatitude + 1) + Minlatitude;
-            longitude = Math.random() * (Maxlongitude - Minlongitude + 1) + Minlongitude;
-            date = new Date(2019, 2, 1, 15, 0, a);
-            time = timeFormat(date);
-            cartographicDegrees.push(time, longitude, latitude, 0);
-            a += 1;
-        }
-        entity = {
-            "position": {
-                "cartographicDegrees": cartographicDegrees
-            },
-            "model": {
-                "gltf": "cesium/Models/GroundVehicle/GroundVehicle.glb",
-                "scale": 1.0,
-                //"minimumPixelSize": 128
-            }
-        };
-        house_czml.push(entity);
-    }
-    var dataSourcePromise = viewer.dataSources.add(Cesium.CzmlDataSource.load(house_czml));
-    dataSourcePromise.then(function (dataSource) {
-        console.log(house_czml[1].position);
-    });
-
-    var entity = viewer.entities.add({
-        position: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706, 0),
-        model: {uri: 'cesium/Models/house.gltf'},
-        scale: 1.0,
-        minimumPixelSize: 1,
-    });
-    viewer.trackedEntity = entity;
-    // viewer.camera.flyTo({
-    //          destination : Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706,60.0)     //相机飞入点
-    //      });
 </script>
 </body>
 </html>

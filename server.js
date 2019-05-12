@@ -129,6 +129,46 @@ app.get('/files', function (req, res, next) {
     });
 })
 
+app.get("/get_elements", function (req, res) {
+    var element_type=req.query.element_type;
+    var scene_id=req.query.scene_id;
+    console.log(element_type+","+scene_id);
+    connection.query("SELECT ID,SERIAL_NO from "+element_type+" WHERE scene_id="+scene_id, function (error, results, fields) {
+        if (error) {
+            var data = {msg: "写入数据库错误，上传失败"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+})
+
+app.get('/model_location', function (req, res, next) {
+    var longitude=req.query.longitude;
+    var latitude=req.query.latitude;
+    var height=req.query.height;
+    var scene_id=req.query.scene_id;
+    var model_name=req.query.model_name;
+    connection.query("UPDATE  modelinfo SET start_lon="+longitude+",start_lat="+latitude+",start_height="+height+"WHERE scene_id="+scene_id+" and name='"+model_name+"'", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "写入数据库错误，上传失败"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "更新模型位置成功"};
+        // c.end();
+        console.log("更新模型位置成功");
+        res.send(data);
+        res.end();
+    });
+
+})
 // var Client = require('node-ftp');
 // var c = new Client();
 // var targetOptions = {
@@ -210,7 +250,7 @@ app.post('/uploads', function (req, res, next) {
                         //如果不存在上传文件夹名称，就创建
                         try {
                             fs.mkdirSync(folderPath, 0777);
-                            console.log("成功创建目录" + folderPath);
+                            ("成功创建目录" + folderPath);
                         } catch (e) {
                             console.log(e.name + ": " + e.message);
                         }
@@ -246,7 +286,7 @@ app.post('/uploads', function (req, res, next) {
                             var model_info = [];
                             var index=0;
                             for (var gltf in filedata.gltfs) {
-                                connection.query("INSERT into modelinfo (scene_id,path,des) value (" + scene_id + ",'" + filedata.gltfs[index].path + "','" + filedata.gltfs[index].name + "')", function (error, results, fields) {
+                                connection.query("INSERT into modelinfo (scene_id,path,name) value (" + scene_id + ",'" + filedata.gltfs[index].path + "','" + filedata.gltfs[index].name + "')", function (error, results, fields) {
                                     if (error) {
                                         var data = {msg: "写入数据库错误，上传失败"};
                                         // c.end();
@@ -256,9 +296,8 @@ app.post('/uploads', function (req, res, next) {
                                     }
                                     model_info.push(filedata.gltfs[index].name,filedata.gltfs[index].path);
                                     if (index == filedata.gltfs.length - 1) {
-                                        console.log(index+","+(filedata.gltfs.length - 1));
                                         console.log("sql完成");
-                                        console.log(model_info);
+                                        console.log("上传成功");
                                         info.msg='上传成功';
                                         info.model_info=model_info;
                                         res.send(info);

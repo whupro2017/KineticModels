@@ -96,7 +96,7 @@
             for (; height <= 200; height += 20) {
                 instances.push(new Cesium.GeometryInstance({
                     geometry: new Cesium.SphereGeometry({
-                        radius: 5.0,
+                        radius: 10.0,
                         vertexFormat: Cesium.VertexFormat.POSITION_ONLY
                     }),
                     attributes: {
@@ -163,7 +163,7 @@
     // scene.primitives.add(primitive);
 
     //定期修改颜色
-    setInterval(function () {
+    var timer=setInterval(function () {
         if (viewer.clockViewModel.shouldAnimate == true) {
             //     for (var j = 0; j < instances_arr.length; j++) {
             //         for (var i = 0; i < instances.length; i++) {
@@ -177,6 +177,23 @@
                     alpha: 1.0
                 }));
             }
+        }
+    }, 1000);
+    var old_mul=clock.multiplier;
+    setInterval(function () {
+        if (old_mul!=clock.multiplier) {
+            window.clearInterval(timer);
+            timer=setInterval(function () {
+                if (viewer.clockViewModel.shouldAnimate == true) {
+                    for (var i = 0; i < instances.length; i++) {
+                        primitives.getGeometryInstanceAttributes(i).color = Cesium.ColorGeometryInstanceAttribute.toValue(Cesium.Color.fromRandom({
+                            alpha: 1.0
+                        }));
+                    }
+                }
+            }, 100/clock.multiplier);
+            console.log("每秒"+clock.multiplier*10+"次");
+            old_mul=clock.multiplier;
         }
     }, 100);
     viewer.camera.setView({

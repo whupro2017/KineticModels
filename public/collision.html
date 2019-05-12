@@ -86,7 +86,6 @@
         <div id="caseMenu" style="float: left"></div>
         <div id="modelMenu"></div>
         <div id="DynRoute"></div>
-        <input type="file" id="element_file" style="display:none">
         <div>
             <div id="KineticMenu" style="float: left"></div>
             <div style="float: left;">
@@ -108,7 +107,16 @@
             <div style="float: left">
                 <table>
                     <tr>
-                        <td><select style="width:120px;height:25px" onchange="get_sub_menu(this.value)">
+                        <td><select id="element_type" style="width:120px;height:25px" onchange="get_element_menu(this.value)" value="scene_handprint">
+                            <option value="volvo" hidden>选择要素类别</option>
+                            <option value="scene_handprint" >手印痕迹</option>
+                            <option value="scene_footprint" >足迹痕迹</option>
+                            <option value="scene_toolmark" >工具痕迹</option>
+                            <option value="scene_bio_evidence" >生物物证</option>
+                            <option value="scene_file_evidence" >文检物证</option>
+                            <option value="scene_elec_evidence" >电子物证</option>
+                        </select></td>
+                        <td><select  id="elements" style="width:120px;height:25px" onclick="get_element_menu(this.value)">
                             <option value="volvo" hidden>选择绑定要素</option>
                         </select></td>
                     </tr>
@@ -768,10 +776,11 @@
                         });
                     }
                     if (operation_type == "locate_model") {
+                        operation_type = null;
                         var url = "Files/" + $("#models").val();
+                        alert("标定模型位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
                         var name = $("#models").find("option:selected").text();
-                        console.log(url + ',' + name);
-                        var x=viewer.entities.add({
+                        var x = viewer.entities.add({
                             position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
                             model: {
                                 uri: url,
@@ -780,6 +789,15 @@
                             scale: 1.0,
                             minimumPixelSize: 100
                         });
+                        $.get("/model_location", {
+                            "longitude": longitude,
+                            "latitude": latitude,
+                            "height": height,
+                            "scene_id": $("#scene_id").val(),
+                            "model_name": name
+                        }, function (data) {
+                            console.log("更改模型：" + name + "位置");
+                        })
                     }
                 });
             }
@@ -953,9 +971,6 @@
         operation_type = "mark_elements";
 
     }, 'markMenu');
-    Sandcastle.addToolbarButton('导入要素', function () {
-        $("#element_file").trigger("click");
-    }, 'markMenu');
 
     //菜单案件与场景选项逻辑
     var cases;
@@ -983,6 +998,18 @@
         })
     }
 
+    function get_element_menu(element_type) {
+        console.log("要素大类为：" + element_type);
+        $("#elements").find("option").remove();
+        $("#elements").append("<option value='volvo' hidden>选择绑定要素</option>");
+        $.get("/get_elements", {"element_type": "scene_handprint","scene_id":$("#scene_id").val()}, function (data) {
+            console.log(data.msg);
+            console.log("wanc");
+            data.forEach(function (json) {
+                $("#elements").append('<option value=' + json.ID + ' > 系列id：' + json.SERIAL_NO + '</option>');
+            });
+        })
+    }
     function get_sub_menu(top_name) {
         console.log("图标大类名为：" + top_name);
         $("#sub_icon_menu").find("option").remove();

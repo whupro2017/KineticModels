@@ -57,24 +57,10 @@
         multiplier: 1,
         shouldAnimate: true
     });
-    // var viewer = new Cesium.Viewer('cesiumContainer', {
-    //     shouldAnimate: true,
-    //     clockViewModel: new Cesium.ClockViewModel(clock),
-    //     selectionIndicator: false,
-    // });
     var viewer = new Cesium.Viewer('cesiumContainer', {
         shouldAnimate: true,
-        baseLayerPicker: false,
-        homeButton: false,       //是否显示home键
-        timeline: true,        //是否显示时间线控件
-        fullscreenButton: false, //是否全屏显示
-        scene3DOnly: true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
-        infoBox: true,         //是否显示点击要素之后显示的信息
-        sceneModePicker: false,  //是否显示投影方式控件  三维/二维
-        navigationInstructionsInitiallyVisible: false,
-        navigationHelpButton: false,     //是否显示帮助信息控件
-        selectionIndicator: false,        //是否显示指示器组件
-        // terrainProvider: Cesium.createWorldTerrain()//加载地势
+        clockViewModel: new Cesium.ClockViewModel(clock),
+        selectionIndicator: false,
     });
     viewer.scene.globe.enableLighting = true;
     viewer.scene.globe.depthTestAgainstTerrain = true;
@@ -239,8 +225,8 @@
                         }));
                     }
                 }
-            }, 100/clock.multiplier);
-            console.log("每秒"+clock.multiplier*10+"次");
+            }, 1000/clock.multiplier);
+            console.log("每秒"+clock.multiplier+"次");
             old_mul=clock.multiplier;
         }
     }, 100);

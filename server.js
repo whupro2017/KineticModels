@@ -104,7 +104,6 @@ app.get("/get_sub_menu", function (req, res) {
         }
         // files是一个数组
         // 每个元素是此目录下的文件或文件夹的名称
-        console.log(files);
         res.send(files);
         res.end();
     });
@@ -116,7 +115,6 @@ app.get("/get_icon_menu", function (req, res) {
         }
         // files是一个数组
         // 每个元素是此目录下的文件或文件夹的名称
-        console.log(files);
         res.send(files);
         res.end();
     });
@@ -130,10 +128,10 @@ app.get('/files', function (req, res, next) {
 })
 
 app.get("/get_elements", function (req, res) {
-    var element_type=req.query.element_type;
-    var scene_id=req.query.scene_id;
-    console.log(element_type+","+scene_id);
-    connection.query("SELECT ID,SERIAL_NO from "+element_type+" WHERE scene_id="+scene_id, function (error, results, fields) {
+    var element_type = req.query.element_type;
+    var scene_id = req.query.scene_id;
+    console.log(element_type + "," + scene_id);
+    connection.query("SELECT ID,SERIAL_NO from " + element_type + " WHERE scene_id=" + scene_id, function (error, results, fields) {
         if (error) {
             var data = {msg: "写入数据库错误，上传失败"};
             // c.end();
@@ -148,12 +146,12 @@ app.get("/get_elements", function (req, res) {
 })
 
 app.get('/model_location', function (req, res, next) {
-    var longitude=req.query.longitude;
-    var latitude=req.query.latitude;
-    var height=req.query.height;
-    var scene_id=req.query.scene_id;
-    var model_name=req.query.model_name;
-    connection.query("UPDATE  modelinfo SET start_lon="+longitude+",start_lat="+latitude+",start_height="+height+"WHERE scene_id="+scene_id+" and name='"+model_name+"'", function (error, results, fields) {
+    var longitude = req.query.longitude;
+    var latitude = req.query.latitude;
+    var height = req.query.height;
+    var scene_id = req.query.scene_id;
+    var model_name = req.query.model_name;
+    connection.query("UPDATE  modelinfo SET start_lon=" + longitude + ",start_lat=" + latitude + ",start_height=" + height + "WHERE scene_id=" + scene_id + " and name='" + model_name + "'", function (error, results, fields) {
         if (error) {
             var data = {msg: "写入数据库错误，上传失败"};
             // c.end();
@@ -169,6 +167,90 @@ app.get('/model_location', function (req, res, next) {
     });
 
 })
+
+app.get('/store_elements', function (req, res, next) {
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    for (var i in form) {
+        connection.query("INSERT into scene_bio_evidence (scene_id,SERIAL_NO,EVIDENCE_TYPE,DESCRIPTION,LEFT_POSITION,COLLECTION_MODE,COLLECTED_BY,COLLECTED_DATE,CRIMINAL_FLAG,UTILIZATION,PRINT_FLAG,STORAGE_FLAG) " +
+            "value (" + scene_id + "," + form[i].序号 + ",'" + form[i].类型 + "','" + form[i].基本特征 + "','" + form[i].遗留部位 + "','" + form[i].提取方法 + "','" + form[i].提取人 + "','" + form[i].提取日期 + "','" + form[i].可靠程度 + "','" + form[i].利用情况 + "','" + form[i].列入现场提取登记表 + "','" + form[i].是否已DNA系统 + "')", function (error, results, fields) {
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入element文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+    }
+});
+
+app.get('/get_element_info', function (req, res, next) {
+    //form表单
+    var element_type = req.query.element_type;
+    var element_id = req.query.element_id;
+    connection.query("SELECT  scene_id,SERIAL_NO,EVIDENCE_TYPE,DESCRIPTION,LEFT_POSITION,COLLECTION_MODE,COLLECTED_BY,COLLECTED_DATE,CRIMINAL_FLAG,UTILIZATION,PRINT_FLAG,STORAGE_FLAG from " + element_type + " where id=" + element_id, function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log("读取数据库成功");
+        console.log(results);
+        res.send(results);
+        res.end();
+
+    });
+
+});
+
+app.get('/update_element_info', function (req, res, next) {
+    //form表单
+    var element_type = req.query.element_type;
+    var element_id = req.query.element_id;
+    var COLLECTED_BY = req.query.COLLECTED_BY;
+    var COLLECTED_DATE = req.query.COLLECTED_DATE;
+    var COLLECTION_MODE = req.query.COLLECTION_MODE;
+    var CRIMINAL_FLAG = req.query.CRIMINAL_FLAG;
+    var DESCRIPTION = req.query.DESCRIPTION;
+    var EVIDENCE_TYPE = req.query.EVIDENCE_TYPE;
+    var LEFT_POSITION = req.query.LEFT_POSITION;
+    var PRINT_FLAG = req.query.PRINT_FLAG;
+    var STORAGE_FLAG = req.query.STORAGE_FLAG;
+    var UTILIZATION = req.query.UTILIZATION;
+    connection.query("UPDATE "+element_type+" set COLLECTED_BY='"+COLLECTED_BY+"',COLLECTED_DATE='"+COLLECTED_DATE+"',COLLECTION_MODE='"+COLLECTION_MODE+"',CRIMINAL_FLAG='"+CRIMINAL_FLAG+"',DESCRIPTION='"+DESCRIPTION+"',EVIDENCE_TYPE='"+EVIDENCE_TYPE+"',LEFT_POSITION='"+LEFT_POSITION+"',PRINT_FLAG='"+PRINT_FLAG+"',STORAGE_FLAG='"+STORAGE_FLAG+"',UTILIZATION='"+UTILIZATION+"' where id=" + element_id, function (error, results, fields) {
+    // connection.query("UPDATE  COLLECTED_BY=" + COLLECTED_BY +" from " + element_type + " where id=" + element_id, function (error, results, fields) {
+        if (error) {
+            var data = {msg: "更新失败"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        } else {
+            var data = {msg: "更新成功"};
+            // c.end();
+            console.log("更新成功");
+            res.send(data);
+            res.end();
+        }
+
+    });
+
+});
+
 // var Client = require('node-ftp');
 // var c = new Client();
 // var targetOptions = {
@@ -264,14 +346,14 @@ app.post('/uploads', function (req, res, next) {
                     fs.renameSync(file.path, path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
                     if (pathnameArray[pathnameArray.length - 1] == "kinetic.json") {
                         console.log("获得json文件");
-                        var info={};
+                        var info = {};
                         fs.readFile(path.join(folderPath, pathnameArray[pathnameArray.length - 1]), function (err, data) {
                             if (err) {
                                 return console.error(err);
                             }
                             var filedata = data.toString();//将二进制的数据转换为字符串
                             filedata = JSON.parse(filedata);//将字符串转换为json对象
-                            var kinetic_id=filedata.kinetic_id;
+                            var kinetic_id = filedata.kinetic_id;
                             connection.query("INSERT into kinetic_t (scene_id,kinetic_id) value (" + scene_id + ",'" + kinetic_id + "')", function (error, results, fields) {
                                 if (error) {
                                     var data = {msg: "写入数据库错误，上传失败"};
@@ -280,11 +362,11 @@ app.post('/uploads', function (req, res, next) {
                                     res.end();
                                     return console.error(error);
                                 }
-                                info.kinetic_id=kinetic_id;
+                                info.kinetic_id = kinetic_id;
 
                             });
                             var model_info = [];
-                            var index=0;
+                            var index = 0;
                             for (var gltf in filedata.gltfs) {
                                 connection.query("INSERT into modelinfo (scene_id,path,name) value (" + scene_id + ",'" + filedata.gltfs[index].path + "','" + filedata.gltfs[index].name + "')", function (error, results, fields) {
                                     if (error) {
@@ -294,12 +376,12 @@ app.post('/uploads', function (req, res, next) {
                                         res.end();
                                         return console.error(error);
                                     }
-                                    model_info.push(filedata.gltfs[index].name,filedata.gltfs[index].path);
+                                    model_info.push(filedata.gltfs[index].name, filedata.gltfs[index].path);
                                     if (index == filedata.gltfs.length - 1) {
                                         console.log("sql完成");
                                         console.log("上传成功");
-                                        info.msg='上传成功';
-                                        info.model_info=model_info;
+                                        info.msg = '上传成功';
+                                        info.model_info = model_info;
                                         res.send(info);
                                         res.end();
                                     }

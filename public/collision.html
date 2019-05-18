@@ -13,6 +13,7 @@
     <script src="cesium/Sandcastle-header.js"></script>
     <script src="cesium/jquery-2.1.4.min.js"></script>
     <script src="cesium/jquery-form.js"></script>
+    <script src="cesium/xlsx.core.min.js"></script>
     <style>
         @import url(cesium/bucket.css);
 
@@ -105,19 +106,21 @@
         <div style="float: left">
             <div id="markMenu" style="float: left"></div>
             <div style="float: left">
+                <input id="element_file" type="file" style="display:none" accept=".xls,.xlsx" onchange="importFile(this)">
                 <table>
                     <tr>
-                        <td><select id="element_type" style="width:120px;height:25px" onchange="get_element_menu(this.value)" value="scene_handprint">
-                            <option value="volvo" hidden>选择要素类别</option>
-                            <option value="scene_handprint" >手印痕迹</option>
-                            <option value="scene_footprint" >足迹痕迹</option>
-                            <option value="scene_toolmark" >工具痕迹</option>
-                            <option value="scene_bio_evidence" >生物物证</option>
-                            <option value="scene_file_evidence" >文检物证</option>
-                            <option value="scene_elec_evidence" >电子物证</option>
+                        <td><select id="element_type" style="width:80px;height:25px"
+                                    onchange="get_element_menu(this.value)" onclick="get_element_menu(this.value)">
+                            <option value="volvo" hidden>要素类别</option>
+                            <option value="scene_handprint">手印痕迹</option>
+                            <option value="scene_footprint">足迹痕迹</option>
+                            <option value="scene_toolmark">工具痕迹</option>
+                            <option value="scene_bio_evidence">生物物证</option>
+                            <option value="scene_file_evidence">文检物证</option>
+                            <option value="scene_elec_evidence">电子物证</option>
                         </select></td>
-                        <td><select  id="elements" style="width:120px;height:25px" onclick="get_element_menu(this.value)">
-                            <option value="volvo" hidden>选择绑定要素</option>
+                        <td><select id="elements" style="width:80px;height:25px">
+                            <option value="volvo" hidden>绑定要素</option>
                         </select></td>
                     </tr>
 
@@ -154,6 +157,37 @@
 </div>
 
 <script>
+
+//导入要素表格文件
+    function importFile(obj) {//导入
+        console.log("已选择文件");
+        if (!obj.files) {
+            alert("文件有误");
+            return;
+        }
+        // alert(obj.files[0].name);文件名
+        var f = obj.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var wb = XLSX.read(data, {
+                type: 'binary' //以二进制的方式读取
+            });
+
+            var sheet0 = wb.Sheets[wb.SheetNames[0]];//sheet0代表excel表格中的第一页
+            var str = XLSX.utils.sheet_to_json(sheet0);//利用接口实现转换。
+            var templates = new Array();
+            var str1 = obj.files[0].name;
+            templates = str1.split(".");//将导入文件名去掉后缀
+            var form=JSON.stringify(str);
+            console.log(form);
+            $.get("/store_elements", {"form":form,"scene_id":$("#scene_id").val()}, function (data) {
+                alert(data.msg);
+            })
+        }
+        reader.readAsBinaryString(f);
+    }
 
     $(document).ready(function () {
         var options = {
@@ -221,7 +255,7 @@
     // function select_case() {
     //     window
     //         .open(
-    //             "create_case.html",
+    //             "show_element_info.html",
     //             "select_case",
     //             "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
     // }
@@ -540,11 +574,11 @@
             maximumParticleLife: 10,
             minimumSpeed: 0,
             maximumSpeed: 0,
-            imageSize: new Cesium.Cartesian2(50, 50),
+            imageSize: new Cesium.Cartesian2(5, 5),
             emissionRate: 0,
             bursts: [
                 // these burst will occasionally sync to create a multicolored effect
-                new Cesium.ParticleBurst({time: 40.0, minimum: 50, maximum: 50})
+                new Cesium.ParticleBurst({time: 40.0, minimum: 10000, maximum: 10000})
             ],
             lifetime: 59.0,
 
@@ -847,6 +881,17 @@
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     //设置鼠标右键点击事件
     handler.setInputAction(function (movement) {
+        var pick = viewer.scene.pick(movement.position);
+
+        if (Cesium.defined(pick)) {
+            console.log(pick);
+            console.log("点击到物体");
+            window
+                .open(
+                    "show_element_info.html",
+                    "show_element_info",
+                    "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+        }
         // if (operation_type == "drawRoute") {
         if (positions.length != 0) {
             positions.pop();
@@ -971,6 +1016,11 @@
         operation_type = "mark_elements";
 
     }, 'markMenu');
+    Sandcastle.addToolbarButton('导入要素', function () {
+
+        $("#element_file").trigger("click");
+        console.log("导入要素");
+    }, 'markMenu');
 
     //菜单案件与场景选项逻辑
     var cases;
@@ -992,6 +1042,8 @@
         console.log("案件id为：" + case_id);
         $.get("/get_scenes", {"value": case_id}, function (data) {
             scenes = data;
+            $("#scene_id").find("option").remove();
+            $("#scene_id").append("<option value='volvo' hidden>请选择场景</option>");
             scenes.forEach(function (json) {
                 $("#scene_id").append('<option value=' + json.scene_id + ' >' + json.scene_id + '</option>');
             });
@@ -1001,15 +1053,15 @@
     function get_element_menu(element_type) {
         console.log("要素大类为：" + element_type);
         $("#elements").find("option").remove();
-        $("#elements").append("<option value='volvo' hidden>选择绑定要素</option>");
-        $.get("/get_elements", {"element_type": "scene_handprint","scene_id":$("#scene_id").val()}, function (data) {
+        $("#elements").append("<option value='volvo' hidden>绑定要素</option>");
+        $.get("/get_elements", {"element_type": $("#element_type").val(), "scene_id": $("#scene_id").val()}, function (data) {
             console.log(data.msg);
-            console.log("wanc");
             data.forEach(function (json) {
-                $("#elements").append('<option value=' + json.ID + ' > 系列id：' + json.SERIAL_NO + '</option>');
+                $("#elements").append('<option value=' + json.ID + ' > 序列号：' + json.SERIAL_NO + '</option>');
             });
         })
     }
+
     function get_sub_menu(top_name) {
         console.log("图标大类名为：" + top_name);
         $("#sub_icon_menu").find("option").remove();
@@ -1019,7 +1071,6 @@
         $.get("/get_sub_menu", {"value": top_name}, function (data) {
             sub_menu = data;
             sub_menu.forEach(function (sub_name) {
-                console.log(sub_name);
                 $("#sub_icon_menu").append('<option value=' + sub_name + ' >' + sub_name + '</option>');
             });
         })

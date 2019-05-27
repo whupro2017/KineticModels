@@ -11,6 +11,7 @@
     <title>Hello World!</title>
     <script src="cesium/Cesium.js"></script>
     <script src="cesium/Sandcastle-header.js"></script>
+    <script src="cesium/import/js/jQuery/jquery-2.1.4.min.js"></script>
     <style>
         @import url(cesium/bucket.css);
         @import url(cesium/Widgets/widgets.css);
@@ -24,28 +25,38 @@
         }
     </style>
 </head>
-<body>
+<body onload="get_dat_arr()">
 <div id="cesiumContainer" class="fullSize"></div>
 <div id="loadingOverlay"><h1>Loading...</h1></div>
 <div id="toolbar"></div>
 <script>
-    var xx=Sandcastle.addToolbarButton('房屋隐藏/显示', function () {
-        var status= viewer.entities.getById("house").show;
-        if(status){
-            viewer.entities.getById("house").show=false;
-        }else{
-            viewer.entities.getById("house").show=true;
+    var arr;
+
+    function get_dat_arr() {
+        $.get("/get_dat_arr", {}, function (data) {
+            console.log("获得dat文件");
+            console.log(data.arr);
+            arr = data.arr;
+        })
+    }
+
+    var xx = Sandcastle.addToolbarButton('房屋隐藏/显示', function () {
+        var status = viewer.entities.getById("house").show;
+        if (status) {
+            viewer.entities.getById("house").show = false;
+        } else {
+            viewer.entities.getById("house").show = true;
         }
-        status= viewer.entities.getById("house").show;
+        status = viewer.entities.getById("house").show;
     }, 'toolbar');
-    var xx=Sandcastle.addToolbarButton('粒子隐藏/显示', function () {
-        var status=primitives.show;
-        if(status){
-            primitives.show=false;
-        }else{
-            primitives.show=true;
+    var xx = Sandcastle.addToolbarButton('粒子隐藏/显示', function () {
+        var status = primitives.show;
+        if (status) {
+            primitives.show = false;
+        } else {
+            primitives.show = true;
         }
-        status= primitives.show;
+        status = primitives.show;
     }, 'toolbar');
 
     var clock = new Cesium.Clock({
@@ -67,172 +78,154 @@
     var scene = viewer.scene;
     // var instances_arr = [];
     // var primitives_arr = [];
-    var instances = [];
-    var id = 0;
-    var lon = -114.0;
-    var lat = 40;
-    var height = 20;
-    // var lon_lim;
-    // var lat_lim;
-    // for (lon_lim = -114.0; lon_lim > -114.0039999; lon_lim -= 0.002) {
-    //     for (lat_lim = 40; lat_lim < 40.004; lat_lim += 0.002) {
-    //         for (lon = lon_lim; lon > lon_lim - 0.002; lon = lon - 0.0003) {
-    //             for (lat = lat_lim; lat < lat_lim + 0.001999; lat += 0.0003) {
-    //                 for (height = 10; height <= 200; height += 20) {
-    //                     var instances = [];
-    //                     instances_arr.push(instances);
-    //                     instances_arr[cou].push(new Cesium.GeometryInstance({
-    //                         geometry: new Cesium.SphereGeometry({
-    //                             radius: 5.0,
-    //                             vertexFormat: Cesium.VertexFormat.POSITION_ONLY
-    //                         }),
-    //                         attributes: {
-    //                             color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom())//fromRandom()
-    //                         },
-    //                         modelMatrix: Cesium.Matrix4.multiplyByTranslation(
-    //                             Cesium.Transforms.eastNorthUpToFixedFrame(
-    //                                 Cesium.Cartesian3.fromDegrees(lon, lat)),
-    //                             new Cesium.Cartesian3(0.0, 0.0, height),
-    //                             new Cesium.Matrix4()
-    //                         ),
-    //                         id: id,
-    //                     }))
-    //                     id++;
-    //                 }
-    //             }
-    //             lat = lat_lim;
-    //         }
-    //         var primitives = new Cesium.Primitive({
-    //             geometryInstances: instances_arr[cou], //合并
-    //             //某些外观允许每个几何图形实例分别指定某个属性，例如：
-    //             appearance: new Cesium.PerInstanceColorAppearance()
-    //         });
-    //         primitives_arr.push(primitives);
-    //         scene.primitives.add(primitives_arr[cou]);
-    //         id = 0;
-    //         console.log(va+","+lon+","+lat);
-    //     }
-    // }
-    for (; lon < -113.996; lon += 0.0004) {
-        for (; lat < 40.004; lat += 0.0004) {
-            for (; height <= 400; height += 40) {
-                instances.push(new Cesium.GeometryInstance({
-                    geometry: new Cesium.SphereGeometry({
-                        radius: 20.0,
-                        vertexFormat: Cesium.VertexFormat.POSITION_ONLY
-                    }),
-                    attributes: {
-                        color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom())//fromRandom()
-                    },
-                    modelMatrix: Cesium.Matrix4.multiplyByTranslation(
-                        Cesium.Transforms.eastNorthUpToFixedFrame(
-                            Cesium.Cartesian3.fromDegrees(lon, lat)),
-                        new Cesium.Cartesian3(0.0, 0.0, height),
-                        new Cesium.Matrix4()
-                    ),
-                    id: id,
-                }))
-                id++;
+    function get_dat_arr() {
+        $.get("/get_dat_arr", {"num": 0}, function (data) {
+            var id = 0;
+            var lon = -114.0;
+            var lat = 40;
+            var height = 20;
+            for (; height <= 2500; height += 100) {
+                for (; lat < 40.052; lat += 0.001) {
+                    for (; lon < -113.945; lon += 0.001) {
+                        // if (data.arrs[30][id] != 0) {
+                            viewer.entities.add({
+                                id: id,
+                                position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
+                                billboard: {
+                                    image: "cesium/图片1.jpg",
+                                    // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+                                    scale: 0.2,
+                                    scaleByDistance: new Cesium.NearFarScalar(0.5e1, 1, 8.0e4, 0.00001),
+                                    color: Cesium.Color.BLACK,
+                                    show: true,
+                                },
+                            });
+                        // } else {
+                        //     viewer.entities.add({
+                        //         id: id,
+                        //         position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
+                        //         billboard: {
+                        //             image: "cesium/图片1.jpg",
+                        //             // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+                        //             scale: 0.2,
+                        //             scaleByDistance: new Cesium.NearFarScalar(0.5e1, 1, 8.0e4, 0.00001),
+                        //             color: Cesium.Color.BLACK,
+                        //             show: false,
+                        //         },
+                        //     });
+                        // }
+                        id++;
+                    }
+                    lon = -114;
+                }
+                lat = 40;
             }
-            height = 20;
-        }
-        lat = 40;
+            console.log(id);
+            var x = 0;
+            timer = setInterval(function () {
+                if(x<299){
+                    console.log("加载帧"+x);
+                    for (var i = 0; i < data.arrs[x].length; i++) {
+                        if (data.arrs[x][i] != 0) {
+                            viewer.entities.getById(i).show = true;
+                        } else {
+                            viewer.entities.getById(i).show = false;
+                        }
+                    }
+                    x++;
+                }
+            }, 500);
+            // timer = setInterval(function () {
+            //     if (viewer.clockViewModel.shouldAnimate == true) {
+            //         for (var i = 0; i < data.arr.length; i++) {
+            //             if(viewer.entities.getById(i)!=undefined&&viewer.entities.getById(i)!=null) {
+            //                 viewer.entities.getById(i).billboard.color = Cesium.Color.fromRandom({alpha: 1.0});
+            //             }
+            //         }
+            //     }
+            // }, 100);
+            // var old_mul=clock.multiplier;
+            // setInterval(function () {
+            //     if (old_mul!=clock.multiplier) {
+            //         window.clearInterval(timer);
+            //         timer=setInterval(function () {
+            //             if (viewer.clockViewModel.shouldAnimate == true) {
+            //                 for (var i = 0; i < data.arr.length; i++) {
+            //                     if(viewer.entities.getById(i)!=undefined&&viewer.entities.getById(i)!=null) {
+            //                         viewer.entities.getById(i).billboard.color = Cesium.Color.fromRandom({alpha: 1.0});
+            //                     }
+            //                 }
+            //             }
+            //         }, 1000/clock.multiplier);
+            //         console.log("每秒"+clock.multiplier+"次");
+            //         old_mul=clock.multiplier;
+            //     }
+            // }, 100);
+        })
     }
 
-
-    var primitives = new Cesium.Primitive({
-        geometryInstances: instances, //合并
-        //某些外观允许每个几何图形实例分别指定某个属性，例如：
-        appearance: new Cesium.PerInstanceColorAppearance(),
-    });
-    scene.primitives.add(primitives);
-    scene.primitives.get
-
     var entity = viewer.entities.add({
-        id:"house",
+        id: "house",
         position: Cesium.Cartesian3.fromDegrees(-114.0, 40.00, 0),
         model: {
             uri: "cesium/Models/house.gltf",
             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
         },
-        scale: 0.2
+        scale: 0.2,
+        show: false
     });
-
-    // var circleInstance = new Cesium.GeometryInstance({
-    //     geometry: new Cesium.CircleGeometry({
-    //         center: Cesium.Cartesian3.fromDegrees(-113.995, 40.005, 100),
-    //         radius: 250.0,
-    //         vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT
-    //     }),
-    //     attributes: {
-    //         color: Cesium.ColorGeometryInstanceAttribute.fromColor(new Cesium.Color(1.0, 0.0, 0.0, 0.5)),
-    //         show: new Cesium.ShowGeometryInstanceAttribute(true) //显示或者隐藏
-    //     },
-    //     id: 'circle'
-    // });
-    // var sphereInstance =
-    //     new Cesium.GeometryInstance({
-    //         geometry: new Cesium.SphereGeometry({
-    //             radius: 50.0,
-    //             vertexFormat: Cesium.VertexFormat.POSITION_ONLY
-    //         }),
-    //         attributes: {
-    //             color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom())//fromRandom()
-    //         },
-    //         modelMatrix: Cesium.Matrix4.multiplyByTranslation(
-    //             Cesium.Transforms.eastNorthUpToFixedFrame(
-    //                 Cesium.Cartesian3.fromDegrees(-113.995, 40.005)),
-    //             new Cesium.Cartesian3(0.0, 0.0, 100),
-    //             new Cesium.Matrix4()
-    //         ),
-    //         id: 'sphere'
-    //     });
-    // var primitive = new Cesium.Primitive({
-    //     geometryInstances: circleInstance,
-    //     appearance: new Cesium.PerInstanceColorAppearance({
-    //         translucent: false,
-    //         closed: true
+    // var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+    // var cou=101;
+    // handler.setInputAction(function (movement) {
+    //     $.get("/get_dat_arr", {"num":cou}, function (data) {
+    //         var arr=data.arr;
+    //         for (var i = 0; i < arr.length; i++) {
+    //                         if(arr[i]!=0) {
+    //                             viewer.entities.getById(i).show=true;
+    //                         }else{
+    //                             viewer.entities.getById(i).show=false;
+    //                         }
+    //                     }
+    //         console.log("获得数组"+cou+" "+data.count+"个点");
     //     })
-    // });
-    // scene.primitives.add(primitive);
+    //     cou++;
+    // }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
     //定期修改颜色
-    var timer=setInterval(function () {
-        if (viewer.clockViewModel.shouldAnimate == true) {
-            //     for (var j = 0; j < instances_arr.length; j++) {
-            //         for (var i = 0; i < instances.length; i++) {
-            //             primitives_arr[j].getGeometryInstanceAttributes(i).color = Cesium.ColorGeometryInstanceAttribute.toValue(Cesium.Color.fromRandom({
-            //                 alpha: 1.0
-            //             }));
-            //         }
-            //     }
-            for (var i = 0; i < instances.length; i++) {
-                primitives.getGeometryInstanceAttributes(i).color = Cesium.ColorGeometryInstanceAttribute.toValue(Cesium.Color.fromRandom({
-                    alpha: 1.0
-                }));
-            }
-        }
-    }, 1000);
-    var old_mul=clock.multiplier;
-    setInterval(function () {
-        if (old_mul!=clock.multiplier) {
-            window.clearInterval(timer);
-            timer=setInterval(function () {
-                if (viewer.clockViewModel.shouldAnimate == true) {
-                    for (var i = 0; i < instances.length; i++) {
-                        primitives.getGeometryInstanceAttributes(i).color = Cesium.ColorGeometryInstanceAttribute.toValue(Cesium.Color.fromRandom({
-                            alpha: 1.0
-                        }));
-                    }
-                }
-            }, 1000/clock.multiplier);
-            console.log("每秒"+clock.multiplier+"次");
-            old_mul=clock.multiplier;
-        }
-    }, 100);
+    // var num = 0;
+
+
+    // var timer = setInterval(function () {
+    //     if (viewer.clockViewModel.shouldAnimate == true) {
+    //             for (var i = 0; i < arr.length; i++) {
+    //                     viewer.entities.getById(i).billboard.color = Cesium.Color.fromRandom({alpha: 1.0 });
+    //             }
+    //             num++;
+    //     }
+    // }, 1000);
+
+
+    // var old_mul=clock.multiplier;
+    // setInterval(function () {
+    // if (old_mul!=clock.multiplier) {
+    //     window.clearInterval(timer);
+    //     timer=setInterval(function () {
+    //         if (viewer.clockViewModel.shouldAnimate == true) {
+    //             for (var i = 0; i < data.arr.length; i++) {
+    //                 if(viewer.entities.getById(i)!=undefined&&viewer.entities.getById(i)!=null) {
+    //                     viewer.entities.getById(i).billboard.color = Cesium.Color.fromRandom({alpha: 1.0});
+    //                 }
+    //             }
+    //         }
+    //     }, 1000/clock.multiplier);
+    //     console.log("每秒"+clock.multiplier+"次");
+    //     old_mul=clock.multiplier;
+    // }
+    // }, 100);
     viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(-113.999, 40.001, 1000),
+        destination: Cesium.Cartesian3.fromDegrees(-113.972, 40.026, 3000),
         orientation: {
+
             heading: 0.0,
             pitch: Cesium.Math.toRadians(-90.0),
             roll: 0.0

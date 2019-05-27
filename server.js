@@ -5,9 +5,9 @@ var util = require('util');
 var path = require('path');
 var mysql = require('mysql');
 var app = express();
+var readline = require('readline');
 app.use(express.static("public")).listen(8080);
 console.log("server started at'http://127.0.0.1:8080/collision.html'")
-var mysql = require('mysql');
 
 
 // c.on('ready', function () {
@@ -22,6 +22,67 @@ var mysql = require('mysql');
 //     });
 // })
 
+// fs.readdir('public/cesium/trace/frame0.dat', function (err, data) {
+//     console.log(data);
+// });
+// var LineByLine = require('./readlinesyn');
+// var filename = './新建文本文档.txt';
+// var liner = new LineByLine();
+// liner.open( filename );
+// var theline;
+// while( !liner._EOF )
+// {
+//     theline = liner.next();
+//     console.log( 'READ LINE: ' + theline );
+// }
+// liner.close();
+
+app.get("/get_dat_arr", function (req, res) {
+    console.log(req.query);
+    var num=req.query.num;
+    var frs=new Array(300);
+    var rls=new Array(300);
+    var arrs=new Array(300);
+    var nums=new Array(300);
+    var count=0;
+    function readl(i) {
+        rls[i].on('line', function (line) {
+            arrs[i].push(line);
+        });
+        rls[i].on('close', function () { // console.log(arr);
+            console.log(i+"帧完成");
+            count++;
+            if(count==300){
+                var data = {"arrs": arrs};
+                res.send(data);
+                res.end();
+            }
+        });
+    }
+    for(var i=0;i<300;i++){
+        frs[i]=fs.createReadStream('public/cesium/trace/frame'+i+'.dat');
+        rls[i]=readline.createInterface({input: frs[i]});
+        arrs[i]=new Array();
+        readl(i);
+    }
+    // var fRead = fs.createReadStream('public/cesium/trace/frame'+num+'.dat');
+    // var objReadline = readline.createInterface({input: fRead});
+    // var arr = new Array();
+    // var c = 0;
+    // objReadline.on('line', function (line) {
+    //     arr.push(line);
+    //     // console.log(line);
+    //     if (line != 0) {
+    //         c++;
+    //     }
+    // });
+    // objReadline.on('close', function () { // console.log(arr);
+    //     // console.log(arr);
+    //     var data = {"arr": arr,"count":c};
+    //     res.send(data);
+    //     res.end();
+    // });
+})
 
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -231,8 +292,8 @@ app.get('/update_element_info', function (req, res, next) {
     var PRINT_FLAG = req.query.PRINT_FLAG;
     var STORAGE_FLAG = req.query.STORAGE_FLAG;
     var UTILIZATION = req.query.UTILIZATION;
-    connection.query("UPDATE "+element_type+" set COLLECTED_BY='"+COLLECTED_BY+"',COLLECTED_DATE='"+COLLECTED_DATE+"',COLLECTION_MODE='"+COLLECTION_MODE+"',CRIMINAL_FLAG='"+CRIMINAL_FLAG+"',DESCRIPTION='"+DESCRIPTION+"',EVIDENCE_TYPE='"+EVIDENCE_TYPE+"',LEFT_POSITION='"+LEFT_POSITION+"',PRINT_FLAG='"+PRINT_FLAG+"',STORAGE_FLAG='"+STORAGE_FLAG+"',UTILIZATION='"+UTILIZATION+"' where id=" + element_id, function (error, results, fields) {
-    // connection.query("UPDATE  COLLECTED_BY=" + COLLECTED_BY +" from " + element_type + " where id=" + element_id, function (error, results, fields) {
+    connection.query("UPDATE " + element_type + " set COLLECTED_BY='" + COLLECTED_BY + "',COLLECTED_DATE='" + COLLECTED_DATE + "',COLLECTION_MODE='" + COLLECTION_MODE + "',CRIMINAL_FLAG='" + CRIMINAL_FLAG + "',DESCRIPTION='" + DESCRIPTION + "',EVIDENCE_TYPE='" + EVIDENCE_TYPE + "',LEFT_POSITION='" + LEFT_POSITION + "',PRINT_FLAG='" + PRINT_FLAG + "',STORAGE_FLAG='" + STORAGE_FLAG + "',UTILIZATION='" + UTILIZATION + "' where id=" + element_id, function (error, results, fields) {
+        // connection.query("UPDATE  COLLECTED_BY=" + COLLECTED_BY +" from " + element_type + " where id=" + element_id, function (error, results, fields) {
         if (error) {
             var data = {msg: "更新失败"};
             // c.end();

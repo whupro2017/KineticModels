@@ -84,7 +84,8 @@
         </div>
     </div>
     <div id="operations" style="float: left;display:none">
-        <div id="caseMenu" style="float: left"></div>
+        <div id="caseMenu" ></div>
+        <div id="MeasureMenu"></div>
         <div id="modelMenu"></div>
         <div id="DynRoute"></div>
         <div>
@@ -106,7 +107,8 @@
         <div style="float: left">
             <div id="markMenu" style="float: left"></div>
             <div style="float: left">
-                <input id="element_file" type="file" style="display:none" accept=".xls,.xlsx" onchange="importFile(this)">
+                <input id="element_file" type="file" style="display:none" accept=".xls,.xlsx"
+                       onchange="importFile(this)">
                 <table>
                     <tr>
                         <td><select id="element_type" style="width:80px;height:25px"
@@ -158,7 +160,7 @@
 
 <script>
 
-//导入要素表格文件
+    //导入要素表格文件
     function importFile(obj) {//导入
         console.log("已选择文件");
         if (!obj.files) {
@@ -180,9 +182,9 @@
             var templates = new Array();
             var str1 = obj.files[0].name;
             templates = str1.split(".");//将导入文件名去掉后缀
-            var form=JSON.stringify(str);
+            var form = JSON.stringify(str);
             console.log(form);
-            $.get("/store_elements", {"form":form,"scene_id":$("#scene_id").val()}, function (data) {
+            $.get("/store_elements", {"form": form, "scene_id": $("#scene_id").val()}, function (data) {
                 alert(data.msg);
             })
         }
@@ -930,7 +932,7 @@
     Sandcastle.addToolbarButton('创建场景', function () {
 
     }, 'CreateScene');
-    Sandcastle.addToolbarButton('自定义路线', function () {
+    Sandcastle.addToolbarButton('自主路线', function () {
         // viewer.entities.removeAll();
         // positions=[];
         show_tileset();
@@ -946,30 +948,48 @@
             }
         });
     }, 'caseMenu');
-    Sandcastle.addToolbarButton('碰撞演示', function () {
+    Sandcastle.addToolbarButton('场数据展示', function () {
         viewer.entities.removeAll();
         startCollision(czml);
     }, 'caseMenu');
-    Sandcastle.addToolbarButton('加载模型', function () {
-        console.log("正在转换OBJ文件");
-        $.get("/buttonClicked", {"value": "send to server"}, function (data) {
-            alert(data);
-            var test = viewer.entities.add({
-                id: 'test',
-                position: Cesium.Cartesian3.fromDegrees(-122.0744619, 43.0503706, 0),
-                model: {
-                    uri: 'cesium/Models/test.gltf',
-                    heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                },
-                scale: 1.0,
-                minimumPixelSize: 100,
-                show: true
-            });
-            viewer.trackedEntity = test;
-        })
+    Sandcastle.addToolbarButton('研判标注', function () {
+
     }, 'caseMenu');
+    Sandcastle.addToolbarButton('地理量测', function () {
+
+    }, 'caseMenu');
+    Sandcastle.addToolbarButton('燃烧模型', function () {
+
+    }, 'modelMenu');
+    Sandcastle.addToolbarButton('碰撞模型', function () {
+
+    }, 'modelMenu');
+    Sandcastle.addToolbarButton('爆炸模型', function () {
+
+    }, 'modelMenu');
+    Sandcastle.addToolbarButton('砍杀模型', function () {
+
+    }, 'modelMenu');
+    // Sandcastle.addToolbarButton('加载模型', function () {
+    //     console.log("正在转换OBJ文件");
+    //     $.get("/buttonClicked", {"value": "send to server"}, function (data) {
+    //         alert(data);
+    //         var test = viewer.entities.add({
+    //             id: 'test',
+    //             position: Cesium.Cartesian3.fromDegrees(-122.0744619, 43.0503706, 0),
+    //             model: {
+    //                 uri: 'cesium/Models/test.gltf',
+    //                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+    //             },
+    //             scale: 1.0,
+    //             minimumPixelSize: 100,
+    //             show: true
+    //         });
+    //         viewer.trackedEntity = test;
+    //     })
+    // }, 'caseMenu');
     // Sandcastle.addToolbarMenu([{
-    //     text: '装甲车模型',
+    //     text: '装甲车模型',c
     //     onselect: function () {
     //         viewer.entities.getById("GroundVehicle").show = true;
     //         viewer.entities.getById("ferrari").show = false;
@@ -1054,7 +1074,10 @@
         console.log("要素大类为：" + element_type);
         $("#elements").find("option").remove();
         $("#elements").append("<option value='volvo' hidden>绑定要素</option>");
-        $.get("/get_elements", {"element_type": $("#element_type").val(), "scene_id": $("#scene_id").val()}, function (data) {
+        $.get("/get_elements", {
+            "element_type": $("#element_type").val(),
+            "scene_id": $("#scene_id").val()
+        }, function (data) {
             console.log(data.msg);
             data.forEach(function (json) {
                 $("#elements").append('<option value=' + json.ID + ' > 序列号：' + json.SERIAL_NO + '</option>');

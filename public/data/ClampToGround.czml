@@ -1,0 +1,31 @@
+[
+  {
+    "id": "document",
+    "version": "1.0",
+    "clock": {
+      "interval": "2018-07-19T15:18:00Z/2018-07-19T15:22:30Z",
+      "currentTime": "2018-07-19T15:18:00Z",
+      "multiplier": 5,
+      "range": "LOOP_STOP",
+      "step": "SYSTEM_CLOCK_MULTIPLIER"
+    }
+  },
+  {
+    "id": "GroundVehicle",
+    "model": {
+      "gltf": "models/GroundVehicle/GroundVehicle.glb"
+    },
+    "position": {
+      "interpolationAlgorithm": "LINEAR",
+      "forwardExtrapolationType": "HOLD",
+      "cartesian": [
+        "2018-07-19T15:18:00Z",
+        -2259626.0960924183,  5023416.109096466, 3204808.802522861,
+        "2018-07-19T15:18:30Z",
+     -2259636.8589905733,  5023428.884732758,  3204785.5621655514,
+      "2018-07-19T15:22:30Z",
+     -2259636.8589905733,  5023428.884732758,  3204785.5621655514
+      ]
+    }
+  }
+]

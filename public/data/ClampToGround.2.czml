@@ -1,0 +1,35 @@
+[
+  {
+    "id": "document",
+    "version": "1.0",
+    "clock": {
+      "interval": "2018-07-19T15:18:00Z/2018-07-19T15:22:30Z",
+      "currentTime": "2018-07-19T15:18:00Z",
+      "multiplier": 5,
+      "range": "LOOP_STOP",
+      "step": "SYSTEM_CLOCK_MULTIPLIER"
+    }
+  },
+  
+   
+
+
+    {
+    "id": "man2",
+    "model": {
+      "gltf": "models/CesiumMan/Cesium_Man.glb"
+    },
+    "position": {
+      "interpolationAlgorithm": "LINEAR",
+      "forwardExtrapolationType": "HOLD",
+      "cartesian": [
+          "2018-07-19T15:18:00Z",
+             -2259640.0335970633, 5023427.235595963, 3204785.669567141,
+"2018-07-19T15:19:00Z",
+       -2259640.0335970633, 5023427.235595963, 3204785.669567141,
+        "2018-07-19T15:23:30Z",
+       -2259619.7540995074,  5023417.994416472,  3204810.5239774217
+      ]
+    }
+  }
+]

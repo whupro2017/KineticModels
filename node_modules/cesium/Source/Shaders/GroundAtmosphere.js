@@ -97,7 +97,8 @@ AtmosphereColor computeGroundAtmosphereFromSpace(vec3 v3Pos, bool useSunLighting
     // The light angle based on the sun position would be:\n\
     //    dot(czm_sunDirectionWC, v3Pos) / length(v3Pos);\n\
     // When we want the atmosphere to be uniform over the globe so it is set to 1.0.\n\
-    float fLightAngle = useSunLighting ? dot(czm_sunDirectionWC, v3Pos) / length(v3Pos) : 1.0;\n\
+\n\
+    float fLightAngle = czm_branchFreeTernary(useSunLighting, dot(czm_sunDirectionWC, v3Pos) / length(v3Pos), 1.0);\n\
     float fCameraAngle = dot(-v3Ray, v3Pos) / length(v3Pos);\n\
     float fCameraScale = scale(fCameraAngle);\n\
     float fLightScale = scale(fLightAngle);\n\

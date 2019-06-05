@@ -25,20 +25,12 @@
         }
     </style>
 </head>
-<body onload="get_dat_arr()">
+<!--<body onload="get_dat_arr()">-->
+<body>
 <div id="cesiumContainer" class="fullSize"></div>
 <div id="loadingOverlay"><h1>Loading...</h1></div>
 <div id="toolbar"></div>
 <script>
-    var arr;
-
-    function get_dat_arr() {
-        $.get("/get_dat_arr", {}, function (data) {
-            console.log("获得dat文件");
-            console.log(data.arr);
-            arr = data.arr;
-        })
-    }
 
     var xx = Sandcastle.addToolbarButton('房屋隐藏/显示', function () {
         var status = viewer.entities.getById("house").show;
@@ -71,98 +63,186 @@
     var viewer = new Cesium.Viewer('cesiumContainer', {
         shouldAnimate: true,
         clockViewModel: new Cesium.ClockViewModel(clock),
-        selectionIndicator: false,
+        // selectionIndicator: false,
+        imageryProvider: new Cesium.createTileMapServiceImageryProvider({
+            url: 'cesium/googleTMS',
+        }),
     });
-    viewer.scene.globe.enableLighting = true;
-    viewer.scene.globe.depthTestAgainstTerrain = true;
+    // viewer.scene.globe.enableLighting = true;
+    // viewer.scene.globe.depthTestAgainstTerrain = true;
     var scene = viewer.scene;
-    // var instances_arr = [];
-    // var primitives_arr = [];
-    function get_dat_arr() {
-        $.get("/get_dat_arr", {"num": 0}, function (data) {
-            var id = 0;
-            var lon = -114.0;
-            var lat = 40;
-            var height = 20;
-            for (; height <= 2500; height += 100) {
-                for (; lat < 40.052; lat += 0.001) {
-                    for (; lon < -113.945; lon += 0.001) {
-                        // if (data.arrs[30][id] != 0) {
-                            viewer.entities.add({
-                                id: id,
-                                position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
-                                billboard: {
-                                    image: "cesium/图片1.jpg",
-                                    // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
-                                    scale: 0.2,
-                                    scaleByDistance: new Cesium.NearFarScalar(0.5e1, 1, 8.0e4, 0.00001),
-                                    color: Cesium.Color.BLACK,
-                                    show: true,
-                                },
-                            });
-                        // } else {
-                        //     viewer.entities.add({
-                        //         id: id,
-                        //         position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
-                        //         billboard: {
-                        //             image: "cesium/图片1.jpg",
-                        //             // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
-                        //             scale: 0.2,
-                        //             scaleByDistance: new Cesium.NearFarScalar(0.5e1, 1, 8.0e4, 0.00001),
-                        //             color: Cesium.Color.BLACK,
-                        //             show: false,
-                        //         },
-                        //     });
-                        // }
-                        id++;
-                    }
-                    lon = -114;
+
+
+    var primitives = [];
+    var id = 0;
+    var lon = -114.0;
+    var lat = 40;
+    var height = 10;
+    for (; height <= 1250; height += 50) {
+        primitives.push(viewer.scene.primitives.add(new Cesium.Primitive({
+            geometryInstances: new Cesium.GeometryInstance({
+                id: id,
+                geometry: new Cesium.RectangleGeometry({
+                    ellipsoid: Cesium.Ellipsoid.WGS84,
+                    rectangle: Cesium.Rectangle.fromDegrees(lon, lat, lon + 0.02, lat + 0.015),
+                    height: height,
+                    extrudedHeight: 100
+                }),
+                attributes: {
+                    color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({
+                        alpha: 0.5
+                    }))
                 }
-                lat = 40;
-            }
-            console.log(id);
-            var x = 0;
-            timer = setInterval(function () {
-                if(x<299){
-                    console.log("加载帧"+x);
-                    for (var i = 0; i < data.arrs[x].length; i++) {
-                        if (data.arrs[x][i] != 0) {
-                            viewer.entities.getById(i).show = true;
-                        } else {
-                            viewer.entities.getById(i).show = false;
+            }),
+            appearance: new Cesium.EllipsoidSurfaceAppearance({
+                material: new Cesium.Material({
+                    fabric: {
+                        type: 'Image',
+                        uniforms: {
+                            image: "./smoke/frame0/image" + id + ".png"
                         }
                     }
-                    x++;
-                }
-            }, 500);
-            // timer = setInterval(function () {
-            //     if (viewer.clockViewModel.shouldAnimate == true) {
-            //         for (var i = 0; i < data.arr.length; i++) {
-            //             if(viewer.entities.getById(i)!=undefined&&viewer.entities.getById(i)!=null) {
-            //                 viewer.entities.getById(i).billboard.color = Cesium.Color.fromRandom({alpha: 1.0});
-            //             }
-            //         }
-            //     }
-            // }, 100);
-            // var old_mul=clock.multiplier;
-            // setInterval(function () {
-            //     if (old_mul!=clock.multiplier) {
-            //         window.clearInterval(timer);
-            //         timer=setInterval(function () {
-            //             if (viewer.clockViewModel.shouldAnimate == true) {
-            //                 for (var i = 0; i < data.arr.length; i++) {
-            //                     if(viewer.entities.getById(i)!=undefined&&viewer.entities.getById(i)!=null) {
-            //                         viewer.entities.getById(i).billboard.color = Cesium.Color.fromRandom({alpha: 1.0});
-            //                     }
-            //                 }
-            //             }
-            //         }, 1000/clock.multiplier);
-            //         console.log("每秒"+clock.multiplier+"次");
-            //         old_mul=clock.multiplier;
-            //     }
-            // }, 100);
-        })
+                })
+            })
+        })))
+        id++;
     }
+    var x = 0;
+    timer = setInterval(function () {
+        if (x < 1000) {
+            // console.log("加载帧" + x);
+            for (var i = 0; i < 25; i++) {
+                primitives[i].appearance.material.uniforms.image = "./smoke/frame" + x + "/image" + i + ".png";
+            }
+            x++;
+        }
+    }, 20)
+
+
+    // entity 展示方法
+
+    // var id = 0;
+    // var lon = -114.0;
+    // var lat = 40;
+    // var height = 10;
+    // for (; height <= 1250; height += 50) {
+    //     xx = viewer.entities.add({
+    //         id: id,
+    //         // position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
+    //         // billboard: {
+    //         //     image: "./temp/frame98/image" + id + ".png",
+    //         //     // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+    //         //     scale: 10,
+    //         //     scaleByDistance: new Cesium.NearFarScalar(0.5e1, 1, 8.0e4, 0.00001),
+    //         //     // color: Cesium.Color.BLACK.withAlpha(data.arrs[98][id] / 255),
+    //         //     show: true,
+    //         // },
+    //         rectangle: {
+    //             coordinates: Cesium.Rectangle.fromDegrees(lon, lat, lon + 0.02, lat + 0.015),
+    //             height: height,
+    //             material: new Cesium.ImageMaterialProperty({
+    //                 image: "./temp/frame0/image" + id + ".png",
+    //                 transparent: true
+    //             }),
+    //             // extrudedHeight: 100
+    //         }
+    //         // point : {
+    //         //     pixelSize : 10,
+    //         //     color : Cesium.Color.BLACK.withAlpha(0.2)
+    //         // }
+    //     });
+    //     id++;
+    // }
+    // var x=0;
+    // timer = setInterval(function () {
+    //     if (x <1000) {
+    //         // console.log("加载帧" + x);
+    //         for (var i = 0; i < 25; i++) {
+    //                 viewer.entities.getById(i).rectangle.material._image._value = "./temp/frame"+x+"/image" +i+ ".png";
+    //         }
+    //         x++;
+    //     }
+    // }, 50)
+
+
+    // var instances_arr = [];
+    // var primitives_arr = [];
+    // function get_dat_arr() {
+    //     // $.get("/get_dat_arr", {"num": 0}, function (data) {
+    //         var id = 0;
+    //         var lon = -114.0;
+    //         var lat = 40;
+    //         var height = 20;
+    //         for (; height <= 2500; height += 100) {
+    //             for (; lat < 40.052; lat += 0.001) {
+    //                 for (; lon < -113.945; lon += 0.001) {
+    //                     viewer.entities.add({
+    //                         id: id,
+    //                         position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
+    //                         billboard: {
+    //                             image: "cesium/circum.png",
+    //                             // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+    //                             scale: 0.2,
+    //                             scaleByDistance: new Cesium.NearFarScalar(0.5e1, 1, 8.0e4, 0.00001),
+    //                             color: Cesium.Color.BLACK.withAlpha(data.arrs[98][id] / 255),
+    //                             show: true,
+    //                         },
+    //                         // point : {
+    //                         //     pixelSize : 10,
+    //                         //     color : Cesium.Color.BLACK.withAlpha(0.2)
+    //                         // }
+    //                     });
+    //                     id++;
+    //                 }
+    //                 lon = -114;
+    //             }
+    //             lat = 40;
+    //         }
+    //         console.log(id);
+    //         var x = 99;
+    // timer = setInterval(function () {
+    //     if (x < 299) {
+    //         console.log("加载帧" + x);
+    //         for (var i = 0; i < data.arrs[x].length; i++) {
+    //             if (data.arrs[x][i] != 0) {
+    //                 viewer.entities.getById(i).billboard.color = Cesium.Color.BLACK.withAlpha(data.arrs[x][i] / 255);
+    //             } else {
+    //                 viewer.entities.getById(i).show = false;
+    //             }
+    //         }
+    //         x++;
+    //     }
+    // }, 500);
+
+
+    // timer = setInterval(function () {
+    //     if (viewer.clockViewModel.shouldAnimate == true) {
+    //         for (var i = 0; i < data.arr.length; i++) {
+    //             if(viewer.entities.getById(i)!=undefined&&viewer.entities.getById(i)!=null) {
+    //                 viewer.entities.getById(i).billboard.color = Cesium.Color.fromRandom({alpha: 1.0});
+    //             }
+    //         }
+    //     }
+    // }, 100);
+    // var old_mul=clock.multiplier;
+    // setInterval(function () {
+    //     if (old_mul!=clock.multiplier) {
+    //         window.clearInterval(timer);
+    //         timer=setInterval(function () {
+    //             if (viewer.clockViewModel.shouldAnimate == true) {
+    //                 for (var i = 0; i < data.arr.length; i++) {
+    //                     if(viewer.entities.getById(i)!=undefined&&viewer.entities.getById(i)!=null) {
+    //                         viewer.entities.getById(i).billboard.color = Cesium.Color.fromRandom({alpha: 1.0});
+    //                     }
+    //                 }
+    //             }
+    //         }, 1000/clock.multiplier);
+    //         console.log("每秒"+clock.multiplier+"次");
+    //         old_mul=clock.multiplier;
+    //     }
+    // }, 100);
+    // })
+    // }
 
     var entity = viewer.entities.add({
         id: "house",
@@ -173,6 +253,15 @@
         },
         scale: 0.2,
         show: false
+    });
+    viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(-114.0,40, 3000),
+        orientation: {
+
+            heading: 0.0,
+            pitch: Cesium.Math.toRadians(-90.0),
+            roll: 0.0
+        }
     });
     // var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
     // var cou=101;
@@ -222,15 +311,8 @@
     //     old_mul=clock.multiplier;
     // }
     // }, 100);
-    viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(-113.972, 40.026, 3000),
-        orientation: {
 
-            heading: 0.0,
-            pitch: Cesium.Math.toRadians(-90.0),
-            roll: 0.0
-        }
-    });
+
 </script>
 </body>
 </html>

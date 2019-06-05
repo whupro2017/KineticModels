@@ -39,11 +39,11 @@ console.log("server started at'http://127.0.0.1:8080/collision.html'")
 
 app.get("/get_dat_arr", function (req, res) {
     console.log(req.query);
-    var num=req.query.num;
-    var frs=new Array(300);
-    var rls=new Array(300);
-    var arrs=new Array(300);
-    var nums=new Array(300);
+    var num = req.query.num;
+    var frs=new Array();
+    var rls=new Array();
+    var arrs=new Array();
+    var nums=new Array();
     var count=0;
     function readl(i) {
         rls[i].on('line', function (line) {
@@ -65,23 +65,25 @@ app.get("/get_dat_arr", function (req, res) {
         arrs[i]=new Array();
         readl(i);
     }
-    // var fRead = fs.createReadStream('public/cesium/trace/frame'+num+'.dat');
-    // var objReadline = readline.createInterface({input: fRead});
-    // var arr = new Array();
-    // var c = 0;
-    // objReadline.on('line', function (line) {
-    //     arr.push(line);
-    //     // console.log(line);
-    //     if (line != 0) {
-    //         c++;
-    //     }
-    // });
-    // objReadline.on('close', function () { // console.log(arr);
-    //     // console.log(arr);
-    //     var data = {"arr": arr,"count":c};
-    //     res.send(data);
-    //     res.end();
-    // });
+
+
+    var fRead = fs.createReadStream('public/cesium/trace/frame'+num+'.dat');
+    var objReadline = readline.createInterface({input: fRead});
+    var arr = new Array();
+    var c = 0;
+    objReadline.on('line', function (line) {
+        arr.push(line);
+        // console.log(line);
+        if (line != 0) {
+            c++;
+        }
+    });
+    objReadline.on('close', function () { // console.log(arr);
+        // console.log(arr);
+        var data = {"arr": arr,"count":c};
+        res.send(data);
+        res.end();
+    });
 })
 
 var connection = mysql.createConnection({
@@ -137,14 +139,25 @@ app.get("/get_scenes", function (req, res) {
 })
 
 var scene_id;
-app.get("/get_kinetic_models", function (req, res) {
+
+app.get("/select_scene", function (req, res) {
     console.log("选定场景号：" + req.query.value);
     scene_id = req.query.value;
+    data={};
     connection.query('SELECT id,kinetic_id from kinetic_t where scene_id=' + req.query.value, function (error, results, fields) {
-        if (error) throw error;
-        console.log(results);
-        res.send(results);
-        res.end();
+        if (error) return console.error(error);
+        data.kinetic_info=results;
+        connection.query('SELECT lon,lat from scene_t where scene_id=' + req.query.value, function (error, results, fields) {
+            if (error) return console.error(error);
+            data.location=results;
+            connection.query('SELECT element_type,element_id,icon_path,start_lon,start_lat,start_height from relevant_t where scene_id=' + req.query.value, function (error, results, fields) {
+                if (error) return console.error(error);
+                data.relevant_info=results;
+                console.log(data);
+                res.send(data);
+                res.end();
+            });
+        });
     });
 
 })
@@ -212,7 +225,7 @@ app.get('/model_location', function (req, res, next) {
     var height = req.query.height;
     var scene_id = req.query.scene_id;
     var model_name = req.query.model_name;
-    connection.query("UPDATE  modelinfo SET start_lon=" + longitude + ",start_lat=" + latitude + ",start_height=" + height + "WHERE scene_id=" + scene_id + " and name='" + model_name + "'", function (error, results, fields) {
+    connection.query("UPDATE  modelinfo SET start_lon=" + longitude + ",start_lat=" + latitude + ",start_height=" + height + "WHERE scene_id='" + scene_id + "'and name='" + model_name + "'", function (error, results, fields) {
         if (error) {
             var data = {msg: "写入数据库错误，上传失败"};
             // c.end();
@@ -220,11 +233,20 @@ app.get('/model_location', function (req, res, next) {
             res.end();
             return console.error(error);
         }
-        var data = {msg: "更新模型位置成功"};
-        // c.end();
-        console.log("更新模型位置成功");
-        res.send(data);
-        res.end();
+        connection.query("UPDATE  scene_t SET lon=" + longitude + ",lat=" + latitude + "WHERE scene_id=" + scene_id + "'", function (error, results, fields) {
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            }
+            var data = {msg: "更新模型位置成功"};
+            // c.end();
+            console.log("更新模型位置成功");
+            res.send(data);
+            res.end();
+        });
     });
 
 })
@@ -263,7 +285,7 @@ app.get('/element_location', function (req, res, next) {
     var element_type = req.query.element_type;
     var ID = req.query.ID;
     var icon_path = req.query.icon_path;
-    connection.query("INSERT into relevant_t (scene_id,element_id,icon_path,start_lon,start_lat,start_height,element_type) value (" + scene_id + ",'" + ID + "','"+icon_path + "','"+longitude + "','"+latitude + "','"+height + "','"+ element_type+"')", function (error, results, fields) {
+    connection.query("INSERT into relevant_t (scene_id,element_id,icon_path,start_lon,start_lat,start_height,element_type) value (" + scene_id + ",'" + ID + "','" + icon_path + "','" + longitude + "','" + latitude + "','" + height + "','" + element_type + "')", function (error, results, fields) {
         if (error) {
             var data = {status: 0};
             // c.end();
@@ -271,11 +293,20 @@ app.get('/element_location', function (req, res, next) {
             res.end();
             return console.error(error);
         }
-        var data = {status: 1};
-        // c.end();
-        console.log("存储要素位置成功");
-        res.send(data);
-        res.end();
+        connection.query("UPDATE  scene_t SET lon=" + longitude + ",lat=" + latitude + " WHERE scene_id=" + scene_id + "", function (error, results, fields) {
+            if (error) {
+                var data = {status: 0};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            }
+            var data = {status: 1};
+            // c.end();
+            console.log("存储要素位置成功");
+            res.send(data);
+            res.end();
+        });
     });
 
 })
@@ -417,7 +448,7 @@ app.post('/uploads', function (req, res, next) {
                     if (!fs.existsSync(folderPath)) {
                         //如果不存在上传文件夹名称，就创建
                         try {
-                            fs.mkdirSync(folderPath, 0777);
+                            fs.mkdirSync(folderPath, 0o777);
                             ("成功创建目录" + folderPath);
                         } catch (e) {
                             console.log(e.name + ": " + e.message);

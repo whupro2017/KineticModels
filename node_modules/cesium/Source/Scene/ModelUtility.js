@@ -485,7 +485,9 @@ define([
     };
 
     ModelUtility.supportedExtensions = {
+        'AGI_articulations' : true,
         'CESIUM_RTC' : true,
+        'EXT_texture_webp' : true,
         'KHR_blend' : true,
         'KHR_binary_glTF' : true,
         'KHR_draco_mesh_compression' : true,
@@ -493,8 +495,8 @@ define([
         'KHR_techniques_webgl' : true,
         'KHR_materials_unlit' : true,
         'KHR_materials_pbrSpecularGlossiness' : true,
-        'WEB3D_quantized_attributes' : true,
-        'EXT_texture_webp' : true
+        'KHR_texture_transform' : true,
+        'WEB3D_quantized_attributes' : true
     };
 
     ModelUtility.checkSupportedExtensions = function(extensionsRequired, browserSupportsWebp) {

@@ -198,7 +198,7 @@
                     <tr>
                         <td>场 景 id：</td>
                         <td><select id="scene_id" style="width:120px;height:25px"
-                                    onchange="show_operations(this.value)">
+                                    onchange="select_scene(this.value)">
                             <option value="" hidden>请选择场景</option>
                         </select></td>
                     </tr>
@@ -497,7 +497,7 @@
 
 
     var viewer = new Cesium.Viewer('cesiumContainer', {
-        shouldAnimate: true,
+        shouldAnimate: false,
         baseLayerPicker: false,
         homeButton: false,       //是否显示home键
         timeline: true,        //是否显示时间线控件
@@ -511,13 +511,13 @@
         // imageryProvider : new Cesium.ArcGisMapServerImageryProvider({
         //     url : 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
         // }),
-        imageryProvider: new Cesium.createTileMapServiceImageryProvider({
-            url: 'cesium/googleTMS',
-        }),
+        // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
+        //     url: 'cesium/googleTMS',
+        // }),
         terrainProvider: Cesium.createWorldTerrain()//加载地势
     });
     viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
-    viewer.scene.globe.depthTestAgainstTerrain = true;
+    viewer.scene.globe.depthTestAgainstTerrain = false;
     viewer.camera.setView({
         destination: Cesium.Cartesian3.fromDegrees(105.07224017290507, 36.56475804850547, 4889916.564370803),
         orientation: {
@@ -979,6 +979,7 @@
                     alert("请先选择待绑定要素");
                 } else {
                     console.log("选择待绑定要素:" + $("#elements").val());
+                    console.log(height);
                     $.get("/element_location", {
                         "longitude": longitude,
                         "latitude": latitude,
@@ -1079,11 +1080,6 @@
     }
     handler.setInputAction(function (movement) {
 
-            var pick = viewer.scene.pick(movement.position);
-            var menu = document.getElementById("menu");
-            menu.style.left = movement.position.x + 'px';
-            menu.style.top = movement.position.y + 'px';
-            menu.style.width = '125px';
             if (Cesium.defined(pick) && pick.id != undefined && pick.id.properties != undefined && pick.id.properties.type.toString() == "added") {
                 console.log("点击到物体");
                 var menu = document.getElementById("menu");
@@ -1169,6 +1165,17 @@
 
     }, 'modelMenu');
     Sandcastle.addToolbarButton('碰撞模型', function () {
+        viewer.entities.removeAll();
+        startCollision(czml);
+    }, 'modelMenu');
+    Sandcastle.addToolbarButton('爆炸模型', function () {
+        tileset.clippingPlanes = clippingPlanes;
+        planeEntities[0].show = true;
+    }, 'modelMenu');
+    Sandcastle.addToolbarButton('砍杀模型', function () {
+
+    }, 'modelMenu');
+    Sandcastle.addToolbarButton('混合模型', function () {
         viewer.camera.setView({
             destination: {
                 x: -2259635.974850741,
@@ -1181,13 +1188,7 @@
                 roll: 0
             }
         });
-    }, 'modelMenu');
-    Sandcastle.addToolbarButton('爆炸模型', function () {
-        tileset.clippingPlanes = clippingPlanes
-        planeEntities[0].show = true;
-    }, 'modelMenu');
-    Sandcastle.addToolbarButton('砍杀模型', function () {
-
+        pz_start();
     }, 'modelMenu');
     // Sandcastle.addToolbarButton('加载模型', function () {
     //     console.log("正在转换OBJ文件");
@@ -1318,20 +1319,59 @@
         element_image = "cesium/icons/" + top_name + "/" + sub_name + "/" + icon_name;
     }
 
-    function show_operations(scene_id) {
+    function select_scene(scene_id) {
         document.getElementById("operations").style.display = "";
-        $.get("/get_kinetic_models", {"value": scene_id}, function (data) {
+        $.get("/select_scene", {"value": scene_id}, function (data) {
             console.log("选择场景号：" + scene_id);
+            for (var i = 0; i < data.kinetic_info.length; i++) {
+                $("#kinetic_model").append('<option value=' + data.kinetic_info[i].id + ' >' + data.kinetic_info[i].kinetic_id + '</option>');
+            }
             console.log(data);
+            var relevant_info = data.relevant_info;
+            for (var i = 0; i < relevant_info.length; i++) {
+                var longitude = relevant_info[i].start_lon;
+                var latitude = relevant_info[i].start_lat;
+                var height = relevant_info[i].start_height
+                var icon_path = relevant_info[i].icon_path;
+                viewer.entities.add({
+                    position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+                    billboard: {
+                        image: icon_path,
+                        // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+                        // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+                        scale: 0.2,
+                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                        horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY
+                    },
+                });
+
+            }
+            if (data.location[0].lon != null && data.location[0].lon != undefined) {
+                set_view(data.location[0].lon, data.location[0].lat);
+            }
             // data.forEach(function (icon_name) {
             //     console.log(icon_name);
             //     $("#icon_menu").append('<option value=' + icon_name + ' >' + icon_name + '</option>');
             // });
+
         })
     }
 
+    function set_view(lon, lat) {
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(lon, lat, 800),
+            orientation: {
+                heading: 0.0,
+                pitch: Cesium.Math.toRadians(-90.0),
+                roll: 0.0
+            }
+        });
+    }
+    show_tileset();
     function show_tileset() {
-        var tileset;
+        //viewer.entities.removeAll();
+
         clippingPlanes = new Cesium.ClippingPlaneCollection({
             planes: [
                 new Cesium.ClippingPlane(new Cesium.Cartesian3(0.0, 0.0, -1.0), 0.0)
@@ -1345,15 +1385,13 @@
             maximumScreenSpaceError: 20,
             maximumNumberOfLoadedTiles: 500,
             // clippingPlanes: clippingPlanes
-
         }));
         tileset.readyPromise.then(function (tileset) {
             boundingSphere = tileset.boundingSphere;
             var radius = boundingSphere.radius;
-
             var cartographic = Cesium.Cartographic.fromCartesian(boundingSphere.center);
             var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0.0);
-            var height = 80;
+            var height = 10;
             var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, height);
             var translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
             tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
@@ -1388,6 +1426,83 @@
                 planeEntities.push(planeEntity);
             }
         });
+
+
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(114.21952507076327, 30.358135859723472, 800),
+            orientation: {
+                heading: 0.0,
+                pitch: Cesium.Math.toRadians(-90.0),
+                roll: 0.0
+            }
+        });
+    }
+
+
+    // function show_tileset() {
+    //     var tileset;
+    //     clippingPlanes = new Cesium.ClippingPlaneCollection({
+    //         planes: [
+    //             new Cesium.ClippingPlane(new Cesium.Cartesian3(0.0, 0.0, -1.0), 0.0)
+    //         ],
+    //         edgeWidth: 0.0
+    //     });
+    //
+    //     var boundingSphere;
+    //     tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
+    //         url: 'cesium/Models/Tileset.json',
+    //         maximumScreenSpaceError: 20,
+    //         maximumNumberOfLoadedTiles: 500,
+    //         // clippingPlanes: clippingPlanes
+    //
+    //     }));
+    //     tileset.readyPromise.then(function (tileset) {
+    //         boundingSphere = tileset.boundingSphere;
+    //         var radius = boundingSphere.radius;
+    //
+    //         var cartographic = Cesium.Cartographic.fromCartesian(boundingSphere.center);
+    //         var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0.0);
+    //         var height = 80;
+    //         var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, height);
+    //         var translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
+    //         tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
+    //         console.log("加载中");
+    //         // viewer.camera.viewBoundingSphere(tileset.boundingSphere, new Cesium.HeadingPitchRange(0, -0.5, 0));
+    //         // viewer.camera.setView({
+    //         //     destination: Cesium.Cartesian3.fromDegrees(104.998359, 30.235408, 800),
+    //         //     orientation: {
+    //         //         heading: 0.0,
+    //         //         pitch: Cesium.Math.toRadians(-90.0),
+    //         //         roll: 0.0
+    //         //     }
+    //         // });
+    //
+    //         for (var i = 0; i < clippingPlanes.length; ++i) {
+    //             var plane = clippingPlanes.get(i);
+    //             var planeEntity = viewer.entities.add({
+    //                 position: offset,
+    //                 plane: {
+    //                     dimensions: new Cesium.Cartesian2(radius * 0.75, radius * 0.75),
+    //                     material: new Cesium.ImageMaterialProperty({
+    //                         image: 'imgs/3.png',
+    //                         transparent: true
+    //                     }),
+    //                     plane: new Cesium.CallbackProperty(createPlaneUpdateFunction(plane), false),
+    //                     outline: true,
+    //                     outlineColor: Cesium.Color.WHITE
+    //                 },
+    //                 show: false
+    //             });
+    //             heatPlane = planeEntity;
+    //             planeEntities.push(planeEntity);
+    //         }
+    //     });
+
+
+
+
+
+
         // viewer.entities.removeAll();
         // var tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
         //     url: 'cesium/Models/Tileset.json',
@@ -1414,7 +1529,7 @@
         //         roll: 0.0
         //     }
         // });
-    }
+    // }
 </script>
 <script src='./js/measuring.js'></script>
 <script src='./js/blast.js'></script>

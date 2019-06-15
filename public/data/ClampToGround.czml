@@ -13,7 +13,7 @@
   {
     "id": "GroundVehicle",
     "model": {
-      "gltf": "models/GroundVehicle/GroundVehicle.glb"
+      "gltf": "models/CesiumMilkTruck/CesiumMilkTruck.gltf"
     },
     "position": {
       "interpolationAlgorithm": "LINEAR",

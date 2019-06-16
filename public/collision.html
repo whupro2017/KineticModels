@@ -1592,7 +1592,7 @@
             url: 'cesium/Models/Tileset.json',
             maximumScreenSpaceError: 20,
             maximumNumberOfLoadedTiles: 500,
-            // clippingPlanes: clippingPlanes
+            clippingPlanes: clippingPlanes
         }));
         tileset.readyPromise.then(function (tileset) {
             boundingSphere = tileset.boundingSphere;
@@ -1619,7 +1619,7 @@
                         outline: true,
                         outlineColor: Cesium.Color.WHITE
                     },
-                    show: false
+                    show: true
                 });
                 heatPlane = planeEntity;
                 planeEntities.push(planeEntity);

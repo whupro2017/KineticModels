@@ -1,5 +1,5 @@
 var flytoHome;
-var targetY = 0.0;
+var targetY = 80.0;
 var planeEntities = [];
 var selectedPlane;
 var clippingPlanes;

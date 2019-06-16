@@ -150,7 +150,7 @@ app.get("/select_scene", function (req, res) {
         connection.query('SELECT lon,lat from scene_t where scene_id=' + req.query.value, function (error, results, fields) {
             if (error) return console.error(error);
             data.location=results;
-            connection.query('SELECT element_type,element_id,icon_path,start_lon,start_lat,start_height from relevant_t where scene_id=' + req.query.value, function (error, results, fields) {
+            connection.query('SELECT id,element_type,element_id,icon_path,start_lon,start_lat,start_height from relevant_t where scene_id=' + req.query.value, function (error, results, fields) {
                 if (error) return console.error(error);
                 data.relevant_info=results;
                 console.log(data);
@@ -283,9 +283,9 @@ app.get('/element_location', function (req, res, next) {
     var height = req.query.height;
     var scene_id = req.query.scene_id;
     var element_type = req.query.element_type;
-    var ID = req.query.ID;
+    var element_id = req.query.element_id;
     var icon_path = req.query.icon_path;
-    connection.query("INSERT into relevant_t (scene_id,element_id,icon_path,start_lon,start_lat,start_height,element_type) value (" + scene_id + ",'" + ID + "','" + icon_path + "','" + longitude + "','" + latitude + "','" + height + "','" + element_type + "')", function (error, results, fields) {
+    connection.query("INSERT into relevant_t (scene_id,element_id,icon_path,start_lon,start_lat,start_height,element_type) value (" + scene_id + ",'" + element_id + "','" + icon_path + "','" + longitude + "','" + latitude + "','" + height + "','" + element_type + "')", function (error, results, fields) {
         if (error) {
             var data = {status: 0};
             // c.end();

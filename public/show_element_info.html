@@ -29,7 +29,7 @@
             var element_id = window.opener.document.getElementById("elements").value;//获取父窗口中元素，此处获得要素编号
             console.log("场景号：" + scene_id + ",要素类型：" + element_type + ",要素id：" + element_id);
             $.get("/get_element_info", {"element_type": element_type, "element_id": element_id}, function (data) {
-                console.log(data);
+                console.log(data.msg);
                 console.log(data[0].EVIDENCE_TYPE);
                 document.getElementById('COLLECTED_BY').value = data[0].COLLECTED_BY;
                 document.getElementById('COLLECTED_DATE').value = data[0].COLLECTED_DATE;

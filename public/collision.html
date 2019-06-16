@@ -767,13 +767,15 @@
                             uniforms: {
                                 image: "./smoke/frame0/image" + id + ".png"
                             }
-                        }
+                        },
+                        transport: true
                     })
                 })
             })))
             id++;
         }
         var x = 0;
+        clock.multiplier=5;
         timer = setInterval(function () {
             if (viewer.clockViewModel.shouldAnimate == true && x < 1000) {
                 // console.log("加载帧" + x);
@@ -1083,7 +1085,7 @@
                         "height": height,
                         "scene_id": $("#scene_id").val(),
                         "element_type": $("#element_type").val(),
-                        "ID": $("#elements").val(),
+                        "element_id": $("#elements").val(),
                         "icon_path": element_image,
                     }, function (data) {
                         console.log(data, status);
@@ -1100,7 +1102,11 @@
                                     horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
                                     disableDepthTestDistance: Number.POSITIVE_INFINITY
                                 },
-                                properties: {type: "added",}
+                                properties: {
+                                    type: "added",
+                                    element_type:$("#element_type").val(),
+                                    element_id:$("#elements").val(),
+                                }
                             });
                             alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
                             operation_type == null;
@@ -1123,7 +1129,9 @@
                     },
                     scale: .0,
                     minimumPixelSize: 100,
-                    properties: {type: "added",}
+                    properties: {
+                        type: "added",
+                    }
                 });
                 operation_type = null;
                 $.get("/model_location", {
@@ -1182,7 +1190,13 @@
             var pick = viewer.scene.pick(movement.position);
             if (Cesium.defined(pick) && pick.id != undefined && pick.id.properties != undefined && pick.id.properties.type.toString() == "added") {
                 console.log("点击到物体");
-                console.log(pick);
+                var element_type=pick.id.properties._element_type._value;
+                var element_id=pick.id.properties._element_id._value;
+                $("#element_type").val(element_type);
+                $("#elements").append('<option value=' + element_id + ' > 序号' + element_id + '</option>');
+                $("#elements").val(element_id);
+                console.log($("#element_type").val());
+                console.log($("#elements").val());
                 var menu = document.getElementById("menu");
                 menu.style.left = movement.position.x + 'px';
                 menu.style.top = movement.position.y + 'px';
@@ -1467,7 +1481,7 @@
                 return;
             }
             data.forEach(function (json) {
-                $("#elements").append('<option value=' + json.ID + ' > 序号' + json.SERIAL_NO + '</option>');
+                $("#elements").append('<option value=' + json.ID + ' > 序号' + json.ID + '</option>');
             });
         })
     }
@@ -1518,6 +1532,9 @@
                 var latitude = relevant_info[i].start_lat;
                 var height = relevant_info[i].start_height
                 var icon_path = relevant_info[i].icon_path;
+                var id=relevant_info[i].id;
+                var element_type=relevant_info[i].element_type;
+                var element_id=relevant_info[i].element_id;
                 viewer.entities.add({
                     position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
                     billboard: {
@@ -1529,7 +1546,11 @@
                         horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
                         disableDepthTestDistance: Number.POSITIVE_INFINITY
                     },
-                    properties: {type: "added",}
+                    properties: {
+                        type: "added",
+                        element_id:element_id,
+                        element_type,element_type
+                    }
                 });
 
             }

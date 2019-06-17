@@ -1269,8 +1269,21 @@
     Sandcastle.addToolbarButton('研判标注', function () {
         $(".Smodel").eq(0).show();
     }, 'caseMenu');
+    
     Sandcastle.addToolbarButton('地理量测', function () {
         $(".toolbar_measure").eq(0).show();
+    }, 'caseMenu');
+
+    Sandcastle.addToolbarButton('爆炸场', function () {
+        startBZ1();
+        viewer.camera.setView({
+            destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
+            orientation: {
+                heading: 6.144391448663251,
+                pitch: -0.6870827796178554,
+                roll:0.0
+            }
+        });
     }, 'caseMenu');
     Sandcastle.addToolbarButton('燃烧模型', function () {
         // window.open("http://127.0.0.1:8080/shining.html");

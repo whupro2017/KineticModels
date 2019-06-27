@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>足迹信息</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
+    <link href="/public/css/reset.css" rel="stylesheet">
+    <style>
+        #vue_flag select, #vue_flag input {
+            line-height: 22px;
+            height: 22px;
+            width: 200px;
+            text-indent: 3px;
+        }
+
+        .gray-bg {
+            background-color: #031529;
+        }
+
+        .wrapper {
+            width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .fadeInRight {
+            -webkit-animation-name: fadeInRight;
+            animation-name: fadeInRight;
+        }
+
+        .animated {
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            z-index: 100;
+        }
+
+        .title {
+            background: #132A4D;
+            color: #b7d2ed;
+            height: 33px;
+            line-height: 33px;
+            font-size: 13px;
+            text-indent: 10px;
+        }
+
+        .tr {
+            background-color: #061B30;
+            color: #9dbfd8;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        .white {
+            background-color: #031529;
+            color: #9dbfd8;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        #vue_flag tr {
+            height: 33px;
+            line-height: 33px;
+        }
+
+        #vue_flag td {
+            border: solid 1px #253545;
+            text-indent: 10px;
+        }
+
+        .row {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: #f0900e;
+            cursor: pointer;
+            border: none;
+            width: 60px;
+            height: 25px;
+            line-height: 25px;
+            font-size: 14px;
+            color: #FFF;
+            border-radius: 5px;
+            margin-left: 80px;
+        }
+
+        #vue_flag input {
+            border: none;
+            height: 18px;
+            line-height: 18px;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper  animated fadeInRight blog container">
+    <div id="vue_flag">
+        <h4 class="title">修改手印信息</h4>
+        <table style="background-color:transparent;width: 800px; ">
+            <tr class="tr" cellspacing="100">
+                <td>序号</td>
+                <td>
+                    <input type="text"
+                           style="background-color: #ccc;color: #000;"
+                           v-model="ORDER_NO"
+                           readonly disabled>
+                </td>
+            </tr>
+            <tr class="white">
+                <td>足迹类型</td>
+                <td>
+                    <select v-model="PRINT_TYPE">
+                        <option
+                                v-for="(item,index) in PRINT_TYPES"
+                                :value="item.id"
+                                :key="index"
+                        >{{item.name}}
+                        </option>
+                    </select>
+                </td>
+                <td>足迹编码</td>
+                <td>
+                    <input id="PRINT_CODE" v-model="PRINT_CODE">
+                </td>
+            </tr>
+            <tr class="white">
+                <td>遗留部位</td>
+                <td>
+                    <input id="LEFT_POSITION" v-model="LEFT_POSITION">
+                </td>
+                <td>提取方法</td>
+                <td>
+                    <select v-model="COLLECTION_MODE">
+                        <option
+                                v-for="(item,index) in COLLECTION_MODES"
+                                :value="item.id"
+                        >{{item.name}}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="tr">
+                <td>提取人</td>
+                <td>
+                    <input id="COLLECTED_BY_NAME" v-model="COLLECTED_BY_NAME">
+                </td>
+                <td>提取日期</td>
+                <td>
+                    <input class="datainp"
+                           id="COLLECTED_DATE" type="text"
+                           onclick="SetDate(this,'yyyy-MM-dd hh:mm:ss')"
+                           v-model="COLLECTED_DATE" placeholder="请选择" readonly>
+                </td>
+            </tr>
+            <tr class="white">
+                <td>可靠程度</td>
+                <td>
+                    <select v-model="CRIMINAL_FLAG">
+                        <option value=""></option>
+                        <option value="1">是</option>
+                        <option value="2">疑似</option>
+                    </select>
+                </td>
+                <td>利用情况</td>
+                <td>
+                    <select v-model="UTILIZATION">
+                        <option
+                                v-for="(item,index) in UTILIZATION_TYPE"
+                                :value="item.id"
+                                :key="index"
+                        >{{item.name}}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <div class="row">
+            <button class="btn" @click="handleEdit" type="button">修改</button>
+            <!--<button class="btn" @click="handleAdd" type="button">添加</button>-->
+            <!--<button class="btn" type="button">取消</button>-->
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="/public/js/axios.min.js"></script>
+<script src="/public/lib/laydate/date.js"></script>
+<script src="/public/js/config.js"></script>
+<script>
+    window.onload = function () {
+        new Vue({
+            el: '#vue_flag',
+            data: {
+                ORDER_NO: '',
+                PRINT_TYPES: [],
+                PRINT_TYPE: '',
+                UTILIZATION_TYPE: [],
+                UTILIZATION: '',
+                COLLECTION_MODES: [],
+                COLLECTION_MODE: '',
+                PRINT_CODE: '',
+                DESCRIPTION: '',
+                LEFT_POSITION: '',
+                COLLECTED_BY_NAME: '',
+                COLLECTED_DATE: '',
+                CRIMINAL_FLAG: '',
+                handleEditFlag: true
+            },
+            mounted () {
+                this.init();
+            },
+            methods: {
+                getQueryString: (pams, name) => {
+                    const result = pams.match(new RegExp('[?&]' + name + '=([^&]+)', 'i'));
+                    if (result && result.length > 1) {
+                        return result[1];
+                    }
+                    return '';
+                },
+                init: async function () {
+                    const id = this.getQueryString(window.location.search, 'id');
+                    const res = await axios.get(baseUrl + '/foot/getinfo?id=' + id);
+                    // 获取利用情况接口
+                    const sys_bio_utilization = await axios.get(baseUrl + '/dictionary?parent_key=LYQKDM');
+                    // 获取类型
+                    const PRINT_TYPES = await axios.get(baseUrl + '/dictionary?parent_key=ZXYLXDM');
+                    //  提取方法
+                    const COLLECTION_MODES = await axios.get(baseUrl + '/dictionary?parent_key=ZJTQFFDM');
+
+                    const v1 = res.data.data.length > 0 && res.data.data[0];
+
+                    this.ORDER_NO = v1.ID;
+                    this.PRINT_TYPES = PRINT_TYPES.data.data;
+                    this.PRINT_TYPE = v1.PRINT_TYPE;
+                    this.COLLECTION_MODES = COLLECTION_MODES.data.data;
+                    this.COLLECTION_MODE = v1.COLLECTION_MODE;
+                    this.PRINT_CODE = v1.PRINT_CODE;
+                    this.LEFT_POSITION = v1.LEFT_POSITION;
+                    this.COLLECTED_BY_NAME = v1.COLLECTED_BY_NAME;
+                    this.COLLECTED_DATE = this.formate_time(v1.COLLECTED_DATE);
+                    this.CRIMINAL_FLAG = v1.CRIMINAL_FLAG;
+                    this.UTILIZATION = v1.UTILIZATION;
+                    this.UTILIZATION_TYPE = sys_bio_utilization.data.data;
+                },
+                formate_time (val) {
+                    if (!val) return;
+                    const oDate = new Date(val);
+                    const _year = oDate.getFullYear();
+                    const _month = oDate.getMonth() + 1 < 10 ? '0' + (oDate.getMonth() + 1) : oDate.getMonth() + 1;
+                    const _day = oDate.getDate() < 10 ? '0' + oDate.getDate() : oDate.getDate();
+                    const _hours = oDate.getHours() < 10 ? '0' + oDate.getHours() : oDate.getHours();
+                    const _minutes = oDate.getMinutes() < 10 ? '0' + oDate.getMinutes() : oDate.getMinutes();
+                    const _seconds = oDate.getSeconds() < 10 ? '0' + oDate.getSeconds() : oDate.getSeconds();
+                    return _year + '-' + _month + '-' + _day + ' ' + _hours + ':' + _minutes + ':' + _seconds;
+                },
+                handleEdit () {
+                    const timeVal = document.querySelector('#COLLECTED_DATE').value;
+                    this.COLLECTED_DATE = timeVal;
+                    this.handleEditFlag && this.postInfo('update', this.ORDER_NO);
+                },
+                async handleAdd () {
+                    const timeVal = document.querySelector('#COLLECTED_DATE').value;
+                    this.COLLECTED_DATE = timeVal;
+                    for (let i = 100; i < 110; i++) {
+                        const v1 = await this.postInfo('add', i);
+                    }
+                },
+                async postInfo (action, id) {
+                    const data = {
+                        ID: id,
+                        SERIAL_NO: id,
+                        PRINT_TYPE: this.PRINT_TYPE,
+                        PRINT_CODE: this.PRINT_CODE,
+                        LEFT_POSITION: this.LEFT_POSITION,
+                        COLLECTION_MODE: this.COLLECTION_MODE,
+                        COLLECTED_BY_NAME: this.COLLECTED_BY_NAME,
+                        COLLECTED_DATE: this.COLLECTED_DATE,
+                        CRIMINAL_FLAG: this.CRIMINAL_FLAG,
+                        UTILIZATION: this.UTILIZATION,
+                    };
+                    const v1 = await axios.post(baseUrl + "/foot/" + action, data);
+                    if (v1.data.msg === 'success') {
+                        alert("更新成功success");
+                    }
+                }
+            }
+        });
+    };
+</script>
+</body>
+</html>

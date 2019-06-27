@@ -1,0 +1,98 @@
+.wrapper {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper-li {
+    height: 30px;
+    line-height: 30px;
+    margin: 3px 0;
+}
+#vue_flag select, #vue_flag input {
+    line-height: 22px;
+    height: 22px;
+    width: 200px;
+    text-indent: 3px;
+}
+
+.gray-bg {
+    background-color: #031529;
+}
+
+.wrapper {
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.fadeInRight {
+    -webkit-animation-name: fadeInRight;
+    animation-name: fadeInRight;
+}
+
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    z-index: 100;
+}
+
+.title {
+    background: #132A4D;
+    color: #b7d2ed;
+    height: 33px;
+    line-height: 33px;
+    font-size: 13px;
+    text-indent: 10px;
+}
+
+.tr {
+    background-color: #061B30;
+    color: #9dbfd8;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.white {
+    background-color: #031529;
+    color: #9dbfd8;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+#vue_flag tr {
+    height: 33px;
+    line-height: 33px;
+}
+
+#vue_flag td {
+    border: solid 1px #253545;
+    text-indent: 10px;
+}
+
+.row {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn {
+    background-color: #f0900e;
+    cursor: pointer;
+    border: none;
+    width: 60px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 14px;
+    color: #FFF;
+    border-radius: 5px;
+    margin-left: 80px;
+}
+
+#vue_flag input {
+    border: none;
+    height: 18px;
+    line-height: 18px;
+}

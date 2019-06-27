@@ -1286,7 +1286,7 @@
         });
     }, 'caseMenu');
     Sandcastle.addToolbarButton('燃烧模型', function () {
-        // window.open("http://127.0.0.1:8080/shining.html");
+        // window.open("http://127.0.0.1:3000/");
         clearCollision();
         clearExplosion();
         clearMix();
@@ -1383,7 +1383,9 @@
         }
     }
     function clearExplosion(){
-        planeEntities[0].show = false;//清除爆炸模型
+        if(planeEntities[0]!=undefined){
+            planeEntities[0].show = false;//清除爆炸模型
+        }
     }
     function clearMix(){
         if ("undefined" != typeof (mix_particleSystem)){
@@ -1459,7 +1461,7 @@
     function show_model_info() {
         window
             .open(
-                "show_element_info.html",
+                "http://127.0.0.1:3000/web/bio/detail?id="+$("#elements").val(),
                 "show_element_info",
                 "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
     }

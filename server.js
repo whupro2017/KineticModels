@@ -4,6 +4,7 @@ var formidable = require('formidable');
 var util = require('util');
 var path = require('path');
 var mysql = require('mysql');
+var service = require('./service');
 var app = express();
 var readline = require('readline');
 app.use(express.static("public")).listen(8080);
@@ -40,34 +41,36 @@ console.log("server started at'http://127.0.0.1:8080/collision.html'")
 app.get("/get_dat_arr", function (req, res) {
     console.log(req.query);
     var num = req.query.num;
-    var frs=new Array();
-    var rls=new Array();
-    var arrs=new Array();
-    var nums=new Array();
-    var count=0;
+    var frs = new Array();
+    var rls = new Array();
+    var arrs = new Array();
+    var nums = new Array();
+    var count = 0;
+
     function readl(i) {
         rls[i].on('line', function (line) {
             arrs[i].push(line);
         });
         rls[i].on('close', function () { // console.log(arr);
-            console.log(i+"帧完成");
+            console.log(i + "帧完成");
             count++;
-            if(count==300){
+            if (count == 300) {
                 var data = {"arrs": arrs};
                 res.send(data);
                 res.end();
             }
         });
     }
-    for(var i=0;i<300;i++){
-        frs[i]=fs.createReadStream('public/cesium/trace/frame'+i+'.dat');
-        rls[i]=readline.createInterface({input: frs[i]});
-        arrs[i]=new Array();
+
+    for (var i = 0; i < 300; i++) {
+        frs[i] = fs.createReadStream('public/cesium/trace/frame' + i + '.dat');
+        rls[i] = readline.createInterface({input: frs[i]});
+        arrs[i] = new Array();
         readl(i);
     }
 
 
-    var fRead = fs.createReadStream('public/cesium/trace/frame'+num+'.dat');
+    var fRead = fs.createReadStream('public/cesium/trace/frame' + num + '.dat');
     var objReadline = readline.createInterface({input: fRead});
     var arr = new Array();
     var c = 0;
@@ -80,7 +83,7 @@ app.get("/get_dat_arr", function (req, res) {
     });
     objReadline.on('close', function () { // console.log(arr);
         // console.log(arr);
-        var data = {"arr": arr,"count":c};
+        var data = {"arr": arr, "count": c};
         res.send(data);
         res.end();
     });
@@ -89,7 +92,7 @@ app.get("/get_dat_arr", function (req, res) {
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'root',
+    password: '123',
     database: 'pointcloud'
 });
 connection.connect();
@@ -143,16 +146,16 @@ var scene_id;
 app.get("/select_scene", function (req, res) {
     console.log("选定场景号：" + req.query.value);
     scene_id = req.query.value;
-    data={};
+    data = {};
     connection.query('SELECT id,kinetic_id from kinetic_t where scene_id=' + req.query.value, function (error, results, fields) {
         if (error) return console.error(error);
-        data.kinetic_info=results;
+        data.kinetic_info = results;
         connection.query('SELECT lon,lat from scene_t where scene_id=' + req.query.value, function (error, results, fields) {
             if (error) return console.error(error);
-            data.location=results;
+            data.location = results;
             connection.query('SELECT id,element_type,element_id,icon_path,start_lon,start_lat,start_height from relevant_t where scene_id=' + req.query.value, function (error, results, fields) {
                 if (error) return console.error(error);
-                data.relevant_info=results;
+                data.relevant_info = results;
                 console.log(data);
                 res.send(data);
                 res.end();
@@ -257,7 +260,7 @@ app.get('/store_elements', function (req, res, next) {
     var scene_id = req.query.scene_id;
     var jslength = 0;
     for (var i in form) {
-        connection.query("INSERT into scene_bio_evidence (scene_id,SERIAL_NO,EVIDENCE_TYPE,DESCRIPTION,LEFT_POSITION,COLLECTION_MODE,COLLECTED_BY,COLLECTED_DATE,CRIMINAL_FLAG,UTILIZATION,PRINT_FLAG,STORAGE_FLAG) " +
+        connection.query("INSERT into scene_bio_evidence (scene_id,SERIAL_NO,EVIDENCE_TYPE,DESCRIPTION,LEFT_POSITION,COLLECTION_MODE,COLLECTED_BY_NAME,COLLECTED_DATE,CRIMINAL_FLAG,UTILIZATION,PRINT_FLAG,STORAGE_FLAG) " +
             "value (" + scene_id + "," + form[i].序号 + ",'" + form[i].类型 + "','" + form[i].基本特征 + "','" + form[i].遗留部位 + "','" + form[i].提取方法 + "','" + form[i].提取人 + "','" + form[i].提取日期 + "','" + form[i].可靠程度 + "','" + form[i].利用情况 + "','" + form[i].列入现场提取登记表 + "','" + form[i].是否已DNA系统 + "')", function (error, results, fields) {
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};

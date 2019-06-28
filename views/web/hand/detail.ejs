@@ -199,6 +199,7 @@
                     const v1 = await axios.post(baseUrl + "/hand/" + action, data);
                     if (v1.data.msg === 'success') {
                         alert("更新成功success");
+                        window.close();
                     }
                 }
             }

@@ -275,6 +275,7 @@
                     const v1 = await axios.post(baseUrl + "/file/" + action, data);
                     if (v1.data.msg === 'success') {
                         alert("更新成功success");
+                        window.close();
                     }
                 }
             }

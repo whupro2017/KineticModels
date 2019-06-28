@@ -188,6 +188,7 @@
                     const v1 = await axios.post(baseUrl + "/elec/" + action, data);
                     if (v1.data.msg === 'success' && action === 'update') {
                         alert("更新成功success");
+                        window.close();
                     }
                 }
             }

@@ -8,7 +8,7 @@
     <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <title>设置燃烧模型参数</title>
+    <title>设置碰撞模型参数</title>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -49,63 +49,58 @@
 
     </style>
 
-<body onload="get_id()">
-
-<script type="text/javascript">
-    function get_id() {
-        if (window.opener != null && !window.opener.closed) {
-            var element_id = window.opener.document.getElementById("check_id").value;//获取父窗口中元素，此处获得要素编号
-            document.getElementById('e_id').value = element_id;
-            var type_id = window.opener.document.getElementById("type_id").value;//获取父窗口中元素，此处获得类型编号
-            document.getElementById('t_id').value = type_id;
-        }
-    }
-</script>
+<body>
 
 
 <div class="div-inline" style="background-color:transparent;padding-left:10px;padding-top:100px" align="center">
     <table style="background-color:transparent;">
 
         <tr>
-            <td style="padding-left:5px;padding-top:10px">结构体：</td>
+            <td style="padding-left:5px;padding-top:10px">身高：</td>
             <td style="padding-left:4px;padding-top:10px">
-                <select id="structure" style="width:120px;height:25px" onchange="stru_changed()">
-                    <option value="1">土体-一般土体</option>
-                    <option value="2">土体-沥青地面</option>
-                    <option value="3">土体-混凝土地面</option>
-                    <option value="4">建筑</option>
-                    <option value="5">车体</option>
+                <select id="height" style="width:120px;height:25px" >
+                    <option value="1">高</option>
+                    <option value="2">中</option>
+                    <option value="3">矮</option>
                 </select>
             </td>
         </tr>
 
         <tr>
-            <td style="padding-left:5px;padding-top:10px">爆点位置：</td>
+            <td style="padding-left:5px;padding-top:10px">姿态方向：</td>
+            <td style="padding-left:4px;padding-top:10px">
+                <select id="posture" style="width:120px;height:25px">
+                    <option value="1">正面</option>
+                    <option value="2">侧面</option>
+                    <option value="3">背面</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-left:5px;padding-top:10px">车辆类型：</td>
+            <td style="padding-left:4px;padding-top:10px">
+                <select id="car_type" style="width:120px;height:25px">
+                    <option value="1">轿车</option>
+                    <option value="2">越野车</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding-left:5px;padding-top:10px">道路位置：</td>
             <td style="padding-left:4px;padding-top:10px">
                 <select id="position" style="width:120px;height:25px">
-                    <option value="1">接触</option>
-                    <option value="2">悬空</option>
-                    <option value="3">埋爆</option>
+                    <option value="1">路段</option>
+                    <option value="2">交叉口</option>
                 </select>
             </td>
         </tr>
         <tr>
-            <td style="padding-left:5px;padding-top:10px">炸药类型：</td>
+            <td style="padding-left:5px;padding-top:10px">痕迹：</td>
             <td style="padding-left:4px;padding-top:10px">
-                <select id="type" style="width:120px;height:25px">
-                    <option value="1">TNT</option>
-                    <option value="2">硝铵</option>
-                </select>
-            </td>
-        </tr>
-
-        <tr>
-            <td style="padding-left:5px;padding-top:10px">炸药当量：</td>
-            <td style="padding-left:4px;padding-top:10px">
-                <select id="weight" style="width:120px;height:25px">
-                    <option value="1">1kg</option>
-                    <option value="2">5kg</option>
-                    <option value="3">10kg</option>
+                <select id="trace" style="width:120px;height:25px">
+                    <option value="1">人体痕迹-有无</option>
+                    <option value="2">车辆痕迹-有无</option>
                 </select>
             </td>
         </tr>

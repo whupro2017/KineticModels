@@ -514,9 +514,9 @@
         navigationInstructionsInitiallyVisible: false,
         navigationHelpButton: false,     //是否显示帮助信息控件
         selectionIndicator: false,        //是否显示指示器组件
-        // imageryProvider : new Cesium.ArcGisMapServerImageryProvider({
-        //     url : 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-        // }),
+        imageryProvider : new Cesium.ArcGisMapServerImageryProvider({
+            url : 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+        }),
         // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
         //     url: 'cesium/googleTMS',
         // }),
@@ -1368,6 +1368,13 @@
             }
         });
     }
+    Sandcastle.addToolbarButton('砍杀模型', function () {
+        window
+            .open(
+                "kill_parameter.html",
+                "kill_parameter",
+                "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    }, 'modelMenu');
 
     // Sandcastle.addToolbarButton('砍杀模型', function () {
     //

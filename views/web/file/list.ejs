@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title><%= title %></title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
+    <link href="/public/css/reset.css" rel="stylesheet">
+    <link href="/public/css/base.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper  animated fadeInRight blog container">
+    <ul>
+        <% for(let i = 0;i < data.length;i++){ %>
+        <li class="wrapper-li">
+            <a href="/web/file/detail?id=<%= data[i].ID %>"><%= data[i].LEFT_POSITION %></a>
+        </li>
+        <% } %>
+    </ul>
+</div>
+</body>
+</html>

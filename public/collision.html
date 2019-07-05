@@ -154,6 +154,7 @@
     </style>
 </head>
 <body>
+
 <div id="cesiumContainer" class="fullSize"></div>
 <div class="leftMenu" id="modelInfo">
     <p></p>
@@ -298,7 +299,6 @@
     <button type="button" onclick="stopMeasure()">退出</button>
 </div>
 
-
 <div class="Smodel">
     <div class="model_content">
         <p><span>名称：</span><input type="text" class="Sname" placeholder="请输入名称"></p>
@@ -344,6 +344,12 @@
     <button id="show_model_info" type="button" style="width:125px;" onclick="show_model_info()">显示详情</button>
     <button type="button" style="width:125px;">删除标定</button>
     <button type="button" style="width:125px;">更改位置</button>
+</div>
+<div id="start_kinetic_model" style="display: none">
+    <button id="start_fire_model" onclick="start_fire()"></button>
+    <button id="start_collision_model" onclick="start_collision()"></button>
+    <button id="start_explosion_model" onclick="start_explosion()"></button>
+    <button id="start_kill_model" onclick="start_kill()"></button>
 </div>
 
 <style>
@@ -508,9 +514,9 @@
         navigationInstructionsInitiallyVisible: false,
         navigationHelpButton: false,     //是否显示帮助信息控件
         selectionIndicator: false,        //是否显示指示器组件
-        // imageryProvider : new Cesium.ArcGisMapServerImageryProvider({
-        //     url : 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-        // }),
+        imageryProvider : new Cesium.ArcGisMapServerImageryProvider({
+            url : 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+        }),
         // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
         //     url: 'cesium/googleTMS',
         // }),
@@ -775,7 +781,7 @@
             id++;
         }
         var x = 0;
-        clock.multiplier=5;
+        clock.multiplier = 5;
         timer = setInterval(function () {
             if (viewer.clockViewModel.shouldAnimate == true && x < 1000) {
                 // console.log("加载帧" + x);
@@ -894,7 +900,7 @@
                 clock.shouldAnimate = true;
                 var objectsToExclude1 = [mo1];
                 var objectsToExclude2 = [mo2];
-                listener=function () {
+                listener = function () {
                     var position1 = positionProperty1.getValue(clock.currentTime);
                     mo1.position = scene.clampToHeight(position1, objectsToExclude1);
                     var position2 = positionProperty2.getValue(clock.currentTime);
@@ -1104,8 +1110,8 @@
                                 },
                                 properties: {
                                     type: "added",
-                                    element_type:$("#element_type").val(),
-                                    element_id:$("#elements").val(),
+                                    element_type: $("#element_type").val(),
+                                    element_id: $("#elements").val(),
                                 }
                             });
                             alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
@@ -1190,8 +1196,8 @@
             var pick = viewer.scene.pick(movement.position);
             if (Cesium.defined(pick) && pick.id != undefined && pick.id.properties != undefined && pick.id.properties.type.toString() == "added") {
                 console.log("点击到物体");
-                var element_type=pick.id.properties._element_type._value;
-                var element_id=pick.id.properties._element_id._value;
+                var element_type = pick.id.properties._element_type._value;
+                var element_id = pick.id.properties._element_id._value;
                 $("#element_type").val(element_type);
                 $("#elements").append('<option value=' + element_id + ' > 序号' + element_id + '</option>');
                 $("#elements").val(element_id);
@@ -1281,7 +1287,7 @@
             orientation: {
                 heading: 6.144391448663251,
                 pitch: -0.6870827796178554,
-                roll:0.0
+                roll: 0.0
             }
         });
     }, 'caseMenu');
@@ -1300,7 +1306,14 @@
 
 
     Sandcastle.addToolbarButton('燃烧模型', function () {
-        // window.open("http://127.0.0.1:8080/shining.html");
+        window
+            .open(
+                "fire_parameter.html",
+                "fire_parameter",
+                "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    }, 'modelMenu');
+
+    function start_fire() {
         clearCollision();
         clearExplosion();
         clearMix();
@@ -1313,8 +1326,16 @@
                 roll: 0.0
             }
         });
-    }, 'modelMenu');
+    }
+
     Sandcastle.addToolbarButton('碰撞模型', function () {
+        window.open(
+            "collision_parameter.html",
+            "collision_parameter",
+            "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    }, 'modelMenu');
+
+    function start_collision() {
         clearFire();
         clearExplosion();
         clearMix();
@@ -1336,9 +1357,17 @@
                 roll: 0.0
             }
         });
+    }
 
-    }, 'modelMenu');
     Sandcastle.addToolbarButton('爆炸模型', function () {
+        window
+            .open(
+                "explosion_parameter.html",
+                "explosion_parameter",
+                "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    }, 'modelMenu');
+
+    function start_explosion() {
         clearFire();
         clearCollision();
         clearMix();
@@ -1352,7 +1381,15 @@
                 roll: 0.0
             }
         });
+    }
+    Sandcastle.addToolbarButton('砍杀模型', function () {
+        window
+            .open(
+                "kill_parameter.html",
+                "kill_parameter",
+                "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
     }, 'modelMenu');
+
     // Sandcastle.addToolbarButton('砍杀模型', function () {
     //
     // }, 'modelMenu');
@@ -1374,7 +1411,8 @@
         });
         pz_start();
     }, 'modelMenu');
-    function clearFire(){
+
+    function clearFire() {
         if ("undefined" != typeof (primitives)) {
             while (primitives.length != 0)
                 viewer.scene.primitives.remove(primitives.pop());
@@ -1384,10 +1422,11 @@
             console.log("清除燃烧模型");
         }
     }
-    function clearCollision(){
-        if ("undefined" != typeof (ds)){
-            for(var i=0;i<viewer.dataSources.length;i++){
-                if(viewer.dataSources.get(i)._name=="CZML_Model"){
+
+    function clearCollision() {
+        if ("undefined" != typeof (ds)) {
+            for (var i = 0; i < viewer.dataSources.length; i++) {
+                if (viewer.dataSources.get(i)._name == "CZML_Model") {
                     viewer.dataSources.remove(viewer.dataSources.get(i), true);
                 }
             }
@@ -1396,15 +1435,21 @@
             console.log("清除碰撞模型");
         }
     }
-    function clearExplosion(){
-        planeEntities[0].show = false;//清除爆炸模型
+
+    function clearExplosion() {
+        if (planeEntities[0] != undefined) {
+            planeEntities[0].show = false;//清除爆炸模型
+            clippingPlanes._planes[0]._distance = 80;
+            console.log(clippingPlanes._planes[0]._distance);
+        }
     }
-    function clearMix(){
-        if ("undefined" != typeof (mix_particleSystem)){
-            for(var i=0;i<viewer.dataSources.length;i++){
-                if(viewer.dataSources.get(i)._name){
-                    var name=viewer.dataSources.get(i)._name;
-                    if(name=="ClampToGround.czml"||name=="ClampToGround.1.czml"||name=="ClampToGround.2.czml"){
+
+    function clearMix() {
+        if ("undefined" != typeof (mix_particleSystem)) {
+            for (var i = 0; i < viewer.dataSources.length; i++) {
+                if (viewer.dataSources.get(i)._name) {
+                    var name = viewer.dataSources.get(i)._name;
+                    if (name == "ClampToGround.czml" || name == "ClampToGround.1.czml" || name == "ClampToGround.2.czml") {
                         viewer.dataSources.remove(viewer.dataSources.get(i), true);
                     }
                 }
@@ -1414,6 +1459,7 @@
             console.log("清除混合模型");
         }
     }
+
     // Sandcastle.addToolbarButton('加载模型', function () {
     //     console.log("正在转换OBJ文件");
     //     $.get("/buttonClicked", {"value": "send to server"}, function (data) {
@@ -1470,10 +1516,27 @@
         });
     })
 
+    var json = {
+        "scene_bio_evidence": "bio",
+        "scene_elec_evidence": "elec",
+        "scene_file_evidence": "file",
+        "scene_footprint": "foot",
+        "scene_handprint": "hand",
+        "scene_tool": "tool"
+    }
+
     function show_model_info() {
+        var json = {
+            "scene_bio_evidence": "bio",
+            "scene_elec_evidence": "elec",
+            "scene_file_evidence": "file",
+            "scene_footprint": "foot",
+            "scene_handprint": "hand",
+            "scene_tool": "tool"
+        }
         window
             .open(
-                "show_element_info.html",
+                "http://127.0.0.1:3000/web/" + json[$("#element_type").val()] + "/detail?id=" + $("#elements").val(),
                 "show_element_info",
                 "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
     }
@@ -1559,9 +1622,9 @@
                 var latitude = relevant_info[i].start_lat;
                 var height = relevant_info[i].start_height
                 var icon_path = relevant_info[i].icon_path;
-                var id=relevant_info[i].id;
-                var element_type=relevant_info[i].element_type;
-                var element_id=relevant_info[i].element_id;
+                var id = relevant_info[i].id;
+                var element_type = relevant_info[i].element_type;
+                var element_id = relevant_info[i].element_id;
                 viewer.entities.add({
                     position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
                     billboard: {
@@ -1575,8 +1638,8 @@
                     },
                     properties: {
                         type: "added",
-                        element_id:element_id,
-                        element_type,element_type
+                        element_id: element_id,
+                        element_type, element_type
                     }
                 });
 
@@ -1751,6 +1814,7 @@
     //     }
     // });
     // }
+
 </script>
 <script src='./js/measuring.js'></script>
 <script src='./js/blast.js'></script>

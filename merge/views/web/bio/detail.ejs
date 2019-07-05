@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>生物物证信息</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
+    <link href="/public/css/reset.css" rel="stylesheet">
+    <link href="/public/css/base.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper  animated fadeInRight blog container">
+    <div id="vue_flag">
+        <h4 class="title">修改生物物证信息</h4>
+        <table style="background-color:transparent;width: 800px; ">
+            <tr class="tr" cellspacing="100">
+                <td>序号</td>
+                <td>
+                    <input type="text"
+                           style="background-color: #ccc;color: #000;"
+                           v-model="ORDER_NO"
+                           readonly disabled>
+                </td>
+            </tr>
+            <tr class="white">
+                <td>类型</td>
+                <td>
+                    <select v-model="EVIDENCE_TYPE" name="category" id="category">
+                        <option v-for="(item,index) in TYPE" :value="item.id">{{item.name}}</option>
+                    </select>
+                </td>
+                <td>基本特征</td>
+                <td>
+                    <input id="DESCRIPTION" v-model="DESCRIPTION"></td>
+            </tr>
+            <!--</tr>-->
+            <tr class="white">
+                <td>遗留部位</td>
+                <td>
+                    <input id="LEFT_POSITION" v-model="LEFT_POSITION">
+                </td>
+                <td>提取方法</td>
+                <td>
+                    <input id="COLLECTION_MODE" v-model="COLLECTION_MODE">
+                </td>
+            </tr>
+            <tr class="tr">
+                <td>提取人</td>
+                <td>
+                    <input id="COLLECTED_BY_NAME" v-model="COLLECTED_BY_NAME">
+                </td>
+                <td>提取日期</td>
+                <td>
+                    <input id="COLLECTED_DATE" type="text"
+                           onclick="SetDate(this,'yyyy-MM-dd hh:mm:ss')"
+                           v-model="COLLECTED_DATE" placeholder="请选择" readonly>
+                </td>
+            </tr>
+            <tr class="white">
+                <td>可靠程度</td>
+                <td>
+                    <select v-model="CRIMINAL_FLAG">
+                        <option value=""></option>
+                        <option value="1">是</option>
+                        <option value="2">疑似</option>
+                    </select>
+                </td>
+                <td>利用情况</td>
+                <td>
+                    <select v-model="UTILIZATION">
+                        <option v-for="(item,index) in UTILIZATION_TYPE" :value="item.id">{{item.name}}</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <div class="row">
+            <button class="btn" @click="handleEdit" type="button">修改</button>
+            <!--<button class="btn" @click="handleAdd" type="button">添加</button>-->
+            <!--<button class="btn" type="button">取消</button>-->
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="/public/js/axios.min.js"></script>
+<script src="/public/lib/laydate/date.js"></script>
+<script src="/public/js/config.js"></script>
+<script>
+    window.onload = function () {
+        new Vue({
+            el: '#vue_flag',
+            data: {
+                ORDER_NO: '',
+                TYPE: '', // 类型字典
+                UTILIZATION_TYPE: '', //  利用情况字典
+                EVIDENCE_TYPE: '', // 类型字段
+                UTILIZATION: "", // 利用情况字段
+                DESCRIPTION:'',
+                LEFT_POSITION: '',
+                COLLECTION_MODE: "",
+                COLLECTED_BY_NAME: "",
+                COLLECTED_DATE: "",
+                CRIMINAL_FLAG: "",
+                handleEditFlag: true
+            },
+            mounted () {
+                this.init();
+            },
+            methods: {
+                getQueryString: (pams, name) => {
+                    const result = pams.match(new RegExp('[?&]' + name + '=([^&]+)', 'i'));
+                    if (result && result.length > 1) {
+                        return result[1];
+                    }
+                    return '';
+                },
+                init: async function () {
+                    const id = this.getQueryString(window.location.search, 'id');
+                    // 根据id获取信息
+                    const res = await axios.get(baseUrl + `/bio/getinfo?id=${id}`);
+                    // 获取类型字典表
+                    const sys_type = await axios.get(baseUrl + '/dictionary?parent_key=SWWZLBDM');
+                    const sys_utilization = await  axios.get(baseUrl + '/dictionary?parent_key=LYQKDM');
+                    const obj = sys_type.data.data;
+                    const v1 = res.data.data.length > 0 && res.data.data[0];
+                    // 类型
+                    this.TYPE = obj;
+                    // 利用情况
+                    this.UTILIZATION_TYPE = sys_utilization.data.data;
+
+                    this.ORDER_NO = v1.ID;
+                    this.EVIDENCE_TYPE = v1.EVIDENCE_TYPE;
+                    this.UTILIZATION = v1.UTILIZATION;
+                    this.DESCRIPTION = v1.DESCRIPTION;
+                    this.LEFT_POSITION = v1.LEFT_POSITION;
+                    this.COLLECTION_MODE = v1.COLLECTION_MODE;
+                    this.COLLECTED_DATE = this.formate_time(v1.COLLECTED_DATE);
+                    this.COLLECTED_BY_NAME = v1.COLLECTED_BY_NAME;
+                    this.CRIMINAL_FLAG = v1.CRIMINAL_FLAG;
+                },
+                formate_time (val) {
+                    if (!val) return;
+                    const oDate = new Date(val);
+                    const _year = oDate.getFullYear();
+                    const _month = oDate.getMonth() + 1 < 10 ? '0' + (oDate.getMonth() + 1) : oDate.getMonth() + 1;
+                    const _day = oDate.getDate() < 10 ? '0' + oDate.getDate() : oDate.getDate();
+                    const _hours = oDate.getHours() < 10 ? '0' + oDate.getHours() : oDate.getHours();
+                    const _minutes = oDate.getMinutes() < 10 ? '0' + oDate.getMinutes() : oDate.getMinutes();
+                    const _seconds = oDate.getSeconds() < 10 ? '0' + oDate.getSeconds() : oDate.getSeconds();
+                    return _year + '-' + _month + '-' + _day + ' ' + _hours + ':' + _minutes + ':' + _seconds;
+                },
+                handleEdit () {
+                    const timeVal = document.querySelector('#COLLECTED_DATE').value;
+                    this.COLLECTED_DATE = timeVal;
+                    this.handleEditFlag && this.postInfo('update', this.ORDER_NO);
+                },
+                async handleAdd () {
+                    const timeVal = document.querySelector('#COLLECTED_DATE').value;
+                    this.COLLECTED_DATE = timeVal;
+                    for (let i = 10; i < 20; i++) {
+                        const v1 = await this.postInfo('add', i);
+                    }
+                },
+                async postInfo (action, id) {
+                    const data = {
+                        ID: id,
+                        SERIAL_NO: id,
+                        EVIDENCE_TYPE: this.EVIDENCE_TYPE,
+                        UTILIZATION: this.UTILIZATION,
+                        DESCRIPTION: this.DESCRIPTION,
+                        LEFT_POSITION: this.LEFT_POSITION,
+                        COLLECTION_MODE: this.COLLECTION_MODE,
+                        COLLECTED_DATE: this.COLLECTED_DATE,
+                        COLLECTED_BY_NAME: this.COLLECTED_BY_NAME,
+                        CRIMINAL_FLAG: this.CRIMINAL_FLAG
+                    };
+                    const v1 = await axios.post(baseUrl + "/bio/" + action, data);
+                    if (v1.data.msg === 'success') {
+                        alert("更新成功success");
+                        window.close();
+                    }
+                }
+            }
+        });
+    };
+</script>
+</body>
+</html>

@@ -68,16 +68,80 @@ function createPlaneUpdateFunction(plane) {
     };
 }
 
-var p1 = [];
-id = 0;
-var pCount=36;
+var pCount=18;
 
 function startBZ1()
 {
+    var p1 = [];
+    var id = 0;
+
+
     for (var height = 0; height < pCount; height += 1) {
 
 
         var centerx=114.21784242174171, centery=30.359570351833124;
+        var length=0.0001;
+        var leftx=centerx+Math.cos(height*Math.PI/pCount)*length;
+        var lefty=centery+Math.sin(height*Math.PI/pCount)*length;
+        var rightx=centerx-Math.cos(height*Math.PI/pCount)*length;
+        var righty=centery-Math.sin(height*Math.PI/pCount)*length;
+    
+            var wall = Cesium.WallGeometry.fromConstantHeights({
+                positions: Cesium.Cartesian3.fromDegreesArray([
+                    leftx,lefty,rightx,righty
+                ]),
+                minimumHeight: 0,
+                maximumHeight: 20.0
+            });
+            var geometry = Cesium.WallGeometry.createGeometry(wall);
+            var Rectangle = viewer.scene.primitives.add(new Cesium.Primitive({
+                geometryInstances: new Cesium.GeometryInstance({
+                    geometry: geometry
+                }),
+                appearance: new Cesium.EllipsoidSurfaceAppearance({
+                    aboveGround: true,
+                    renderState:{
+                        //blending: Cesium.BlendingState.ADDITIVE_BLEND ,  
+                        enabled : true,
+                face : Cesium.CullFace.FRONT_AND_BACK
+                    }
+                }),
+            }));
+            p1.push(Rectangle);
+            Rectangle.appearance.material = new Cesium.Material({
+                fabric: {
+                    type: 'Image',
+                    uniforms: {
+                        image: "../img/bz/d0.png"
+                    }
+                },
+                translucent: true
+            });
+        id++;
+    }
+    var x=1;
+    var timer_bz = setInterval(function() {
+    
+        for (var i = 0; i < pCount; i++) {
+            p1[i].appearance.material.uniforms.image = "./img/bz/d"+x+".png"
+        }
+        console.log(x);
+        x++;
+        if(x==100)
+        clearInterval(timer_bz);
+    },40);
+}
+
+function startBZ2()
+{
+
+    var p1 = [];
+    var id = 0;
+    for (var height = 0; height < pCount; height += 1) {
+
+
+        var centerx=114.217
+        , centery=30.3595;
         var length=0.0002;
         var leftx=centerx+Math.cos(height*Math.PI/pCount)*length;
         var lefty=centery+Math.sin(height*Math.PI/pCount)*length;
@@ -98,6 +162,11 @@ function startBZ1()
                 }),
                 appearance: new Cesium.EllipsoidSurfaceAppearance({
                     aboveGround: true,
+                    renderState:{
+                        //blending: Cesium.BlendingState.ADDITIVE_BLEND ,  
+                        enabled : true,
+                face : Cesium.CullFace.FRONT_AND_BACK
+                    }
                 }),
             }));
             p1.push(Rectangle);
@@ -105,9 +174,10 @@ function startBZ1()
                 fabric: {
                     type: 'Image',
                     uniforms: {
-                        image: "../img/bz/d0.png"
+                        image: "../img/bz/p0.png"
                     }
-                }
+                },
+                translucent: true
             });
         id++;
     }
@@ -115,16 +185,11 @@ function startBZ1()
     var timer_bz = setInterval(function() {
     
         for (var i = 0; i < pCount; i++) {
-            p1[i].appearance.material.uniforms.image = "./img/bz/d"+x+".png"
+            p1[i].appearance.material.uniforms.image = "./img/bz/p"+x+".png"
         }
         console.log(x);
         x++;
-        if(x==17)
+        if(x==100)
         clearInterval(timer_bz);
-    },250);
-}
-
-function startbzbz(){
-    
-
+    },80);
 }

@@ -7,6 +7,7 @@ const {RspMsg, ResCode} = require('../../../utils/rspMsg');
 
 const getinfo = (req, res) => {
     const id = req.query.id;
+    // SELECT * FROM (SELECT * FROM scene_bio_evidence WHERE ID = 10) AS temp inner join common_picture_thumbnail on temp.EVIDENCE_PHOTO_ID = common_picture_thumbnail.PICTURE_ID;
     db.query(bio.queryById, id, (err, rows) => {
         if (err) {
             RspMsg(res, {
@@ -15,6 +16,8 @@ const getinfo = (req, res) => {
                 code: ResCode.errorcode,
             });
         }
+        const bs64 = new Buffer(rows[0].CONTENT).toString('base64');
+        rows[0].CONTENT = bs64;
         if (rows) {
             RspMsg(res, {
                 data: rows,

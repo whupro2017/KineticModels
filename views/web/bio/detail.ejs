@@ -78,6 +78,10 @@
                 </td>
             </tr>
         </table>
+        <p style="color: #9dbfd8;font-size: 14px;margin-top: 20px;">图片信息</p>
+        <div style="text-align: center;margin: 30px 0 20px 0;background: #fff;width: 100%;max-height:200px;">
+            <img :src="CONTENT" style="max-width: 100%;max-height: 100%;"/>
+        </div>
         <div class="row">
             <button class="btn" @click="handleEdit" type="button">修改</button>
             <!--<button class="btn" @click="handleAdd" type="button">添加</button>-->
@@ -105,6 +109,7 @@
                 COLLECTED_BY_NAME: "",
                 COLLECTED_DATE: "",
                 CRIMINAL_FLAG: "",
+                CONTENT: "",
                 handleEditFlag: true
             },
             mounted () {
@@ -141,6 +146,7 @@
                     this.COLLECTED_DATE = this.formate_time(v1.COLLECTED_DATE);
                     this.COLLECTED_BY_NAME = v1.COLLECTED_BY_NAME;
                     this.CRIMINAL_FLAG = v1.CRIMINAL_FLAG;
+                    this.CONTENT = "data:image/png;base64," + v1.CONTENT;
                 },
                 formate_time (val) {
                     if (!val) return;
@@ -181,7 +187,6 @@
                     const v1 = await axios.post(baseUrl + "/bio/" + action, data);
                     if (v1.data.msg === 'success') {
                         alert("更新成功success");
-                        window.close();
                     }
                 }
             }

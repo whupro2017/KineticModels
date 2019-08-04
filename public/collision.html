@@ -520,7 +520,7 @@
         // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
         //     url: 'cesium/googleTMS',
         // }),
-        terrainProvider: Cesium.createWorldTerrain()//加载地势
+        // terrainProvider: Cesium.createWorldTerrain()//加载地势
     });
     viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
     viewer.scene.globe.depthTestAgainstTerrain = false;
@@ -1518,11 +1518,11 @@
             "scene_file_evidence": "file",
             "scene_footprint": "foot",
             "scene_handprint": "hand",
-            "scene_tool": "tool"
+            "scene_toolmark": "tool"
         }
         window
             .open(
-                "http://127.0.0.1:3000/web/" + json[$("#element_type").val()] + "/detail?id=" + $("#elements").val(),
+                "http://127.0.0.1:3000/web/index?type=" + json[$("#element_type").val()] + "&id=" + $("#elements").val(),
                 "show_element_info",
                 "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
     }

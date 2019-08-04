@@ -16,6 +16,8 @@ const getinfo = (req, res) => {
                 code: ResCode.errorcode,
             });
         }
+        const bs64 = new Buffer(rows[0].CONTENT).toString('base64');
+        rows[0].CONTENT = bs64;
         if (rows) {
             RspMsg(res, {
                 data: rows,

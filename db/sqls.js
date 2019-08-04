@@ -11,7 +11,9 @@ const bio = {
         'LEFT_POSITION = ?, COLLECTION_MODE = ?, COLLECTED_DATE = ?, UTILIZATION = ?, ' +
         'CRIMINAL_FLAG = ? WHERE ID = ?',
     queryAll: 'SELECT * FROM scene_bio_evidence LIMIT 10',
-    queryById: 'SELECT * FROM scene_bio_evidence WHERE ID=?',
+    // SELECT * FROM (SELECT * FROM scene_bio_evidence WHERE ID = 10) AS temp inner join common_picture_thumbnail on temp.EVIDENCE_PHOTO_ID = common_picture_thumbnail.PICTURE_ID;
+    // queryById: 'SELECT * FROM scene_bio_evidence WHERE ID=?',
+    queryById: 'SELECT *,temp.ID AS ID,common_picture_thumbnail.ID AS ID1 FROM (SELECT * FROM scene_bio_evidence WHERE ID = ?) AS temp inner join common_picture_thumbnail on temp.EVIDENCE_PHOTO_ID = common_picture_thumbnail.PICTURE_ID;',
     queryByDict: 'select DICT_VALUE1 AS name, DICT_KEY AS id from sys_dict where PARENT_KEY = ?'
 };
 const elec = {
@@ -24,7 +26,8 @@ const elec = {
     queryAll: 'SELECT * FROM scene_elec_evidence LIMIT 10',
     updateInfo: 'UPDATE scene_elec_evidence SET EVIDENCE_TYPE = ?,DESCRIPTION = ?,LEFT_POSITION = ?,' +
         'COLLECTION_MODE = ?, COLLECTED_BY_NAME = ?, COLLECTED_DATE = ?, UTILIZATION = ?,CRIMINAL_FLAG=? WHERE ID = ?',
-    queryById: 'SELECT * FROM scene_elec_evidence WHERE ID=?',
+   // queryById: 'SELECT * FROM scene_elec_evidence WHERE ID=?',
+    queryById: 'SELECT *,temp.ID AS ID,common_picture_thumbnail.ID AS ID1 FROM (SELECT * FROM scene_elec_evidence WHERE ID = ?) AS temp inner join common_picture_thumbnail on temp.EVIDENCE_PHOTO_ID = common_picture_thumbnail.PICTURE_ID;',
     queryByDict: 'select DICT_VALUE1 AS name, DICT_KEY AS id from sys_dict where PARENT_KEY = ?'
 };
 const file = {
@@ -37,9 +40,10 @@ const file = {
     queryAll: 'SELECT * FROM scene_file_evidence LIMIT 10',
     updateInfo: 'UPDATE scene_file_evidence SET EVIDENCE_TYPE = ?,DESCRIPTION = ?,LEFT_POSITION = ?,' +
         'COLLECTION_MODE = ?, COLLECTED_BY_NAME = ?, COLLECTED_DATE = ?, UTILIZATION = ?,CRIMINAL_FLAG=? WHERE ID = ?',
-    queryById: 'SELECT * FROM scene_file_evidence WHERE ID=?',
+    // queryById: 'SELECT * FROM scene_file_evidence WHERE ID=?',
+    queryById: 'SELECT *,temp.ID AS ID,common_picture_thumbnail.ID AS ID1 FROM (SELECT * FROM scene_elec_evidence WHERE ID = ?) AS temp inner join common_picture_thumbnail on temp.EVIDENCE_PHOTO_ID = common_picture_thumbnail.PICTURE_ID;',
     queryByDict: 'select DICT_VALUE1 AS name, DICT_KEY AS id from sys_dict where PARENT_KEY = ?'
-}
+};
 const foot = {
     insert: 'INSERT INTO scene_footprint(' +
         '`element_manager`, `element_remark`, `element_image`, `create_date`, `localname`, ' +
@@ -50,7 +54,8 @@ const foot = {
     queryAll: 'SELECT * FROM scene_footprint LIMIT 10',
     updateInfo: 'UPDATE scene_footprint SET PRINT_TYPE = ?,PRINT_CODE=?,LEFT_POSITION = ?,COLLECTION_MODE = ?,' +
         'COLLECTED_BY_NAME = ?, COLLECTED_DATE = ?, UTILIZATION = ?, CRIMINAL_FLAG = ? WHERE ID = ?',
-    queryById: 'SELECT * FROM scene_footprint WHERE ID=?',
+    // queryById: 'SELECT * FROM scene_footprint WHERE ID=?',
+    queryById: 'SELECT *,temp.ID AS ID,common_picture_thumbnail.ID AS ID1 FROM (SELECT * FROM scene_footprint WHERE ID = ?) AS temp inner join common_picture_thumbnail on temp.EVIDENCE_PHOTO_ID = common_picture_thumbnail.PICTURE_ID;',
     queryByDict: 'select DICT_VALUE1 AS name, DICT_KEY AS id from sys_dict where PARENT_KEY = ?'
 };
 const hand = {
@@ -61,7 +66,8 @@ const hand = {
     updateInfo: 'UPDATE scene_handprint SET PRINT_TYPE = ?,PRINT_CODE = ?,LEFT_POSITION = ?,' +
         'localname = ?, CREATE_USER_ID = ?, COLLECTION_MODE = ?, COLLECTED_BY_NAME = ?, ' +
         'COLLECTED_DATE = ?, CRIMINAL_FLAG = ?, UTILIZATION=? WHERE ID = ?',
-    queryById: 'SELECT * FROM scene_handprint WHERE ID=?',
+    // queryById: 'SELECT * FROM scene_handprint WHERE ID=?',
+    queryById: 'SELECT *,temp.ID AS ID,common_picture_thumbnail.ID AS ID1 FROM (SELECT * FROM scene_handprint WHERE ID = ?) AS temp inner join common_picture_thumbnail on temp.EVIDENCE_PHOTO_ID = common_picture_thumbnail.PICTURE_ID;',
     queryByDict: 'select * from sys_dict where PARENT_KEY = ?'
 };
 const tool = {
@@ -69,6 +75,7 @@ const tool = {
     updateInfo: 'UPDATE scene_toolmark SET PRINT_TYPE = ?,COLLECTED_BY_NAME=?,TOOL_JUDGEMENT = ?,DESCRIPTION = ?,' +
         'LEFT_POSITION = ?, COLLECTION_MODE = ?, COLLECTED_DATE = ?, UTILIZATION = ?,CRIMINAL_FLAG=? WHERE ID = ?',
     queryById: 'SELECT * FROM scene_toolmark WHERE ID=?',
+    queryById: 'SELECT *,temp.ID AS ID,common_picture_thumbnail.ID AS ID1 FROM (SELECT * FROM scene_toolmark WHERE ID = ?) AS temp inner join common_picture_thumbnail on temp.EVIDENCE_PHOTO_ID = common_picture_thumbnail.PICTURE_ID;',
     queryByDict: 'select DICT_VALUE1 AS name, DICT_KEY AS id from sys_dict where PARENT_KEY = ?'
 };
 const dictionary = {

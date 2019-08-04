@@ -35,8 +35,8 @@ function query (sql, values, callback) {
             //每次查询都会 回调
             callback(err, results);
             // connection.release();
-            //if (err) throw error;
-        });
+            if (err) throw err;
+    });
         pool.releaseConnection(connection);
     });
 }

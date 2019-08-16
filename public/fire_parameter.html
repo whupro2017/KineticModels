@@ -52,16 +52,16 @@
 </script>
 
 
-
 <div class="div-inline" style="background-color:transparent;padding-left:10px;padding-top:100px" align="center">
     <table style="background-color:transparent;">
 
         <tr>
             <td style="padding-left:5px;padding-top:10px">放火位置：</td>
             <td style="padding-left:4px;padding-top:10px">
-                <select id="position" style="width:120px;height:25px" >
-                    <option value="smoke" >沙发上</option>
-                    <option value="fire2" >床上</option>
+                <select id="position" style="width:120px;height:25px">
+                    <option value="smoke">沙发上</option>
+                    <option value="fire2">床上</option>
+                    <option value="bus">公交车</option>
                 </select>
             </td>
         </tr>
@@ -69,9 +69,9 @@
         <tr>
             <td style="padding-left:5px;padding-top:10px">门窗开关：</td>
             <td style="padding-left:4px;padding-top:10px">
-                <select id="door_status" style="width:120px;height:25px" >
-                    <option value="1" >开</option>
-                    <option value="2" >关</option>
+                <select id="door_status" style="width:120px;height:25px">
+                    <option value="1">开</option>
+                    <option value="2">关</option>
                 </select>
             </td>
         </tr>
@@ -79,10 +79,10 @@
         <tr>
             <td style="padding-left:5px;padding-top:10px">燃剂类型：</td>
             <td style="padding-left:4px;padding-top:10px">
-                <select id="fuel" style="width:120px;height:25px" >
-                    <option value="1" >汽油</option>
-                    <option value="2" >酒精</option>
-                    <option value="3" >稀料</option>
+                <select id="fuel" style="width:120px;height:25px">
+                    <option value="1">汽油</option>
+                    <option value="2">酒精</option>
+                    <option value="3">稀料</option>
                 </select>
             </td>
         </tr>
@@ -90,31 +90,40 @@
         <tr>
             <td style="padding-left:5px;padding-top:10px">燃剂容量：</td>
             <td style="padding-left:4px;padding-top:10px">
-                <select id="capacity" style="width:120px;height:25px" >
-                    <option value="1" >200ml</option>
-                    <option value="2" >500ml</option>
-                    <option value="3" >1L</option>
+                <select id="capacity" style="width:120px;height:25px">
+                    <option value="1">200ml</option>
+                    <option value="2">500ml</option>
+                    <option value="3">1L</option>
                 </select>
             </td>
         </tr>
         <tr>
             <td style="padding-left:5px;padding-top:10px">材料选择：</td>
             <td style="padding-left:4px;padding-top:10px">
-                <select id="material" style="width:120px;height:25px" >
-                    <option value="1" >木头</option>
-                    <option value="2" >塑料</option>
-                    <option value="3" >织物</option>
+                <select id="material" style="width:120px;height:25px">
+                    <option value="1">木头</option>
+                    <option value="2">塑料</option>
+                    <option value="3">织物</option>
                 </select>
             </td>
         </tr>
         <tr>
             <td style="padding-left:5px;padding-top:10px">持续时间：</td>
             <td style="padding-left:4px;padding-top:10px">
-                <select id="duration" style="width:120px;height:25px" >
-                    <option value="1" >2分钟</option>
-                    <option value="2" >10分钟</option>
-                    <option value="3" >20分钟</option>
+                <select id="duration" style="width:120px;height:25px">
+                    <option value="1">2分钟</option>
+                    <option value="2">10分钟</option>
+                    <option value="3">20分钟</option>
                 </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-left:5px;padding-top:10px">输出信息：</td>
+            <td style="padding-left:4px;padding-top:10px">
+                <p><input type="checkbox" id="fire_output" value="Bike"/>火焰</p>
+                <p><input type="checkbox" id="smoke_output" value="Bike"/>烟雾</p>
+                <p><input type="checkbox" id="model_output" value="Bike" checked="checked"/>模型</p>
+                <p><input type="checkbox" id="temperature_output" value="Bike" checked="checked"/>截面温度</p>
             </td>
         </tr>
     </table>
@@ -127,12 +136,38 @@
 <script>
     // window.parent.start_fire();
 
-    function confirm(){
-        var position=document.getElementById("position").value;
-        window.opener.document.getElementById("fire_type_name").value=position;
-        window.opener.document.getElementById("start_fire_model").click();
-        window.close();
-    }
+    function confirm() {
+        var type="";
+        var fire_output = document.getElementById("fire_output").checked;
+        var smoke_output = document.getElementById("smoke_output").checked;
+        var model_output = document.getElementById("model_output").checked;
+        var temperature_output = document.getElementById("temperature_output").checked;
+        if(fire_output==true){
+            type=type+"1";
+        }else{
+            type=type+"0";
+        }
+        if(smoke_output==true){
+            type=type+"1";
+        }else{
+            type=type+"0";
+        }
+        if(model_output==true){
+            type=type+"1";
+        }else{
+            type=type+"0";
+        }
+        if(temperature_output==true){
+            type=type+"1";
+        }else{
+            type=type+"0";
+        }
+        console.log(type);
+            var position = document.getElementById("position").value;
+            window.opener.document.getElementById("fire_type_name").value = type;
+            window.opener.document.getElementById("start_fire_model").click();
+            window.close();
+        }
 </script>
 </body>
 </html>

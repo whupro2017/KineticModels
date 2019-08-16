@@ -776,7 +776,7 @@
             ]
         },
         "model": {
-            "gltf": "cesium/Models/test.gltf",
+            "gltf": "cesium/Models/CesiumMilkTruck/CesiumMilkTruck.glb",
             "scale": 1.0,
             "minimumPixelSize": 128,
             // "heightReference": "Cesium.HeightReference.CLAMP_TO_GROUND"
@@ -866,8 +866,7 @@ function bus(type) {
         }
     });
 
-
-if()
+if(vertical_show==true){
     var wall = Cesium.WallGeometry.fromConstantHeights({
         positions: Cesium.Cartesian3.fromDegreesArray([
             114.22122203614754,30.36000635381926,114.22135669731607,30.3600047893528
@@ -899,11 +898,7 @@ if()
         translucent: true
     });
     // Rectangle.appearance.material.uniforms.image
-
-
-
-
-
+}
 
     if(type.substr(0,2)!="00"){
         primitives = [];
@@ -976,7 +971,9 @@ if()
         timer = setInterval(function () {
             if (viewer.clockViewModel.shouldAnimate == true && x < 766) {
                 // console.log("加载帧" + x);
-                Rectangle.appearance.material.uniforms.image="./BUS/vertical/frame"+(parseInt(x/77)+1) +".png"
+                if(vertical_show==true) {
+                    Rectangle.appearance.material.uniforms.image = "./BUS/vertical/frame" + (parseInt(x / 77) + 1) + ".png"
+                }
                 for (var i = 0; i < 56; i++) {
                     primitives[i].appearance.material.uniforms.image = "./BUS/"+fire_type+"/frame" + x + "/image" + i + ".png";
                 }
@@ -991,7 +988,9 @@ if()
                 if (old_mul < 1) {
                     timer = setInterval(function () {
                         if (viewer.clockViewModel.shouldAnimate == true && x < 766) {
-                            Rectangle.appearance.material.uniforms.image="./BUS/vertical/frame"+(parseInt(x/77)+1) +".png"
+                            if(vertical_show==true) {
+                                Rectangle.appearance.material.uniforms.image = "./BUS/vertical/frame" + (parseInt(x / 77) + 1) + ".png"
+                            }
                             for (var i = 0; i < 56; i++) {
                                 primitives[i].appearance.material.uniforms.image = "./BUS/"+fire_type+"/frame" + x + "/image" + i + ".png";
                             }
@@ -1004,7 +1003,9 @@ if()
                 } else {
                     timer = setInterval(function () {
                         if (viewer.clockViewModel.shouldAnimate == true && x < 767) {
-                            Rectangle.appearance.material.uniforms.image="./BUS/vertical/frame"+(parseInt(x/77)+1) +".png"
+                            if(vertical_show==true) {
+                                Rectangle.appearance.material.uniforms.image = "./BUS/vertical/frame" + (parseInt(x / 77) + 1) + ".png"
+                            }
                             for (var i = 0; i < 57; i++) {
                                 primitives[i].appearance.material.uniforms.image = "./BUS/"+fire_type+"/frame" + x + "/image" + i + ".png";
                             }

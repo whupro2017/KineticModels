@@ -3,17 +3,17 @@ var readline = require('readline');
 var fs = require('fs');
 // var tinify = require("tinify");
 // tinify.key = "pmofs5ukduRPGzMsogUQ5VAr1G49NK41"; // 自行注册
-function creatwImages(frameN) {
-    if (!fs.existsSync('public/smoke/frame' + frameN)) {
+function createImages(frameN) {
+    if (!fs.existsSync('public/fire2/frame' + frameN)) {
         //如果不存在上传文件夹名称，就创建
         try {
-            fs.mkdirSync('public/smoke/frame' + frameN, 0o777);
+            fs.mkdirSync('public/fire2/frame' + frameN, 0o777);
         } catch (e) {
             console.log(e.name + ": " + e.message);
         }
     }
-    var fRead = fs.createReadStream('public/cesium/trace/frame' + frameN + '.dat');
-    var arr = new Array();
+    var fRead = fs.createReadStream('public/cesium/room_06_02/trace/frame' + frameN + '.dat');
+    var arr = new Array(80000);
     var objReadline = readline.createInterface({input: fRead});
     objReadline.on('line', function (line) {
         arr.push(line);
@@ -27,15 +27,15 @@ function creatwImages(frameN) {
         // var streams = new Array(25);
         var count = 0;
         for (var k = 0; k < 25; k++) {
-            creatwImage(k, frameN, arr);
+            createImage(k, frameN, arr);
         }
         console.log(frameN + "完成");
         objReadline.close();
     });
 }
 
-function creatwImage(heightN, frameN, arr) {
-    var out = fs.createWriteStream('public/smoke/frame' + frameN + '/image' + heightN + '.png');
+function createImage(heightN, frameN, arr) {
+    var out = fs.createWriteStream('public/fire2/frame' + frameN + '/image' + heightN + '.png');
     var canvas = new Canvas.Canvas(55, 53);
     var stream = canvas.createPNGStream();
     stream.on('data', function (chunk) {
@@ -54,8 +54,8 @@ function creatwImage(heightN, frameN, arr) {
     ctx.save();
 }
 
-for (var i = 0; i < 1; i++) {
-    creatwImages(i);
+for (var i = 0; i < 100; i++) {
+    createImages(i);
 }
 
 

@@ -776,7 +776,7 @@
             ]
         },
         "model": {
-            "gltf": "cesium/Models/CesiumMilkTruck/CesiumMilkTruck.glb",
+            "gltf": "cesium/Models/test.gltf",
             "scale": 1.0,
             "minimumPixelSize": 128,
             // "heightReference": "Cesium.HeightReference.CLAMP_TO_GROUND"
@@ -835,6 +835,12 @@ function bus(type) {
     }else{
         model_show=false;
     }
+    var vertical_show;
+    if(type.substr(3,1)=="1"){
+        vertical_show=true;
+    }else{
+        vertical_show=false;
+    }
     var lon=114.22127847341162;
     var lat=30.35997960929486;
     var bus = viewer.entities.add({
@@ -854,19 +860,89 @@ function bus(type) {
     viewer.camera.setView({
         destination: Cesium.Cartesian3.fromDegrees(114.22126724974848,30.36003180415405,30.2723903435967614),
         orientation: {
-            heading: Cesium.Math.toRadians(.0),
+            heading: Cesium.Math.toRadians(0.0),
             pitch: Cesium.Math.toRadians(-90.0),
             roll: 0.0
         }
     });
 
 
-    primitives = [];
-    var id = 0;
-    var height = 10;
-    var highest=height+3.99;
-    for (; height <highest; height += 0.07) {
-        primitives.push(viewer.scene.primitives.add(new Cesium.Primitive({
+if()
+    var wall = Cesium.WallGeometry.fromConstantHeights({
+        positions: Cesium.Cartesian3.fromDegreesArray([
+            114.22122203614754,30.36000635381926,114.22135669731607,30.3600047893528
+        ]),
+        minimumHeight: 11,
+        maximumHeight: 14
+    });
+    var geometry = Cesium.WallGeometry.createGeometry(wall);
+    var Rectangle = viewer.scene.primitives.add(new Cesium.Primitive({
+        geometryInstances: new Cesium.GeometryInstance({
+            geometry: geometry
+        }),
+        appearance: new Cesium.EllipsoidSurfaceAppearance({
+            aboveGround: true,
+            renderState:{
+                //blending: Cesium.BlendingState.ADDITIVE_BLEND ,
+                enabled : true,
+                face : Cesium.CullFace.FRONT_AND_BACK
+            }
+        }),
+    }));
+    Rectangle.appearance.material = new Cesium.Material({
+        fabric: {
+            type: 'Image',
+            uniforms: {
+                image: "./BUS/vertical/frame1.png"
+            }
+        },
+        translucent: true
+    });
+    // Rectangle.appearance.material.uniforms.image
+
+
+
+
+
+
+    if(type.substr(0,2)!="00"){
+        primitives = [];
+        var id = 0;
+        var height = 10;
+        var highest=height+3.99;
+        for (; height <highest; height += 0.07) {
+            primitives.push(viewer.scene.primitives.add(new Cesium.Primitive({
+                geometryInstances: new Cesium.GeometryInstance({
+                    id: id,
+                    geometry: new Cesium.RectangleGeometry({
+                        ellipsoid: Cesium.Ellipsoid.WGS84,
+                        rectangle: Cesium.Rectangle.fromDegrees(114.22122734289528,30.359996383680393,114.22134805292754,30.360016651716435),
+                        // rectangle: Cesium.Rectangle.fromDegrees(114.22160965869033,30.358270990309897,114.22165830903349,30.358454603020643),
+                        height: height,
+                        // rotation: -10,
+                        // extrudedHeight: 1
+                    }),
+                    attributes: {
+                        color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({
+                            alpha: 0.5
+                        }))
+                    }
+                }),
+                appearance: new Cesium.EllipsoidSurfaceAppearance({
+                    material: new Cesium.Material({
+                        fabric: {
+                            type: 'Image',
+                            uniforms: {
+                                image: "./BUS/"+fire_type+"/frame0/image"+id+".png"
+                            }
+                        },
+                        transport: true
+                    })
+                })
+            })))
+            id++;
+        }
+        viewer.scene.primitives.add(new Cesium.Primitive({
             geometryInstances: new Cesium.GeometryInstance({
                 id: id,
                 geometry: new Cesium.RectangleGeometry({
@@ -894,55 +970,54 @@ function bus(type) {
                     transport: true
                 })
             })
-        })))
-        id++;
-    }
-    var x = 0;
-    clock.multiplier = 5;
-    timer = setInterval(function () {
-        if (viewer.clockViewModel.shouldAnimate == true && x < 766) {
-            // console.log("加载帧" + x);
-            for (var i = 0; i < 56; i++) {
-                primitives[i].appearance.material.uniforms.image = "./BUS/"+fire_type+"/frame" + x + "/image" + i + ".png";
+        }))
+        var x = 0;
+        clock.multiplier = 5;
+        timer = setInterval(function () {
+            if (viewer.clockViewModel.shouldAnimate == true && x < 766) {
+                // console.log("加载帧" + x);
+                Rectangle.appearance.material.uniforms.image="./BUS/vertical/frame"+(parseInt(x/77)+1) +".png"
+                for (var i = 0; i < 56; i++) {
+                    primitives[i].appearance.material.uniforms.image = "./BUS/"+fire_type+"/frame" + x + "/image" + i + ".png";
+                }
+                x++;
             }
-            x++;
-        }
-    }, 100);
-    var temp = 0;
-    var old_mul = 1;
-    changeTimer = setInterval(function () {
-        if (old_mul != clock.multiplier) {
-            window.clearInterval(timer);
-            if (old_mul < 1) {
-                timer = setInterval(function () {
-                    if (viewer.clockViewModel.shouldAnimate == true && x < 766) {
-                        for (var i = 0; i < 56; i++) {
-                            primitives[i].appearance.material.uniforms.image = "./BUS/"+fire_type+"/frame" + x + "/image" + i + ".png";
+        }, 100);
+        var temp = 0;
+        var old_mul = 1;
+        changeTimer = setInterval(function () {
+            if (old_mul != clock.multiplier) {
+                window.clearInterval(timer);
+                if (old_mul < 1) {
+                    timer = setInterval(function () {
+                        if (viewer.clockViewModel.shouldAnimate == true && x < 766) {
+                            Rectangle.appearance.material.uniforms.image="./BUS/vertical/frame"+(parseInt(x/77)+1) +".png"
+                            for (var i = 0; i < 56; i++) {
+                                primitives[i].appearance.material.uniforms.image = "./BUS/"+fire_type+"/frame" + x + "/image" + i + ".png";
+                            }
+                            x++;
                         }
-                        x++;
-                    }
-                    //     viewer.scene.primitives.remove(primitives.pop());
-                    // viewer.entities.remove(house);
+                        //     viewer.scene.primitives.remove(primitives.pop());
+                        // viewer.entities.remove(house);
 
-                }, 100 / clock.multiplier);
-            } else {
-                timer = setInterval(function () {
-                    if (viewer.clockViewModel.shouldAnimate == true && x < 767) {
-                        for (var i = 0; i < 57; i++) {
-                            primitives[i].appearance.material.uniforms.image = "./BUS/"+fire_type+"/frame" + x + "/image" + i + ".png";
+                    }, 100 / clock.multiplier);
+                } else {
+                    timer = setInterval(function () {
+                        if (viewer.clockViewModel.shouldAnimate == true && x < 767) {
+                            Rectangle.appearance.material.uniforms.image="./BUS/vertical/frame"+(parseInt(x/77)+1) +".png"
+                            for (var i = 0; i < 57; i++) {
+                                primitives[i].appearance.material.uniforms.image = "./BUS/"+fire_type+"/frame" + x + "/image" + i + ".png";
+                            }
+                            x += Math.ceil(clock.multiplier);
                         }
-                        x += Math.ceil(clock.multiplier);
-                    }
-                }, 100);
+                    }, 100);
+                }
+                old_mul = clock.multiplier;
             }
-            old_mul = clock.multiplier;
-        }
-    }, 100);
-    if(type.substr(0,2)=="00"){
-        clock.shouldAnimate = false;
-    }else{
-        clock.shouldAnimate = true;
+        }, 100);
+            clock.shouldAnimate = true;
     }
+
 }
 
 

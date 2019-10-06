@@ -7,6 +7,8 @@ var mysql = require('mysql');
 var service = require('./service');
 var app = express();
 var readline = require('readline');
+var java = require('java')
+java.classpath.push('javaClass')
 app.use(express.static("public")).listen(8080);
 console.log("server started at'http://127.0.0.1:8080/collision.html'")
 
@@ -371,28 +373,79 @@ app.get('/update_element_info', function (req, res, next) {
 
 });
 
-// var Client = require('node-ftp');
-// var c = new Client();
-// var targetOptions = {
-//     host: '127.0.0.1',
-//     port: '2121',
-//     user: 'anonymous',
-//     password: '',
-// };
-// c.connect(targetOptions);
-// c.on('ready', function () {
-//     var FTPfolderPath="wallpaper"
-//     c.get(FTPfolderPath, function (err) {
-//         console.log("获取FTP文件夹" + FTPfolderPath);
-//         if (err) {
-//             c.mkdir(FTPfolderPath, function (err) {
-//                 if (err) throw err;
-//                 console.log("FTP服务器创建目录" + FTPfolderPath);
-//             })
-//         }
-//         ;
-//     });
-// })
+app.post('/uploads_particle', function (req, res, next) {
+    var form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.encoding = 'utf-8';
+    form.maxFileSize = 4 * 1024 * 1024 * 1024;
+    form.uploadDir = path.join(__dirname, 'public/particle_source');
+    form.multiples = true;
+    form.parse(req, function (err, fields, files) {
+            console.log("开始上传粒子");
+            var id;
+            var name;
+            var max_frame;
+            var max_x;
+            var max_y;
+            var max_z;
+            var file_folder;
+            var first_file;
+            for (var i = 0; i < files.upload.length; i++) {
+                var file = files.upload[i];
+                var pathnameArray = file.name.split('/');
+                var folderPath = form.uploadDir;
+                for (var j = 0; j < pathnameArray.length - 1; j++) {
+                    folderPath = path.join(folderPath, pathnameArray[j]);
+                    if (!fs.existsSync(folderPath)) {
+                        //如果不存在上传文件夹名称，就创建
+                        try {
+                            fs.mkdirSync(folderPath, 0o777);
+                            ("成功创建目录" + folderPath);
+                        } catch (e) {
+                            console.log(e.name + ": " + e.message);
+                        }
+                    }
+                }
+                fs.renameSync(file.path, path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
+                if (pathnameArray[pathnameArray.length - 1].split(".")[1] == "json") {
+                    console.log("获得json文件");
+                    var data = fs.readFileSync(path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
+                    var filedata = data.toString();//将二进制的数据转换为字符串
+                    console.log(filedata);
+                    filedata = JSON.parse(filedata);//将字符串转换为json对象
+                    id = filedata.id;
+                    name = filedata.name;
+                    max_frame = parseInt(filedata.max_frame);
+                    max_x = parseInt(filedata.max_x);
+                    max_y = parseInt(filedata.max_y);
+                    max_z = parseInt(filedata.max_z);
+                    file_folder = filedata.file_folder;
+                    first_file = filedata.first_file;
+                }
+            }
+            // try {
+            var MyClass = java.import('Single');
+            MyClass.transform(file_folder, max_x, max_y, max_z, max_frame, (error, info) => {
+                if (error) {
+                    console.log('put name Error: ', error);
+                    return;
+                }
+                console.log("all finnished");
+                var data = {msg: "转换粒子模型成功"};
+                // c.end();
+                res.send(data);
+                res.end();
+            });
+            // } catch (e) {
+            //     console.log(e.name + ": " + e.message);
+            //     var data = {msg: "上传失败"};
+            //     // c.end();
+            //     res.send(data);
+            //     res.end();
+            // }
+        }
+    );
+});
 
 
 app.post('/uploads', function (req, res, next) {
@@ -406,50 +459,15 @@ app.post('/uploads', function (req, res, next) {
     form.uploadDir = path.join(__dirname, 'public/Files');
     //如果上传文件夹（多个文件）需将 默认值改为TRUE
     form.multiples = true;
-    //该方法会转换请求中所包含的表单数据，callback会包含所有字段域和文件信息
-    // fields 是普通表单数据
-    // files 是文件数据
     form.parse(req, function (err, fields, files) {
             console.log("开始上传");
-            // var Client = require('node-ftp');
-            // var c = new Client();
-            // var targetOptions = {
-            //     host: '127.0.0.1',
-            //     port: '2121',
-            //     user: 'anonymous',
-            //     password: '',
-            // };
-            // c.connect(targetOptions);
-            //该属性upload是在HTML文件的name中设置的
-            // c.on('ready', function () {
-            //     console.log("ftp连接成功");
             for (var i = 0; i < files.upload.length; i++) {
                 var file = files.upload[i];
                 var pathnameArray = file.name.split('/');
                 var folderPath = form.uploadDir;
-                var FTPfolderPath = "";
                 for (var j = 0; j < pathnameArray.length - 1; j++) {
                     folderPath = path.join(folderPath, pathnameArray[j]);
-                    // FTPfolderPath = path.join(FTPfolderPath, pathnameArray[j]);
-                    // c.get(FTPfolderPath, function (err) {
-                    //     console.log("获取FTP文件夹" + FTPfolderPath);
-                    //     if (err) {
-                    //         c.mkdir(FTPfolderPath, function (err) {
-                    //             if (err) throw err;
-                    //             console.log("FTP服务器创建目录" + FTPfolderPath);
-                    //             if(j==pathnameArray.length - 2){
-                    //                 c.put(file.path, path.join(FTPfolderPath, pathnameArray[pathnameArray.length - 1]), function (err) {
-                    //                     console.log("本地路径："+path.join(folderPath, pathnameArray[pathnameArray.length - 1])+"；ftp服务器路径："+path.join(FTPfolderPath, pathnameArray[pathnameArray.length - 1]));
-                    //                     if (err) throw err;
-                    //                     console.log("上传FTP文件" + pathnameArray[pathnameArray.length - 1]);
-                    //                 });
-                    //             }
-                    //         })
-                    //     }
-                    //     ;
-                    // });
                     if (!fs.existsSync(folderPath)) {
-                        //如果不存在上传文件夹名称，就创建
                         try {
                             fs.mkdirSync(folderPath, 0o777);
                             ("成功创建目录" + folderPath);

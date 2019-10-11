@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>太乐地图离线地图应用</title>
+	<link rel="icon" type="images/img" href="64.ico" />
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="css/ol.css" type="text/css">
+	<link rel="stylesheet" href="css/ol-ext.min.css" />
+	<link rel="stylesheet" href="css/defaults.css">
+	<style>
+		/* 控件位置 */
+		.ol-zoom {
+			top: 6em;
+		}
+
+		.ol-zoom-extent {
+			top: 14em;
+		}
+
+		.ol-full-screen {
+			top: 12em;
+		}
+
+		.ol-rotate {
+			top: 14em;
+		}
+
+		.ol-scale-line {
+			left: 15em;
+		}
+
+		.layerSwitcher {
+			display: inline-block;
+			background: #cdf;
+			padding: 0.5em;
+		}
+
+		/* 鼠标实时位置控件样式 */
+		.mouse-position-wrapper {
+			width: 300px;
+			height: 29px;
+			color: #000000;
+			position: absolute;
+			right: 2em;
+			bottom: 0.1em;
+			z-index: 999;
+		}
+
+		/* 指南针控件样式 */
+		.ol-compassctrl.bottom {
+			top: auto;
+			left: auto;
+			bottom: 0;
+			right: 0;
+			width: 150px;
+			height: 150px;
+			-webkit-transform: none;
+			transform: none;
+		}
+
+		/* 图层控制 */
+		.ol-control.ol-layerswitcher-image.ol-collapsed {
+			top: 6em;
+		}
+
+		.ol-control.ol-layerswitcher-image {
+			top: 6em;
+		}
+
+		/* 云层控制 */
+		.ol-cloud {
+			left: 0.5em;
+			top: 10em;
+		}
+
+
+		/* 弹出提示框 */
+		.popover {
+			width: 260px;
+		}
+	</style>
+</head>
+
+<body onload="init()">
+	<div id="map">
+		<div id="popup"></div>
+	</div>
+	<div id="header">
+		<div id="logoandtitle">太乐地图离线地图应用（for OpenLayers5）
+			<nav id="main_menu">
+				<div class="navi-co co">
+					<ul class="navi navi-pi">
+						<li class="dropdown"><a target="_blank" href="http://www.arctiler.com/">访问官网</a></li>
+						<li class="dropdown"><a target="_blank"
+								href="https://item.taobao.com/item.htm?id=562820917577">淘宝购买</a></li>
+						<li class="dropdown"><a target="_blank"
+								href="http://www.arctiler.com/webdev/index.html">WebGIS开发平台</a></li>
+						<li class="dropdown"><a target="_blank"
+								href="https://openlayers.org/en/latest/apidoc/">OL-API文档</a></li>
+						<li class="dropdown"><a target="_blank"
+								href="https://viglino.github.io/ol-ext/index.html">OL-范例</a></li>
+						<li class="dropdown"><a href="javascript:{}" onclick="showAbout()">关于太乐</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div id="version"> - 让地理信息应用更简单</div>
+	</div>
+	<div id="mouse-position" class="mouse-position-wrapper">
+		<div class="custom-mouse-position"></div>
+	</div>
+	<div id="aboutContainer" class="baseContainer">
+		<div class="toolWindowTitle">关于太乐<span id="closeBtn" onclick="hideAbout()">X</span></div>
+		<div id="aboutContent" class="baseContent">
+			<p class="aboutText">此系统为 <a target="_blank" href="http://www.arctiler.com/p_downloader.html">太乐地图下载器</a>
+				自动生成的离线地图站点，未包含完整功能。 <a target="_blank" href="https://item.taobao.com/item.htm?id=562820917577">付费购买</a>
+				企业版，即可获取完整功能源码，助您快速构建离线地图站点。</p>
+			<p class="aboutText"><a target="_blank" href="http://www.arctiler.com">太乐地图</a> 品牌 隶属于成都上思科技有限公司(chengdu
+				3stech co.,ltd)。公司成立于2012年，位于成都市高新区天府软件园。
+				公司注册资金500万，是国家高新技术企业，拥有乙级测绘资质，通过ISO9001质量管理体系认证，拥有20多项计算机软件著作权， 是西部地区领先的地理信息技术研发和服务企业。</p>
+			<p class="aboutText">相信太乐，牵手太乐，我们愿与您一同前行。</p>
+		</div>
+	</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/ol.js"></script>
+	<script src="js/ol-ext.min.js"></script>
+	<script src="js/cloud.js"></script>
+	<script src="js/tilesInfo.js"></script>
+	<script src="js/app.js"></script>
+</body>
+
+</html>

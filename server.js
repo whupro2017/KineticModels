@@ -167,6 +167,27 @@ app.get("/select_scene", function (req, res) {
 
 })
 
+app.get("/select_thing_scene", function (req, res) {
+    console.log("选定场景号：" + req.query.value);
+    scene_id = req.query.value;
+    data = {};
+    connection.query('SELECT id,kinetic_id from kinetic_t where scene_id=' + req.query.value, function (error, results, fields) {
+        if (error) return console.error(error);
+        data.kinetic_info = results;
+        connection.query('SELECT lon,lat from scene_t where scene_id=' + req.query.value, function (error, results, fields) {
+            if (error) return console.error(error);
+            data.location = results;
+            connection.query('SELECT id,thing_type,thing_id,gltf_path,start_lon,start_lat,start_height from thing_relevant where sceneid=' + req.query.value, function (error, results, fields) {
+                if (error) return console.error(error);
+                data.relevant_info = results;
+                console.log(data);
+                res.send(data);
+                res.end();
+            });
+        });
+    });
+
+})
 app.get("/get_mark_info", function (req, res) {
     console.log(req.query.value);
     connection.query('SELECT info from mark_info where id=' + req.query.value, function (error, results, fields) {
@@ -211,6 +232,23 @@ app.get("/get_elements", function (req, res) {
     var scene_id = req.query.scene_id;
     console.log(element_type + "," + scene_id);
     connection.query("SELECT ID,SERIAL_NO from " + element_type + " WHERE scene_id=" + scene_id, function (error, results, fields) {
+        if (error) {
+            var data = {msg: "写入数据库错误，上传失败"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+})
+app.get("/get_things", function (req, res) {//新增内容
+    var thing_type = req.query.thing_type;
+    var scene_id = req.query.scene_id;
+    console.log(thing_type + "," + scene_id);
+    connection.query("SELECT ID,CATEGORY from " + thing_type + " WHERE sceneid=" + scene_id, function (error, results, fields) {
         if (error) {
             var data = {msg: "写入数据库错误，上传失败"};
             // c.end();
@@ -282,7 +320,34 @@ app.get('/store_elements', function (req, res, next) {
     }
 });
 
-app.get('/element_location', function (req, res, next) {
+app.get('/store_things', function (req, res, next) {//新增内容
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    for (var i in form) {
+        connection.query("INSERT into thing_tea_table (id,filename,category,sceneid) " +
+            "value (" + form[i].id + ",'" + form[i].filename + "','" + form[i].category + "','" + scene_id + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入thing文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+    }
+});
+
+
+app.get('/element_location', function (req, res, next) {//左键点击绑定要素存入数据库
     var longitude = req.query.longitude;
     var latitude = req.query.latitude;
     var height = req.query.height;
@@ -316,11 +381,71 @@ app.get('/element_location', function (req, res, next) {
 
 })
 
+app.get('/thing_location', function (req, res, next) {//新增内容
+    var longitude = req.query.longitude;
+    var latitude = req.query.latitude;
+    var height = req.query.height;
+    var scene_id = req.query.scene_id;
+    var thing_type = req.query.thing_type;
+    var thing_id = req.query.thing_id;//to be done
+    var gltf_path = req.query.gltf_path;
+    var heading = req.query.heading;
+    var pitch = req.query.pitch;
+    var roll = req.query.roll;
+    var thing_mark_id = req.query.id;
+    //新增thing_relevant,设置自己的属性
+    connection.query("INSERT into thing_relevant (sceneid,thing_id,gltf_path,start_lon,start_lat,start_height,thing_type,heading,pitch,roll,thing_mark_id) value (" + scene_id + ",'" + thing_id + "','" + gltf_path + "','" + longitude + "','" + latitude + "','" + height + "','" + thing_type + "','" + heading + "','" + pitch + "','" + roll + "','" + thing_mark_id + "')", function (error, results, fields) {
+        if (error) {
+            var data = {status: 1};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        connection.query("UPDATE  scene_t SET lon=" + longitude + ",lat=" + latitude + " WHERE scene_id=" + scene_id + "", function (error, results, fields) {
+            if (error) {
+                var data = {status: 0};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            }
+            var data = {status: 1};
+            // c.end();
+            console.log("存储要素位置成功");//存储要素位置成功
+            res.send(data);
+            res.end();
+        });
+    });
+
+})
 app.get('/get_element_info', function (req, res, next) {
     //form表单
     var element_type = req.query.element_type;
     var element_id = req.query.element_id;
     connection.query("SELECT  scene_id,SERIAL_NO,EVIDENCE_TYPE,DESCRIPTION,LEFT_POSITION,COLLECTION_MODE,COLLECTED_BY,COLLECTED_DATE,CRIMINAL_FLAG,UTILIZATION,PRINT_FLAG,STORAGE_FLAG from " + element_type + " where id=" + element_id, function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log("读取数据库成功");
+        console.log(results);
+        res.send(results);
+        res.end();
+
+    });
+
+});
+app.get('/get_thing_info', function (req, res, next) {//新增内容
+    //form表单
+    var thing_type = req.query.thing_type;
+    var thing_id = req.query.thing_id;//to be done
+    connection.query("SELECT scene_id,SERIAL_NO,THING_TYPE,DESCRIPTION,LEFT_POSITION,COLLECTION_MODE,COLLECTED_BY,COLLECTED_DATE,CRIMINAL_FLAG,UTILIZATION,PRINT_FLAG,STORAGE_FLAG from " + thing_type + " where id=" + thing_id, function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();

@@ -94,7 +94,7 @@ app.get("/get_dat_arr", function (req, res) {
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Yandai#2018!',
+    password: 'lwh791209',
     database: 'pointcloud'
 });
 connection.connect();

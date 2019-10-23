@@ -33,6 +33,11 @@
             border-radius: 4px;
         }
 
+        #toolbar input {//新增HPR
+        vertical-align: middle;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
         #toolbar_measure {
             background: rgba(42, 42, 42, 0.8);
             padding: 4px;
@@ -213,6 +218,20 @@
         </div>
     </div>
     <div id="operations" style="float: left;display:none">
+        <div id="toolbar_hpr" style="float: left">
+
+            <div>RotateX</div>
+            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateX, valueUpdate: 'input'">
+            <input type="text" size="5" data-bind="value: RotateX">
+
+            <div>RotateY</div>
+            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateY, valueUpdate: 'input'">
+            <input type="text" size="5" data-bind="value: RotateY">
+
+            <div>RotateZ</div>
+            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateZ, valueUpdate: 'input'">
+            <input type="text" size="5" data-bind="value: RotateZ">
+        </div>
         <div id="caseMenu"></div>
         <div id="MeasureMenu"></div>
         <div id="modelMenu"></div>
@@ -334,22 +353,31 @@
                 <div style="float: left">
                     <div id="thingMenu" style="float: left"></div>
                     <div style="float: left">
-                        <input id="thing_file" type="file" style="display:none" accept=".xls,.xlsx"
-                               onchange="importFile(this)">
+                        <input id="thing_file" type="file" style="display:none" accept=".gltf,.xlsx,.xls"
+                               onchange="importThingFile(this)">
                         <table>
                             <tr>
                                 <td><select id="thing_type" style="width:80px;height:25px"
-                                            onchange="get_element_menu(this.value)">
+                                            onchange="get_thing_menu(this.value)">//thing_type
                                     <option value="volvo" hidden>物品类别</option>
-                                    <option value="scene_handprint">手印痕迹</option>
-                                    <option value="scene_footprint">足迹痕迹</option>
-                                    <option value="scene_toolmark">工具痕迹</option>
-                                    <option value="scene_bio_evidence">生物物证</option>
-                                    <option value="scene_file_evidence">文检物证</option>
-                                    <option value="scene_elec_evidence">电子物证</option>
+                                    <option value="thing_tea_table">茶几</option>
+                                    <option value="thing_kitchen_supplies">厨房</option>
+                                    <option value="thing_cupboard">橱柜</option>
+                                    <option value="thing_window">窗户</option>
+                                    <option value="thing_bed">床</option>
+                                    <option value="thing_stool">凳子</option>
+                                    <option value="thing_electronic_device">电子器件</option>
+                                    <option value="thing_shelf">架子</option>
+                                    <option value="thing_door">门</option>
+                                    <option value="thing_person">人</option>
+                                    <option value="thing_sofa">沙发</option>
+                                    <option value="thing_toiletries">卫浴用品</option>
+                                    <option value="thing_chair">椅子</option>
+                                    <option value="thing_table">桌子</option>
                                 </select></td>
-                                <td><select id="things" style="width:80px;height:25px">
-                                    <option value="volvo" hidden>绑定要素</option>
+                                <td><select id="things" style="width:80px;height:25px">//things
+                                    //onchange=sub_thing_menu()>//things
+                                    <option value="volvo" hidden>选择物品</option>
                                 </select></td>
                             </tr>
 
@@ -498,6 +526,35 @@
             }
             reader.readAsBinaryString(f);
         }
+        function importThingFile(obj) {//新增内容
+            console.log("已选择文件");
+            if (!obj.files) {
+                alert("文件有误");
+                return;
+            }
+            // alert(obj.files[0].name);文件名
+            var f = obj.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var data = e.target.result;
+                var wb = XLSX.read(data, {
+                    type: 'binary' //以二进制的方式读取
+                });
+                var sheet0 = wb.Sheets[wb.SheetNames[0]];//sheet0代表excel表格中的第一页
+                var str = XLSX.utils.sheet_to_json(sheet0);//利用接口实现转换。
+                var templates = new Array();
+                var str1 = obj.files[0].name;
+                templates = str1.split(".");//将导入文件名去掉后缀
+                var form = JSON.stringify(str);
+                console.log("Form:" + form);
+                $.get("/store_things", {"form": form, "scene_id": $("#scene_id").val()}, function (data) {
+                    alert(data.msg);
+                })
+            }
+            reader.readAsBinaryString(f);
+            console.log("物品文件读取成功！")
+        }
 
         $(document).ready(function () {
             var options = {
@@ -604,6 +661,12 @@
         }
 
 
+        var operation_type;
+        var element_image = "cesium/images/left_foot.JPG";
+        var thing_gltf = 'cesium/Models/Test/model.gltf';
+        var dog_gltf = 'cesium/Models/Test/dog.gltf';
+        var mark_color = Cesium.Color.WHITE;
+        var dataSourcePromise;
         var entity = viewer.entities.add({
             id: 'GroundVehicle',
             position: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706, 0),
@@ -631,7 +694,7 @@
 
         // viewer.trackedEntity=entity1;
 
-        //设置鼠标右键点击事件
+
         window.oncontextmenu = function (e) {
             e.preventDefault();
         }
@@ -641,6 +704,218 @@
         // Sandcastle.addToolbarButton('砍杀模型', function () {
         //
         // }, 'modelMenu');
+
+
+        Sandcastle.addToolbarButton('创建案件', function () {
+            window
+                .open(
+                    "create_case.html",
+                    "create_case",
+                    "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+
+        }, 'CreateCase');
+
+        Sandcastle.addToolbarButton('创建场景', function () {
+        }, 'CreateScene');
+        Sandcastle.addToolbarButton('自主路线', function () {
+            // viewer.entities.removeAll();
+            // positions=[];
+            show_tileset();
+            alert("开始规划路线，左键点击经过点，右键结束");
+            operation_type = "drawRoute";
+            // viewer.zoomTo(tileset);
+            viewer.camera.setView({
+                destination: Cesium.Cartesian3.fromDegrees(114.21952507076327, 30.358135859723472, 800),
+                orientation: {
+                    heading: 0.0,
+                    pitch: Cesium.Math.toRadians(-90.0),
+                    roll: 0.0
+                }
+            });
+        }, 'caseMenu');
+        Sandcastle.addToolbarButton('研判标注', function () {
+            $(".Smodel").eq(0).show();
+        }, 'caseMenu');
+
+        Sandcastle.addToolbarButton('地理量测', function () {
+            $(".toolbar_measure").eq(0).show();
+        }, 'caseMenu');
+
+        Sandcastle.addToolbarButton('爆炸效果', function () {
+            startBZ1();
+            viewer.camera.setView({
+                destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
+                orientation: {
+                    heading: 6.144391448663251,
+                    pitch: -0.6870827796178554,
+                    roll: 0.0
+                }
+            });
+        }, 'caseMenu');
+
+        Sandcastle.addToolbarButton('爆炸冲击波', function () {
+            startBZ2();
+            viewer.camera.setView({
+                destination: {x: -2259482.2093426995, y: 5023565.238597119, z: 3204802.0603294484},
+                orientation: {
+                    heading: 6.144391448663251,
+                    pitch: -0.6870827796178554,
+                    roll: 0.0
+                }
+            });
+        }, 'caseMenu');
+
+
+        Sandcastle.addToolbarButton('燃烧模型', function () {
+            window
+                .open(
+                    "fire_parameter.html",
+                    "fire_parameter",
+                    "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+        }, 'modelMenu');
+
+
+        Sandcastle.addToolbarButton('碰撞模型', function () {
+            window.open(
+                "collision_parameter.html",
+                "collision_parameter",
+                "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+        }, 'modelMenu');
+
+
+        Sandcastle.addToolbarButton('爆炸模型', function () {
+            window
+                .open(
+                    "explosion_parameter.html",
+                    "explosion_parameter",
+                    "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+        }, 'modelMenu');
+
+
+        Sandcastle.addToolbarButton('砍杀模型', function () {
+            window
+                .open(
+                    "kill_parameter.html",
+                    "kill_parameter",
+                    "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+        }, 'modelMenu');
+
+        // Sandcastle.addToolbarButton('砍杀模型', function () {
+        //
+        // }, 'modelMenu');
+        Sandcastle.addToolbarButton('混合模型', function () {
+            clearFire();
+            clearCollision();
+            clearExplosion();
+            viewer.camera.setView({
+                destination: {
+                    x: -2259635.974850741,
+                    y: 5023449.2015779745,
+                    z: 3204845.1002706015
+                },
+                orientation: {
+                    heading: 2.8424653218313556,
+                    pitch: -0.8928382126577965,
+                    roll: 0
+                }
+            });
+            pz_start();
+        }, 'modelMenu');
+
+        // Sandcastle.addToolbarButton('加载模型', function () {
+        //     console.log("正在转换OBJ文件");
+        //     $.get("/buttonClicked", {"value": "send to server"}, function (data) {
+        //         alert(data);
+        //         var test = viewer.entities.add({
+        //             id: 'test',
+        //             position: Cesium.Cartesian3.fromDegrees(-122.0744619, 43.0503706, 0),
+        //             model: {
+        //                 uri: 'cesium/Models/test.gltf',
+        //                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+        //             },
+        //             scale: 1.0,
+        //             minimumPixelSize: 100,
+        //             show: true
+        //         });
+        //         viewer.trackedEntity = test;
+        //     })
+        // }, 'caseMenu');
+        Sandcastle.addToolbarButton('上传动力学模型', function () {
+            $("#files").trigger("click");
+
+        }, 'KineticMenu');
+        Sandcastle.addToolbarButton('创建动力学模型', function () {
+            $("#files").trigger("click");
+
+        }, 'KineticMenu');
+        Sandcastle.addToggleButton('显示', false, function (checked) {
+            dataSource.clustering.enabled = checked;
+        }, 'ModelMeasure');
+        Sandcastle.addToggleButton('标注', false, function (checked) {
+            dataSource.clustering.enabled = checked;
+        }, 'ModelMeasure');
+        Sandcastle.addToggleButton('范围', false, function (checked) {
+            dataSource.clustering.enabled = checked;
+        }, 'ModelMeasure');
+        Sandcastle.addToggleButton('轨迹', false, function (checked) {
+            dataSource.clustering.enabled = checked;
+        }, 'ModelMeasure');
+        Sandcastle.addToolbarButton('标注模式', function () {
+            operation_type = "mark_elements";
+            alert("选择绑定要素和要素图标后后左键点击标定要素位置");
+        }, 'markMenu');
+        Sandcastle.addToolbarButton('导入要素', function () {
+
+            $("#element_file").trigger("click");
+            console.log("导入要素");
+        }, 'markMenu');
+        Sandcastle.addToolbarButton('新建痕迹', function () {
+
+            $("#element_file").trigger("click");
+            console.log("新建痕迹");
+        }, 'markMenu');
+        Sandcastle.addToolbarButton('标注模式', function () {
+            operation_type = "mark_things";//things标注
+            alert("选择绑定要素和要素图标后后左键点击标定要素位置");
+        }, 'thingMenu');
+        Sandcastle.addToolbarButton('导入物品', function () {
+
+            $("#thing_file").trigger("click");
+            console.log("导入物品");
+        }, 'thingMenu');
+        Sandcastle.addToolbarButton('新建物品', function () {
+
+            $("#thing_file").trigger("click");
+            console.log("新建物品");
+        }, 'thingMenu');
+        Sandcastle.addToolbarButton('标注模式', function () {
+            operation_type = "mark_elements";
+            alert("选择绑定要素和要素图标后后左键点击标定要素位置");
+        }, 'humanMenu');
+        Sandcastle.addToolbarButton('导入主体', function () {
+
+            $("#human_file").trigger("click");
+            console.log("导入主体");
+        }, 'humanMenu');
+        Sandcastle.addToolbarButton('新建主体', function () {
+
+            $("#human_file").trigger("click");
+            console.log("新建主体");
+        }, 'humanMenu');
+        Sandcastle.addToolbarButton('标注模式', function () {
+            operation_type = "mark_elements";
+            alert("选择绑定要素和要素图标后后左键点击标定要素位置");
+        }, 'infoMenu');
+        Sandcastle.addToolbarButton('导入信息', function () {
+
+            $("#info_file").trigger("click");
+            console.log("导入信息");
+        }, 'infoMenu');
+        Sandcastle.addToolbarButton('新建信息', function () {
+
+            $("#info_file").trigger("click");
+            console.log("新建信息");
+        }, 'infoMenu');
 
         //菜单案件与场景选项逻辑
         $.get("/get_cases", {"value": "get_cases"}, function (data) {
@@ -706,7 +981,24 @@
                 }
                 data.forEach(function (json) {
                     $("#elements").append('<option value=' + json.ID + ' > 序号' + json.ID + '</option>');
-                });
+                });               //序列号
+            })
+        }
+        function get_thing_menu(thing_type) {
+            console.log("要素大类为：" + thing_type);//
+            $("#things").find("option").remove();
+            $("#things").append("<option value='volvo' hidden>物品子类</option>");
+            $.get("/get_things", {
+                "thing_type": $("#thing_type").val(),
+                "scene_id": $("#scene_id").val()   //########
+            }, function (data) {
+                if (data.msg != undefined) {
+                    alert(data.msg);
+                    return;
+                }
+                data.forEach(function (json) {
+                    $("#things").append('<option value=' + json.ID + ' >' + $("#thing_type").find("option:selected").text() + json.ID + '</option>');//获取通用名
+                });//序列号
             })
         }
 
@@ -787,6 +1079,59 @@
                 // });
 
             })
+            //加载物品标注
+            $.get("/select_thing_scene", {"value": scene_id}, function (data) {
+                console.log("选择场景号：" + scene_id);//选择场景
+                for (var i = 0; i < data.kinetic_info.length; i++) {
+                    $("#kinetic_model").append('<option value=' + data.kinetic_info[i].id + ' >' + data.kinetic_info[i].kinetic_id + '</option>');
+                }
+                console.log(data);//
+                var relevant_info = data.relevant_info;
+                for (var i = 0; i < relevant_info.length; i++) {
+                    var longitude = relevant_info[i].start_lon;
+                    var latitude = relevant_info[i].start_lat;
+                    var height = relevant_info[i].start_height
+                    var gltf_path = relevant_info[i].gltf_path;
+                    var id = relevant_info[i].id;
+                    var thing_type = relevant_info[i].thing_type;
+                    var thing_id = relevant_info[i].thing_id;
+                    var heading = relevant_info[i].heading;
+                    var pitch = relevant_info[i].pitch;
+                    var roll = relevant_info[i].roll;
+                    var thing_mark_id = relevant_info[i].thing_mark_id;
+
+                    const position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
+                    const hpRoll = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(0), Cesium.Math.toRadians(0), Cesium.Math.toRadians(0));
+                    const orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpRoll);
+                    viewer.entities.add({
+                        position: position,
+                        orientation:orientation,
+                        model: {
+                            uri: gltf_path,
+                            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                        },
+
+                        properties: {
+                            type: "added",
+                            thing_type: thing_type,
+                            thing_id: thing_id,
+                            roll:roll
+                        },
+                        scale: 10.0,
+                        minimumPixelSize: 100,
+                        show: true
+                    });
+
+                }
+                if (data.location[0].lon != null && data.location[0].lon != undefined) {
+                    set_view(data.location[0].lon, data.location[0].lat);
+                }
+                // data.forEach(function (icon_name) {
+                //     console.log(icon_name);
+                //     $("#icon_menu").append('<option value=' + icon_name + ' >' + icon_name + '</option>');
+                // });
+
+            })
         }
 
         function set_view(lon, lat) {
@@ -802,19 +1147,86 @@
 
 
 
+        var viewModel = {
+            RotateX:0,
+            RotateY:0,
+            RotateZ:0
+        };
+
+        Cesium.knockout.track(viewModel); // 跟踪此Model
+        var toolbar_hpr = document.getElementById('toolbar_hpr'); // 获取前端监控div
+        Cesium.knockout.applyBindings(viewModel, toolbar_hpr); // 绑定监控
+
+
+
+        var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
+            Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 0)
+        );
+        var entity3 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
+                url: dog_gltf,
+                modelMatrix: modelMatrix,
+                // minimumPixelSize : 512,
+                scale: 0.1,
+                // maximumScale : 200000
+            })
+        );
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 50.0)
+        });//初始视角
+
+        update_model_hpr(entity3)
+
+
+
+
+        function update_model_hpr(entity) {
+            Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
+                RotateX = Number(RotateX);
+                if (isNaN(RotateX)) {
+                    return;
+                }
+                var m = entity.modelMatrix;
+                var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
+                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+            });
+
+            Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
+                RotateY = Number(RotateY);
+                if (isNaN(RotateY)) {
+                    return;
+                }
+                var m = entity.modelMatrix;
+                var m1 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(RotateY));
+                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+            });
+
+            Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
+                RotateZ = Number(RotateZ);
+                if (isNaN(RotateZ)) {
+                    return;
+                }
+                var m = entity.modelMatrix;
+                var m1 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(RotateZ));
+                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+            });//Sandcastle_End
+            Sandcastle.finishedLoading();
+        }
     </script>
     <script src='./js/measuring.js'></script>
     <script src='./js/blast.js'></script>
     <script src='./js/collision.js '></script>
     <script src='./js/modelMark.js'></script>
     <script src='./js/plug-in.js '></script>
-    <script src='./functions/sandcastle.js '></script>
-    <script src='./functions/handler.js '></script>
-    <script src='./functions/fire.js '></script>
-    <script src='./functions/collision.js '></script>
-    <script src='./functions/explosion.js '></script>
-    <script src='./functions/mix.js '></script>
-    <script src='./functions/dynamicRoute.js '></script>
-    <script src='./functions/tileset.js '></script>
+
+
+    <!--<script src='./functions/sandcastle.js '></script>    //cesium控件-->
+    <script src='./functions/handler.js '></script>     //鼠标事件
+    <script src='./functions/fire.js '></script>        //燃烧功能
+    <script src='./functions/collision.js '></script>   //碰撞演示功能
+    <script src='./functions/explosion.js '></script>    //爆照演示功能
+    <script src='./functions/mix.js '></script>   //燃烧碰撞混合演示功能
+    <script src='./functions/dynamicRoute.js '></script>   //动态划线函数
+    <script src='./functions/tileset.js '></script>   //显示瓦片地图
+</div>
 </body>
 </html>

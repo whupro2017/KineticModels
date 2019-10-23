@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Kinetic Models</title>
+    <style>
+        @import url(cesium/bucket.css);
+
+        body {
+            color: #000;
+        }
+
+        #toolbar {
+            background: rgba(42, 42, 42, 0.8);
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        #toolbar input {//新增HPR
+        vertical-align: middle;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        #toolbar_measure {
+            background: rgba(42, 42, 42, 0.8);
+            padding: 4px;
+            border-radius: 4px;
+            z-index: 99999;
+        }
+
+        button {
+            color: #fff;
+            background-color: #666666;
+            text-align: center;
+            border: 1px solid #1E90FF;
+            border-radius: 4px;
+        }
+
+        .toolbar_measure button {
+            width: 50px;
+            height: 24px;
+            border-radius: 0px;
+            opacity: 0.8;
+            border: 1px solid rgba(255, 255, 255, 1);
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.8);
+            margin-left: 4px;
+        }
+
+        .toolbar_measure {
+            position: absolute;
+            top: 50px;
+            right: 00px;
+            z-index: 8888;
+            display: none;
+            width: 300px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 2px 0px 2px 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+        }
+
+        /* //坐标样式 */
+
+        .leftMenu {
+            width: 160px;
+            height: 80px;
+            background-color: #f1f1f1;
+            position: absolute;
+            display: none;
+            left: 300px;
+            top: 300px;
+            border-radius: 5px;
+            z-index: 9999;
+            line-height: 26px;
+            padding-left: 5px;
+        }
+
+        .leftMenu p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .Smodel {
+            position: absolute;
+            top: 40px;
+            right: 226px;
+            z-index: 20330;
+            width: 176px;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+            display: none;
+            font-size: 12px;
+        }
+
+        .Smodel .model_content p {
+            margin: 10px 7px;
+            font-size: 12px;
+        }
+
+        .Smodel .model_content span {
+            color: #fff;
+        }
+
+        .Smodel .model_content input {
+            width: 105px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+            color: #fff;
+            padding-left: 5px;
+            font-size: 12px;
+        }
+
+        .Smodel .model_content select {
+            width: 105px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+            color: #fff;
+            padding-left: 5px;
+            font-size: 12px;
+        }
+
+        .Smodel .modelselect_p select {
+            width: 80px !important;
+        }
+
+        .Smodel .model_content button {
+            width: 40px;
+            height: 20px;
+            background: rgba(0, 0, 0, 1);
+            border-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 1);
+            margin-left: 10px;
+            color: #fff;
+            font-size: 10px;
+        }
+
+        .Smodel .model_content button:hover {
+            background: rgba(204, 212, 222, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+<div id="cesiumContainer" class="fullSize"></div>
+<div class="leftMenu" id="modelInfo">
+    <p></p>
+</div>
+<div id="toolbar" style="display:block;">
+    <div align="center">
+        按 F9 隐 藏 菜 单
+    </div>
+    <div>
+        <div style="float:left;width:100%;">
+            <div id="CreateCase" style="float: left">
+            </div>
+            <div style="float: left">
+                <input type="file" id="case_file" style="display:none">
+                <form id="kinetic_files" method="post" enctype="multipart/form-data" style="display:none"
+                      action="/uploads" target="nm_iframe">
+                    <input type="file" id="files" onchange="formSubmit()" name="upload" webkitdirectory mozdirectory>
+                    <input type="submit" id="upload_confirm" value="确认上传文件夹">
+                </form>
+
+                <form action="/upload" , enctype="multipart/form-data" method="post" style="display:none">
+                    <input type="file" name="upload" multiple="multipart">
+                    <input type="submit" value="确认上传文件">
+                </form>
+                <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+                <!--<input type="file" id="kinetic_file" webkitdirectory directory style="display:none" onchange="get_kinetic_file(this.value)">-->
+                <table>
+                    <tr>
+                        <td>案 件 id：</td>
+                        <td><select id="case_id" style="width:120px;height:25px" onchange="get_scenes(this.value)">
+                            <option value="volvo" hidden>请选择案件</option>
+                        </select></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="width:100%">
+            <div id="CreateScene" style="float: left">
+            </div>
+            <div style="float: left">
+                <table>
+                    <tr>
+                        <td>场 景 id：</td>
+                        <td><select id="scene_id" style="width:120px;height:25px"
+                                    onchange="select_scene(this.value)">
+                            <option value="" hidden>请选择场景</option>
+                        </select></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="operations" style="float: left;display:none">
+        <div id="toolbar_hpr" style="float: left">
+
+            <div>RotateX</div>
+            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateX, valueUpdate: 'input'">
+            <input type="text" size="5" data-bind="value: RotateX">
+
+            <div>RotateY</div>
+            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateY, valueUpdate: 'input'">
+            <input type="text" size="5" data-bind="value: RotateY">
+
+            <div>RotateZ</div>
+            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateZ, valueUpdate: 'input'">
+            <input type="text" size="5" data-bind="value: RotateZ">
+        </div>
+        <div id="caseMenu"></div>
+        <div id="MeasureMenu"></div>
+        <div id="modelMenu"></div>
+        <div id="DynRoute"></div>
+        <div>
+            <div>
+                <div id="KineticMenu" style="float: left;"></div>
+                <div style="float: left;">
+                    <table>
+                        <tr>
+                            <td><select id="kinetic_model" style="width:100px;height:25px">
+                                <option value="volvo" hidden>选择动力学模型</option>
+                            </select></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div id="ModelMeasure" style="float: left;"></div>
+                <div style="float: left;">
+                    <table>
+                        <tr>
+                            <td><select id="models" style="width:100px;height:25px" onchange="locate_model(this.value)">
+                                <option value="volvo" hidden>要素与场信息</option>
+                            </select></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <select id="top_icon_menu" style="width:100px;height:25px"
+                                    onchange="get_sub_menu(this.value)">
+                                <option value="volvo" hidden>选择图标大类</option>
+                                <option value="办公类">办公类</option>
+                                <option value="电子类">电子类</option>
+                                <option value="交通类">交通类</option>
+                                <option value="器具类">器具类</option>
+                                <option value="生活类">生活类</option>
+                                <option value="植物类">植物类</option>
+                                <option value="主体类">主体类</option>
+                                <option value="装饰类">装饰类</option>
+                            </select>
+                        </td>
+                        <td><select id="sub_icon_menu" style="width:100px;height:25px"
+                                    onchange="get_icon_menu(this.value)">
+                            <option value="volvo" hidden>选择图标子类</option>
+                        </select></td>
+
+                        <td><select id="icon_menu" style="width:100px;height:25px"
+                                    onchange="get_icon_image(this.value)">
+                            <option value="volvo" hidden>选择图标图片</option>
+                        </select></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        <div>
+            <div style="float: left">
+                <div id="markMenu" style="float: left"></div>
+                <div style="float: left">
+                    <input id="element_file" type="file" style="display:none" accept=".xls,.xlsx"
+                           onchange="importFile(this)">
+                    <table>
+                        <tr>
+                            <td><select id="element_type" style="width:80px;height:25px"
+                                        onchange="get_element_menu(this.value)">
+                                <option value="volvo" hidden>要素类别</option>
+                                <option value="scene_handprint">手印痕迹</option>
+                                <option value="scene_footprint">足迹痕迹</option>
+                                <option value="scene_toolmark">工具痕迹</option>
+                                <option value="scene_bio_evidence">生物物证</option>
+                                <option value="scene_file_evidence">文检物证</option>
+                                <option value="scene_elec_evidence">电子物证</option>
+                            </select></td>
+                            <td><select id="elements" style="width:80px;height:25px">
+                                <option value="volvo" hidden>绑定要素</option>
+                            </select></td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div style="float: left">
+                <div id="infoMenu" style="float: left"></div>
+                <div style="float: left">
+                    <input id="info_file" type="file" style="display:none" accept=".xls,.xlsx"
+                           onchange="importFile(this)">
+                    <table>
+                        <tr>
+                            <td><select id="info_type" style="width:80px;height:25px"
+                                        onchange="get_element_menu(this.value)">
+                                <option value="volvo" hidden>信息类别</option>
+                                <option value="scene_handprint">手印痕迹</option>
+                                <option value="scene_footprint">足迹痕迹</option>
+                                <option value="scene_toolmark">工具痕迹</option>
+                                <option value="scene_bio_evidence">生物物证</option>
+                                <option value="scene_file_evidence">文检物证</option>
+                                <option value="scene_elec_evidence">电子物证</option>
+                            </select></td>
+                            <td><select id="infos" style="width:80px;height:25px">
+                                <option value="volvo" hidden>绑定要素</option>
+                            </select></td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div>
+                <div style="float: left">
+                    <div id="thingMenu" style="float: left"></div>
+                    <div style="float: left">
+                        <input id="thing_file" type="file" style="display:none" accept=".gltf,.xlsx,.xls"
+                               onchange="importThingFile(this)">
+                        <table>
+                            <tr>
+                                <td><select id="thing_type" style="width:80px;height:25px"
+                                            onchange="get_thing_menu(this.value)">//thing_type
+                                    <option value="volvo" hidden>物品类别</option>
+                                    <option value="thing_tea_table">茶几</option>
+                                    <option value="thing_kitchen_supplies">厨房</option>
+                                    <option value="thing_cupboard">橱柜</option>
+                                    <option value="thing_window">窗户</option>
+                                    <option value="thing_bed">床</option>
+                                    <option value="thing_stool">凳子</option>
+                                    <option value="thing_electronic_device">电子器件</option>
+                                    <option value="thing_shelf">架子</option>
+                                    <option value="thing_door">门</option>
+                                    <option value="thing_person">人</option>
+                                    <option value="thing_sofa">沙发</option>
+                                    <option value="thing_toiletries">卫浴用品</option>
+                                    <option value="thing_chair">椅子</option>
+                                    <option value="thing_table">桌子</option>
+                                </select></td>
+                                <td><select id="things" style="width:80px;height:25px">//things
+                                    //onchange=sub_thing_menu()>//things
+                                    <option value="volvo" hidden>选择物品</option>
+                                </select></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div style="float: left">
+                    <div id="humanMenu" style="float: left"></div>
+                    <div style="float: left">
+                        <input id="human_file" type="file" style="display:none" accept=".xls,.xlsx"
+                               onchange="importFile(this)">
+                        <table>
+                            <tr>
+                                <td><select id="human_type" style="width:80px;height:25px"
+                                            onchange="get_element_menu(this.value)">
+                                    <option value="volvo" hidden>涉案人类别</option>
+                                    <option value="scene_handprint">手印痕迹</option>
+                                    <option value="scene_footprint">足迹痕迹</option>
+                                    <option value="scene_toolmark">工具痕迹</option>
+                                    <option value="scene_bio_evidence">生物物证</option>
+                                    <option value="scene_file_evidence">文检物证</option>
+                                    <option value="scene_elec_evidence">电子物证</option>
+                                </select></td>
+                                <td><select id="humen" style="width:80px;height:25px">
+                                    <option value="volvo" hidden>绑定要素</option>
+                                </select></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="toolbar_measure">
+        <button type="button" onclick="pick()">坐标</button>
+
+        <button type="button" onclick="heightMeasuring()">高度</button>
+        <button type="button" onclick="distanceDraw()">距离</button>
+        <button type="button" onclick="areaMeasuring()">面积</button>
+        <button type="button" onclick="stopMeasure()">退出</button>
+    </div>
+
+    <div class="Smodel">
+        <div class="model_content">
+            <p><span>名称：</span><input type="text" class="Sname" placeholder="请输入名称"></p>
+            <p><span>经度：</span><input type="number" class="Slongitude" placeholder="请输入经度" step="0.00001"></p>
+            <p><span>纬度：</span><input type="number" class="Slatitude" placeholder="请输入纬度" step="0.00001"></p>
+            <p><span>高度：</span><input type="number" class="Sheight" placeholder="请输入高度" step="0.1"></p>
+            <p><span>方向：</span><input type="number" class="Sdirection" placeholder="请输入方向" value="0"></p>
+            <p><span>比例：</span><input type="number" class="Sproportion" placeholder="请输入比例" value="1" min="0.1"
+                                      step="0.1">
+            </p>
+            <p><span>预案：</span><select class="planOption">
+                <option value="1">预案一</option>
+                <option value="2">预案二</option>
+                <option value="3">预案三</option>
+            </select></p>
+            <p class="modelselect_p"><span>选择模型：</span><select class="dropdownMenu">
+                <option value="./img/modelImg/gou.glb">警犬</option>
+                <option value="./img/modelImg/yisheng.glb">医生</option>
+                <option value="./img/modelImg/wujing.glb">武警</option>
+                <option value="./img/modelImg/xiaofangyuan.glb">消防员</option>
+                <option value="./img/modelImg/jingchanan.glb">警察男</option>
+                <option value="./img/modelImg/jingchanv.glb">警察女</option>
+                <option value="./img/modelImg/fangbaoche.glb">防暴车</option>
+                <option value="./img/modelImg/jingche.glb">警车</option>
+                <option value="./img/modelImg/motuoche.glb">摩托车</option>
+                <option value="./img/modelImg/zhihuiche.glb">指挥车</option>
+                <option value="./img/modelImg/gongjiaoche.glb">公交车</option>
+                <option value="./img/modelImg/jijuche.glb">救护车</option>
+                <option value="./img/modelImg/jiuyuanche.glb">救援车</option>
+                <option value="./img/modelImg/xiaofangche.glb">消防车</option>
+                <option value="./img/modelImg/jingyonggongjiaoche.glb">警用公交车</option>
+                <option value="./img/modelImg/luzhang.glb">路障</option>
+                <option value="./img/modelImg/miehuoche.glb">灭火器</option>
+                <option value="./img/modelImg/zucheding.glb">阻车钉</option>
+            </select></p>
+            <button type="button" class="StakeBtn" onclick="siteModelTake('.Slongitude','.Slatitude','.Sheight')">量取
+            </button>
+            <button type="button" class="Ssubmit" onclick="addModelInfo()">提交</button>
+            <button type="button" class="Sdropout" onclick="stopModel()">退出</button>
+
+        </div>
+    </div>
+    <div id="menu">
+        <button id="show_model_info" type="button" style="width:125px;" onclick="show_model_info()">显示详情</button>
+        <button type="button" style="width:125px;">删除标定</button>
+        <button type="button" style="width:125px;">更改位置</button>
+    </div>
+    <div id="start_kinetic_model" style="display: none">
+        <button id="start_fire_model" onclick="start_fire()"></button>
+        <input id="fire_type_name" value="smoke">
+        <button id="start_collision_model" onclick="start_collision()"></button>
+        <button id="start_explosion_model" onclick="start_explosion()"></button>
+        <button id="start_kill_model" onclick="start_kill()"></button>
+    </div>
+
+    <style>
+        #menu {
+            width: 0; /*设置为0 隐藏自定义菜单*/
+            overflow: hidden; /*隐藏溢出的元素*/
+            box-shadow: 0 1px 1px #888, 1px 0 1px #ccc;
+            position: absolute; /*自定义菜单相对与body元素进行定位*/
+        }
+    </style>
+    <script src="cesium/Cesium.js"></script>
+    <script src="cesium/Sandcastle-header.js"></script>
+    <script src="cesium/jquery-2.1.4.min.js"></script>
+    <script src="cesium/jquery-form.js"></script>
+    <script src="cesium/xlsx.core.min.js"></script>
+
+
+
+    <script>
+        var viewer = new Cesium.Viewer('cesiumContainer', {
+            shouldAnimate: false,
+            baseLayerPicker: false,
+            homeButton: false,       //是否显示home键
+            timeline: true,        //是否显示时间线控件
+            fullscreenButton: false, //是否全屏显示
+            scene3DOnly: true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+            infoBox: true,         //是否显示点击要素之后显示的信息
+            sceneModePicker: false,  //是否显示投影方式控件  三维/二维
+            navigationInstructionsInitiallyVisible: false,
+            navigationHelpButton: false,     //是否显示帮助信息控件
+            selectionIndicator: false,        //是否显示指示器组件
+            imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+                url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+            }),
+            // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
+            //     url: 'cesium/googleTMS',
+            // }),
+            // terrainProvider: Cesium.createWorldTerrain()//加载地势
+        });
+        viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
+        viewer.scene.globe.depthTestAgainstTerrain = false;
+        // viewer.camera.setView({
+        //     destination: Cesium.Cartesian3.fromDegrees(105.07224017290507, 36.56475804850547, 4889916.564370803),
+        //     orientation: {
+        //         heading: 0.0,
+        //         pitch: Cesium.Math.toRadians(-90.0),
+        //         roll: 0.0
+        //     }
+        // });
+        var scene = viewer.scene;
+        var clock = viewer.clock;
+
+
+        var operation_type;
+        var element_image = "cesium/images/left_foot.JPG";
+        var thing_gltf = 'cesium/Models/Test/model.gltf';
+        var dog_gltf = 'cesium/Models/Test/dog.gltf';
+        var mark_color = Cesium.Color.WHITE;
+        var dataSourcePromise;
+
+        var viewModel = {
+            RotateX:0,
+            RotateY:0,
+            RotateZ:0
+        };
+
+        Cesium.knockout.track(viewModel); // 跟踪此Model
+        var toolbar_hpr = document.getElementById('toolbar_hpr'); // 获取前端监控div
+        Cesium.knockout.applyBindings(viewModel, toolbar_hpr); // 绑定监控
+
+
+
+        var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
+            Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 0)
+        );
+        var entity3 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
+                url: dog_gltf,
+                modelMatrix: modelMatrix,
+                // minimumPixelSize : 512,
+                scale: 0.1,
+                // maximumScale : 200000
+            })
+        );
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 50.0)
+        });//初始视角
+
+        update_model_hpr(entity3)
+
+
+
+        function update_model_hpr(entity) {
+            Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
+                RotateX = Number(RotateX);
+                if (isNaN(RotateX)) {
+                    return;
+                }
+                var m = entity.modelMatrix;
+                var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
+                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+            });
+
+            Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
+                RotateY = Number(RotateY);
+                if (isNaN(RotateY)) {
+                    return;
+                }
+                var m = entity.modelMatrix;
+                var m1 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(RotateY));
+                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+            });
+
+            Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
+                RotateZ = Number(RotateZ);
+                if (isNaN(RotateZ)) {
+                    return;
+                }
+                var m = entity.modelMatrix;
+                var m1 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(RotateZ));
+                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+            });//Sandcastle_End
+            Sandcastle.finishedLoading();
+        }
+    </script>
+    <script src='./js/measuring.js'></script>
+    <script src='./js/blast.js'></script>
+    <script src='./js/collision.js '></script>
+    <script src='./js/modelMark.js'></script>
+    <script src='./js/plug-in.js '></script>
+
+
+    <script src='./functions/czml.js '></script>      <!--czml相关-->
+    <script src='./functions/sandcastle.js '></script>  <!-- cesium控件-->
+    <script src='./functions/handler.js '></script>     <!-- 鼠标事件-->
+    <script src='./functions/fire.js '></script>        <!-- 燃烧功能-->
+    <script src='./functions/collision.js '></script>   <!-- 碰撞演示功能-->
+    <script src='./functions/explosion.js '></script>    <!-- 爆炸演示功能-->
+    <script src='./functions/mix.js '></script>   <!-- 燃烧碰撞混合演示功能-->
+    <script src='./functions/dynamicRoute.js '></script>   <!-- 动态划线函数-->
+    <script src='./functions/tileset.js '></script>   <!-- 显示瓦片地图-->
+    <script src='./functions/menu.js '></script>   <!-- 菜单操作功能-->
+    <script src='./functions/onkey.js '></script>     <!--快捷键相关-->
+    <script src='./functions/fileSystem.js '></script>     <!--文件上传相关-->
+</div>
+</body>
+</html>

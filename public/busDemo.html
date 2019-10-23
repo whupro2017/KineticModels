@@ -168,11 +168,16 @@
             <div id="CreateCase" style="float: left">
             </div>
             <div style="float: left">
-                <input type="file" id="case_file" style="display:none">
+                <input type="model_file" id="case_file" style="display:none">
                 <form id="kinetic_files" method="post" enctype="multipart/form-data" style="display:none"
                       action="/uploads" target="nm_iframe">
                     <input type="file" id="files" onchange="formSubmit()" name="upload" webkitdirectory mozdirectory>
-                    <input type="submit" id="upload_confirm" value="确认上传文件夹">
+                    <input type="submit" id="upload_confirm" value="确认上传动力学模型">
+                </form>
+                <form id="particle_file" method="post" enctype="multipart/form-data" style="display:none"
+                      action="/uploads_particle" target="nm_iframe">
+                    <input type="file" id="particle_files" onchange="particle_file_formSubmit()" name="upload" webkitdirectory mozdirectory>
+                    <input type="submit" id="particle_upload_confirm" value="确认上传粒子素材">
                 </form>
 
                 <form action="/upload" , enctype="multipart/form-data" method="post" style="display:none">
@@ -484,8 +489,8 @@
     }
 
     $(document).ready(function () {
-        var options = {
-            target: '#output2',   // target element(s) to be updated with server response
+        var options1 = {
+            target: '#output1',   // target element(s) to be updated with server response
             beforeSubmit:
                 function (data) {
                     console.log("提交前函数");
@@ -522,15 +527,43 @@
             // $.ajax options can be used here too, for example:
             //timeout:   3000
         };
+        var options2 = {
+            target: '#output2',   // target element(s) to be updated with server response
+            beforeSubmit:
+                function (data) {
+                    console.log("开始提交粒子素材");
+                },
+            success:
+                function showResponse(responseText, statusText, xhr, $form) {
+                    console.log(responseText);
+                    alert(responseText.msg);
+                },
+            // other available options:
+            //url:       url         // override for form's 'action' attribute
+            //type:      type        // 'get' or 'post', override for form's 'method' attribute
+            dataType: 'json'        // 'xml', 'script', or 'json' (expected server response type)
+            //clearForm: true        // clear all form fields after successful submit
+            //resetForm: true        // reset the form after successful submit
+
+            // $.ajax options can be used here too, for example:
+            //timeout:   3000
+        };
 
         $('#kinetic_files').submit(function () {
-            $(this).ajaxSubmit(options);
+            $(this).ajaxSubmit(options1);
+            return false;
+        });
+        $('#particle_file').submit(function () {
+            $(this).ajaxSubmit(options2);
             return false;
         });
     });
 
     function formSubmit() {
         document.getElementById("upload_confirm").click();
+    }
+    function particle_file_formSubmit() {
+        document.getElementById("particle_upload_confirm").click();
     }
 
     $(function () {
@@ -1807,9 +1840,8 @@
         $("#files").trigger("click");
 
     }, 'KineticMenu');
-    Sandcastle.addToolbarButton('创建动力学模型', function () {
-        $("#files").trigger("click");
-
+    Sandcastle.addToolbarButton('上传动力学粒子素材', function () {
+        $("#particle_files").trigger("click");
     }, 'KineticMenu');
     Sandcastle.addToggleButton('显示', false, function (checked) {
         dataSource.clustering.enabled = checked;

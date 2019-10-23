@@ -56,8 +56,6 @@ Sandcastle.addToolbarButton('爆炸冲击波', function () {
         }
     });
 }, 'caseMenu');
-
-
 Sandcastle.addToolbarButton('燃烧模型', function () {
     window
         .open(
@@ -65,16 +63,12 @@ Sandcastle.addToolbarButton('燃烧模型', function () {
             "fire_parameter",
             "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 }, 'modelMenu');
-
-
-
 Sandcastle.addToolbarButton('碰撞模型', function () {
     window.open(
         "collision_parameter.html",
         "collision_parameter",
         "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 }, 'modelMenu');
-
 Sandcastle.addToolbarButton('爆炸模型', function () {
     window
         .open(
@@ -82,7 +76,6 @@ Sandcastle.addToolbarButton('爆炸模型', function () {
             "explosion_parameter",
             "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 }, 'modelMenu');
-
 Sandcastle.addToolbarButton('砍杀模型', function () {
     window
         .open(
@@ -91,6 +84,9 @@ Sandcastle.addToolbarButton('砍杀模型', function () {
             "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 }, 'modelMenu');
 
+// Sandcastle.addToolbarButton('砍杀模型', function () {
+//
+// }, 'modelMenu');
 Sandcastle.addToolbarButton('混合模型', function () {
     clearFire();
     clearCollision();
@@ -109,7 +105,6 @@ Sandcastle.addToolbarButton('混合模型', function () {
     });
     pz_start();
 }, 'modelMenu');
-
 Sandcastle.addToolbarButton('上传动力学模型', function () {
     $("#files").trigger("click");
 
@@ -145,7 +140,7 @@ Sandcastle.addToolbarButton('新建痕迹', function () {
     console.log("新建痕迹");
 }, 'markMenu');
 Sandcastle.addToolbarButton('标注模式', function () {
-    operation_type = "mark_elements";
+    operation_type = "mark_things";//things标注
     alert("选择绑定要素和要素图标后后左键点击标定要素位置");
 }, 'thingMenu');
 Sandcastle.addToolbarButton('导入物品', function () {
@@ -186,3 +181,11 @@ Sandcastle.addToolbarButton('新建信息', function () {
     $("#info_file").trigger("click");
     console.log("新建信息");
 }, 'infoMenu');
+
+//菜单案件与场景选项逻辑
+$.get("/get_cases", {"value": "get_cases"}, function (data) {
+    cases = data;
+    cases.forEach(function (json) {
+        $("#case_id").append('<option value=' + json.case_id + ' >' + json.case_id + '</option>');
+    });
+})

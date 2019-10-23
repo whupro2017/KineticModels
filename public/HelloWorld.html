@@ -55,14 +55,17 @@
         selectionIndicator: false,        //是否显示指示器组件
         // terrainProvider: Cesium.createWorldTerrain(),//加载地势
         //全球谷歌地图
-        imageryProvider: new Cesium.createTileMapServiceImageryProvider({
-            url: 'cesium/googleTMS',
-        })
+        // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
+        //     url: 'cesium/googleTMS',
+        // })
+        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+            url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+        }),
     });
-    //亚洲部分地图
-    viewer.imageryLayers.addImageryProvider(new Cesium.createTileMapServiceImageryProvider({
-        url: 'cesium/TMS/tiles',
-    }));
+    // 亚洲部分地图
+    // viewer.imageryLayers.addImageryProvider(new Cesium.createTileMapServiceImageryProvider({
+    //     url: 'cesium/TMS_北京/tiles',
+    // }));
     viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
     // var scene = viewer.scene;
     // var clock = viewer.clock;

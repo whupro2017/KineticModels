@@ -3,7 +3,7 @@ function start_fire() {
     clearCollision();
     clearExplosion();
     clearMix();
-    show_fire($("#fire_type_name").val());
+    show_fire();
     viewer.camera.setView({
         destination: Cesium.Cartesian3.fromDegrees(114.21857695568028, 30.359405404026386, 120),
         orientation: {
@@ -14,7 +14,7 @@ function start_fire() {
     });
 }
 
-function show_fire(file_name) {
+function show_fire() {
     var house = viewer.entities.add({
         id: "house",
         position: Cesium.Cartesian3.fromDegrees(114.21804414901572, 30.35976800592169, 10.06741790731156),
@@ -56,7 +56,7 @@ function show_fire(file_name) {
                     fabric: {
                         type: 'Image',
                         uniforms: {
-                            image: "./" + file_name + "/frame0/image" + id + ".png"
+                            image: "./smoke/frame0/image" + id + ".png"
                         }
                     },
                     transport: true
@@ -71,7 +71,7 @@ function show_fire(file_name) {
         if (viewer.clockViewModel.shouldAnimate == true && x < 1000) {
             // console.log("加载帧" + x);
             for (var i = 0; i < 25; i++) {
-                primitives[i].appearance.material.uniforms.image = "./" + file_name + "/frame" + x + "/image" + i + ".png";
+                primitives[i].appearance.material.uniforms.image = "./smoke/frame" + x + "/image" + i + ".png";
             }
             x++;
         }
@@ -85,7 +85,7 @@ function show_fire(file_name) {
                 timer = setInterval(function () {
                     if (viewer.clockViewModel.shouldAnimate == true && x < 1000) {
                         for (var i = 0; i < 25; i++) {
-                            primitives[i].appearance.material.uniforms.image = "./" + file_name + "/frame" + x + "/image" + i + ".png";
+                            primitives[i].appearance.material.uniforms.image = "./smoke/frame" + x + "/image" + i + ".png";
                         }
                         x++;
                     }
@@ -97,7 +97,7 @@ function show_fire(file_name) {
                 timer = setInterval(function () {
                     if (viewer.clockViewModel.shouldAnimate == true && x < 1000) {
                         for (var i = 0; i < 25; i++) {
-                            primitives[i].appearance.material.uniforms.image = "./" + file_name + "/frame" + x + "/image" + i + ".png";
+                            primitives[i].appearance.material.uniforms.image = "./smoke/frame" + x + "/image" + i + ".png";
                         }
                         x += Math.ceil(clock.multiplier);
                     }

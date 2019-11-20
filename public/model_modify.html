@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>设置砍杀模型参数</title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <!-- basic styles -->
+        <!-- page content -->
+        <!-- ace styles -->
+        <!--  <link rel="stylesheet" href="../assets/css/ace.min.css" />-->
+        <script src="cesium/import/js/jQuery/jquery-2.1.4.min.js" type="text/javascript"></script>
+        <script src="cesium/import/assets/js/ace-extra.min.js" type="text/javascript"></script>
+        <script src="cesium/import/js/datapicker/bootstrap-datepicker.js" type="text/javascript"></script>
+        <script src="cesium/import/js/datapicker/bootstrap-datepicker.zh-CN.js" type="text/javascript"></script>
+        <script src="cesium/import/js/bootstrap/bootstrap3.2.js"></script>
+        <script src="cesium/import/js/bootstraptable/bootstrap-table.js"></script>
+        <script src="cesium/import/js/queryjs/queryjs.js" type="text/javascript"></script>
+
+        <!-- jqGrid -->
+        <script src="cesium/import/assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="cesium/import/assets/js/typeahead-bs2.min.js" type="text/javascript"></script>
+        <script src="cesium/import/assets/js/jqGrid/jquery.jqGrid.min.js" type="text/javascript"></script>
+        <script src="cesium/import/assets/js/jqGrid/i18n/grid.locale-en.js" type="text/javascript"></script>
+
+        <script type="text/javascript" src="cesium/import/js/queryjs/queryjs.js"></script>
+        <!--<script type="text/javascript"  src="cesium/import/js/queryjs/query_table.js"></script>-->
+    </head>
+    <style>
+        @import url(cesium/bucket.css);
+        /*@import url(cesium/import/assets/css/bootstrap.min.css);*/
+        /*@import url(cesium/import/assets/css/font-awesome.min.css);*/
+        /*@import url(cesium/import/assets/css/jquery-ui-1.10.3.full.min.css);*/
+        /*@import url(cesium/import/assets/css/ui.jqgrid.css);*/
+        /*@import url(cesium/import/assets/css/ace.min.css);*/
+        /*@import url(cesium/import/assets/css/ace-rtl.min.css);*/
+        /*@import url(cesium/import/assets/css/ace-skins.min.css);*/
+        /*@import url(cesium/import/css/bootstrap/bootstrap-datepicker.css);*/
+        /*@import url(cesium/import/css/bootstrap/bootstrap-datepicker3.css);*/
+        /*@import url(cesium/import/css/bootstrap/css/bootstrap-table.css);*/
+        body {
+            background-color: #222222;
+            color: #ffffff;
+        }
+
+        #toolbar input {//新增HPR
+        vertical-align: middle;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+
+    </style>
+</head>
+
+<body>
+<div id="toolbar_hpr" style="float: left; background-color: #222222;">
+
+    <div>Height-offset</div>
+    <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: height, valueUpdate: 'input'">
+    <input type="text" size="5" data-bind="value: height">
+
+    <div>RotateX</div>
+    <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateX, valueUpdate: 'input'">
+    <input type="text" size="5" data-bind="value: RotateX">
+
+    <div>RotateY</div>
+    <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateY, valueUpdate: 'input'">
+    <input type="text" size="5" data-bind="value: RotateY">
+
+    <div>RotateZ</div>
+    <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateZ, valueUpdate: 'input'">
+    <input type="text" size="5" data-bind="value: RotateZ">
+</div>
+</body>
+</html>

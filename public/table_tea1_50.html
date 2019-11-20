@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>选择物品</title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <!-- basic styles -->
+        <!-- page content -->
+        <!-- ace styles -->
+        <!--  <link rel="stylesheet" href="../assets/css/ace.min.css" />-->
+        <script src="cesium/import/js/jQuery/jquery-2.1.4.min.js" type="text/javascript"></script>
+        <script src="cesium/import/assets/js/ace-extra.min.js" type="text/javascript"></script>
+        <script src="cesium/import/js/datapicker/bootstrap-datepicker.js" type="text/javascript"></script>
+        <script src="cesium/import/js/datapicker/bootstrap-datepicker.zh-CN.js" type="text/javascript"></script>
+        <script src="cesium/import/js/bootstrap/bootstrap3.2.js"></script>
+        <script src="cesium/import/js/bootstraptable/bootstrap-table.js"></script>
+        <script src="cesium/import/js/queryjs/queryjs.js" type="text/javascript"></script>
+
+        <!-- jqGrid -->
+        <script src="cesium/import/assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="cesium/import/assets/js/typeahead-bs2.min.js" type="text/javascript"></script>
+        <script src="cesium/import/assets/js/jqGrid/jquery.jqGrid.min.js" type="text/javascript"></script>
+        <script src="cesium/import/assets/js/jqGrid/i18n/grid.locale-en.js" type="text/javascript"></script>
+
+        <script type="text/javascript" src="cesium/import/js/queryjs/queryjs.js"></script>
+        <!--<script type="text/javascript"  src="cesium/import/js/queryjs/query_table.js"></script>-->
+    </head>
+    <style>
+        @import url(cesium/bucket.css);
+        /*@import url(cesium/import/assets/css/bootstrap.min.css);*/
+        /*@import url(cesium/import/assets/css/font-awesome.min.css);*/
+        /*@import url(cesium/import/assets/css/jquery-ui-1.10.3.full.min.css);*/
+        /*@import url(cesium/import/assets/css/ui.jqgrid.css);*/
+        /*@import url(cesium/import/assets/css/ace.min.css);*/
+        /*@import url(cesium/import/assets/css/ace-rtl.min.css);*/
+        /*@import url(cesium/import/assets/css/ace-skins.min.css);*/
+        /*@import url(cesium/import/css/bootstrap/bootstrap-datepicker.css);*/
+        /*@import url(cesium/import/css/bootstrap/bootstrap-datepicker3.css);*/
+        /*@import url(cesium/import/css/bootstrap/css/bootstrap-table.css);*/
+
+        body {
+            background-color: #222222;
+            color: #f1f1f1;
+        }
+
+        .table_thing{
+            margin: 10px 10px;
+            position: relative;
+        }
+
+        /*.wrap {*/
+        /*    position:relative;*/
+        /*}*/
+
+        .inner {
+            display:none;
+            position:absolute; top:30px; left:100px;
+            /*position: relative;*/
+            width:100px; height:100px;
+            border:0px solid #000;
+            background:#fff;
+        }
+    </style>
+</head>
+<body>
+<div class="table_thing">
+    <table border="2" style="width: 400px;height: 400px;">
+        <tr >
+            <td>
+                <div class="wrap">
+                    <input type="button" value="茶几1" onmouseover="visible(0,1)" onmouseout="visible(0,0)">
+                    <div class="inner">
+                        <img src='cesium/Models/Test/model.png' height="300" width="300" alt = "请使用相对路径"/> <!--使用绝对路径会报错-->
+                    </div>
+                </div>
+            </td>
+            <td>茶几2</td>
+            <td>茶几3</td>
+            <td>茶几4</td>
+            <td>茶几5</td>
+            <td>茶几6</td>
+            <td>茶几7</td>
+            <td>茶几8</td>
+            <td>茶几9</td>
+            <td>
+                <div class="wrap">
+                    <input type="button" value="茶几10" onmouseover="visible(1,1)" onmouseout="visible(1,0)">
+                    <div class="inner">
+                        <img src='cesium/Models/Test/a.jpg' height="300" width="300" />
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>茶几11</td>
+            <td>茶几12</td>
+            <td>茶几13</td>
+            <td>茶几14</td>
+            <td>茶几15</td>
+            <td>茶几16</td>
+            <td>茶几17</td>
+            <td>茶几18</td>
+            <td>茶几19</td>
+            <td>茶几20</td>
+        </tr>
+        <tr>
+            <td>茶几21</td>
+            <td>茶几22</td>
+            <td>茶几23</td>
+            <td>茶几24</td>
+            <td>茶几25</td>
+            <td>茶几26</td>
+            <td>茶几27</td>
+            <td>茶几28</td>
+            <td>茶几29</td>
+            <td>茶几30</td>
+        </tr>
+        <tr>
+            <td>茶几31</td>
+            <td>茶几32</td>
+            <td>茶几33</td>
+            <td>茶几34</td>
+            <td>茶几35</td>
+            <td>茶几36</td>
+            <td>茶几37</td>
+            <td>茶几38</td>
+            <td>茶几39</td>
+            <td>茶几40</td>
+        </tr>
+        <tr>
+            <td>茶几41</td>
+            <td>茶几42</td>
+            <td>茶几43</td>
+            <td>茶几44</td>
+            <td>茶几45</td>
+            <td>茶几46</td>
+            <td>茶几47</td>
+            <td>茶几48</td>
+            <td>茶几49</td>
+            <td>茶几50</td>
+        </tr>
+    </table>
+
+    <script>
+        // var $ = function(id){
+        //     return document.getElementById(id);
+        // };
+        // var $t = function(tag, cot){
+        //     cot = cot || document;
+        //     return cot.getElementsByTagName(tag);
+        // };
+        // $t('input')[0].onmouseover = function(){ <!-- [0]控制第i+1 个带有input属性的单元 -->
+        //     $t('div', this.parentNode)[0].style.display = 'block';
+        // }
+        // $t('input')[0].onmouseout = function(){
+        //     $t('div', this.parentNode)[0].style.display = 'none';
+        // }
+
+        function visible(i,j){
+            var $ = function(id){
+                return document.getElementById(id);
+            };
+            var $t = function(tag, cot){
+                cot = cot || document;
+                return cot.getElementsByTagName(tag);
+            };
+            if (j==0){
+                $t('input')[i].onmouseout = function(){
+                    $t('div', this.parentNode)[0].style.display = 'none';
+                }
+            }
+            else{
+                $t('input')[i].onmouseover = function(){
+                    $t('div', this.parentNode)[0].style.display = 'block';
+                }
+            }
+        }
+
+
+    </script>
+
+
+</div>
+</body>
+</html>

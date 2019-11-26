@@ -169,12 +169,12 @@
             </div>
             <div style="float: left">
                 <input type="file" id="case_file" style="display:none">
-                <form id="kinetic_files" method="post" enctype="multipart/form-data" style="display:none"
-                      action="/uploads" target="nm_iframe">
-                    <input type="file" id="files" onchange="formSubmit()" name="upload" webkitdirectory mozdirectory>
-                    <input type="submit" id="upload_confirm" value="确认上传文件夹">
-                </form>
-
+                <!--<form id="kinetic_files" method="post" enctype="multipart/form-data" style="display:none"-->
+                      <!--action="/uploads" target="nm_iframe">-->
+                    <!--<input type="file" id="files" onchange="formSubmit()" name="upload" webkitdirectory mozdirectory>-->
+                    <!--<input type="submit" id="upload_confirm" value="确认上传文件夹">-->
+                <!--</form>-->
+                <input type="file" id="fileMutiply" name="files" style="display:none" webkitdirectory>
                 <form action="/upload" , enctype="multipart/form-data" method="post" style="display:none">
                     <input type="file" name="upload" multiple="multipart">
                     <input type="submit" value="确认上传文件">
@@ -476,139 +476,137 @@
             position: absolute; /*自定义菜单相对与body元素进行定位*/
         }
     </style>
-    <script src="cesium/Cesium.js"></script>
-    <script src="cesium/Sandcastle-header.js"></script>
-    <script src="cesium/jquery-2.1.4.min.js"></script>
-    <script src="cesium/jquery-form.js"></script>
-    <script src="cesium/xlsx.core.min.js"></script>
 
-
-
-    <script>
-        var viewer = new Cesium.Viewer('cesiumContainer', {
-            shouldAnimate: false,
-            baseLayerPicker: false,
-            homeButton: false,       //是否显示home键
-            timeline: true,        //是否显示时间线控件
-            fullscreenButton: false, //是否全屏显示
-            scene3DOnly: true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
-            infoBox: true,         //是否显示点击要素之后显示的信息
-            sceneModePicker: false,  //是否显示投影方式控件  三维/二维
-            navigationInstructionsInitiallyVisible: false,
-            navigationHelpButton: false,     //是否显示帮助信息控件
-            selectionIndicator: false,        //是否显示指示器组件
-            imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
-                url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-            }),
-            // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
-            //     url: 'cesium/googleTMS',
-            // }),
-            // terrainProvider: Cesium.createWorldTerrain()//加载地势
-        });
-        viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
-        viewer.scene.globe.depthTestAgainstTerrain = false;
-        // viewer.camera.setView({
-        //     destination: Cesium.Cartesian3.fromDegrees(105.07224017290507, 36.56475804850547, 4889916.564370803),
-        //     orientation: {
-        //         heading: 0.0,
-        //         pitch: Cesium.Math.toRadians(-90.0),
-        //         roll: 0.0
-        //     }
-        // });
-        var scene = viewer.scene;
-        var clock = viewer.clock;
-
-
-        var operation_type;
-        var element_image = "cesium/images/left_foot.JPG";
-        var thing_gltf = 'cesium/Models/Test/model.gltf';
-        var dog_gltf = 'cesium/Models/Test/dog.gltf';
-        var mark_color = Cesium.Color.WHITE;
-        var dataSourcePromise;
-
-        var viewModel = {
-            RotateX:0,
-            RotateY:0,
-            RotateZ:0
-        };
-
-        Cesium.knockout.track(viewModel); // 跟踪此Model
-        var toolbar_hpr = document.getElementById('toolbar_hpr'); // 获取前端监控div
-        Cesium.knockout.applyBindings(viewModel, toolbar_hpr); // 绑定监控
-
-
-
-        var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
-            Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 0)
-        );
-        var entity3 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
-                url: dog_gltf,
-                modelMatrix: modelMatrix,
-                // minimumPixelSize : 512,
-                scale: 0.1,
-                // maximumScale : 200000
-            })
-        );
-        viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 50.0)
-        });//初始视角
-
-        update_model_hpr(entity3)
-
-
-
-        function update_model_hpr(entity) {
-            Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
-                RotateX = Number(RotateX);
-                if (isNaN(RotateX)) {
-                    return;
-                }
-                var m = entity.modelMatrix;
-                var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
-                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
-            });
-
-            Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
-                RotateY = Number(RotateY);
-                if (isNaN(RotateY)) {
-                    return;
-                }
-                var m = entity.modelMatrix;
-                var m1 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(RotateY));
-                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
-            });
-
-            Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
-                RotateZ = Number(RotateZ);
-                if (isNaN(RotateZ)) {
-                    return;
-                }
-                var m = entity.modelMatrix;
-                var m1 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(RotateZ));
-                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
-            });//Sandcastle_End
-            Sandcastle.finishedLoading();
-        }
-    </script>
-    <script src='./js/measuring.js'></script>
-    <script src='./js/blast.js'></script>
-    <script src='./js/collision.js '></script>
-    <script src='./js/modelMark.js'></script>
-    <script src='./js/plug-in.js '></script>
-
-
-    <script src='./functions/czml.js '></script>      <!--czml相关-->
-    <script src='./functions/sandcastle.js '></script>  <!-- cesium控件-->
-    <script src='./functions/handler.js '></script>     <!-- 鼠标事件-->
-    <script src='./functions/fire.js '></script>        <!-- 燃烧功能-->
-    <script src='./functions/collision.js '></script>   <!-- 碰撞演示功能-->
-    <script src='./functions/explosion.js '></script>    <!-- 爆炸演示功能-->
-    <script src='./functions/mix.js '></script>   <!-- 燃烧碰撞混合演示功能-->
-    <script src='./functions/dynamicRoute.js '></script>   <!-- 动态划线函数-->
-    <script src='./functions/tileset.js '></script>   <!-- 显示瓦片地图-->
-    <script src='./functions/menu.js '></script>   <!-- 菜单操作功能-->
-    <script src='./functions/onkey.js '></script>     <!--快捷键相关-->
-    <script src='./functions/fileSystem.js '></script>     <!--文件上传相关-->
 </div>
+<script src="cesium/Cesium.js"></script>
+<script src="cesium/Sandcastle-header.js"></script>
+<script src="cesium/jquery-2.1.4.min.js"></script>
+<script src="cesium/jquery-form.js"></script>
+<script src="cesium/xlsx.core.min.js"></script>
+
+<script>
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+        shouldAnimate: false,
+        baseLayerPicker: false,
+        homeButton: false,       //是否显示home键
+        timeline: true,        //是否显示时间线控件
+        fullscreenButton: false, //是否全屏显示
+        scene3DOnly: true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+        infoBox: true,         //是否显示点击要素之后显示的信息
+        sceneModePicker: false,  //是否显示投影方式控件  三维/二维
+        navigationInstructionsInitiallyVisible: false,
+        navigationHelpButton: false,     //是否显示帮助信息控件
+        selectionIndicator: false,        //是否显示指示器组件
+        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+            url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+        }),
+        // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
+        //     url: 'cesium/googleTMS',
+        // }),
+        // terrainProvider: Cesium.createWorldTerrain()//加载地势
+    });
+    viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
+    viewer.scene.globe.depthTestAgainstTerrain = false;
+    // viewer.camera.setView({
+    //     destination: Cesium.Cartesian3.fromDegrees(105.07224017290507, 36.56475804850547, 4889916.564370803),
+    //     orientation: {
+    //         heading: 0.0,
+    //         pitch: Cesium.Math.toRadians(-90.0),
+    //         roll: 0.0
+    //     }
+    // });
+    var scene = viewer.scene;
+    var clock = viewer.clock;
+
+
+    var operation_type;
+    var element_image = "cesium/images/left_foot.JPG";
+    var thing_gltf = 'cesium/Models/Test/model.gltf';
+    var dog_gltf = 'cesium/Models/Test/dog.gltf';
+    var mark_color = Cesium.Color.WHITE;
+    var dataSourcePromise;
+
+    var viewModel = {
+        RotateX:0,
+        RotateY:0,
+        RotateZ:0
+    };
+
+    Cesium.knockout.track(viewModel); // 跟踪此Model
+    var toolbar_hpr = document.getElementById('toolbar_hpr'); // 获取前端监控div
+    Cesium.knockout.applyBindings(viewModel, toolbar_hpr); // 绑定监控
+
+
+
+    var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
+        Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 0)
+    );
+    var entity3 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
+            url: dog_gltf,
+            modelMatrix: modelMatrix,
+            // minimumPixelSize : 512,
+            scale: 0.1,
+            // maximumScale : 200000
+        })
+    );
+    viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 50.0)
+    });//初始视角
+
+    update_model_hpr(entity3)
+
+
+
+    function update_model_hpr(entity) {
+        Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
+            RotateX = Number(RotateX);
+            if (isNaN(RotateX)) {
+                return;
+            }
+            var m = entity.modelMatrix;
+            var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
+            entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        });
+
+        Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
+            RotateY = Number(RotateY);
+            if (isNaN(RotateY)) {
+                return;
+            }
+            var m = entity.modelMatrix;
+            var m1 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(RotateY));
+            entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        });
+
+        Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
+            RotateZ = Number(RotateZ);
+            if (isNaN(RotateZ)) {
+                return;
+            }
+            var m = entity.modelMatrix;
+            var m1 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(RotateZ));
+            entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        });//Sandcastle_End
+        Sandcastle.finishedLoading();
+    }
+</script>
+<script src='./js/measuring.js'></script>
+<script src='./js/blast.js'></script>
+<script src='./js/collision.js '></script>
+<script src='./js/modelMark.js'></script>
+<script src='./js/plug-in.js '></script>
+
+<script src='./functions/czml.js '></script>      <!--czml相关-->
+<script src='./functions/sandcastle.js '></script>  <!-- cesium控件-->
+<script src='./functions/handler.js '></script>     <!-- 鼠标事件-->
+<script src='./functions/fire.js '></script>        <!-- 燃烧功能-->
+<script src='./functions/collision.js '></script>   <!-- 碰撞演示功能-->
+<script src='./functions/explosion.js '></script>    <!-- 爆炸演示功能-->
+<script src='./functions/mix.js '></script>   <!-- 燃烧碰撞混合演示功能-->
+<script src='./functions/dynamicRoute.js '></script>   <!-- 动态划线函数-->
+<script src='./functions/tileset.js '></script>   <!-- 显示瓦片地图-->
+<script src='./functions/menu.js '></script>   <!-- 菜单操作功能-->
+<script src='./functions/onkey.js '></script>     <!--快捷键相关-->
+<script src='./functions/fileSystem.js '></script>     <!--文件上传相关-->
 </body>
 </html>

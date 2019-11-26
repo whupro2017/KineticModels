@@ -9,8 +9,9 @@ var app = express();
 var readline = require('readline');
 var java = require('java')
 java.classpath.push('javaClass')
+var MyClass = java.import('Single');
 app.use(express.static("public")).listen(8080);
-console.log("server started at'http://127.0.0.1:8080/collision.html'")
+console.log("server started at'http://127.0.0.1:8080/main.html'")
 
 
 // c.on('ready', function () {
@@ -94,7 +95,7 @@ app.get("/get_dat_arr", function (req, res) {
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Yandai#2018!',
+    password: '123',
     database: 'pointcloud'
 });
 connection.connect();
@@ -498,80 +499,6 @@ app.get('/update_element_info', function (req, res, next) {
 
 });
 
-app.post('/uploads_particle', function (req, res, next) {
-    var form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-    form.encoding = 'utf-8';
-    form.maxFileSize = 4 * 1024 * 1024 * 1024;
-    form.uploadDir = path.join(__dirname, 'public/particle_source');
-    form.multiples = true;
-    form.parse(req, function (err, fields, files) {
-            console.log("开始上传粒子");
-            var id;
-            var name;
-            var max_frame;
-            var max_x;
-            var max_y;
-            var max_z;
-            var file_folder;
-            var first_file;
-            for (var i = 0; i < files.upload.length; i++) {
-                var file = files.upload[i];
-                var pathnameArray = file.name.split('/');
-                var folderPath = form.uploadDir;
-                for (var j = 0; j < pathnameArray.length - 1; j++) {
-                    folderPath = path.join(folderPath, pathnameArray[j]);
-                    if (!fs.existsSync(folderPath)) {
-                        //如果不存在上传文件夹名称，就创建
-                        try {
-                            fs.mkdirSync(folderPath, 0o777);
-                            ("成功创建目录" + folderPath);
-                        } catch (e) {
-                            console.log(e.name + ": " + e.message);
-                        }
-                    }
-                }
-                fs.renameSync(file.path, path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
-                if (pathnameArray[pathnameArray.length - 1].split(".")[1] == "json") {
-                    console.log("获得json文件");
-                    var data = fs.readFileSync(path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
-                    var filedata = data.toString();//将二进制的数据转换为字符串
-                    console.log(filedata);
-                    filedata = JSON.parse(filedata);//将字符串转换为json对象
-                    id = filedata.id;
-                    name = filedata.name;
-                    max_frame = parseInt(filedata.max_frame);
-                    max_x = parseInt(filedata.max_x);
-                    max_y = parseInt(filedata.max_y);
-                    max_z = parseInt(filedata.max_z);
-                    file_folder = filedata.file_folder;
-                    first_file = filedata.first_file;
-                }
-            }
-            // try {
-            var MyClass = java.import('Single');
-            MyClass.transform(file_folder, max_x, max_y, max_z, max_frame, (error, info) => {
-                if (error) {
-                    console.log('put name Error: ', error);
-                    return;
-                }
-                console.log("all finnished");
-                var data = {msg: "转换粒子模型成功"};
-                // c.end();
-                res.send(data);
-                res.end();
-            });
-            // } catch (e) {
-            //     console.log(e.name + ": " + e.message);
-            //     var data = {msg: "上传失败"};
-            //     // c.end();
-            //     res.send(data);
-            //     res.end();
-            // }
-        }
-    );
-});
-
 
 app.post('/uploads', function (req, res, next) {
     //form表单
@@ -709,7 +636,154 @@ app.post('/upload', function (req, res, next) {
         // fs.renameSync(path, form.uploadDir + filename);
         // //响应 格式化打印
         // console.log("上传完成");
+
         res.end();
         // res.end(util.inspect(files));
     });
+});
+var id;
+var name;
+var max_frame;
+var max_x;
+var max_y;
+var max_z;
+var file_folder;
+var first_file;
+var file_prefix;
+
+app.post('/update_transform', function (req, res, next) {
+    //form表单
+    var form = new formidable.IncomingForm();
+    //保留后缀
+    form.keepExtensions = true;
+    form.encoding = 'utf-8';
+    form.maxFileSize = 4 * 1024 * 1024 * 1024;
+    //上传文件路径,采用path路径拼接
+    form.uploadDir = path.join(__dirname, 'public/particle_source');
+    //如果上传文件夹（多个文件）需将 默认值改为TRUE
+    form.multiples = true;
+    form.parse(req, function(err,fields,files){
+        var folderPath = form.uploadDir;
+        var file=files.files;
+        var pathnameArray = file.name.split('/');
+        for (var j = 0; j < pathnameArray.length - 1; j++) {
+            folderPath = path.join(folderPath, pathnameArray[j]);
+            if (!fs.existsSync(folderPath)) {
+                try {
+                    fs.mkdirSync(folderPath, 0o777);
+                    ("成功创建目录" + folderPath);
+                } catch (e) {
+                    console.log(e.name + ": " + e.message);
+                }
+            }
+        }
+        var filename=pathnameArray[pathnameArray.length - 1];
+        var newpath=path.join(folderPath, filename);
+        fs.renameSync(file.path, newpath);
+        if (filename.split(".")[1] == "json") {
+            var data = fs.readFileSync(path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
+            var filedata = data.toString();//将二进制的数据转换为字符串
+            console.log(filedata);
+            filedata = JSON.parse(filedata);//将字符串转换为json对象
+            id = filedata.id;
+            name = filedata.name;
+            max_frame = parseInt(filedata.max_frame);
+            max_x = parseInt(filedata.max_x);
+            max_y = parseInt(filedata.max_y);
+            max_z = parseInt(filedata.max_z);
+            file_folder = filedata.file_folder;
+            first_file = filedata.first_file;
+            file_prefix = filedata.file_prefix;
+            var data = {target:1,msg: "json"};
+            // c.end();
+            res.send(data);
+            res.end();
+        }else if (filename.split(".")[1] == "dat") {
+            var number=parseInt(filename.split(".")[0].split(file_prefix)[1]);
+            MyClass.transform(number, max_x, max_y, max_z, file_folder, (error, info) => {
+                if (error) {
+                    console.log('put name Error: ', error);
+                    var data = {target:1,msg: number+"帧转换失败"};
+                    res.send(data);
+                    res.end();
+                    return;
+                }
+                var data = {target:1,msg: number+"帧tijiao成功"};
+                // c.end();
+                res.send(data);
+                res.end();
+            });
+        }else{
+            var data = {target:0};
+            res.send(data);
+            res.end();
+        }
+    });
+
+});
+
+
+
+app.post('/uploads_particle', function (req, res, next) {
+    var form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.encoding = 'utf-8';
+    form.maxFileSize = 4 * 1024 * 1024 * 1024;
+    form.uploadDir = path.join(__dirname, 'public/particle_source');
+    form.multiples = true;
+    form.parse(req, function (err, fields, files) {
+            console.log("开始上传粒子");
+            for (var i = 0; i < files.upload.length; i++) {
+                var file = files.upload[i];
+                var pathnameArray = file.name.split('/');
+                var folderPath = form.uploadDir;
+                for (var j = 0; j < pathnameArray.length - 1; j++) {
+                    folderPath = path.join(folderPath, pathnameArray[j]);
+                    if (!fs.existsSync(folderPath)) {
+                        //如果不存在上传文件夹名称，就创建
+                        try {
+                            fs.mkdirSync(folderPath, 0o777);
+                            ("成功创建目录" + folderPath);
+                        } catch (e) {
+                            console.log(e.name + ": " + e.message);
+                        }
+                    }
+                }
+                fs.renameSync(file.path, path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
+                if (pathnameArray[pathnameArray.length - 1].split(".")[1] == "json") {
+                    console.log("获得json文件");
+                    var data = fs.readFileSync(path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
+                    var filedata = data.toString();//将二进制的数据转换为字符串
+                    console.log(filedata);
+                    filedata = JSON.parse(filedata);//将字符串转换为json对象
+                    id = filedata.id;
+                    name = filedata.name;
+                    max_frame = parseInt(filedata.max_frame);
+                    max_x = parseInt(filedata.max_x);
+                    max_y = parseInt(filedata.max_y);
+                    max_z = parseInt(filedata.max_z);
+                    file_folder = filedata.file_folder;
+                    first_file = filedata.first_file;
+                }
+            }
+            // try {
+            MyClass.transform(file_folder, max_x, max_y, max_z, max_frame, (error, info) => {
+
+                if (error) {
+                    console.log('put name Error: ', error);
+                    return;
+                }
+                // c.end();
+                res.send(data);
+                res.end();
+            });
+            // } catch (e) {
+            //     console.log(e.name + ": " + e.message);
+            //     var data = {msg: "上传失败"};
+            //     // c.end();
+            //     res.send(data);
+            //     res.end();
+            // }
+        }
+    );
 });

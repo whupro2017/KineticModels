@@ -151,6 +151,12 @@
         .Smodel .model_content button:hover {
             background: rgba(204, 212, 222, 0.5);
         }
+
+        .hrt{
+            height:5px;
+            border:none;
+            border-top:2px ridge white;
+        }
     </style>
 </head>
 <body>
@@ -160,7 +166,7 @@
     <p></p>
 </div>
 <div id="toolbar" style="display:block;">
-    <div align="center">
+    <div align="center" style="color: #a8c8d8">
         按 F9 隐 藏 菜 单
     </div>
     <div>
@@ -183,7 +189,7 @@
                 <!--<input type="file" id="kinetic_file" webkitdirectory directory style="display:none" onchange="get_kinetic_file(this.value)">-->
                 <table>
                     <tr>
-                        <td>案 件 id：</td>
+                        <td style="color: #a8c8d8">案 件 id：</td>
                         <td><select id="case_id" style="width:120px;height:25px" onchange="get_scenes(this.value)">
                             <option value="volvo" hidden>请选择案件</option>
                         </select></td>
@@ -197,7 +203,7 @@
             <div style="float: left">
                 <table>
                     <tr>
-                        <td>场 景 id：</td>
+                        <td style="color: #a8c8d8">场 景 id：</td>
                         <td><select id="scene_id" style="width:120px;height:25px"
                                     onchange="select_scene(this.value)">
                             <option value="" hidden>请选择场景</option>
@@ -207,29 +213,63 @@
             </div>
         </div>
     </div>
+
+
+
+
+
     <div id="operations" style="float: left;display:none">
-        <div id="toolbar_hpr" style="float: left">
+        <!--        <div id="toolbar_hpr" style="float: left">-->
 
-            <div>RotateX</div>
-            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateX, valueUpdate: 'input'">
-            <input type="text" size="5" data-bind="value: RotateX">
+        <!--            <div>Height-offset</div>-->
+        <!--            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: height, valueUpdate: 'input'">-->
+        <!--            <input type="text" size="5" data-bind="value: height">-->
 
-            <div>RotateY</div>
-            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateY, valueUpdate: 'input'">
-            <input type="text" size="5" data-bind="value: RotateY">
+        <!--            <div>RotateX</div>-->
+        <!--            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateX, valueUpdate: 'input'">-->
+        <!--            <input type="text" size="5" data-bind="value: RotateX">-->
 
-            <div>RotateZ</div>
-            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateZ, valueUpdate: 'input'">
-            <input type="text" size="5" data-bind="value: RotateZ">
+        <!--            <div>RotateY</div>-->
+        <!--            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateY, valueUpdate: 'input'">-->
+        <!--            <input type="text" size="5" data-bind="value: RotateY">-->
+
+        <!--            <div>RotateZ</div>-->
+        <!--            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateZ, valueUpdate: 'input'">-->
+        <!--            <input type="text" size="5" data-bind="value: RotateZ">-->
+        <!--        </div>-->
+
+
+        <!--        <div id="caseMenu"></div>-->
+        <hr class="hrt"/>
+        <div>
+            <div>
+                <div id="caseMenu" style="float: left;"></div>
+                <div>
+                    <table>
+                        <tr>
+                            <td><select id="explode_model" style="width:100px;height:25px" onchange="explode_model(this.value)">
+                                <option value="volvo" hidden>爆炸模型</option>
+                                <option value="explode_result">爆炸效果</option>
+                                <option value="explode_wave">爆炸冲击波</option>
+                            </select></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div id="caseMenu"></div>
+        <hr class="hrt"/>
+        <div>
+            <div id="modelMenu" style="float: left;"></div>
+        </div>
+        <hr class="hrt"/>
+        <br/>
         <div id="MeasureMenu"></div>
-        <div id="modelMenu"></div>
+        <hr class="hrt"/>
         <div id="DynRoute"></div>
         <div>
             <div>
                 <div id="KineticMenu" style="float: left;"></div>
-                <div style="float: left;">
+                <div><!--style="float: left;"-->
                     <table>
                         <tr>
                             <td><select id="kinetic_model" style="width:100px;height:25px">
@@ -240,10 +280,11 @@
                 </div>
             </div>
         </div>
+        <hr class="hrt"/>
         <div>
             <div>
                 <div id="ModelMeasure" style="float: left;"></div>
-                <div style="float: left;">
+                <div> <!--style="float: left;"-->
                     <table>
                         <tr>
                             <td><select id="models" style="width:100px;height:25px" onchange="locate_model(this.value)">
@@ -254,6 +295,8 @@
                 </div>
             </div>
         </div>
+        <br/>
+        <hr class="hrt"/>
         <div>
             <div>
                 <table>
@@ -286,6 +329,24 @@
                 </table>
             </div>
         </div>
+        <hr class="hrt"/>
+        <div>
+            <div>
+                <div id="NewAddedMenu" style="float: left;"></div>
+                <div> <!--style="float: left;"-->
+                    <table>
+                        <tr>
+                            <td><select id="begin_end" style="width:100px;height:25px" onchange="route_choose(this.value)">
+                                <option value="route_choose">城市路线推荐</option>
+                                <option value="route_begin">路线起点</option>
+                                <option value="route_end">路线终点</option>
+                            </select></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <hr class="hrt"/>
         <div>
             <div style="float: left">
                 <div id="markMenu" style="float: left"></div>
@@ -350,7 +411,7 @@
                                 <td><select id="thing_type" style="width:80px;height:25px"
                                             onchange="get_thing_menu(this.value)">//thing_type
                                     <option value="volvo" hidden>物品类别</option>
-                                    <option value="thing_tea_table">茶几</option>
+                                    <option value="茶几">茶几</option>
                                     <option value="thing_kitchen_supplies">厨房</option>
                                     <option value="thing_cupboard">橱柜</option>
                                     <option value="thing_window">窗户</option>
@@ -365,10 +426,15 @@
                                     <option value="thing_chair">椅子</option>
                                     <option value="thing_table">桌子</option>
                                 </select></td>
-                                <td><select id="things" style="width:80px;height:25px">//things
-                                    //onchange=sub_thing_menu()>//things
-                                    <option value="volvo" hidden>选择物品</option>
+                                <td><select id="things" style="width:80px;height:25px"
+                                            onchange = show_specific_thing()>
+                                    <!--   onchange=sub_thing_menu(this.value)-->
+                                    <option value="volvo" hidden>选择物品子类</option>
                                 </select></td>
+                                <!--                                <td><select id="specific_thing" style="width:80px;height:25px"-->
+                                <!--                                            onchange=specific_thing_menu(this.value)>//things-->
+                                <!--                                    <option value="volvo" hidden>选择物品</option>-->
+                                <!--                                </select></td>-->
                             </tr>
 
                         </table>

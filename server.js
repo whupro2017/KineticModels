@@ -244,20 +244,32 @@ app.get("/get_elements", function (req, res) {
         res.end();
     });
 })
-app.get("/get_things", function (req, res) {//新增内容
-    var thing_type = req.query.thing_type;
-    var scene_id = req.query.scene_id;
-    console.log(thing_type + "," + scene_id);
-    connection.query("SELECT ID,CATEGORY from " + thing_type + " WHERE sceneid=" + scene_id, function (error, results, fields) {
-        if (error) {
-            var data = {msg: "写入数据库错误，上传失败"};
-            // c.end();
-            res.send(data);
-            res.end();
-            return console.error(error);
+// app.get("/get_things", function (req, res) {//新增内容
+//     var thing_type = req.query.thing_type;
+//     var scene_id = req.query.scene_id;
+//     console.log(thing_type + "," + scene_id);
+//     connection.query("SELECT ID,CATEGORY from " + thing_type + " WHERE sceneid=" + scene_id, function (error, results, fields) {
+//         if (error) {
+//             var data = {msg: "写入数据库错误，上传失败"};
+//             // c.end();
+//             res.send(data);
+//             res.end();
+//             return console.error(error);
+//         }
+//         console.log(results);
+//         res.send(results);
+//         res.end();
+//     });
+// })
+
+app.get("/get_things", function (req, res) {
+    fs.readdir('public/cesium/Models/model/' + req.query.value, function (err, files) {
+        if (err) {
+            throw err;
         }
-        console.log(results);
-        res.send(results);
+        // files是一个数组
+        // 每个元素是此目录下的文件或文件夹的名称
+        res.send(files);
         res.end();
     });
 })

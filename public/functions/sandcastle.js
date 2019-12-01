@@ -9,6 +9,13 @@ Sandcastle.addToolbarButton('创建案件', function () {
 
 Sandcastle.addToolbarButton('创建场景', function () {
 }, 'CreateScene');
+Sandcastle.addToolbarButton('模型调整', function () {
+    window
+        .open(
+            "model_modify.html",
+            "model_modify",
+            "height=190, width=200, top=510, left=0,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+}, 'NewAddedMenu');
 Sandcastle.addToolbarButton('自主路线', function () {
     // viewer.entities.removeAll();
     // positions=[];
@@ -33,29 +40,29 @@ Sandcastle.addToolbarButton('地理量测', function () {
     $(".toolbar_measure").eq(0).show();
 }, 'caseMenu');
 
-Sandcastle.addToolbarButton('爆炸效果', function () {
-    startBZ1();
-    viewer.camera.setView({
-        destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
-        orientation: {
-            heading: 6.144391448663251,
-            pitch: -0.6870827796178554,
-            roll: 0.0
-        }
-    });
-}, 'caseMenu');
-
-Sandcastle.addToolbarButton('爆炸冲击波', function () {
-    startBZ2();
-    viewer.camera.setView({
-        destination: {x: -2259482.2093426995, y: 5023565.238597119, z: 3204802.0603294484},
-        orientation: {
-            heading: 6.144391448663251,
-            pitch: -0.6870827796178554,
-            roll: 0.0
-        }
-    });
-}, 'caseMenu');
+// Sandcastle.addToolbarButton('爆炸效果', function () {
+//     startBZ1();
+//     viewer.camera.setView({
+//         destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
+//         orientation: {
+//             heading: 6.144391448663251,
+//             pitch: -0.6870827796178554,
+//             roll: 0.0
+//         }
+//     });
+// }, 'caseMenu');
+//
+// Sandcastle.addToolbarButton('爆炸冲击波', function () {
+//     startBZ2();
+//     viewer.camera.setView({
+//         destination: {x: -2259482.2093426995, y: 5023565.238597119, z: 3204802.0603294484},
+//         orientation: {
+//             heading: 6.144391448663251,
+//             pitch: -0.6870827796178554,
+//             roll: 0.0
+//         }
+//     });
+// }, 'caseMenu');
 Sandcastle.addToolbarButton('燃烧模型', function () {
     window
         .open(

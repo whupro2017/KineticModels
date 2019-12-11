@@ -9,6 +9,7 @@
     <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+<<<<<<< HEAD
     <title>Vport</title>
     <script src="cesium/Cesium.js"></script>
     <script src="cesium/Sandcastle-header.js"></script>
@@ -29,6 +30,157 @@
     <link type="text/css" rel="stylesheet" href="css/hcharts.css" />
     <link type="text/css" rel="stylesheet" href="css/models.css" />
 
+=======
+    <title>Kinetic Models</title>
+    <style>
+        @import url(cesium/bucket.css);
+
+        body {
+            color: #000;
+        }
+
+        #toolbar {
+            background: rgba(42, 42, 42, 0.8);
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        #toolbar input {//新增HPR
+        vertical-align: middle;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        #toolbar_measure {
+            background: rgba(42, 42, 42, 0.8);
+            padding: 4px;
+            border-radius: 4px;
+            z-index: 99999;
+        }
+
+        button {
+            color: #fff;
+            background-color: #666666;
+            text-align: center;
+            border: 1px solid #1E90FF;
+            border-radius: 4px;
+        }
+
+        .toolbar_measure button {
+            width: 50px;
+            height: 24px;
+            border-radius: 0px;
+            opacity: 0.8;
+            border: 1px solid rgba(255, 255, 255, 1);
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.8);
+            margin-left: 4px;
+        }
+
+        .toolbar_measure {
+            position: absolute;
+            top: 50px;
+            right: 00px;
+            z-index: 8888;
+            display: none;
+            width: 300px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 2px 0px 2px 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+        }
+
+        /* //坐标样式 */
+
+        .leftMenu {
+            width: 160px;
+            height: 80px;
+            background-color: #f1f1f1;
+            position: absolute;
+            display: none;
+            left: 300px;
+            top: 300px;
+            border-radius: 5px;
+            z-index: 9999;
+            line-height: 26px;
+            padding-left: 5px;
+        }
+
+        .leftMenu p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .Smodel {
+            position: absolute;
+            top: 40px;
+            right: 226px;
+            z-index: 20330;
+            width: 176px;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+            display: none;
+            font-size: 12px;
+        }
+
+        .Smodel .model_content p {
+            margin: 10px 7px;
+            font-size: 12px;
+        }
+
+        .Smodel .model_content span {
+            color: #fff;
+        }
+
+        .Smodel .model_content input {
+            width: 105px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+            color: #fff;
+            padding-left: 5px;
+            font-size: 12px;
+        }
+
+        .Smodel .model_content select {
+            width: 105px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+            color: #fff;
+            padding-left: 5px;
+            font-size: 12px;
+        }
+
+        .Smodel .modelselect_p select {
+            width: 80px !important;
+        }
+
+        .Smodel .model_content button {
+            width: 40px;
+            height: 20px;
+            background: rgba(0, 0, 0, 1);
+            border-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 1);
+            margin-left: 10px;
+            color: #fff;
+            font-size: 10px;
+        }
+
+        .Smodel .model_content button:hover {
+            background: rgba(204, 212, 222, 0.5);
+        }
+
+        .hrt{
+            height:5px;
+            border:none;
+            border-top:2px ridge white;
+        }
+    </style>
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
 </head>
 <body>
 
@@ -37,7 +189,11 @@
     <p></p>
 </div>
 <div id="toolbar" style="display:block;">
+<<<<<<< HEAD
     <div style="color: white;align: center">
+=======
+    <div align="center" style="color: #a8c8d8">
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
         按 F9 隐 藏 菜 单
     </div>
     <div>
@@ -60,8 +216,13 @@
                 <!--<input type="file" id="kinetic_file" webkitdirectory directory style="display:none" onchange="get_kinetic_file(this.value)">-->
                 <table>
                     <tr>
+<<<<<<< HEAD
                         <td style="color: white">案 件 id：</td>
                         <td><select id="case_id" class="case_select" onchange="get_scenes(this.value)">
+=======
+                        <td style="color: #a8c8d8">案 件 id：</td>
+                        <td><select id="case_id" style="width:120px;height:25px" onchange="get_scenes(this.value)">
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
                             <option value="volvo" hidden>请选择案件</option>
                         </select></td>
                     </tr>
@@ -74,8 +235,14 @@
             <div style="float: left">
                 <table>
                     <tr>
+<<<<<<< HEAD
                         <td style="color: white">场 景 id：</td>
                         <td><select id="scene_id" class="case_select" onchange="select_scene(this.value)">
+=======
+                        <td style="color: #a8c8d8">场 景 id：</td>
+                        <td><select id="scene_id" style="width:120px;height:25px"
+                                    onchange="select_scene(this.value)">
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
                             <option value="" hidden>请选择场景</option>
                         </select></td>
                     </tr>
@@ -83,7 +250,13 @@
             </div>
         </div>
     </div>
+
+
+
+
+
     <div id="operations" style="float: left;display:none">
+<<<<<<< HEAD
 
         <div id="model_modify" class="model_modify" style="display: none">
             <div id="ModelModifyMenu" class="modelModify">
@@ -110,13 +283,59 @@
         </div>
 
         <div id="caseMenu"></div>
+=======
+        <!--        <div id="toolbar_hpr" style="float: left">-->
+
+        <!--            <div>Height-offset</div>-->
+        <!--            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: height, valueUpdate: 'input'">-->
+        <!--            <input type="text" size="5" data-bind="value: height">-->
+
+        <!--            <div>RotateX</div>-->
+        <!--            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateX, valueUpdate: 'input'">-->
+        <!--            <input type="text" size="5" data-bind="value: RotateX">-->
+
+        <!--            <div>RotateY</div>-->
+        <!--            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateY, valueUpdate: 'input'">-->
+        <!--            <input type="text" size="5" data-bind="value: RotateY">-->
+
+        <!--            <div>RotateZ</div>-->
+        <!--            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateZ, valueUpdate: 'input'">-->
+        <!--            <input type="text" size="5" data-bind="value: RotateZ">-->
+        <!--        </div>-->
+
+
+        <!--        <div id="caseMenu"></div>-->
+        <hr class="hrt"/>
+        <div>
+            <div>
+                <div id="caseMenu" style="float: left;"></div>
+                <div>
+                    <table>
+                        <tr>
+                            <td><select id="explode_model" style="width:100px;height:25px" onchange="explode_model(this.value)">
+                                <option value="volvo" hidden>爆炸模型</option>
+                                <option value="explode_result">爆炸效果</option>
+                                <option value="explode_wave">爆炸冲击波</option>
+                            </select></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <hr class="hrt"/>
+        <div>
+            <div id="modelMenu" style="float: left;"></div>
+        </div>
+        <hr class="hrt"/>
+        <br/>
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
         <div id="MeasureMenu"></div>
-        <div id="modelMenu"></div>
+        <hr class="hrt"/>
         <div id="DynRoute"></div>
         <div>
             <div>
                 <div id="KineticMenu" style="float: left;"></div>
-                <div style="float: left;">
+                <div><!--style="float: left;"-->
                     <table>
                         <tr>
                             <td><select id="kinetic_model" class="case_select">
@@ -127,10 +346,11 @@
                 </div>
             </div>
         </div>
+        <hr class="hrt"/>
         <div>
             <div>
                 <div id="ModelMeasure" style="float: left;"></div>
-                <div style="float: left;">
+                <div> <!--style="float: left;"-->
                     <table>
                         <tr>
                             <td><select id="models" class="case_select" onchange="locate_model(this.value)">
@@ -141,6 +361,8 @@
                 </div>
             </div>
         </div>
+        <br/>
+        <hr class="hrt"/>
         <div>
             <div>
                 <table>
@@ -173,6 +395,7 @@
                 </table>
             </div>
         </div>
+<<<<<<< HEAD
 <!--        <div>-->
 <!--            <div>-->
 <!--                <div id="NewAddedMenu" style="float: left;"></div>-->
@@ -189,6 +412,26 @@
 <!--                </div>-->
 <!--            </div>-->
 <!--        </div>-->
+=======
+        <hr class="hrt"/>
+        <div>
+            <div>
+                <div id="NewAddedMenu" style="float: left;"></div>
+                <div> <!--style="float: left;"-->
+                    <table>
+                        <tr>
+                            <td><select id="begin_end" style="width:100px;height:25px" onchange="route_choose(this.value)">
+                                <option value="route_choose">城市路线推荐</option>
+                                <option value="route_begin">路线起点</option>
+                                <option value="route_end">路线终点</option>
+                            </select></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <hr class="hrt"/>
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
         <div>
             <div style="float: left">
                 <div id="markMenu" style="float: left"></div>
@@ -253,7 +496,7 @@
                                 <td><select id="thing_type" class="case_select"
                                             onchange="get_thing_menu(this.value)">//thing_type
                                     <option value="volvo" hidden>物品类别</option>
-                                    <option value="thing_tea_table">茶几</option>
+                                    <option value="茶几">茶几</option>
                                     <option value="thing_kitchen_supplies">厨房</option>
                                     <option value="thing_cupboard">橱柜</option>
                                     <option value="thing_window">窗户</option>
@@ -268,10 +511,21 @@
                                     <option value="thing_chair">椅子</option>
                                     <option value="thing_table">桌子</option>
                                 </select></td>
+<<<<<<< HEAD
                                 <td><select id="things" class="case_select">//things
                                     //onchange=sub_thing_menu()>//things
                                     <option value="volvo" hidden>选择物品</option>
+=======
+                                <td><select id="things" style="width:80px;height:25px"
+                                            onchange = show_specific_thing()>
+                                    <!--   onchange=sub_thing_menu(this.value)-->
+                                    <option value="volvo" hidden>选择物品子类</option>
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
                                 </select></td>
+                                <!--                                <td><select id="specific_thing" style="width:80px;height:25px"-->
+                                <!--                                            onchange=specific_thing_menu(this.value)>//things-->
+                                <!--                                    <option value="volvo" hidden>选择物品</option>-->
+                                <!--                                </select></td>-->
                             </tr>
 
                         </table>

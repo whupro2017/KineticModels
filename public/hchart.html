@@ -18,6 +18,10 @@
             var x = document.getElementById("showHighCharts")
             if(x.style.display == "none"){
                 x.style.cssText = "display:block"
+<<<<<<< HEAD
+=======
+
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
             }else {
                 x.style.cssText = "display:none"
             }
@@ -892,6 +896,7 @@
             chartshow()
         }
     </script>
+<<<<<<< HEAD
     <script>
         $(function () {
             dragPanelMove("#showHighCharts");
@@ -914,6 +919,8 @@
             }
         });
     </script>
+=======
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
     <style>
         .charts{
             display: block;
@@ -924,7 +931,11 @@
         }
         #showHighCharts{
             display: none;
+<<<<<<< HEAD
             position: absolute;//key
+=======
+            position: absolute;
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
         }
     </style>
 </head>
@@ -943,6 +954,31 @@
         <div id="container4" style="width: 700px;height:600px;margin: 0 auto;"></div>
     </div>
 </div>
+<<<<<<< HEAD
 
+=======
+<script>
+    $(function () {
+        dragPanelMove("#showHighCharts");
+        // dragPanelMove("#container4");
+        function dragPanelMove(moveDiv){
+            $(moveDiv).mousedown(function (e) {
+                var isMove = true;
+                var div_x = e.pageX - $(moveDiv).offset().left;
+                var div_y = e.pageY - $(moveDiv).offset().top;
+                $(document).mousemove(function (e) {
+                    if (isMove) {
+                        var obj = $(moveDiv);
+                        obj.css({"left":e.pageX - div_x, "top":e.pageY - div_y});
+                    }
+                }).mouseup(
+                    function () {
+                        isMove = false;
+                    });
+            });
+        }
+    });
+</script>
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
 </body>
 </html>

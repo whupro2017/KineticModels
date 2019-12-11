@@ -17,7 +17,7 @@ Sandcastle.addToolbarButton('关联展示', function () {
     showwaveblue();
     showwavegreen();
     showwavered();
-    showrelation()
+    // showrelation()
 }, 'NewAddedMenu');
 Sandcastle.addToolbarButton('自主路线', function () {
     // viewer.entities.removeAll();
@@ -67,32 +67,17 @@ Sandcastle.addToolbarButton('爆炸冲击波', function () {
     });
 }, 'caseMenu');
 Sandcastle.addToolbarButton('燃烧模型', function () {
-    window
-        .open(
-            "fire_parameter.html",
-            "fire_parameter",
-            "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-}, 'modelMenu');
+        $(".caseMenuShow").eq(0).show();
+    }, 'modelMenu');
 Sandcastle.addToolbarButton('碰撞模型', function () {
-    window.open(
-        "collision_parameter.html",
-        "collision_parameter",
-        "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-}, 'modelMenu');
+        $(".collisionMenuShow").eq(0).show();
+    }, 'modelMenu');
 Sandcastle.addToolbarButton('爆炸模型', function () {
-    window
-        .open(
-            "explosion_parameter.html",
-            "explosion_parameter",
-            "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-}, 'modelMenu');
+        $(".explodeMenuShow").eq(0).show();
+   }, 'modelMenu');
 Sandcastle.addToolbarButton('砍杀模型', function () {
-    window
-        .open(
-            "kill_parameter.html",
-            "kill_parameter",
-            "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-}, 'modelMenu');
+        $(".killMenuShow").eq(0).show();
+    }, 'modelMenu');
 
 // Sandcastle.addToolbarButton('砍杀模型', function () {
 //

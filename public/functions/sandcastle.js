@@ -1,3 +1,26 @@
+<<<<<<< HEAD
+// Sandcastle.addToolbarButton('创建案件', function () {
+//     window
+//         .open(
+//             "create_case.html",
+//             "create_case",
+//             "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+//
+// }, 'CreateCase');
+//
+// Sandcastle.addToolbarButton('创建场景', function () {
+// }, 'CreateScene');
+// Sandcastle.addToolbarButton('模型调整', function(){
+//     $(".model_modify").eq(0).show();
+// }, 'NewAddedMenu');
+// Sandcastle.addToolbarButton('关联展示', function () {
+//     showdog();
+//     showwaveblue();
+//     showwavegreen();
+//     showwavered();
+//     // showrelation()
+// }, 'NewAddedMenu');
+=======
 Sandcastle.addToolbarButton('创建案件', function () {
     window
         .open(
@@ -16,6 +39,7 @@ Sandcastle.addToolbarButton('模型调整', function () {
             "model_modify",
             "height=190, width=200, top=510, left=0,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 }, 'NewAddedMenu');
+>>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
 Sandcastle.addToolbarButton('自主路线', function () {
     // viewer.entities.removeAll();
     // positions=[];
@@ -64,32 +88,17 @@ Sandcastle.addToolbarButton('地理量测', function () {
 //     });
 // }, 'caseMenu');
 Sandcastle.addToolbarButton('燃烧模型', function () {
-    window
-        .open(
-            "fire_parameter.html",
-            "fire_parameter",
-            "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-}, 'modelMenu');
+        $(".caseMenuShow").eq(0).show();
+    }, 'modelMenu');
 Sandcastle.addToolbarButton('碰撞模型', function () {
-    window.open(
-        "collision_parameter.html",
-        "collision_parameter",
-        "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-}, 'modelMenu');
+        $(".collisionMenuShow").eq(0).show();
+    }, 'modelMenu');
 Sandcastle.addToolbarButton('爆炸模型', function () {
-    window
-        .open(
-            "explosion_parameter.html",
-            "explosion_parameter",
-            "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-}, 'modelMenu');
+        $(".explodeMenuShow").eq(0).show();
+   }, 'modelMenu');
 Sandcastle.addToolbarButton('砍杀模型', function () {
-    window
-        .open(
-            "kill_parameter.html",
-            "kill_parameter",
-            "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-}, 'modelMenu');
+        $(".killMenuShow").eq(0).show();
+    }, 'modelMenu');
 
 // Sandcastle.addToolbarButton('砍杀模型', function () {
 //

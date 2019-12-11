@@ -37,7 +37,7 @@
     <p></p>
 </div>
 <div id="toolbar" style="display:block;">
-    <div class="menutitle">
+    <div style="color: white;align: center">
         按 F9 隐 藏 菜 单
     </div>
     <div>
@@ -60,8 +60,8 @@
                 <!--<input type="file" id="kinetic_file" webkitdirectory directory style="display:none" onchange="get_kinetic_file(this.value)">-->
                 <table>
                     <tr>
-                        <td class="menutitle">案 件 id：</td>
-                        <td><select id="case_id" style="width:120px;height:25px" onchange="get_scenes(this.value)">
+                        <td style="color: white">案 件 id：</td>
+                        <td><select id="case_id" class="case_select" onchange="get_scenes(this.value)">
                             <option value="volvo" hidden>请选择案件</option>
                         </select></td>
                     </tr>
@@ -74,9 +74,8 @@
             <div style="float: left">
                 <table>
                     <tr>
-                        <td class="menutitle">场 景 id：</td>
-                        <td><select id="scene_id" style="width:120px;height:25px"
-                                    onchange="select_scene(this.value)">
+                        <td style="color: white">场 景 id：</td>
+                        <td><select id="scene_id" class="case_select" onchange="select_scene(this.value)">
                             <option value="" hidden>请选择场景</option>
                         </select></td>
                     </tr>
@@ -120,7 +119,7 @@
                 <div style="float: left;">
                     <table>
                         <tr>
-                            <td><select id="kinetic_model" style="width:100px;height:25px">
+                            <td><select id="kinetic_model" class="case_select">
                                 <option value="volvo" hidden>选择动力学模型</option>
                             </select></td>
                         </tr>
@@ -134,7 +133,7 @@
                 <div style="float: left;">
                     <table>
                         <tr>
-                            <td><select id="models" style="width:100px;height:25px" onchange="locate_model(this.value)">
+                            <td><select id="models" class="case_select" onchange="locate_model(this.value)">
                                 <option value="volvo" hidden>要素与场信息</option>
                             </select></td>
                         </tr>
@@ -147,7 +146,7 @@
                 <table>
                     <tr>
                         <td>
-                            <select id="top_icon_menu" style="width:100px;height:25px"
+                            <select id="top_icon_menu" class="case_select"
                                     onchange="get_sub_menu(this.value)">
                                 <option value="volvo" hidden>选择图标大类</option>
                                 <option value="办公类">办公类</option>
@@ -160,12 +159,12 @@
                                 <option value="装饰类">装饰类</option>
                             </select>
                         </td>
-                        <td><select id="sub_icon_menu" style="width:100px;height:25px"
+                        <td><select id="sub_icon_menu" class="case_select"
                                     onchange="get_icon_menu(this.value)">
                             <option value="volvo" hidden>选择图标子类</option>
                         </select></td>
 
-                        <td><select id="icon_menu" style="width:100px;height:25px"
+                        <td><select id="icon_menu" class="case_select"
                                     onchange="get_icon_image(this.value)">
                             <option value="volvo" hidden>选择图标图片</option>
                         </select></td>
@@ -174,22 +173,22 @@
                 </table>
             </div>
         </div>
-        <div>
-            <div>
-                <div id="NewAddedMenu" style="float: left;"></div>
-                <div> <!--style="float: left;"-->
-                    <table>
-                        <tr>
-                            <td><select id="begin_end" class="case_select" onchange="route_choose(this.value)">
-                                <option value="route_choose">城市路线推荐</option>
-                                <option value="route_begin">路线起点</option>
-                                <option value="route_end">路线终点</option>
-                            </select></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
+<!--        <div>-->
+<!--            <div>-->
+<!--                <div id="NewAddedMenu" style="float: left;"></div>-->
+<!--                <div> &lt;!&ndash;style="float: left;"&ndash;&gt;-->
+<!--                    <table>-->
+<!--                        <tr>-->
+<!--                            <td><select id="begin_end" class="case_select" onchange="route_choose(this.value)">-->
+<!--                                <option value="route_choose">城市路线推荐</option>-->
+<!--                                <option value="route_begin">路线起点</option>-->
+<!--                                <option value="route_end">路线终点</option>-->
+<!--                            </select></td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <div>
             <div style="float: left">
                 <div id="markMenu" style="float: left"></div>
@@ -198,7 +197,7 @@
                            onchange="importFile(this)">
                     <table>
                         <tr>
-                            <td><select id="element_type" style="width:80px;height:25px"
+                            <td><select id="element_type" class="case_select"
                                         onchange="get_element_menu(this.value)">
                                 <option value="volvo" hidden>要素类别</option>
                                 <option value="scene_handprint">手印痕迹</option>
@@ -208,7 +207,7 @@
                                 <option value="scene_file_evidence">文检物证</option>
                                 <option value="scene_elec_evidence">电子物证</option>
                             </select></td>
-                            <td><select id="elements" style="width:80px;height:25px">
+                            <td><select id="elements" class="case_select">
                                 <option value="volvo" hidden>绑定要素</option>
                             </select></td>
                         </tr>
@@ -225,7 +224,7 @@
                            onchange="importFile(this)">
                     <table>
                         <tr>
-                            <td><select id="info_type" style="width:80px;height:25px"
+                            <td><select id="info_type" class="case_select"
                                         onchange="get_element_menu(this.value)">
                                 <option value="volvo" hidden>信息类别</option>
                                 <option value="scene_handprint">手印痕迹</option>
@@ -235,7 +234,7 @@
                                 <option value="scene_file_evidence">文检物证</option>
                                 <option value="scene_elec_evidence">电子物证</option>
                             </select></td>
-                            <td><select id="infos" style="width:80px;height:25px">
+                            <td><select id="infos" class="case_select">
                                 <option value="volvo" hidden>绑定要素</option>
                             </select></td>
                         </tr>
@@ -251,7 +250,7 @@
                                onchange="importThingFile(this)">
                         <table>
                             <tr>
-                                <td><select id="thing_type" style="width:80px;height:25px"
+                                <td><select id="thing_type" class="case_select"
                                             onchange="get_thing_menu(this.value)">//thing_type
                                     <option value="volvo" hidden>物品类别</option>
                                     <option value="thing_tea_table">茶几</option>
@@ -269,7 +268,7 @@
                                     <option value="thing_chair">椅子</option>
                                     <option value="thing_table">桌子</option>
                                 </select></td>
-                                <td><select id="things" style="width:80px;height:25px">//things
+                                <td><select id="things" class="case_select">//things
                                     //onchange=sub_thing_menu()>//things
                                     <option value="volvo" hidden>选择物品</option>
                                 </select></td>
@@ -287,7 +286,7 @@
                                onchange="importFile(this)">
                         <table>
                             <tr>
-                                <td><select id="human_type" style="width:80px;height:25px"
+                                <td><select id="human_type" class="case_select"
                                             onchange="get_element_menu(this.value)">
                                     <option value="volvo" hidden>涉案人类别</option>
                                     <option value="scene_handprint">手印痕迹</option>
@@ -297,7 +296,7 @@
                                     <option value="scene_file_evidence">文检物证</option>
                                     <option value="scene_elec_evidence">电子物证</option>
                                 </select></td>
-                                <td><select id="humen" style="width:80px;height:25px">
+                                <td><select id="humen" class="case_select">
                                     <option value="volvo" hidden>绑定要素</option>
                                 </select></td>
                             </tr>
@@ -697,24 +696,74 @@
     </div>
 </div>
 <div id="rightmenu">
+    <div id = "functionsarea">
+        <div style="float: right;">
+            <div>
+            <table>
+                <tr>
+                    <td colspan="2" style="text-align: right"><span style="color: greenyellow;">操作</span></td>
+                </tr>
+                <tr>
+                    <td><input id="new" type="button" class="charts" value="新建" onclick=""></td>
+                    <td><input id="inport" type="button" class="charts" value="导入" onclick=""></td>
+                </tr>
+                <tr>
+                    <td><input id="mark" type="button" class="charts" value="标注" onclick=""></td>
+                    <td><input id="show" type="button" class="charts" value="显示" onclick=""></td>
+                </tr>
+                <tr>
+                    <td><input id="track" type="button" class="charts" value="轨迹" onclick=""></td>
+                    <td><input id="scope" type="button" class="charts" value="范围" onclick=""></td>
+                </tr>
+                <tr>
+                    <td><input id="relation" type="button" class="charts" value="关联" onclick="mdoelrelation()"></td>
+                    <td><input id="align" type="button" class="charts" value="对齐" onclick=""></td>
+                </tr>
+                <tr>
+                    <td><input id="adjust" type="button" class="charts" value="调整" onclick= "rightmodelmodify()"></td>
+                    <td><input id="measure" type="button" class="charts" value="量测" onclick=""></td>
+                </tr>
+            </table>
+            </div>
+        </div>
+    </div>
     <div class="hchartshow">
-        <div>
-            <div style="float: right">
-                <table>
-                    <tr>
-                        <td><input id="linechart" type="button" class="charts" value="折线图" onclick="lineshow()"></td>
-                        <td><input id="barchart" type="button" class="charts" value="柱状图" onclick="barshow()"></td>
-                    </tr>
-                    <tr>
-                        <td><input id="piechart" type="button" class="charts" value="扇形图" onclick="pieshow()"></td>
-                        <td><input id="bubblechart" type="button" class="charts" value="气泡图" onclick="bubbleshow()"></td>
-                    </tr>
-                </table>
-            </div>
-            <div id="showHighCharts" style="float: right">
-                <div id="container1" style="width: 900px; height: 360px; margin: 0 auto"></div>
-                <div id="container4" style="width: 700px;height:600px;margin: 0 auto;"></div>
-            </div>
+        <div style="float: right;">
+            <table>
+                <tr>
+                    <td colspan="2" style="text-align: right"><span style="color: greenyellow">图表</span></td>
+                </tr>
+                <tr>
+                    <td><input id="linechart" type="button" class="charts" value="折线图" onclick="lineshow()"></td>
+                    <td><input id="barchart" type="button" class="charts" value="柱状图" onclick="barshow()"></td>
+                </tr>
+                <tr>
+                    <td><input id="piechart" type="button" class="charts" value="扇形图" onclick="pieshow()"></td>
+                    <td><input id="bubblechart" type="button" class="charts" value="气泡图" onclick="bubbleshow()"></td>
+                </tr>
+            </table>
+        </div>
+        <div id="showHighCharts" style="float: right">
+            <div id="container1" style="width: 900px; height: 360px; margin: 0 auto"></div>
+            <div id="container4" style="width: 700px;height:600px;margin: 0 auto;"></div>
+        </div>
+    </div>
+    <div id = "signs">
+        <div style="float: right;">
+            <table>
+                <tr>
+                    <td colspan="2" style="text-align: right"><span style="color: greenyellow">符号</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id = "">
+        <div style="float: right">
+            <table>
+                <tr>
+                    <td rowspan="2" style="text-align: right"><span style="color: greenyellow">模型</span></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

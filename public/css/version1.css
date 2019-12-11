@@ -145,6 +145,9 @@ button {
  box-shadow: 0 1px 1px #888, 1px 0 1px #ccc;
  position: absolute; /*自定义菜单相对与body元素进行定位*/
 }
-.menutitle{
-    color: whitesmoke;
+.case_select{
+    height: 22px;
+    width: 100px;
+    background-color: rgba(10, 10, 10, 0.3);
+    color: white;
 }

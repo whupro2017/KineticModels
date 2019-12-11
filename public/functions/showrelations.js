@@ -1,3 +1,12 @@
+function mdoelrelation() {
+    showdog();
+    showwaveblue();
+    showwavegreen();
+    showwavered();
+    // showrelation()
+}
+
+
 function  showrelation() {
     // var viewer=ysc.createNormalCesium("cesiumContainer",{});
     // var lat = 30.598026044;

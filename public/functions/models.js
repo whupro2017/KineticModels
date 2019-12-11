@@ -126,3 +126,11 @@ function modelModifyClose() {
     cleanAll();
     $(".model_modify").eq(0).hide();
 }
+
+function rightmodelmodify() {
+    var x = document.getElementById("model_modify")
+    if(x.style.display == "none"){
+        x.style.cssText = "display:block"
+
+    }
+}

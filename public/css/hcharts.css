@@ -1,9 +1,9 @@
 #rightmenu{
     float:right;
-    width: 1000px;
+    width: 1300px;
     position: absolute;
-    margin-left: 500px;
-    margin-top: 40px
+    margin-left: 200px;
+    margin-top: 00px
 }
 .charts{
     display: block;

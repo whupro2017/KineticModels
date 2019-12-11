@@ -278,11 +278,8 @@ app.get("/get_elements", function (req, res) {
         res.end();
     });
 })
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
 // app.get("/get_things", function (req, res) {//新增内容
 //     var thing_type = req.query.thing_type;
 //     var scene_id = req.query.scene_id;
@@ -301,20 +298,6 @@ app.get("/get_elements", function (req, res) {
 //     });
 // })
 
-<<<<<<< HEAD
-=======
-app.get("/get_things", function (req, res) {
-    fs.readdir('public/cesium/Models/model/' + req.query.value, function (err, files) {
-        if (err) {
-            throw err;
-        }
-        // files是一个数组
-        // 每个元素是此目录下的文件或文件夹的名称
-        res.send(files);
-        res.end();
-    });
-})
->>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
 
 app.get('/model_location', function (req, res, next) {
     var longitude = req.query.longitude;

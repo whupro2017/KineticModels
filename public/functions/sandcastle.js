@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Sandcastle.addToolbarButton('创建案件', function () {
 //     window
 //         .open(
@@ -20,26 +19,6 @@
 //     showwavered();
 //     // showrelation()
 // }, 'NewAddedMenu');
-=======
-Sandcastle.addToolbarButton('创建案件', function () {
-    window
-        .open(
-            "create_case.html",
-            "create_case",
-            "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-
-}, 'CreateCase');
-
-Sandcastle.addToolbarButton('创建场景', function () {
-}, 'CreateScene');
-Sandcastle.addToolbarButton('模型调整', function () {
-    window
-        .open(
-            "model_modify.html",
-            "model_modify",
-            "height=190, width=200, top=510, left=0,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-}, 'NewAddedMenu');
->>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
 Sandcastle.addToolbarButton('自主路线', function () {
     // viewer.entities.removeAll();
     // positions=[];
@@ -64,41 +43,41 @@ Sandcastle.addToolbarButton('地理量测', function () {
     $(".toolbar_measure").eq(0).show();
 }, 'caseMenu');
 
-// Sandcastle.addToolbarButton('爆炸效果', function () {
-//     startBZ1();
-//     viewer.camera.setView({
-//         destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
-//         orientation: {
-//             heading: 6.144391448663251,
-//             pitch: -0.6870827796178554,
-//             roll: 0.0
-//         }
-//     });
-// }, 'caseMenu');
-//
-// Sandcastle.addToolbarButton('爆炸冲击波', function () {
-//     startBZ2();
-//     viewer.camera.setView({
-//         destination: {x: -2259482.2093426995, y: 5023565.238597119, z: 3204802.0603294484},
-//         orientation: {
-//             heading: 6.144391448663251,
-//             pitch: -0.6870827796178554,
-//             roll: 0.0
-//         }
-//     });
-// }, 'caseMenu');
+Sandcastle.addToolbarButton('爆炸效果', function () {
+    startBZ1();
+    viewer.camera.setView({
+        destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
+        orientation: {
+            heading: 6.144391448663251,
+            pitch: -0.6870827796178554,
+            roll: 0.0
+        }
+    });
+}, 'caseMenu');
+
+Sandcastle.addToolbarButton('爆炸冲击波', function () {
+    startBZ2();
+    viewer.camera.setView({
+        destination: {x: -2259482.2093426995, y: 5023565.238597119, z: 3204802.0603294484},
+        orientation: {
+            heading: 6.144391448663251,
+            pitch: -0.6870827796178554,
+            roll: 0.0
+        }
+    });
+}, 'caseMenu');
 Sandcastle.addToolbarButton('燃烧模型', function () {
-        $(".caseMenuShow").eq(0).show();
-    }, 'modelMenu');
+    $(".caseMenuShow").eq(0).show();
+}, 'modelMenu');
 Sandcastle.addToolbarButton('碰撞模型', function () {
-        $(".collisionMenuShow").eq(0).show();
-    }, 'modelMenu');
+    $(".collisionMenuShow").eq(0).show();
+}, 'modelMenu');
 Sandcastle.addToolbarButton('爆炸模型', function () {
-        $(".explodeMenuShow").eq(0).show();
-   }, 'modelMenu');
+    $(".explodeMenuShow").eq(0).show();
+}, 'modelMenu');
 Sandcastle.addToolbarButton('砍杀模型', function () {
-        $(".killMenuShow").eq(0).show();
-    }, 'modelMenu');
+    $(".killMenuShow").eq(0).show();
+}, 'modelMenu');
 
 // Sandcastle.addToolbarButton('砍杀模型', function () {
 //

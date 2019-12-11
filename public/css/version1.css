@@ -1,0 +1,150 @@
+@import url(../cesium/bucket.css);
+
+body {
+    color: #000;
+}
+
+#toolbar {
+    background: rgba(42, 42, 42, 0.2);
+    padding: 4px;
+    border-radius: 4px;
+}
+
+#toolbar input {//新增HPR
+vertical-align: middle;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+#toolbar_measure {
+    background: rgba(42, 42, 42, 0.8);
+    padding: 4px;
+    border-radius: 4px;
+    z-index: 99999;
+}
+
+button {
+    color: #fff;
+    background-color: #666666;
+    text-align: center;
+    border: 1px solid #1E90FF;
+    border-radius: 4px;
+}
+
+.toolbar_measure button {
+    width: 50px;
+    height: 24px;
+    border-radius: 0px;
+    opacity: 0.8;
+    border: 1px solid rgba(255, 255, 255, 1);
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.8);
+    margin-left: 4px;
+}
+
+.toolbar_measure {
+    position: absolute;
+    top: 50px;
+    right: 00px;
+    z-index: 8888;
+    display: none;
+    width: 300px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+}
+
+/* //坐标样式 */
+
+.leftMenu {
+    width: 160px;
+    height: 80px;
+    background-color: #f1f1f1;
+    position: absolute;
+    display: none;
+    left: 300px;
+    top: 300px;
+    border-radius: 5px;
+    z-index: 9999;
+    line-height: 26px;
+    padding-left: 5px;
+}
+
+.leftMenu p {
+    margin: 0;
+    padding: 0;
+}
+
+.Smodel {
+    position: absolute;
+    top: 40px;
+    right: 226px;
+    z-index: 20330;
+    width: 176px;
+    height: 300px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+    display: none;
+    font-size: 12px;
+}
+
+.Smodel .model_content p {
+    margin: 10px 7px;
+    font-size: 12px;
+}
+
+.Smodel .model_content span {
+    color: #fff;
+}
+
+.Smodel .model_content input {
+    width: 105px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+    color: #fff;
+    padding-left: 5px;
+    font-size: 12px;
+}
+
+.Smodel .model_content select {
+    width: 105px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+    color: #fff;
+    padding-left: 5px;
+    font-size: 12px;
+}
+
+.Smodel .modelselect_p select {
+    width: 80px !important;
+}
+
+.Smodel .model_content button {
+    width: 40px;
+    height: 20px;
+    background: rgba(0, 0, 0, 1);
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 1);
+    margin-left: 10px;
+    color: #fff;
+    font-size: 10px;
+}
+
+.Smodel .model_content button:hover {
+    background: rgba(204, 212, 222, 0.5);
+}
+
+#menu {
+ width: 0; /*设置为0 隐藏自定义菜单*/
+ overflow: hidden; /*隐藏溢出的元素*/
+ box-shadow: 0 1px 1px #888, 1px 0 1px #ccc;
+ position: absolute; /*自定义菜单相对与body元素进行定位*/
+}
+.menutitle{
+    color: whitesmoke;
+}

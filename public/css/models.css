@@ -1,0 +1,126 @@
+.caseMenuShow {
+    position: absolute;
+    top: 00px;
+    right: 00px;
+    z-index: 8888;
+    display: none;
+    width: 160px;
+    height: 380px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+}
+.collisionMenuShow {
+    position: absolute;
+    top: 00px;
+    right: 00px;
+    z-index: 8888;
+    display: none;
+    width: 200px;
+    height: 230px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+}
+.explodeMenuShow {
+    position: absolute;
+    top: 00px;
+    right: 00px;
+    z-index: 8888;
+    display: none;
+    width: 200px;
+    height: 200px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+}
+.killMenuShow {
+    position: absolute;
+    top: 00px;
+    right: 00px;
+    z-index: 8888;
+    display: none;
+    width: 380px;
+    height: 310px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+}
+.model_modify {
+    position: absolute;
+    top: 00px;
+    right: 00px;
+    z-index: 8888;
+    display: none;
+    width: 180px;
+    height: 140px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+}
+
+.caseMenuShow select {
+    border: 1px solid white;
+    border-radius: 2px;
+    background-color: transparent;
+    color: white;
+}
+.collisionMenuShow select {
+    border: 1px solid white;
+    border-radius: 2px;
+    background-color: transparent;
+    color: white;
+}
+.explodeMenuShow select {
+    border: 1px solid white;
+    border-radius: 2px;
+    background-color: transparent;
+    color: white;
+}
+.killMenuShow select {
+    border: 1px solid white;
+    border-radius: 2px;
+    background-color: transparent;
+    color: white;
+}
+
+.caseMenuShow option {
+    background-color: black;
+    color: white;
+    border-radius: inherit;
+}
+.collisionMenuShow option {
+    background-color: black;
+    color: white;
+    border-radius: inherit;
+}
+.explodeMenuShow option {
+    background-color: black;
+    color: white;
+    border-radius: inherit;
+}
+.killMenuShow option {
+    background-color: black;
+    color: white;
+    border-radius: inherit;
+}
+
+.hrt{
+    height:5px;
+    border:none;
+    border-top:2px ridge white;
+}
+
+.killInput{
+    border-color: white;
+    border-radius: 2px;
+    width: 120px;
+    background-color: transparent;
+    color: white;
+}
+.case_select{
+    height: 22px;
+    width: 100px;
+    background-color: rgba(10, 10, 10, 0.2);
+    color: white;
+}

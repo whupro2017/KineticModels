@@ -9,6 +9,16 @@ Sandcastle.addToolbarButton('创建案件', function () {
 
 Sandcastle.addToolbarButton('创建场景', function () {
 }, 'CreateScene');
+Sandcastle.addToolbarButton('模型调整', function(){
+    $(".model_modify").eq(0).show();
+}, 'NewAddedMenu');
+Sandcastle.addToolbarButton('关联展示', function () {
+    showdog();
+    showwaveblue();
+    showwavegreen();
+    showwavered();
+    showrelation()
+}, 'NewAddedMenu');
 Sandcastle.addToolbarButton('自主路线', function () {
     // viewer.entities.removeAll();
     // positions=[];

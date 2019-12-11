@@ -9,149 +9,25 @@
     <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <title>Kinetic Models</title>
-    <style>
-        @import url(cesium/bucket.css);
+    <title>Vport</title>
+    <script src="cesium/Cesium.js"></script>
+    <script src="cesium/Sandcastle-header.js"></script>
+    <script src="cesium/jquery-2.1.4.min.js"></script>
+    <script src="cesium/jquery-form.js"></script>
+    <script src="cesium/xlsx.core.min.js"></script>
+    <script src="cesium/ysc/ysc.js"></script>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/modules/oldie.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/themes/dark-unica.js"></script>
+    <script src="functions/hcharts.js"></script>
+    <script src="functions/models.js"></script>
+    <script src="functions/showrelations.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/version1.css" />
+    <link type="text/css" rel="stylesheet" href="css/hcharts.css" />
 
-        body {
-            color: #000;
-        }
-
-        #toolbar {
-            background: rgba(42, 42, 42, 0.8);
-            padding: 4px;
-            border-radius: 4px;
-        }
-
-        #toolbar input {//新增HPR
-        vertical-align: middle;
-            padding-top: 2px;
-            padding-bottom: 2px;
-        }
-        #toolbar_measure {
-            background: rgba(42, 42, 42, 0.8);
-            padding: 4px;
-            border-radius: 4px;
-            z-index: 99999;
-        }
-
-        button {
-            color: #fff;
-            background-color: #666666;
-            text-align: center;
-            border: 1px solid #1E90FF;
-            border-radius: 4px;
-        }
-
-        .toolbar_measure button {
-            width: 50px;
-            height: 24px;
-            border-radius: 0px;
-            opacity: 0.8;
-            border: 1px solid rgba(255, 255, 255, 1);
-            color: #fff;
-            background-color: rgba(0, 0, 0, 0.8);
-            margin-left: 4px;
-        }
-
-        .toolbar_measure {
-            position: absolute;
-            top: 50px;
-            right: 00px;
-            z-index: 8888;
-            display: none;
-            width: 300px;
-            height: 50px;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 2px 0px 2px 2px;
-            border: 1px solid rgba(204, 212, 222, 1);
-        }
-
-        /* //坐标样式 */
-
-        .leftMenu {
-            width: 160px;
-            height: 80px;
-            background-color: #f1f1f1;
-            position: absolute;
-            display: none;
-            left: 300px;
-            top: 300px;
-            border-radius: 5px;
-            z-index: 9999;
-            line-height: 26px;
-            padding-left: 5px;
-        }
-
-        .leftMenu p {
-            margin: 0;
-            padding: 0;
-        }
-
-        .Smodel {
-            position: absolute;
-            top: 40px;
-            right: 226px;
-            z-index: 20330;
-            width: 176px;
-            height: 300px;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 2px;
-            border: 1px solid rgba(204, 212, 222, 1);
-            display: none;
-            font-size: 12px;
-        }
-
-        .Smodel .model_content p {
-            margin: 10px 7px;
-            font-size: 12px;
-        }
-
-        .Smodel .model_content span {
-            color: #fff;
-        }
-
-        .Smodel .model_content input {
-            width: 105px;
-            height: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 2px;
-            border: 1px solid rgba(204, 212, 222, 1);
-            color: #fff;
-            padding-left: 5px;
-            font-size: 12px;
-        }
-
-        .Smodel .model_content select {
-            width: 105px;
-            height: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 2px;
-            border: 1px solid rgba(204, 212, 222, 1);
-            color: #fff;
-            padding-left: 5px;
-            font-size: 12px;
-        }
-
-        .Smodel .modelselect_p select {
-            width: 80px !important;
-        }
-
-        .Smodel .model_content button {
-            width: 40px;
-            height: 20px;
-            background: rgba(0, 0, 0, 1);
-            border-radius: 2px;
-            border: 1px solid rgba(255, 255, 255, 1);
-            margin-left: 10px;
-            color: #fff;
-            font-size: 10px;
-        }
-
-        .Smodel .model_content button:hover {
-            background: rgba(204, 212, 222, 0.5);
-        }
-    </style>
 </head>
 <body>
 
@@ -160,7 +36,7 @@
     <p></p>
 </div>
 <div id="toolbar" style="display:block;">
-    <div align="center">
+    <div class="menutitle">
         按 F9 隐 藏 菜 单
     </div>
     <div>
@@ -183,7 +59,7 @@
                 <!--<input type="file" id="kinetic_file" webkitdirectory directory style="display:none" onchange="get_kinetic_file(this.value)">-->
                 <table>
                     <tr>
-                        <td>案 件 id：</td>
+                        <td class="menutitle">案 件 id：</td>
                         <td><select id="case_id" style="width:120px;height:25px" onchange="get_scenes(this.value)">
                             <option value="volvo" hidden>请选择案件</option>
                         </select></td>
@@ -197,7 +73,7 @@
             <div style="float: left">
                 <table>
                     <tr>
-                        <td>场 景 id：</td>
+                        <td class="menutitle">场 景 id：</td>
                         <td><select id="scene_id" style="width:120px;height:25px"
                                     onchange="select_scene(this.value)">
                             <option value="" hidden>请选择场景</option>
@@ -208,20 +84,31 @@
         </div>
     </div>
     <div id="operations" style="float: left;display:none">
-        <div id="toolbar_hpr" style="float: left">
 
-            <div>RotateX</div>
-            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateX, valueUpdate: 'input'">
-            <input type="text" size="5" data-bind="value: RotateX">
+        <div id="model_modify" class="model_modify" style="display: none">
+            <div id="ModelModifyMenu" class="modelModify">
 
-            <div>RotateY</div>
-            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateY, valueUpdate: 'input'">
-            <input type="text" size="5" data-bind="value: RotateY">
+                <!--            <div>Height-offset</div>-->
+                <!--            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: height, valueUpdate: 'input'">-->
+                <!--            <input type="text" size="3" data-bind="value: height">-->
 
-            <div>RotateZ</div>
-            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: RotateZ, valueUpdate: 'input'">
-            <input type="text" size="5" data-bind="value: RotateZ">
+                <span style="color:white;">RotateX:</span>
+                <input type="range" min="-180" max="180" step="1" data-bind="value: RotateX, valueUpdate: 'input'" style="width: 80px">
+                <input type="text" disabled="disabled" size="3" data-bind="value: RotateX" style="width: 28px">
+
+                <span style="color:white;">RotateY:</span>
+                <input type="range" min="-180" max="180" step="1" data-bind="value: RotateY, valueUpdate: 'input'" style="width: 80px">
+                <input type="text" disabled="disabled" size="3" data-bind="value: RotateY" style="width: 28px">
+
+                <span style="color:white;">RotateZ:</span>
+                <input type="range" min="0" max="90" step="1" data-bind="value: RotateZ, valueUpdate: 'input'" style="width: 80px">
+                <input type="text" disabled="disabled" size="3" data-bind="value: RotateZ" style="width: 28px">
+            </div>
+            <div style="background-color: transparent; float:top;padding-top: 10px;text-align:center" align="center">
+                <button style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white" onClick="modelModifyClose()">退出</button>
+            </div>
         </div>
+
         <div id="caseMenu"></div>
         <div id="MeasureMenu"></div>
         <div id="modelMenu"></div>
@@ -284,6 +171,22 @@
                     </tr>
 
                 </table>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div id="NewAddedMenu" style="float: left;"></div>
+                <div> <!--style="float: left;"-->
+                    <table>
+                        <tr>
+                            <td><select id="begin_end" class="case_select" onchange="route_choose(this.value)">
+                                <option value="route_choose">城市路线推荐</option>
+                                <option value="route_begin">路线起点</option>
+                                <option value="route_end">路线终点</option>
+                            </select></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
         <div>
@@ -455,6 +358,9 @@
 
         </div>
     </div>
+
+
+
     <div id="menu">
         <button id="show_model_info" type="button" style="width:125px;" onclick="show_model_info()">显示详情</button>
         <button type="button" style="width:125px;">删除标定</button>
@@ -467,148 +373,160 @@
         <button id="start_explosion_model" onclick="start_explosion()"></button>
         <button id="start_kill_model" onclick="start_kill()"></button>
     </div>
-
-    <style>
-        #menu {
-            width: 0; /*设置为0 隐藏自定义菜单*/
-            overflow: hidden; /*隐藏溢出的元素*/
-            box-shadow: 0 1px 1px #888, 1px 0 1px #ccc;
-            position: absolute; /*自定义菜单相对与body元素进行定位*/
-        }
-    </style>
-    <script src="cesium/Cesium.js"></script>
-    <script src="cesium/Sandcastle-header.js"></script>
-    <script src="cesium/jquery-2.1.4.min.js"></script>
-    <script src="cesium/jquery-form.js"></script>
-    <script src="cesium/xlsx.core.min.js"></script>
-
-
-
-    <script>
-        var viewer = new Cesium.Viewer('cesiumContainer', {
-            shouldAnimate: false,
-            baseLayerPicker: false,
-            homeButton: false,       //是否显示home键
-            timeline: true,        //是否显示时间线控件
-            fullscreenButton: false, //是否全屏显示
-            scene3DOnly: true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
-            infoBox: true,         //是否显示点击要素之后显示的信息
-            sceneModePicker: false,  //是否显示投影方式控件  三维/二维
-            navigationInstructionsInitiallyVisible: false,
-            navigationHelpButton: false,     //是否显示帮助信息控件
-            selectionIndicator: false,        //是否显示指示器组件
-            imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
-                url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-            }),
-            // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
-            //     url: 'cesium/googleTMS',
-            // }),
-            // terrainProvider: Cesium.createWorldTerrain()//加载地势
-        });
-        viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
-        viewer.scene.globe.depthTestAgainstTerrain = false;
-        // viewer.camera.setView({
-        //     destination: Cesium.Cartesian3.fromDegrees(105.07224017290507, 36.56475804850547, 4889916.564370803),
-        //     orientation: {
-        //         heading: 0.0,
-        //         pitch: Cesium.Math.toRadians(-90.0),
-        //         roll: 0.0
-        //     }
-        // });
-        var scene = viewer.scene;
-        var clock = viewer.clock;
-
-
-        var operation_type;
-        var element_image = "cesium/images/left_foot.JPG";
-        var thing_gltf = 'cesium/Models/Test/model.gltf';
-        var dog_gltf = 'cesium/Models/Test/dog.gltf';
-        var mark_color = Cesium.Color.WHITE;
-        var dataSourcePromise;
-
-        var viewModel = {
-            RotateX:0,
-            RotateY:0,
-            RotateZ:0
-        };
-
-        Cesium.knockout.track(viewModel); // 跟踪此Model
-        var toolbar_hpr = document.getElementById('toolbar_hpr'); // 获取前端监控div
-        Cesium.knockout.applyBindings(viewModel, toolbar_hpr); // 绑定监控
-
-
-
-        var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
-            Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 0)
-        );
-        var entity3 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
-                url: dog_gltf,
-                modelMatrix: modelMatrix,
-                // minimumPixelSize : 512,
-                scale: 0.1,
-                // maximumScale : 200000
-            })
-        );
-        viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 50.0)
-        });//初始视角
-
-        update_model_hpr(entity3)
-
-
-
-        function update_model_hpr(entity) {
-            Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
-                RotateX = Number(RotateX);
-                if (isNaN(RotateX)) {
-                    return;
-                }
-                var m = entity.modelMatrix;
-                var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
-                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
-            });
-
-            Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
-                RotateY = Number(RotateY);
-                if (isNaN(RotateY)) {
-                    return;
-                }
-                var m = entity.modelMatrix;
-                var m1 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(RotateY));
-                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
-            });
-
-            Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
-                RotateZ = Number(RotateZ);
-                if (isNaN(RotateZ)) {
-                    return;
-                }
-                var m = entity.modelMatrix;
-                var m1 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(RotateZ));
-                entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
-            });//Sandcastle_End
-            Sandcastle.finishedLoading();
-        }
-    </script>
-    <script src='./js/measuring.js'></script>
-    <script src='./js/blast.js'></script>
-    <script src='./js/collision.js '></script>
-    <script src='./js/modelMark.js'></script>
-    <script src='./js/plug-in.js '></script>
-
-
-    <script src='./functions/czml.js '></script>      <!--czml相关-->
-    <script src='./functions/sandcastle.js '></script>  <!-- cesium控件-->
-    <script src='./functions/handler.js '></script>     <!-- 鼠标事件-->
-    <script src='./functions/fire.js '></script>        <!-- 燃烧功能-->
-    <script src='./functions/collision.js '></script>   <!-- 碰撞演示功能-->
-    <script src='./functions/explosion.js '></script>    <!-- 爆炸演示功能-->
-    <script src='./functions/mix.js '></script>   <!-- 燃烧碰撞混合演示功能-->
-    <script src='./functions/dynamicRoute.js '></script>   <!-- 动态划线函数-->
-    <script src='./functions/tileset.js '></script>   <!-- 显示瓦片地图-->
-    <script src='./functions/menu.js '></script>   <!-- 菜单操作功能-->
-    <script src='./functions/onkey.js '></script>     <!--快捷键相关-->
-    <script src='./functions/fileSystem.js '></script>     <!--文件上传相关-->
 </div>
+<div id="rightmenu">
+    <div class="hchartshow">
+        <div>
+            <div style="float: right">
+                <table>
+                    <tr>
+                        <td><input id="linechart" type="button" class="charts" value="折线图" onclick="lineshow()"></td>
+                        <td><input id="barchart" type="button" class="charts" value="柱状图" onclick="barshow()"></td>
+                    </tr>
+                    <tr>
+                        <td><input id="piechart" type="button" class="charts" value="扇形图" onclick="pieshow()"></td>
+                        <td><input id="bubblechart" type="button" class="charts" value="气泡图" onclick="bubbleshow()"></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="showHighCharts" style="float: right">
+                <div id="container1" style="width: 900px; height: 360px; margin: 0 auto"></div>
+                <div id="container4" style="width: 700px;height:600px;margin: 0 auto;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="cesium/Cesium.js"></script>
+<script src="cesium/Sandcastle-header.js"></script>
+<script src="cesium/jquery-2.1.4.min.js"></script>
+<script src="cesium/jquery-form.js"></script>
+<script src="cesium/xlsx.core.min.js"></script>
+
+<script>
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+        shouldAnimate: false,
+        baseLayerPicker: false,
+        homeButton: false,       //是否显示home键
+        timeline: true,        //是否显示时间线控件
+        fullscreenButton: false, //是否全屏显示
+        scene3DOnly: true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+        infoBox: true,         //是否显示点击要素之后显示的信息
+        sceneModePicker: false,  //是否显示投影方式控件  三维/二维
+        navigationInstructionsInitiallyVisible: false,
+        navigationHelpButton: false,     //是否显示帮助信息控件
+        selectionIndicator: false,        //是否显示指示器组件
+        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+            url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+        }),
+        // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
+        //     url: 'cesium/googleTMS',
+        // }),
+        // terrainProvider: Cesium.createWorldTerrain()//加载地势
+    });
+    viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
+    viewer.scene.globe.depthTestAgainstTerrain = false;
+    // viewer.camera.setView({
+    //     destination: Cesium.Cartesian3.fromDegrees(105.07224017290507, 36.56475804850547, 4889916.564370803),
+    //     orientation: {
+    //         heading: 0.0,
+    //         pitch: Cesium.Math.toRadians(-90.0),
+    //         roll: 0.0
+    //     }
+    // });
+    var scene = viewer.scene;
+    var clock = viewer.clock;
+
+
+    var operation_type;
+    var element_image = "cesium/images/left_foot.JPG";
+    var thing_gltf = 'cesium/Models/Test/model.gltf';
+    var dog_gltf = 'cesium/Models/Test/dog.gltf';
+    var mark_color = Cesium.Color.WHITE;
+    var dataSourcePromise;
+
+    var viewModel = {
+        RotateX:0,
+        RotateY:0,
+        RotateZ:0
+    };
+
+    Cesium.knockout.track(viewModel); // 跟踪此Model
+    var toolbar_hpr = document.getElementById('ModelModifyMenu'); // 获取前端监控div
+    Cesium.knockout.applyBindings(viewModel, toolbar_hpr); // 绑定监控
+
+
+
+    var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
+        Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 0)
+    );
+    var entity3 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
+            url: dog_gltf,
+            modelMatrix: modelMatrix,
+            // minimumPixelSize : 512,
+            scale: 0.1,
+            // maximumScale : 200000
+        })
+    );
+    viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 700.0)
+    });//初始视角
+
+    update_model_hpr(entity3)
+
+
+
+    function update_model_hpr(entity) {
+        Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
+            RotateX = Number(RotateX);
+            if (isNaN(RotateX)) {
+                return;
+            }
+            var m = entity.modelMatrix;
+            var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
+            entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        });
+
+        Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
+            RotateY = Number(RotateY);
+            if (isNaN(RotateY)) {
+                return;
+            }
+            var m = entity.modelMatrix;
+            var m1 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(RotateY));
+            entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        });
+
+        Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
+            RotateZ = Number(RotateZ);
+            if (isNaN(RotateZ)) {
+                return;
+            }
+            var m = entity.modelMatrix;
+            var m1 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(RotateZ));
+            entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        });//Sandcastle_End
+        Sandcastle.finishedLoading();
+    }
+</script>
+<script src='./js/measuring.js'></script>
+<script src='./js/blast.js'></script>
+<script src='./js/collision.js '></script>
+<script src='./js/modelMark.js'></script>
+<script src='./js/plug-in.js '></script>
+
+
+<script src='./functions/czml.js '></script>      <!--czml相关-->
+<script src='./functions/sandcastle.js '></script>  <!-- cesium控件-->
+<script src='./functions/handler.js '></script>     <!-- 鼠标事件-->
+<script src='./functions/fire.js '></script>        <!-- 燃烧功能-->
+<script src='./functions/collision.js '></script>   <!-- 碰撞演示功能-->
+<script src='./functions/explosion.js '></script>    <!-- 爆炸演示功能-->
+<script src='./functions/mix.js '></script>   <!-- 燃烧碰撞混合演示功能-->
+<script src='./functions/dynamicRoute.js '></script>   <!-- 动态划线函数-->
+<script src='./functions/tileset.js '></script>   <!-- 显示瓦片地图-->
+<script src='./functions/menu.js '></script>   <!-- 菜单操作功能-->
+<script src='./functions/onkey.js '></script>     <!--快捷键相关-->
+<script src='./functions/fileSystem.js '></script>     <!--文件上传相关-->
 </body>
 </html>

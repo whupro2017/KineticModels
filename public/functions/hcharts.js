@@ -1,16 +1,15 @@
+
 function chartshow() {
     var x = document.getElementById("showHighCharts")
-    if(x.style.display == "none"){
-        x.style.cssText = "display:block"
-    }else {
+    if(x.style.display == "block"){
         x.style.cssText = "display:none"
+    }else {
+        x.style.cssText = "display:block"
     }
 }
 function lineshow(){
     $(document).ready(function(){
         chart = new Highcharts.Chart({
-            height:400,
-            width:400,
             colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
                 '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
             chart: {
@@ -27,7 +26,7 @@ function lineshow(){
                 plotBorderColor: '#606063',
                 renderTo: 'container1',
                 type: 'line',
-                marginRight: 220,
+                marginRight: 80,
                 marginBottom: 25,
                 scrollablePlotArea: {
                     minWidth: 500
@@ -39,7 +38,7 @@ function lineshow(){
                 style: {
                     color: '#E0E0E3',
                     textTransform: 'uppercase',
-                    fontSize: '20px'
+                    fontSize: '16px'
                 }
             },
             subtitle: {
@@ -100,9 +99,9 @@ function lineshow(){
             legend: {
                 layout: 'vertical',
                 align: 'right',
-                verticalAlign: 'top',
-                x: -20,
-                y: 200,
+                verticalAlign: 'middle',
+                // x: -20,
+                // y: 200,
                 borderWidth: 0,
                 backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 itemStyle: {
@@ -134,7 +133,7 @@ function lineshow(){
                 data: [29, 42, 57, 85, 229, 252, 270, 266, 242, 202, 66, 48]
             }]
         });
-    });
+    }); 
     chartshow()
 }
 

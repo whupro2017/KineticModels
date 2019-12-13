@@ -32,6 +32,7 @@
             input.checked = checked;
             input.type = 'checkbox';
             input.style.pointerEvents = 'none';
+            //单选框样式设置
             var label = document.createElement('label');
             label.appendChild(input);
             label.appendChild(document.createTextNode(text));
@@ -40,6 +41,10 @@
             button.type = 'button';
             button.className = 'cesium-button';
             button.appendChild(label);
+            button.style = 'color:white;' +
+                'background-color: rgba(42, 42, 42, 0.2);' +
+                'width:auto;' +
+                'height:25px;';
 
             button.onclick = function() {
                 window.Sandcastle.reset();
@@ -54,6 +59,11 @@
             window.Sandcastle.declare(onclick);
             var button = document.createElement('button');
             button.type = 'button';
+            //按钮框样式设置
+            button.style = 'color:white;' +
+                'background-color: rgba(42, 42, 42, 0.2);' +
+                'width:auto;' +
+                'height:auto;';
             button.className = 'cesium-button';
             button.onclick = function() {
                 window.Sandcastle.reset();

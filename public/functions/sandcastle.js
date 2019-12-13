@@ -35,7 +35,7 @@ Sandcastle.addToolbarButton('自主路线', function () {
         }
     });
 }, 'caseMenu');
-Sandcastle.addToolbarButton('研判标注', function () {
+Sandcastle.addToolbarButton('研判标注',function () {
     $(".Smodel").eq(0).show();
 }, 'caseMenu');
 

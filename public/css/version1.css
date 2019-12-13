@@ -147,7 +147,8 @@ button {
 }
 .case_select{
     height: 22px;
-    width: 100px;
+    width: auto;
+    border-radius: 4px;
     background-color: rgba(10, 10, 10, 0.3);
     color: white;
 }

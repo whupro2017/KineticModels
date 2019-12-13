@@ -40,7 +40,7 @@ function get_scenes(case_id) {
     $.get("/get_scenes", {"value": case_id}, function (data) {
         scenes = data;
         $("#scene_id").find("option").remove();
-        $("#scene_id").append("<option value='volvo' hidden>请选择场景</option>");
+        $("#scene_id").append("<option value='volvo' hidden>ID</option>");
         scenes.forEach(function (json) {
             $("#scene_id").append('<option value=' + json.scene_id + ' >' + json.scene_id + '</option>');
         });

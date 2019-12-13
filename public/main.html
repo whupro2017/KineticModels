@@ -60,9 +60,9 @@
                 <!--<input type="file" id="kinetic_file" webkitdirectory directory style="display:none" onchange="get_kinetic_file(this.value)">-->
                 <table>
                     <tr>
-                        <td style="color: white">案 件 id：</td>
-                        <td><select id="case_id" class="case_select" onchange="get_scenes(this.value)">
-                            <option value="volvo" hidden>请选择案件</option>
+                        <td style="color: white">请选择案件：</td>
+                        <td><select id="case_id" class="case_select" style="width: 50px" onchange="get_scenes(this.value)">
+                            <option value="volvo" hidden>ID</option>
                         </select></td>
                     </tr>
                 </table>
@@ -74,9 +74,9 @@
             <div style="float: left">
                 <table>
                     <tr>
-                        <td style="color: white">场 景 id：</td>
-                        <td><select id="scene_id" class="case_select" onchange="select_scene(this.value)">
-                            <option value="" hidden>请选择场景</option>
+                        <td style="color: white">请选择场景：</td>
+                        <td><select id="scene_id" class="case_select" style="width: 50px" onchange="select_scene(this.value)">
+                            <option value="" hidden>ID</option>
                         </select></td>
                     </tr>
                 </table>
@@ -288,7 +288,7 @@
                             <tr>
                                 <td><select id="human_type" class="case_select"
                                             onchange="get_element_menu(this.value)">
-                                    <option value="volvo" hidden>涉案人类别</option>
+                                    <option value="volvo" hidden>人物类别</option>
                                     <option value="scene_handprint">手印痕迹</option>
                                     <option value="scene_footprint">足迹痕迹</option>
                                     <option value="scene_toolmark">工具痕迹</option>

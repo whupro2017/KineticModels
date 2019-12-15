@@ -1,9 +1,9 @@
 #rightmenu{
     float:right;
-    width: 1000px;
-    background-color: #00a65a;
+    width: 120px;
+    background-color: rgba(42, 42, 42, 0.2);
     position: absolute;
-    margin-left: 500px;
+    margin-left: 1750px;
     margin-top: 00px
 }
 .charts{
@@ -16,6 +16,7 @@
 }
 #showHighCharts{
     display: none;
-    margin-right: 400px;
+    margin-left: 300px;
+    margin-top: 240px;
     position: absolute;//key
 }

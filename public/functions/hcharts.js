@@ -133,7 +133,7 @@ function lineshow(){
                 data: [29, 42, 57, 85, 229, 252, 270, 266, 242, 202, 66, 48]
             }]
         });
-    }); 
+    });
     chartshow()
 }
 
@@ -142,7 +142,7 @@ function barshow(){
         colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
             '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
         chart: {
-            renderTo: 'container1',
+            renderTo: 'container2',
             type: 'column',
             backgroundColor: {
                 linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
@@ -209,10 +209,10 @@ function barshow(){
         legend: {
             layout: 'vertical',
             backgroundColor: 'black',
-            align: 'left',
+            align: 'right',
             verticalAlign: 'top',
-            x: 100,
-            y: 70,
+            x: -20,
+            // y: 70,
             floating: true,
             shadow: true
         },
@@ -255,7 +255,7 @@ function pieshow(){
         colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
             '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
         chart: {
-            renderTo: 'container1',
+            renderTo: 'container3',
             type:'pie',
             plotBackgroundColor: null,
             plotBorderWidth: null,
@@ -303,15 +303,15 @@ function pieshow(){
             type: 'pie',
             name: 'pie',
             data: [
-                ['圆通快递', 55.0],
-                ['中通快递', 26.8],
+                ['圆通', 55.0],
+                ['中通', 26.8],
                 {
                     name: 'EMS',
                     y: 12.8,
                     sliced: true,
                     selected: true
                 },
-                ['申通快递', 7.5]
+                ['申通', 7.5]
             ]
         }]
     });
@@ -345,13 +345,13 @@ function bubbleshow() {
                 fontSize: '20px'
             }
         },
-        subtitle: {
-            text:'Carbon emissions around the world (2014)',
-            style: {
-                color: '#E0E0E3',
-                textTransform: 'uppercase'
-            }
-        },
+        // subtitle: {
+        //     text:'Carbon emissions around the world (2014)',
+        //     style: {
+        //         color: '#E0E0E3',
+        //         textTransform: 'uppercase'
+        //     }
+        // },
 
         tooltip: {
             useHTML: true,

@@ -14,9 +14,28 @@
     color: white;
     vertical-align: top;
 }
-#showHighCharts{
+#line{
     display: none;
-    margin-left: 300px;
+    background-color: #00acd6;
+    margin-left: 1300px;
     margin-top: 240px;
-    position: absolute;//key
+    position: absolute;
+}
+#bar{
+    display: none;
+    margin-left: 1300px;
+    margin-top: 420px;
+    position: absolute;
+}
+#pie{
+    display: none;
+    margin-left: 1300px;
+    margin-top: 600px;
+    position: absolute;
+}
+#bubble{
+    display: block;
+    margin-left: 1640px;
+    margin-top: 600px;
+    position: absolute;
 }

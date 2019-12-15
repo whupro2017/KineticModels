@@ -1,6 +1,30 @@
 
-function chartshow() {
-    var x = document.getElementById("showHighCharts")
+function line() {
+    var x = document.getElementById("line");
+    if(x.style.display == "block"){
+        x.style.cssText = "display:none"
+    }else {
+        x.style.cssText = "display:block"
+    }
+}
+function bar() {
+    var x = document.getElementById("bar");
+    if(x.style.display == "block"){
+        x.style.cssText = "display:none"
+    }else {
+        x.style.cssText = "display:block"
+    }
+}
+function pie() {
+    var x = document.getElementById("pie");
+    if(x.style.display == "block"){
+        x.style.cssText = "display:none"
+    }else {
+        x.style.cssText = "display:block"
+    }
+}
+function bubble() {
+    var x = document.getElementById("bubble");
     if(x.style.display == "block"){
         x.style.cssText = "display:none"
     }else {
@@ -134,7 +158,7 @@ function lineshow(){
             }]
         });
     });
-    chartshow()
+    line();
 }
 
 function barshow(){
@@ -246,7 +270,7 @@ function barshow(){
 
         }]
     });
-    chartshow()
+    bar();
 }
 
 function pieshow(){
@@ -315,7 +339,7 @@ function pieshow(){
             ]
         }]
     });
-    chartshow()
+    pie();
 }
 
 function bubbleshow() {
@@ -345,13 +369,13 @@ function bubbleshow() {
                 fontSize: '20px'
             }
         },
-        // subtitle: {
-        //     text:'Carbon emissions around the world (2014)',
-        //     style: {
-        //         color: '#E0E0E3',
-        //         textTransform: 'uppercase'
-        //     }
-        // },
+        subtitle: {
+            text:'Carbon emissions around the world (2014)',
+            style: {
+                color: '#E0E0E3',
+                textTransform: 'uppercase'
+            }
+        },
 
         tooltip: {
             useHTML: true,
@@ -360,7 +384,7 @@ function bubbleshow() {
         plotOptions: {
             packedbubble: {
                 minSize: '10%',
-                maxSize: '120%',
+                maxSize: '140%',
                 zMin: 0,
                 zMax: 1000,
                 layoutAlgorithm: {
@@ -874,7 +898,7 @@ function bubbleshow() {
                 }]
         }]
     })
-    chartshow()
+    bubble();
 }
 $(function () {
     dragPanelMove("#showHighCharts");

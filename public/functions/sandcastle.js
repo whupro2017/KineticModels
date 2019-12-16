@@ -19,6 +19,26 @@
 //     showwavered();
 //     // showrelation()
 // }, 'NewAddedMenu');
+
+Sandcastle.addToolbarButton('痕迹',function () {
+    $("#imprintshow").eq(0).show();
+}, 'imprint');
+Sandcastle.addToolbarButton('物品',function () {
+    $("#thingshow").eq(0).show();
+}, 'thing');
+Sandcastle.addToolbarButton('主体',function () {
+    $("#subjectshow").eq(0).show();
+}, 'subject');
+Sandcastle.addToolbarButton('信息',function () {
+    $("#informationshow").eq(0).show();
+}, 'information');
+Sandcastle.addToolbarButton('功能',function () {
+    $("#functionshow").eq(0).show();
+}, 'functions');
+Sandcastle.addToolbarButton('模型',function () {
+    $("#modelshow").eq(0).show();
+}, 'modeltype');
+
 Sandcastle.addToolbarButton('自主路线', function () {
     // viewer.entities.removeAll();
     // positions=[];

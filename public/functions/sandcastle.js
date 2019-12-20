@@ -21,22 +21,22 @@
 // }, 'NewAddedMenu');
 
 Sandcastle.addToolbarButton('痕迹',function () {
-    $("#imprintshow").eq(0).show();
+    menushow("imprintshow")
 }, 'imprint');
 Sandcastle.addToolbarButton('物品',function () {
-    $("#thingshow").eq(0).show();
+    menushow("thingshow")
 }, 'thing');
 Sandcastle.addToolbarButton('主体',function () {
-    $("#subjectshow").eq(0).show();
+    menushow("subjectshow")
 }, 'subject');
 Sandcastle.addToolbarButton('信息',function () {
-    $("#informationshow").eq(0).show();
+    menushow("informationshow")
 }, 'information');
 Sandcastle.addToolbarButton('功能',function () {
-    $("#functionshow").eq(0).show();
+    menushow("functionshow")
 }, 'functions');
 Sandcastle.addToolbarButton('模型',function () {
-    $("#modelshow").eq(0).show();
+    menushow("modelshow")
 }, 'modeltype');
 
 Sandcastle.addToolbarButton('自主路线', function () {
@@ -204,3 +204,12 @@ $.get("/get_cases", {"value": "get_cases"}, function (data) {
         $("#case_id").append('<option value=' + json.case_id + ' >' + json.case_id + '</option>');
     });
 })
+
+function menushow(menuid) {
+    var x = document.getElementById(menuid);
+    if(x.style.display == "block"){
+        x.style.cssText = "display:none"
+    }else {
+        x.style.cssText = "display:block"
+    }
+}

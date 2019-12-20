@@ -1,9 +1,9 @@
 #rightmenu{
     float:right;
-    width: 120px;
+    width: 100px;
     background-color: rgba(42, 42, 42, 0.2);
     position: absolute;
-    margin-left: 1750px;
+    margin-left: 1770px;
     margin-top: 00px
 }
 .charts{
@@ -17,13 +17,13 @@
 #line{
     display: none;
     background-color: #00acd6;
-    margin-left: 1300px;
+    margin-left: 1500px;
     margin-top: 240px;
     position: absolute;
 }
 #bar{
     display: none;
-    margin-left: 1300px;
+    margin-left: 1500px;
     margin-top: 420px;
     position: absolute;
 }

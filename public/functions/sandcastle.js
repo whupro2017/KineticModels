@@ -20,24 +20,24 @@
 //     // showrelation()
 // }, 'NewAddedMenu');
 
-Sandcastle.addToolbarButton('痕迹',function () {
-    menushow("imprintshow")
-}, 'imprint');
-Sandcastle.addToolbarButton('物品',function () {
-    menushow("thingshow")
-}, 'thing');
-Sandcastle.addToolbarButton('主体',function () {
-    menushow("subjectshow")
-}, 'subject');
-Sandcastle.addToolbarButton('信息',function () {
-    menushow("informationshow")
-}, 'information');
-Sandcastle.addToolbarButton('功能',function () {
-    menushow("functionshow")
-}, 'functions');
-Sandcastle.addToolbarButton('模型',function () {
-    menushow("modelshow")
-}, 'modeltype');
+// Sandcastle.addToolbarButton('痕迹',function () {
+//     menushow("imprintshow")
+// }, 'imprint');
+// Sandcastle.addToolbarButton('物品',function () {
+//     menushow("thingshow")
+// }, 'thing');
+// Sandcastle.addToolbarButton('主体',function () {
+//     menushow("subjectshow")
+// }, 'subject');
+// Sandcastle.addToolbarButton('信息',function () {
+//     menushow("informationshow")
+// }, 'information');
+// Sandcastle.addToolbarButton('功能',function () {
+//     menushow("functionshow")
+// }, 'functions');
+// Sandcastle.addToolbarButton('模型',function () {
+//     menushow("modelshow")
+// }, 'modeltype');
 
 Sandcastle.addToolbarButton('自主路线', function () {
     // viewer.entities.removeAll();
@@ -205,11 +205,11 @@ $.get("/get_cases", {"value": "get_cases"}, function (data) {
     });
 })
 
-function menushow(menuid) {
-    var x = document.getElementById(menuid);
-    if(x.style.display == "block"){
-        x.style.cssText = "display:none"
-    }else {
-        x.style.cssText = "display:block"
-    }
-}
+// function menushow(menuid) {
+//     var x = document.getElementById(menuid);
+//     if(x.style.display == "block"){
+//         x.style.cssText = "display:none"
+//     }else {
+//         x.style.cssText = "display:block"
+//     }
+// }

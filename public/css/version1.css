@@ -5,7 +5,7 @@ body {
 }
 
 #toolbar {
-    background: rgba(42, 42, 42, 0.2);
+    background: rgba(42, 42, 42, 0.8);
     padding: 4px;
     border-radius: 4px;
 }
@@ -151,6 +151,19 @@ button {
     border-radius: 4px;
     background-color: rgba(10, 10, 10, 0.3);
     color: white;
+}
+
+.main_summary{
+    width: 100px;
+    margin: 4px;
+    color: white;
+}
+
+.first_button{
+    display: inline;
+    color: white;
+    width: 100px;
+    font-size: 15px;
 }
 .second_button{
     display: block;

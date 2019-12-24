@@ -790,32 +790,32 @@
     <div id = "functionsarea">
         <div style="float: right;">
             <div>
-                <table style="float: right;margin-right: -25px">
+                <table style="float: right;margin-right: 0px">
                     <tr>
-                        <td colspan="2" style="text-align: right"><span style="color: #00c0ef;padding-right: 25px">按F10隐藏菜单</span></td>
+                        <td colspan="4" style="text-align: right"><span style="color: #00c0ef;">按F10隐藏菜单</span></td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="text-align: right;padding-right: 25px"><span style="color: deepskyblue;">操作</span></td>
+                        <td colspan="4" style="text-align: right;"><span style="color: deepskyblue;">操作</span></td>
                     </tr>
                     <tr>
-                        <td><button id="new" class="charts" onclick=""><img src="icons/new.png" width="20px" height="20px"></button> </td>
-                        <td><button id="import" class="charts" onclick=""><img src="icons/import.png" width="25px" height="25px"></button> </td>
+                        <td><button id="new" class="charts" onclick=""><img src="icons/new.png" width="20px" height="20px" title="新建"></button> </td>
+                        <td><button id="import" class="charts" onclick=""><img src="icons/import.png" width="25px" height="25px" title="导入"></button> </td>
+                        <td><button id="mark" class="charts" onclick=""><img src="icons/mark.png" width="20px" height="20px" title="标注"></button> </td>
+                        <td><button id="show" class="charts" onclick=""><img src="icons/show.png" width="20px" height="20px" title="显示"></button> </td>
                     </tr>
+
                     <tr>
-                        <td><button id="mark" class="charts" onclick=""><img src="icons/mark.png" width="20px" height="20px"></button> </td>
-                        <td><button id="show" class="charts" onclick=""><img src="icons/show.png" width="20px" height="20px"></button> </td>
+                        <td><button id="track" class="charts" onclick=""><img src="icons/track.png" width="20px" height="20px" title="轨迹"></button> </td>
+                        <td><button id="area" class="charts" onclick=""><img src="icons/area.png" width="20px" height="20px" title="范围"></button> </td>
+                        <td><button id="relate" class="charts" onclick="mdoelrelation()"><img src="icons/relate.png" width="20px" height="20px" title="关联"></button> </td>
+                        <td><button id="align" class="charts" onclick=""><img src="icons/align.png" width="20px" height="20px" title="对齐"></button> </td>
                     </tr>
+
                     <tr>
-                        <td><button id="track" class="charts" onclick=""><img src="icons/track.png" width="20px" height="20px"></button> </td>
-                        <td><button id="area" class="charts" onclick=""><img src="icons/area.png" width="20px" height="20px"></button> </td>
-                    </tr>
-                    <tr>
-                        <td><button id="relate" class="charts" onclick="mdoelrelation()"><img src="icons/relate.png" width="20px" height="20px"></button> </td>
-                        <td><button id="align" class="charts" onclick=""><img src="icons/align.png" width="20px" height="20px"></button> </td>
-                    </tr>
-                    <tr>
-                        <td><button id="adjust" class="charts" onclick="rightmodelmodify()"><img src="icons/adjust.png" width="20px" height="20px"></button> </td>
-                        <td><button id="measure" class="charts" onclick=""><img src="icons/measure.png" width="20px" height="20px"></button> </td>
+                        <td></td>
+                        <td></td>
+                        <td><button id="adjust" class="charts" onclick="rightmodelmodify()"><img src="icons/adjust.png" width="20px" height="20px" title="调整"></button> </td>
+                        <td><button id="measure" class="charts" onclick=""><img src="icons/measure.png" width="20px" height="20px" title="测量"></button> </td>
                     </tr>
                 </table>
             </div>
@@ -823,30 +823,30 @@
     </div>
     <div class="hchartshow">
         <div style="float: right;">
-            <table>
+            <table style="float: right;margin-right: 0px">
                 <tr>
-                    <td colspan="2" style="text-align: right"><span style="color: deepskyblue">图表</span></td>
+                    <td colspan="4" style="text-align: right"><span style="color: deepskyblue">图表</span></td>
                 </tr>
                 <tr>
-                    <td><button id="linechart" class="charts" onclick="lineshow()"><img src="icons/line.png" width="25px" height="25px"></button></td>
-                    <td><button id="barchart" class="charts" onclick="barshow()"><img src="icons/bar.png" width="25px" height="25px"></button></td>
-                </tr>
-                <tr>
-                    <td><button id="piechart" class="charts" onclick="pieshow()"><img src="icons/pie.png" width="25px" height="25px"></button></td>
-                    <td><button id="bubblechart" class="charts" onclick="bubbleshow()"><img src="icons/bubble.png" width="25px" height="25px"></button></td>
+                    <td><button id="linechart" class="charts" onclick="lineshow()"><img src="icons/line.png" width="25px" height="25px" title="折线图"></button></td>
+                    <td><button id="barchart" class="charts" onclick="barshow()"><img src="icons/bar.png" width="25px" height="25px" title="柱状图"></button></td>
+                    <td><button id="piechart" class="charts" onclick="pieshow()"><img src="icons/pie.png" width="25px" height="25px" title="饼图"></button></td>
+                    <td><button id="bubblechart" class="charts" onclick="bubbleshow()"><img src="icons/bubble.png" width="25px" height="25px" title="气泡图"></button></td>
                 </tr>
             </table>
         </div>
     </div>
     <div id = "signs">
-        <div style="float: right;">
+        <div style="float: right;margin-right: 0px">
             <table>
                 <tr>
-                    <td colspan="2" style="text-align: right"><span style="color: deepskyblue">符号</span></td>
+                    <td colspan="4" style="text-align: right"><span style="color: deepskyblue">符号</span></td>
                 </tr>
                 <tr>
-                    <td><button id="sign_upload" class="charts" onclick=""><img src="icons/upload.png" width="20px" height="20px"></button></td>
-                    <td><button id="sign_create" class="charts" onclick=""><img src="icons/create.png" width="20px" height="20px"></button></td>
+                    <td></td>
+                    <td></td>
+                    <td><button id="sign_upload" class="charts" onclick=""><img src="icons/upload.png" width="20px" height="20px" title="新建"></button></td>
+                    <td><button id="sign_create" class="charts" onclick=""><img src="icons/create.png" width="20px" height="20px" title="上传"></button></td>
                 </tr>
             </table>
         </div>
@@ -855,11 +855,11 @@
         <div style="float: right">
             <table>
                 <tr>
-                    <td colspan="2" style="text-align: right"><span style="color: deepskyblue">模型</span></td>
+                    <td colspan="4" style="text-align: right"><span style="color: deepskyblue">模型</span></td>
                 </tr>
                 <tr>
-                    <td><button id="model_upload" class="charts" onclick=""><img src="icons/upload.png" width="20px" height="20px"></button></td>
-                    <td><button id="model_create" class="charts" onclick=""><img src="icons/create.png" width="20px" height="20px"></button></td>
+                    <td><button id="model_upload" class="charts" onclick=""><img src="icons/upload.png" width="20px" height="20px" title="新建"></button></td>
+                    <td><button id="model_create" class="charts" onclick=""><img src="icons/create.png" width="20px" height="20px" title="上传"></button></td>
                 </tr>
             </table>
         </div>
@@ -872,10 +872,10 @@
     <div id="container2" style="height: 180px;width: 400px;"></div>
 </div>
 <div id="pie">
-    <div id="container3" style="height: 180px;width: 340px;"></div>
+    <div id="container3" style="height: 200px;width: 340px;"></div>
 </div>
 <div id="bubble">
-    <div id="container4" style="height: 350px;width: 260px;"></div>
+    <div id="container4" style="height: 300px;width: 260px;"></div>
 </div>
 
 <script src="cesium/Cesium.js"></script>

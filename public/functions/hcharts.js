@@ -364,13 +364,13 @@ function bubbleshow() {
                 fontSize: '20px'
             }
         },
-        subtitle: {
-            text:'Carbon emissions around the world (2014)',
-            style: {
-                color: '#E0E0E3',
-                textTransform: 'uppercase'
-            }
-        },
+        // subtitle: {
+        //     text:'Carbon emissions around the world (2014)',
+        //     style: {
+        //         color: '#E0E0E3',
+        //         textTransform: 'uppercase'
+        //     }
+        // },
 
         tooltip: {
             useHTML: true,
@@ -403,6 +403,7 @@ function bubbleshow() {
             }
         },
         legend: {
+            enabled:false,
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             itemStyle: {
                 color: '#E0E0E3'

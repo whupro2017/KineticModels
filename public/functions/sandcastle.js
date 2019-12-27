@@ -39,87 +39,87 @@
 //     menushow("modelshow")
 // }, 'modeltype');
 
-Sandcastle.addToolbarButton('自主路线', function () {
-    // viewer.entities.removeAll();
-    // positions=[];
-    show_tileset();
-    alert("开始规划路线，左键点击经过点，右键结束");
-    operation_type = "drawRoute";
-    // viewer.zoomTo(tileset);
-    viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(114.21952507076327, 30.358135859723472, 800),
-        orientation: {
-            heading: 0.0,
-            pitch: Cesium.Math.toRadians(-90.0),
-            roll: 0.0
-        }
-    });
-}, 'caseMenu');
-Sandcastle.addToolbarButton('研判标注',function () {
-    $(".Smodel").eq(0).show();
-}, 'caseMenu');
-
-Sandcastle.addToolbarButton('地理量测', function () {
-    $(".toolbar_measure").eq(0).show();
-}, 'caseMenu');
-
-Sandcastle.addToolbarButton('爆炸效果', function () {
-    startBZ1();
-    viewer.camera.setView({
-        destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
-        orientation: {
-            heading: 6.144391448663251,
-            pitch: -0.6870827796178554,
-            roll: 0.0
-        }
-    });
-}, 'caseMenu');
-
-Sandcastle.addToolbarButton('爆炸冲击波', function () {
-    startBZ2();
-    viewer.camera.setView({
-        destination: {x: -2259482.2093426995, y: 5023565.238597119, z: 3204802.0603294484},
-        orientation: {
-            heading: 6.144391448663251,
-            pitch: -0.6870827796178554,
-            roll: 0.0
-        }
-    });
-}, 'caseMenu');
-Sandcastle.addToolbarButton('燃烧模型', function () {
-    $(".caseMenuShow").eq(0).show();
-}, 'modelMenu');
-Sandcastle.addToolbarButton('碰撞模型', function () {
-    $(".collisionMenuShow").eq(0).show();
-}, 'modelMenu');
-Sandcastle.addToolbarButton('爆炸模型', function () {
-    $(".explodeMenuShow").eq(0).show();
-}, 'modelMenu');
-Sandcastle.addToolbarButton('砍杀模型', function () {
-    $(".killMenuShow").eq(0).show();
-}, 'modelMenu');
-
-// Sandcastle.addToolbarButton('砍杀模型', function () {
+// Sandcastle.addToolbarButton('自主路线', function () {
+//     // viewer.entities.removeAll();
+//     // positions=[];
+//     show_tileset();
+//     alert("开始规划路线，左键点击经过点，右键结束");
+//     operation_type = "drawRoute";
+//     // viewer.zoomTo(tileset);
+//     viewer.camera.setView({
+//         destination: Cesium.Cartesian3.fromDegrees(114.21952507076327, 30.358135859723472, 800),
+//         orientation: {
+//             heading: 0.0,
+//             pitch: Cesium.Math.toRadians(-90.0),
+//             roll: 0.0
+//         }
+//     });
+// }, 'caseMenu');
+// Sandcastle.addToolbarButton('研判标注',function () {
+//     $(".Smodel").eq(0).show();
+// }, 'caseMenu');
 //
+// Sandcastle.addToolbarButton('地理量测', function () {
+//     $(".toolbar_measure").eq(0).show();
+// }, 'caseMenu');
+//
+// Sandcastle.addToolbarButton('爆炸效果', function () {
+//     startBZ1();
+//     viewer.camera.setView({
+//         destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
+//         orientation: {
+//             heading: 6.144391448663251,
+//             pitch: -0.6870827796178554,
+//             roll: 0.0
+//         }
+//     });
+// }, 'caseMenu');
+//
+// Sandcastle.addToolbarButton('爆炸冲击波', function () {
+//     startBZ2();
+//     viewer.camera.setView({
+//         destination: {x: -2259482.2093426995, y: 5023565.238597119, z: 3204802.0603294484},
+//         orientation: {
+//             heading: 6.144391448663251,
+//             pitch: -0.6870827796178554,
+//             roll: 0.0
+//         }
+//     });
+// }, 'caseMenu');
+// Sandcastle.addToolbarButton('燃烧模型', function () {
+//     $(".caseMenuShow").eq(0).show();
 // }, 'modelMenu');
-Sandcastle.addToolbarButton('混合模型', function () {
-    clearFire();
-    clearCollision();
-    clearExplosion();
-    viewer.camera.setView({
-        destination: {
-            x: -2259635.974850741,
-            y: 5023449.2015779745,
-            z: 3204845.1002706015
-        },
-        orientation: {
-            heading: 2.8424653218313556,
-            pitch: -0.8928382126577965,
-            roll: 0
-        }
-    });
-    pz_start();
-}, 'modelMenu');
+// Sandcastle.addToolbarButton('碰撞模型', function () {
+//     $(".collisionMenuShow").eq(0).show();
+// }, 'modelMenu');
+// Sandcastle.addToolbarButton('爆炸模型', function () {
+//     $(".explodeMenuShow").eq(0).show();
+// }, 'modelMenu');
+// Sandcastle.addToolbarButton('砍杀模型', function () {
+//     $(".killMenuShow").eq(0).show();
+// }, 'modelMenu');
+//
+// // Sandcastle.addToolbarButton('砍杀模型', function () {
+// //
+// // }, 'modelMenu');
+// Sandcastle.addToolbarButton('混合模型', function () {
+//     clearFire();
+//     clearCollision();
+//     clearExplosion();
+//     viewer.camera.setView({
+//         destination: {
+//             x: -2259635.974850741,
+//             y: 5023449.2015779745,
+//             z: 3204845.1002706015
+//         },
+//         orientation: {
+//             heading: 2.8424653218313556,
+//             pitch: -0.8928382126577965,
+//             roll: 0
+//         }
+//     });
+//     pz_start();
+// }, 'modelMenu');
 Sandcastle.addToolbarButton('上传动力学模型', function () {
     $("#files").trigger("click");
 

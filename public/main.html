@@ -110,10 +110,11 @@
             </div>
         </div>
 
-        <div id="imprint">
+
+        <div id="overview">
             <details>
                 <summary class="main_summary">
-                    <p class="first_button">痕迹</p>
+                    <p class="first_button">全景</p>
                 </summary>
                 <input type="button" class="second_button" value="手印痕迹">
                 <input type="button" class="second_button" value="足迹痕迹">
@@ -121,6 +122,35 @@
                 <input type="button" class="second_button" value="生物物证">
                 <input type="button" class="second_button" value="文检物证">
                 <input type="button" class="second_button" value="电子物证">
+            </details>
+        </div>
+
+        <div id="imprint">
+            <details>
+                <summary class="main_summary">
+                    <p class="first_button">痕迹</p>
+                </summary>
+                <input type="button" class="second_button" value="尸体尸块">
+                <input type="button" class="second_button" value="损伤">
+                <input type="button" class="second_button" value="血迹">
+                <input type="button" class="second_button" value="生物物证">
+                <input type="button" class="second_button" value="指纹">
+                <input type="button" class="second_button" value="足迹">
+                <input type="button" class="second_button" value="工痕">
+                <input type="button" class="second_button" value="枪弹痕迹">
+                <input type="button" class="second_button" value="燃烧痕迹">
+                <input type="button" class="second_button" value="烟熏痕迹">
+                <input type="button" class="second_button" value="爆炸痕迹">
+                <input type="button" class="second_button" value="碰撞痕迹">
+                <input type="button" class="second_button" value="轮胎痕迹">
+                <input type="button" class="second_button" value="其他痕迹">
+                <input type="button" class="second_button" value="微量物质">
+                <input type="button" class="second_button" value="声音信息">
+                <input type="button" class="second_button" value="文书">
+                <input type="button" class="second_button" value="影像">
+                <input type="button" class="second_button" value="电子数据">
+                <input type="button" class="second_button" value="物品">
+                <input type="button" class="second_button" value="其他">
             </details>
         </div>
 
@@ -179,11 +209,11 @@
                 <summary class="main_summary">
                     <p class="first_button">功能展示</p>
                 </summary>
-                <input type="button" class="second_button" value="自主路线">
-                <input type="button" class="second_button" value="研判标准">
-                <input type="button" class="second_button" value="地理测量">
-                <input type="button" class="second_button" value="爆炸效果">
-                <input type="button" class="second_button" value="冲击波">
+                <input type="button" class="second_button" value="自主路线" onclick="routeshow()">
+                <input type="button" class="second_button" value="研判标准" onclick="functions('Smodel')">
+                <input type="button" class="second_button" value="地理测量" onclick="functions('toolbar_measure')">
+                <input type="button" class="second_button" value="爆炸效果" onclick="explosiveshow()">
+                <input type="button" class="second_button" value="冲击波" onclick="waveshow()">
             </details>
         </div>
 
@@ -192,11 +222,11 @@
                 <summary class="main_summary">
                     <p class="first_button">模型演示</p>
                 </summary>
-                <input type="button" class="second_button" value="燃烧模型">
-                <input type="button" class="second_button" value="碰撞模型">
-                <input type="button" class="second_button" value="爆炸模型">
-                <input type="button" class="second_button" value="砍杀模型">
-                <input type="button" class="second_button" value="混合模型">
+                <input type="button" class="second_button" value="燃烧模型" onclick="functions('caseMenuShow')">
+                <input type="button" class="second_button" value="碰撞模型" onclick="functions('collisionMenuShow')">
+                <input type="button" class="second_button" value="爆炸模型" onclick="functions('explodeMenuShow')">
+                <input type="button" class="second_button" value="砍杀模型" onclick="functions('killMenuShow')">
+                <input type="button" class="second_button" value="混合模型" onclick="mixmodel()">
             </details>
         </div>
 
@@ -398,7 +428,7 @@
             </div>
         </div>
     </div>
-    <div class="toolbar_measure">
+    <div class="toolbar_measure" id="toolbar_measure">
         <button type="button" onclick="pick()">坐标</button>
 
         <button type="button" onclick="heightMeasuring()">高度</button>
@@ -407,7 +437,7 @@
         <button type="button" onclick="stopMeasure()">退出</button>
     </div>
 
-    <div class="Smodel">
+    <div  id="Smodel" class="Smodel">
         <div class="model_content">
             <p><span>名称：</span><input type="text" class="Sname" placeholder="请输入名称"></p>
             <p><span>经度：</span><input type="number" class="Slongitude" placeholder="请输入经度" step="0.00001"></p>
@@ -450,7 +480,7 @@
         </div>
     </div>
 
-    <div class="caseMenuShow">
+    <div class="caseMenuShow" id="caseMenuShow">
         <div class="firemodel">
             <table style="background-color:transparent;">
                 <tr>
@@ -532,7 +562,7 @@
             <button id="fireExit" style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white" onClick="fireModelClose()">退出</button>
         </div>
     </div>
-    <div class="collisionMenuShow">
+    <div class="collisionMenuShow" id="collisionMenuShow">
         <div class="collisionModel">
             <table style="background-color:transparent;">
 
@@ -594,7 +624,7 @@
             <button id="collisionExit" style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white" onClick="collisionModelClose()">退出</button>
         </div>
     </div>
-    <div class="explodeMenuShow">
+    <div class="explodeMenuShow" id="explodeMenuShow">
         <div class="explodeModel" >
             <table style="background-color:transparent;">
 
@@ -650,7 +680,7 @@
             <button id="explodeExit" style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white" onClick="explodeModelClose()">退出</button>
         </div>
     </div>
-    <div class="killMenuShow">
+    <div class="killMenuShow" id="killMenuShow">
         <div class="killModel">
             <table style="background-color:transparent;">
 

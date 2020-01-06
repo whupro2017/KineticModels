@@ -76,7 +76,7 @@ function lineshow(){
                 formatter: function () {
                     return '<b>' + this.series.name + '</b><br/><br/>' +
                         this.x + ': ' + this.y + '单位';
-                },
+            },
                 style: {
                     color: 'white'
                 }

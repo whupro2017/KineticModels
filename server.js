@@ -107,7 +107,9 @@ app.get("/buttonClicked", function (req, res) {
     var nodeCmd = require('node-cmd');
     var data = "send to client";
     nodeCmd.get(
-        'cd E:\\Desktop\\project\\cesiumJS\\node_modules\\obj2gltf&&node bin\\obj2gltf.js -i house.obj -o E:\\Desktop\\project\\KineticModels\\public\\cesium\\Models\\test.gltf',
+        //????????????
+        'cd E:\\Desktop\\project\\cesiumJS\\node_modules\\obj2gltf&&node bin\\obj2gltf.js -i house.obj -o ' +
+        'E:\\Desktop\\project\\KineticModels\\public\\cesium\\Models\\test.gltf',
         function (err, stdout, stderr) {
             if (err) {
                 console.log("\n" + stderr);
@@ -168,6 +170,7 @@ app.get("/select_scene", function (req, res) {
 
 })
 
+
 app.get("/select_thing_scene", function (req, res) {
     console.log("选定场景号：" + req.query.value);
     scene_id = req.query.value;
@@ -189,6 +192,8 @@ app.get("/select_thing_scene", function (req, res) {
     });
 
 })
+
+
 app.get("/get_mark_info", function (req, res) {
     console.log(req.query.value);
     connection.query('SELECT info from mark_info where id=' + req.query.value, function (error, results, fields) {
@@ -209,6 +214,21 @@ app.get("/get_sub_menu", function (req, res) {
         res.end();
     });
 })
+
+app.get("/get_things", function (req, res) {
+    fs.readdir('public/cesium/Models/model/' + req.query.value, function (err, files) {
+        if (err) {
+            throw err;
+        }
+        // files是一个数组
+        // 每个元素是此目录下的文件或文件夹的名称
+        res.send(files);
+        res.end();
+    });
+})
+
+
+
 app.get("/get_icon_menu", function (req, res) {
     fs.readdir('public/cesium/icons/' + req.query.top_name + '/' + req.query.sub_name, function (err, files) {
         if (err) {
@@ -220,13 +240,29 @@ app.get("/get_icon_menu", function (req, res) {
         res.end();
     });
 })
+
+
+app.get("/sub_thing_menu", function (req, res) {
+    fs.readdir('public/cesium/Models/model/' + req.query.top_name + '/' + req.query.sub_name, function (err, files) {
+        if (err) {
+            throw err;
+        }
+        // files是一个数组
+        // 每个元素是此目录下的文件或文件夹的名称
+        res.send(files);
+        res.end();
+    });
+})
+
+
 app.get('/files', function (req, res, next) {
-    fs.readFile('./indexz.html', function (err, data) {
+    fs.readFile('./indexz.html', function (err, data) {//indexz.html
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.write(data);
         res.end();
     });
 })
+
 
 app.get("/get_elements", function (req, res) {
     var element_type = req.query.element_type;
@@ -245,23 +281,26 @@ app.get("/get_elements", function (req, res) {
         res.end();
     });
 })
-app.get("/get_things", function (req, res) {//新增内容
-    var thing_type = req.query.thing_type;
-    var scene_id = req.query.scene_id;
-    console.log(thing_type + "," + scene_id);
-    connection.query("SELECT ID,CATEGORY from " + thing_type + " WHERE sceneid=" + scene_id, function (error, results, fields) {
-        if (error) {
-            var data = {msg: "写入数据库错误，上传失败"};
-            // c.end();
-            res.send(data);
-            res.end();
-            return console.error(error);
-        }
-        console.log(results);
-        res.send(results);
-        res.end();
-    });
-})
+
+
+// app.get("/get_things", function (req, res) {//新增内容
+//     var thing_type = req.query.thing_type;
+//     var scene_id = req.query.scene_id;
+//     console.log(thing_type + "," + scene_id);
+//     connection.query("SELECT ID,CATEGORY from " + thing_type + " WHERE sceneid=" + scene_id, function (error, results, fields) {
+//         if (error) {
+//             var data = {msg: "写入数据库错误，上传失败"};
+//             // c.end();
+//             res.send(data);
+//             res.end();
+//             return console.error(error);
+//         }
+//         console.log(results);
+//         res.send(results);
+//         res.end();
+//     });
+// })
+
 
 app.get('/model_location', function (req, res, next) {
     var longitude = req.query.longitude;
@@ -295,14 +334,14 @@ app.get('/model_location', function (req, res, next) {
 
 })
 
-app.get('/store_elements', function (req, res, next) {
+app.get('/store_elements', function (req, res, next) {//获取表单 导入内容
     //form表单
     var form = JSON.parse(req.query.form);
     var scene_id = req.query.scene_id;
     var jslength = 0;
     for (var i in form) {
         connection.query("INSERT into scene_bio_evidence (scene_id,SERIAL_NO,EVIDENCE_TYPE,DESCRIPTION,LEFT_POSITION,COLLECTION_MODE,COLLECTED_BY_NAME,COLLECTED_DATE,CRIMINAL_FLAG,UTILIZATION,PRINT_FLAG,STORAGE_FLAG) " +
-            "value (" + scene_id + "," + form[i].序号 + ",'" + form[i].类型 + "','" + form[i].基本特征 + "','" + form[i].遗留部位 + "','" + form[i].提取方法 + "','" + form[i].提取人 + "','" + form[i].提取日期 + "','" + form[i].可靠程度 + "','" + form[i].利用情况 + "','" + form[i].列入现场提取登记表 + "','" + form[i].是否已DNA系统 + "')", function (error, results, fields) {
+            "value (" + scene_id + "," + form[i].序号 + ",'" + form[i].类型 + "','" + form[i].基本特征 + "','" + form[i].遗留部位 + "','" + form[i].提取方法 + "','" + form[i].提取人 + "','" + form[i].提取日期 + "','" + form[i].可靠程度 + "','" + form[i].利用情况 + "','" + form[i].列入现场提取登记表 + "','" + form[i].是否已DNA系统 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -320,6 +359,7 @@ app.get('/store_elements', function (req, res, next) {
         });
     }
 });
+
 
 app.get('/store_things', function (req, res, next) {//新增内容
     //form表单
@@ -382,6 +422,7 @@ app.get('/element_location', function (req, res, next) {//左键点击绑定要�
 
 })
 
+
 app.get('/thing_location', function (req, res, next) {//新增内容
     var longitude = req.query.longitude;
     var latitude = req.query.latitude;
@@ -420,11 +461,13 @@ app.get('/thing_location', function (req, res, next) {//新增内容
     });
 
 })
+
+
 app.get('/get_element_info', function (req, res, next) {
     //form表单
     var element_type = req.query.element_type;
     var element_id = req.query.element_id;
-    connection.query("SELECT  scene_id,SERIAL_NO,EVIDENCE_TYPE,DESCRIPTION,LEFT_POSITION,COLLECTION_MODE,COLLECTED_BY,COLLECTED_DATE,CRIMINAL_FLAG,UTILIZATION,PRINT_FLAG,STORAGE_FLAG from " + element_type + " where id=" + element_id, function (error, results, fields) {
+    connection.query("SELECT scene_id,SERIAL_NO,EVIDENCE_TYPE,DESCRIPTION,LEFT_POSITION,COLLECTION_MODE,COLLECTED_BY,COLLECTED_DATE,CRIMINAL_FLAG,UTILIZATION,PRINT_FLAG,STORAGE_FLAG from " + element_type + " where id=" + element_id, function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();
@@ -442,6 +485,8 @@ app.get('/get_element_info', function (req, res, next) {
     });
 
 });
+
+
 app.get('/get_thing_info', function (req, res, next) {//新增内容
     //form表单
     var thing_type = req.query.thing_type;
@@ -464,6 +509,7 @@ app.get('/get_thing_info', function (req, res, next) {//新增内容
     });
 
 });
+
 
 app.get('/update_element_info', function (req, res, next) {
     //form表单
@@ -500,6 +546,65 @@ app.get('/update_element_info', function (req, res, next) {
 });
 
 
+// app.get('/update_thing_info', function (req, res, next) {//新增
+//     //form表单
+//     var thing_type = req.query.thing_type;
+//     var thing_id = req.query.thing_id;
+//     var COLLECTED_BY = req.query.COLLECTED_BY;
+//     var COLLECTED_DATE = req.query.COLLECTED_DATE;
+//     var COLLECTION_MODE = req.query.COLLECTION_MODE;
+//     var CRIMINAL_FLAG = req.query.CRIMINAL_FLAG;
+//     var DESCRIPTION = req.query.DESCRIPTION;
+//     var EVIDENCE_TYPE = req.query.EVIDENCE_TYPE;
+//     var LEFT_POSITION = req.query.LEFT_POSITION;
+//     var PRINT_FLAG = req.query.PRINT_FLAG;
+//     var STORAGE_FLAG = req.query.STORAGE_FLAG;
+//     var UTILIZATION = req.query.UTILIZATION;
+//     connection.query("UPDATE " + thing_type + " set COLLECTED_BY='" + COLLECTED_BY + "',COLLECTED_DATE='" + COLLECTED_DATE + "',COLLECTION_MODE='" + COLLECTION_MODE + "',CRIMINAL_FLAG='" + CRIMINAL_FLAG + "',DESCRIPTION='" + DESCRIPTION + "',EVIDENCE_TYPE='" + EVIDENCE_TYPE + "',LEFT_POSITION='" + LEFT_POSITION + "',PRINT_FLAG='" + PRINT_FLAG + "',STORAGE_FLAG='" + STORAGE_FLAG + "',UTILIZATION='" + UTILIZATION + "' where id=" + thing_id, function (error, results, fields) {
+//         // connection.query("UPDATE  COLLECTED_BY=" + COLLECTED_BY +" from " + element_type + " where id=" + element_id, function (error, results, fields) {
+//         if (error) {
+//             var data = {msg: "更新失败"};
+//             // c.end();
+//             res.send(data);
+//             res.end();
+//             return console.error(error);
+//         } else {
+//             var data = {msg: "更新成功"};
+//             // c.end();
+//             console.log("更新成功");
+//             res.send(data);
+//             res.end();
+//         }
+//
+//     });
+//
+// });
+
+
+// var Client = require('node-ftp');
+// var c = new Client();
+// var targetOptions = {
+//     host: '127.0.0.1',
+//     port: '2121',
+//     user: 'anonymous',
+//     password: '',
+// };
+// c.connect(targetOptions);
+// c.on('ready', function () {
+//     var FTPfolderPath="wallpaper"
+//     c.get(FTPfolderPath, function (err) {
+//         console.log("获取FTP文件夹" + FTPfolderPath);
+//         if (err) {
+//             c.mkdir(FTPfolderPath, function (err) {
+//                 if (err) throw err;
+//                 console.log("FTP服务器创建目录" + FTPfolderPath);
+//             })
+//         }
+//         ;
+//     });
+// })
+
+
 app.post('/uploads', function (req, res, next) {
     //form表单
     var form = new formidable.IncomingForm();
@@ -511,15 +616,50 @@ app.post('/uploads', function (req, res, next) {
     form.uploadDir = path.join(__dirname, 'public/Files');
     //如果上传文件夹（多个文件）需将 默认值改为TRUE
     form.multiples = true;
+    //该方法会转换请求中所包含的表单数据，callback会包含所有字段域和文件信息
+    // fields 是普通表单数据
+    // files 是文件数据
     form.parse(req, function (err, fields, files) {
             console.log("开始上传");
+            // var Client = require('node-ftp');
+            // var c = new Client();
+            // var targetOptions = {
+            //     host: '127.0.0.1',
+            //     port: '2121',
+            //     user: 'anonymous',
+            //     password: '',
+            // };
+            // c.connect(targetOptions);
+            //该属性upload是在HTML文件的name中设置的
+            // c.on('ready', function () {
+            //     console.log("ftp连接成功");
             for (var i = 0; i < files.upload.length; i++) {
                 var file = files.upload[i];
                 var pathnameArray = file.name.split('/');
                 var folderPath = form.uploadDir;
+                var FTPfolderPath = "";
                 for (var j = 0; j < pathnameArray.length - 1; j++) {
                     folderPath = path.join(folderPath, pathnameArray[j]);
+                    // FTPfolderPath = path.join(FTPfolderPath, pathnameArray[j]);
+                    // c.get(FTPfolderPath, function (err) {
+                    //     console.log("获取FTP文件夹" + FTPfolderPath);
+                    //     if (err) {
+                    //         c.mkdir(FTPfolderPath, function (err) {
+                    //             if (err) throw err;
+                    //             console.log("FTP服务器创建目录" + FTPfolderPath);
+                    //             if(j==pathnameArray.length - 2){
+                    //                 c.put(file.path, path.join(FTPfolderPath, pathnameArray[pathnameArray.length - 1]), function (err) {
+                    //                     console.log("本地路径："+path.join(folderPath, pathnameArray[pathnameArray.length - 1])+"；ftp服务器路径："+path.join(FTPfolderPath, pathnameArray[pathnameArray.length - 1]));
+                    //                     if (err) throw err;
+                    //                     console.log("上传FTP文件" + pathnameArray[pathnameArray.length - 1]);
+                    //                 });
+                    //             }
+                    //         })
+                    //     }
+                    //     ;
+                    // });
                     if (!fs.existsSync(folderPath)) {
+                        //如果不存在上传文件夹名称，就创建
                         try {
                             fs.mkdirSync(folderPath, 0o777);
                             ("成功创建目录" + folderPath);

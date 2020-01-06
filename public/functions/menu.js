@@ -64,22 +64,44 @@ function get_element_menu(element_type) {
         });               //序列号
     })
 }
-function get_thing_menu(thing_type) {
-    console.log("要素大类为：" + thing_type);//
+// function get_thing_menu(thing_type) {
+//     console.log("要素大类为：" + thing_type);//
+//     $("#things").find("option").remove();
+//     $("#things").append("<option value='volvo' hidden>物品子类</option>");
+//     $.get("/get_things", {
+//         "thing_type": $("#thing_type").val(),
+//         "scene_id": $("#scene_id").val()   //########
+//     }, function (data) {
+//         if (data.msg != undefined) {
+//             alert(data.msg);
+//             return;
+//         }
+//         data.forEach(function (json) {
+//             $("#things").append('<option value=' + json.ID + ' >' + $("#thing_type").find("option:selected").text() + json.ID + '</option>');//获取通用名
+//         });//序列号
+//     })
+// }
+
+
+function get_thing_menu(top_name) {
+    console.log("物品大类名为：" + top_name);
     $("#things").find("option").remove();
     $("#things").append("<option value='volvo' hidden>物品子类</option>");
-    $.get("/get_things", {
-        "thing_type": $("#thing_type").val(),
-        "scene_id": $("#scene_id").val()   //########
-    }, function (data) {
-        if (data.msg != undefined) {
-            alert(data.msg);
-            return;
-        }
-        data.forEach(function (json) {
-            $("#things").append('<option value=' + json.ID + ' >' + $("#thing_type").find("option:selected").text() + json.ID + '</option>');//获取通用名
-        });//序列号
+    $("#specific_thing").find("option").remove();
+    $("#specific_thing").append("<option value='volvo' hidden>选择物品</option>");
+    $.get("/get_things", {"value": top_name}, function (data) {
+        sub_menu = data;
+        sub_menu.forEach(function (sub_name) {
+            $("#things").append('<option value=' + sub_name + ' >' + sub_name + '</option>');
+        });
     })
+}
+
+function show_specific_thing() {
+    window.open(
+        "./table_tea1_50.html",
+        "table_tea1-50",
+        "height=400, width=410, top=340, left=200,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 }
 
 function get_sub_menu(top_name) {

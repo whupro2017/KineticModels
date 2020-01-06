@@ -1,19 +1,42 @@
 #rightmenu{
     float:right;
-    width: 1300px;
+    width: 170px;
+    background-color: rgba(42, 42, 42, 0.8);
     position: absolute;
-    margin-left: 200px;
+    margin-left: 1700px;
     margin-top: 00px
 }
 .charts{
     display: block;
     border-radius: 4px;
     border: #00a65a;
-    background-color: rgba(42, 42, 42, 0.2);;
+    background-color: rgba(42, 42, 42, 0.2);
     color: white;
+    vertical-align: top
 }
-#showHighCharts{
+
+#line{
     display: none;
-    margin-right: 400px;
-    position: absolute;//key
+    background-color: #00acd6;
+    margin-left: 1500px;
+    margin-top: 240px;
+    position: absolute;
+}
+#bar{
+    display: none;
+    margin-left: 1500px;
+    margin-top: 420px;
+    position: absolute;
+}
+#pie{
+    display: none;
+    margin-left: 1300px;
+    margin-top: 600px;
+    position: absolute;
+}
+#bubble{
+    display: block;
+    margin-left: 1640px;
+    margin-top: 600px;
+    position: absolute;
 }

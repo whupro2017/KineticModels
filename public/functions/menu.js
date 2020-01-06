@@ -40,7 +40,7 @@ function get_scenes(case_id) {
     $.get("/get_scenes", {"value": case_id}, function (data) {
         scenes = data;
         $("#scene_id").find("option").remove();
-        $("#scene_id").append("<option value='volvo' hidden>请选择场景</option>");
+        $("#scene_id").append("<option value='volvo' hidden>ID</option>");
         scenes.forEach(function (json) {
             $("#scene_id").append('<option value=' + json.scene_id + ' >' + json.scene_id + '</option>');
         });
@@ -242,6 +242,73 @@ function set_view(lon, lat) {
         orientation: {
             heading: 0.0,
             pitch: Cesium.Math.toRadians(-90.0),
+            roll: 0.0
+        }
+    });
+}
+
+function functions(id) {
+    var x = document.getElementById(id);
+    if(x.style.display == "block"){
+        x.style.cssText = "display:none"
+    }else {
+        x.style.cssText = "display:block"
+    }
+}
+function mixmodel() {
+    clearFire();
+    clearCollision();
+    clearExplosion();
+    viewer.camera.setView({
+        destination: {
+            x: -2259635.974850741,
+            y: 5023449.2015779745,
+            z: 3204845.1002706015
+        },
+        orientation: {
+            heading: 2.8424653218313556,
+            pitch: -0.8928382126577965,
+            roll: 0
+        }
+    });
+    pz_start();
+}
+
+function routeshow() {
+    // viewer.entities.removeAll();
+    // positions=[];
+    show_tileset();
+    alert("开始规划路线，左键点击经过点，右键结束");
+    operation_type = "drawRoute";
+    // viewer.zoomTo(tileset);
+    viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(114.21952507076327, 30.358135859723472, 800),
+        orientation: {
+            heading: 0.0,
+            pitch: Cesium.Math.toRadians(-90.0),
+            roll: 0.0
+        }
+    });
+}
+
+function explosiveshow() {
+    startBZ1();
+    viewer.camera.setView({
+        destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
+        orientation: {
+            heading: 6.144391448663251,
+            pitch: -0.6870827796178554,
+            roll: 0.0
+        }
+    });
+}
+function waveshow() {
+    startBZ2();
+    viewer.camera.setView({
+        destination: {x: -2259482.2093426995, y: 5023565.238597119, z: 3204802.0603294484},
+        orientation: {
+            heading: 6.144391448663251,
+            pitch: -0.6870827796178554,
             roll: 0.0
         }
     });

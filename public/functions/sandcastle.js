@@ -121,7 +121,8 @@
 //     pz_start();
 // }, 'modelMenu');
 Sandcastle.addToolbarButton('上传动力学模型', function () {
-    $("#files").trigger("click");
+    // $("#files").trigger("click");
+    $("#fileMutiply").trigger("click");
 
 }, 'KineticMenu');
 Sandcastle.addToolbarButton('创建动力学模型', function () {

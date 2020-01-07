@@ -48,12 +48,12 @@
             </div>
             <div style="float: left">
                 <input type="file" id="case_file" style="display:none">
-                <form id="kinetic_files" method="post" enctype="multipart/form-data" style="display:none"
-                      action="/uploads" target="nm_iframe">
-                    <input type="file" id="files" onchange="formSubmit()" name="upload" webkitdirectory mozdirectory>
-                    <input type="submit" id="upload_confirm" value="确认上传文件夹">
-                </form>
-
+                <!--<form id="kinetic_files" method="post" enctype="multipart/form-data" style="display:none"-->
+                      <!--action="/uploads" target="nm_iframe">-->
+                    <!--<input type="file" id="files" onchange="formSubmit()" name="upload" webkitdirectory mozdirectory>-->
+                    <!--<input type="submit" id="upload_confirm" value="确认上传文件夹">-->
+                <!--</form>-->
+                <input type="file" id="fileMutiply" name="files" style="display:none" webkitdirectory>
                 <form action="/upload" , enctype="multipart/form-data" method="post" style="display:none">
                     <input type="file" name="upload" multiple="multipart">
                     <input type="submit" value="确认上传文件">
@@ -993,6 +993,16 @@
         </div>
     </div>
 </div>
+    <!--<style>-->
+        <!--#menu {-->
+            <!--width: 0; /*设置为0 隐藏自定义菜单*/-->
+            <!--overflow: hidden; /*隐藏溢出的元素*/-->
+            <!--box-shadow: 0 1px 1px #888, 1px 0 1px #ccc;-->
+            <!--position: absolute; /*自定义菜单相对与body元素进行定位*/-->
+        <!--}-->
+    <!--</style>-->
+
+<!--</div>-->
 <div id="line">
     <div id="container1" style="height: 230px;width: 500px;"></div>
 </div>
@@ -1066,6 +1076,7 @@
     };
 
     Cesium.knockout.track(viewModel); // 跟踪此Model
+    // var toolbar_hpr = document.getElementById('toolbar_hpr'); // 获取前端监控div
     var toolbar_hpr = document.getElementById('ModelModifyMenu'); // 获取前端监控div
     Cesium.knockout.applyBindings(viewModel, toolbar_hpr); // 绑定监控
 
@@ -1128,7 +1139,6 @@
 <script src='./js/collision.js '></script>
 <script src='./js/modelMark.js'></script>
 <script src='./js/plug-in.js '></script>
-
 
 <script src='./functions/czml.js '></script>      <!--czml相关-->
 <script src='./functions/sandcastle.js '></script>  <!-- cesium控件-->

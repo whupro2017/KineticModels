@@ -1,9 +1,9 @@
 #rightmenu{
     float:right;
-    width: 170px;
+    width: 200px;
     background-color: rgba(42, 42, 42, 0.8);
     position: absolute;
-    margin-left: 1700px;
+    margin-left: 1675px;
     margin-top: 00px
 }
 .charts{
@@ -18,25 +18,40 @@
 #line{
     display: none;
     background-color: #00acd6;
-    margin-left: 1500px;
-    margin-top: 240px;
+    margin-left: 1420px;
+    margin-top: 292px;
     position: absolute;
 }
 #bar{
     display: none;
-    margin-left: 1500px;
-    margin-top: 420px;
+    margin-left: 1420px;
+    margin-top: 522px;
     position: absolute;
 }
 #pie{
     display: none;
-    margin-left: 1300px;
-    margin-top: 600px;
+    margin-left: 1420px;
+    margin-top: 752px;
     position: absolute;
 }
-#bubble{
-    display: block;
-    margin-left: 1640px;
-    margin-top: 600px;
+/*#bubble{*/
+/*    display: block;*/
+/*    margin-left: 1640px;*/
+/*    margin-top: 600px;*/
+/*    position: absolute;*/
+/*}*/
+
+.icon {
+    width: 2em; height: 2em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+#icon_and_model{
+    float:right;
+    background-color: rgba(42, 42, 42, 0.8);
     position: absolute;
+    margin-left: 1370px;
+    margin-top: 00px
 }

@@ -24,6 +24,10 @@ function keyDown(e) {
             } else {
                 box.style.display = "none";
             }
+            document.getElementById("line").style.display = 'none';
+            document.getElementById("bar").style.display = 'none';
+            document.getElementById("pie").style.display = 'none';
+            document.getElementById("icon_and_model").style.display = 'none';
         }
     } else {
         //非IE浏览器
@@ -52,6 +56,10 @@ function keyDown(e) {
             } else {
                 box.style.display = "none";
             }
+            document.getElementById("line").style.display = 'none';
+            document.getElementById("bar").style.display = 'none';
+            document.getElementById("pie").style.display = 'none';
+            document.getElementById("icon_and_model").style.display = 'none';
         }
         // return false;
     }

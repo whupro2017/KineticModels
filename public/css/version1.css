@@ -172,3 +172,21 @@ button {
     color: white;
     border: transparent;
 }
+#operations{
+    float: left;
+    /*display:none;*/
+    overflow-y:auto;
+    overflow-x:auto;
+    width:450px;
+    height:370px;
+}
+#operations::-webkit-scrollbar-track {
+    background-color: rgba(42, 42, 42, 0.8);
+}
+#operations::-webkit-scrollbar {
+    width: 10px;
+}
+#operations::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 4px;
+}

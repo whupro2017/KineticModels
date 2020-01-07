@@ -205,11 +205,7 @@ $.get("/get_cases", {"value": "get_cases"}, function (data) {
     });
 })
 
-// function menushow(menuid) {
-//     var x = document.getElementById(menuid);
-//     if(x.style.display == "block"){
-//         x.style.cssText = "display:none"
-//     }else {
-//         x.style.cssText = "display:block"
-//     }
-// }
+function mark_thing() {
+    operation_type = 'mark_elements';
+    alert("请选择类型")
+}

@@ -59,6 +59,20 @@
     border: 1px solid rgba(204, 212, 222, 1);
 }
 
+.full_view {
+    position: absolute;
+    top: 00px;
+    right: -1600px;
+    z-index: 8888;
+    display: none;
+    /*width: 180px;*/
+    /*height: 140px;*/
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+}
+
+
 .caseMenuShow select {
     border: 1px solid white;
     border-radius: 2px;

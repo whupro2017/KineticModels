@@ -1,0 +1,33 @@
+@font-face {font-family: "iconfont";
+    src: url('//at.alicdn.com/t/font_1573281_5qfuxsz0nq.eot?t=1576757287854'); /* IE9 */
+    src: url('//at.alicdn.com/t/font_1573281_5qfuxsz0nq.eot?t=1576757287854#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAOIAAsAAAAAB9AAAAM6AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDIgqCTIJHATYCJAMUCwwABCAFhG0Hehv1BhGFlJD9PLCdUe+wy3uHYxk3DbLTaIjH+hdEOEfNZtNePj1g98DECi0RK9RtAIIAtgkQYLb/y8lwbIeNQ92UOOjy03Irf9zKvfx8lq/TVapCtsLVJ+6d/t+gEpgPpFzGmrgX96kLMO68C2isTRENkDgxbRi7iaAh7ocAnlxKkAaNWnTAYQHDBJARQwf3xWVs2IZSwSGEFXMtsoYAZ5aa28Bq/nn5RbkcGAIFjG0zqOEA6nzl6xudE8+hByWQT+cBjEWgQAlgQfpV+nqgUbwExXtjLGVAiEUwX2HsTRwzpZTbYJs6L//hGSwKEgKKEwGooyQsfAUDga/AwFctzfo3cgIFnmcueCACOgCbAOwC9Oa6o1HgnJWJxMMH6+PHHZ486fjsWedBJunp0/6dOnTq3LF/x35cqHtkfO/I+kTnCD+8W9OnTzs9fjwkuWDk3icNrz3Lv+9po8uPP/Vfvi7p7C3doDvv3dvJfuXW2aR17Q6NHh1tunWL3+bC8gXDK9Y/s/7WmkGPSzTdkpQ9k5VjV1VddXXl6lWrrx5bfXz1tY+rPq1iVGmz8MSJhQrFVKOqJFEbVSy36VRNekyf1t30MNQqPWQxMXcXOXPCwZxt2z54gO1JSdzPFEBAV2iizDIHB40z1yHeo191xK/6DnNmHs3VO6XGfxfZEAAv8y7dyXPiPdEzwjHoLP8x8o5V1lcCe5BbiWWuP1Ag1Q8DPA9+STlAur9pDFmdoyBcRm7ASJATyilAWmYJBCIVEHJqwyvuZXEkA5uScgDFfEkQqb5hJDsHleqHtMxfBLL9I5SawutUxpqRQg319cdhLlhBcQNbUq+QU2ai9BW1b3NOKznnE9nZECRhnE+9YI88xQR31qmIAsXUwbN0GLYtwcBUYymhERn2UaSqnhSW1I1m6mMoJ1AFFG6AVSI9ReuLWeH9r5DmtXLcQOmJfkLMsa2DRCjuQL7o+k6UW3nEOdNSQihAYaQDniUPamGcgKG6Vw2VRMgMiA72IqWW6qoLlzd077gB8MD6wYyoWAkkJH3nryfxhc3pROK9Fr/Kv3A3eLV5L37b6Lkbj7R5m202b13Ocujz9uasC9J4NAIAAA==') format('woff2'),
+    url('//at.alicdn.com/t/font_1573281_5qfuxsz0nq.woff?t=1576757287854') format('woff'),
+    url('//at.alicdn.com/t/font_1573281_5qfuxsz0nq.ttf?t=1576757287854') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+    url('//at.alicdn.com/t/font_1573281_5qfuxsz0nq.svg?t=1576757287854#iconfont') format('svg'); /* iOS 4.1- */
+  }
+  
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 32px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-fsux_tubiao_bingtu:before {
+    content: "\e600";
+  }
+  
+  .icon-fsux_zhexiantu:before {
+    content: "\e601";
+  }
+  
+  .icon-fsux_tubiao_zhuzhuangtu:before {
+    content: "\e6dd";
+  }
+  
+  .icon-SmartAnalysis-20:before {
+    content: "\e602";
+  }
+  

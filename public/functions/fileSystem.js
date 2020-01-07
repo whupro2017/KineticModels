@@ -114,13 +114,9 @@ function importFile(obj) {//导入
     reader.readAsBinaryString(f);
 }
 
-<<<<<<< HEAD
 
 
 function importInquestBaseInfo(obj) {//勘验基础信息
-=======
-function importThingFile(obj) {//新增内容
->>>>>>> 5f1d99a4c6bb19c5782de9c89a40ae3959c8d8eb
     console.log("已选择文件");
     if (!obj.files) {
         alert("文件有误");
@@ -564,8 +560,6 @@ $(document).ready(function () {
         target: '#output2',   // target element(s) to be updated with server response
         beforeSubmit:
             function (data) {
-            var file=data[0].value;
-                console.log(file);
                 console.log("提交前函数");
             },
         success:
@@ -611,13 +605,13 @@ function formSubmit() {
     document.getElementById("upload_confirm").click();
 }
 
-// $(function () {
-//     $("#files").on("change", function (e) {
-//         $.each(this.files, function (k, v) {
-//             console.log(v.type + "=" + v.webkitRelativePath);
-//         });
-//     });
-// })
+$(function () {
+    $("#files").on("change", function (e) {
+        $.each(this.files, function (k, v) {
+            console.log(v.type + "=" + v.webkitRelativePath);
+        });
+    });
+})
 
 // function select_case() {
 //     $("#case_file").trigger("click");

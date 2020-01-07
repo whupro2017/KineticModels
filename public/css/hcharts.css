@@ -49,6 +49,7 @@
 }
 
 #icon_and_model{
+    display: block;
     float:right;
     background-color: rgba(42, 42, 42, 0.8);
     position: absolute;

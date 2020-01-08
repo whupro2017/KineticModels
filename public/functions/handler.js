@@ -192,7 +192,7 @@ handler.setInputAction(function (movement) {
                                 url: thing_gltf,
                                 modelMatrix: modelMatrix,
                                 // minimumPixelSize : 512,
-                                scale: 0.05
+                                scale: 10
                                 // maximumScale : 200000
                             })
                         );

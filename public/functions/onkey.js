@@ -13,6 +13,7 @@ function keyDown(e) {
             } else {
                 box.style.display = "none";
             }
+            var icon = document.getElementById("icon_and_model")
         }
         if (event.keyCode == 121) {//
             event.keyCode = 0;
@@ -27,12 +28,7 @@ function keyDown(e) {
             document.getElementById("line").style.display = 'none';
             document.getElementById("bar").style.display = 'none';
             document.getElementById("pie").style.display = 'none';
-            var icon = document.getElementById("icon_and_model")
-            if (icon.style.display != "block") {
-                icon.style.display = "block";
-            } else {
-                icon.style.display = "none";
-            }
+
         }
     } else {
         //非IE浏览器
@@ -65,12 +61,7 @@ function keyDown(e) {
             document.getElementById("bar").style.display = 'none';
             document.getElementById("pie").style.display = 'none';
             document.getElementById("pie").style.display = 'none';
-            var icon = document.getElementById("icon_and_model")
-            if (icon.style.display != "none") {
-                icon.style.display = "none";
-            } else {
-                icon.style.display = "block";
-            }
+
         }
         // return false;
     }

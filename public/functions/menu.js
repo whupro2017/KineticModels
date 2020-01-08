@@ -586,8 +586,10 @@ function get_model_menu(sub_name) {
 function get_model(icon_name) {
     var top_name = document.getElementById("top_model_menu").value;
     var sub_name = document.getElementById("sub_model_menu").value;
-    // thing_gltf = "public/cesium/Models/model/" + top_name + "/" + sub_name + "/" + icon_name + "/model.gltf";
+    thing_gltf = "cesium/Models/model/" + top_name + "/" + sub_name + "/" + icon_name + "/model.gltf";
+    // thing_gltf = "public/cesium/Models/Test/test.gltf"
 }
+
 
 
 
@@ -649,6 +651,7 @@ function select_scene(scene_id) {
             var latitude = relevant_info[i].start_lat;
             var height = relevant_info[i].start_height
             var gltf_path = relevant_info[i].gltf_path;
+            alert(gltf_path)
             var id = relevant_info[i].id;
             var thing_type = relevant_info[i].thing_type;
             var thing_id = relevant_info[i].thing_id;
@@ -662,10 +665,10 @@ function select_scene(scene_id) {
             );
 
             var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
-                    url: thing_gltf,
+                    url: gltf_path,
                     modelMatrix: modelMatrix,
                     // minimumPixelSize : 512,
-                    scale: 10,
+                    scale: 20,
                     // maximumScale : 200000
                 })
             );

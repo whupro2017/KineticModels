@@ -177,8 +177,8 @@ button {
     /*display:none;*/
     overflow-y:auto;
     overflow-x:auto;
-    width:450px;
-    height:370px;
+    width:460px;
+    height:425px;
 }
 #operations::-webkit-scrollbar-track {
     background-color: rgba(42, 42, 42, 0.8);

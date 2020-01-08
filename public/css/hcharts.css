@@ -1,10 +1,11 @@
 #rightmenu{
     float:right;
-    width: 200px;
+    width: 500px;
+    height: 170px;
     background-color: rgba(42, 42, 42, 0.8);
     position: absolute;
-    margin-left: 1675px;
-    margin-top: 00px
+    margin-left: 1420px;
+    margin-top: 40px
 }
 .charts{
     display: block;
@@ -19,19 +20,19 @@
     display: none;
     background-color: #00acd6;
     margin-left: 1420px;
-    margin-top: 292px;
+    margin-top: 200px;
     position: absolute;
 }
 #bar{
     display: none;
     margin-left: 1420px;
-    margin-top: 522px;
+    margin-top: 450px;
     position: absolute;
 }
 #pie{
     display: none;
     margin-left: 1420px;
-    margin-top: 752px;
+    margin-top: 700px;
     position: absolute;
 }
 /*#bubble{*/

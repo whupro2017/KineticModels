@@ -486,8 +486,8 @@
                                     <option value="thing_chair">椅子</option>
                                     <option value="thing_table">桌子</option>
                                 </select></td>
-                                <td><select id="things" class="case_select" onchange="show_specific_thing()">//things
-                                    //onchange=sub_thing_menu()>//things
+                                <td><select id="things" class="case_select" onchange="">//things
+                                    //onchange=show_specific_thing()>//things
                                     <option value="volvo" hidden>选择物品</option>
                                 </select></td>
                             </tr>
@@ -920,30 +920,22 @@
             <div>
                 <table style="float: right;margin-right: 0px">
                     <tr>
-                        <td colspan="4" style="text-align: right"><span style="color: #00c0ef;font-size: 1.2em">按F10隐藏菜单</span></td>
+                        <td colspan="10" style="text-align: right"><span style="color: #00c0ef;font-size: 1.2em">按F10隐藏菜单</span></td>
                     </tr>
                     <tr>
-                        <td colspan="4" style="text-align: right;"><span style="color: deepskyblue;font-size: 1.2em">操作</span></td>
+                        <td colspan="10" style="text-align: right;"><span style="color: deepskyblue;font-size: 1.2em">操作</span></td>
                     </tr>
                     <tr>
-                        <td><button id="new" class="charts" onclick="document.getElementById('for_new').click()"><img src="icons/new.png" width="30px" height="30px" title="新建"></button> </td>
-                        <td><button id="import" class="charts" onclick=""><img src="icons/import.png" width="30px" height="30px" title="导入"></button> </td>
-                        <td><button id="mark" class="charts" onclick="mark_thing()"><img src="icons/mark.png" width="30px" height="30px" title="标注"></button> </td>
-                        <td><button id="show" class="charts" onclick=""><img src="icons/show.png" width="30px" height="30px" title="显示"></button> </td>
-                    </tr>
-
-                    <tr>
-                        <td><button id="track" class="charts" onclick=""><img src="icons/track.png" width="30px" height="30px" title="轨迹"></button> </td>
-                        <td><button id="area" class="charts" onclick=""><img src="icons/area.png" width="30px" height="30px" title="范围"></button> </td>
-                        <td><button id="relate" class="charts" onclick="mdoelrelation()"><img src="icons/relate.png" width="30px" height="30px" title="关联"></button> </td>
-                        <td><button id="align" class="charts" onclick=""><img src="icons/align.png" width="30px" height="30px" title="对齐"></button> </td>
-                    </tr>
-
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td><button id="adjust" class="charts" onclick="rightmodelmodify()"><img src="icons/adjust.png" width="30px" height="30px" title="调整"></button> </td>
-                        <td><button id="measure" class="charts" onclick=""><img src="icons/measure.png" width="30px" height="30px" title="测量"></button> </td>
+                        <td><button id="new" class="charts" onclick="document.getElementById('for_new').click()"><img src="icons/new.png" width="27px" height="27px" title="新建"></button> </td>
+                        <td><button id="import" class="charts" onclick=""><img src="icons/import.png" width="27px" height="27px" title="导入"></button> </td>
+                        <td><button id="mark" class="charts" onclick="mark_thing()"><img src="icons/mark.png" width="27px" height="27px" title="标注"></button> </td>
+                        <td><button id="show" class="charts" onclick=""><img src="icons/show.png" width="27x" height="27px" title="显示"></button> </td>
+                        <td><button id="adjust" class="charts" onclick="rightmodelmodify()"><img src="icons/adjust.png" width="27px" height="27px" title="调整"></button> </td>
+                        <td><button id="track" class="charts" onclick=""><img src="icons/track.png" width="27px" height="27px" title="轨迹"></button> </td>
+                        <td><button id="area" class="charts" onclick=""><img src="icons/area.png" width="27px" height="27px" title="范围"></button> </td>
+                        <td><button id="relate" class="charts" onclick="mdoelrelation()"><img src="icons/relate.png" width="27px" height="27px" title="关联"></button> </td>
+                        <td><button id="align" class="charts" onclick=""><img src="icons/align.png" width="27px" height="27px" title="对齐"></button> </td>
+                        <td><button id="measure" class="charts" onclick=""><img src="icons/measure.png" width="27px" height="27px" title="测量"></button> </td>
                     </tr>
                 </table>
             </div>
@@ -952,14 +944,15 @@
     <div class="hchartshow">
         <div style="float: right;">
             <table style="float: right;margin-right: 0px">
+                <tr></tr><tr></tr>
                 <tr>
-                    <td colspan="4" style="text-align: right"><span style="color: deepskyblue;font-size: 1.2em">图表</span></td>
+                    <td colspan="5" style="text-align: right"><span style="color: deepskyblue;font-size: 1.2em">图表</span></td>
                 </tr>
                 <tr>
-                    <td><button id="linechart" class="charts" onclick="lineshow()"><img src="icons/line.png" width="30px" height="30px" title="折线图"></button></td>
-                    <td><button id="barchart" class="charts" onclick="barshow()"><img src="icons/bar.png" width="30px" height="30px" title="柱状图"></button></td>
-                    <td><button id="piechart" class="charts" onclick="pieshow()"><img src="icons/pie.png" width="30px" height="30px" title="饼图"></button></td>
-                    <td><button id="bubblechart" class="charts" onclick="bubble()"><img src="icons/bubble.png" width="30px" height="30px" title="气泡图"></button></td>
+                    <td><button id="linechart" class="charts" onclick="lineshow()"><img src="icons/line.png" width="35px" height="35px" title="折线图"></button></td>
+                    <td><button id="barchart" class="charts" onclick="barshow()"><img src="icons/bar.png" width="35px" height="35px" title="柱状图"></button></td>
+                    <td><button id="piechart" class="charts" onclick="pieshow()"><img src="icons/pie.png" width="35px" height="35px" title="饼图"></button></td>
+                    <td><button id="bubblechart" class="charts" onclick="bubble()"><img src="icons/bubble.png" width="35px" height="35px" title="气泡图"></button></td>
                 </tr>
             </table>
         </div>
@@ -967,8 +960,9 @@
     <div id = "signs">
         <div style="float: right;margin-right: 0px">
             <table>
+                <tr></tr><tr></tr>
                 <tr>
-                    <td colspan="4" style="text-align: right"><span style="color: deepskyblue;font-size: 1.2em">符号</span></td>
+                    <td colspan="5" style="text-align: right"><span style="color: deepskyblue;font-size: 1.2em">符号</span></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -982,8 +976,9 @@
     <div id = "sign_models">
         <div style="float: right">
             <table>
+                <tr></tr><tr></tr>
                 <tr>
-                    <td colspan="4" style="text-align: right"><span style="color: deepskyblue;font-size: 1.2em">模型</span></td>
+                    <td colspan="5" style="text-align: right"><span style="color: deepskyblue;font-size: 1.2em">模型</span></td>
                 </tr>
                 <tr>
                     <td><button id="model_upload" class="charts" onclick=""><img src="icons/upload.png" width="30px" height="30px" title="新建"></button></td>
@@ -1004,13 +999,13 @@
 
 <!--</div>-->
 <div id="line">
-    <div id="container1" style="height: 230px;width: 500px;"></div>
+    <div id="container1" style="height: 250px;width: 500px;"></div>
 </div>
 <div id="bar">
-    <div id="container2" style="height: 230px;width: 500px;"></div>
+    <div id="container2" style="height: 250px;width: 500px;"></div>
 </div>
 <div id="pie">
-    <div id="container3" style="height: 230px;width: 500px;"></div>
+    <div id="container3" style="height: 250px;width: 500px;"></div>
 </div>
 <!--<div id="bubble">-->
 <!--    <div id="container4" style="height: 300px;width: 260px;"></div>-->

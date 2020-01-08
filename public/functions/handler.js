@@ -187,7 +187,7 @@ handler.setInputAction(function (movement) {
                         var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
                             Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
                         );
-
+                        console.log(thing_gltf)
                         var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
                                 url: thing_gltf,
                                 modelMatrix: modelMatrix,

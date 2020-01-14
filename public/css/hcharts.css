@@ -5,7 +5,6 @@
     background-color: rgba(42, 42, 42, 0.8);
     position: absolute;
     margin-left: 1420px;
-    margin-top: 40px
 }
 .charts{
     display: block;
@@ -20,19 +19,19 @@
     display: none;
     background-color: #00acd6;
     margin-left: 1420px;
-    margin-top: 200px;
+    margin-top: 170px;
     position: absolute;
 }
 #bar{
     display: none;
     margin-left: 1420px;
-    margin-top: 450px;
+    margin-top: 430px;
     position: absolute;
 }
 #pie{
     display: none;
     margin-left: 1420px;
-    margin-top: 700px;
+    margin-top: 690px;
     position: absolute;
 }
 /*#bubble{*/

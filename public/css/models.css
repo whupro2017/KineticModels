@@ -61,8 +61,8 @@
 
 .full_view {
     position: absolute;
-    top: 00px;
-    right: -1600px;
+    top: 140px;
+    left: 130px;
     z-index: 8888;
     display: none;
     /*width: 180px;*/

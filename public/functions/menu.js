@@ -255,7 +255,8 @@ function get_mark_goods(id) {
     // document.getElementById("site_changes_table").rows[0].cells[1].innerText = "现场变动名称"
 
     $("#mark_goods_table").find("tr").remove();
-    $("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td><td>物品类型ID</td><td>提取方法ID</td><td>基础勘验信息ID</td><td>提取时间</td><td>提取人</td><td>创建时间</td><td>创建人ID</td><td>数据状态</td><td>描述</td><td>修改时间</td></tr>")
+    // $("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td></tr>")
+    $("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td><td>物品类型ID</td><td>提取方法ID</td><td>勘验基础信息ID</td><td>提取时间</td><td>提取人</td><td>创建时间</td><td>创建人ID</td><td>数据状态</td><td>描述</td><td>修改时间</td></tr>")
     $.get("/get_mark_goods", {
     }, function (data) {
         if (data.msg != undefined) {
@@ -263,7 +264,7 @@ function get_mark_goods(id) {
             return;
         }
         data.forEach(function (json) {
-            $("#mark_goods_table").append("<tr><td>"+json.SITE_CHANGES_ID+"</td><td>"+json.SITE_CHANGES_NAME+"</td></tr>");
+            $("#mark_goods_table").append("<tr><td>"+json.MARK_GOODS_ID+"</td><td>"+json.MARK_GOODS_NAME+"</td><td>"+json.GOODS_TYPE_ID+"</td><td>"+json.EXTRACT_METHOD_ID+"</td><td>"+json.BASE_INFO_ID+"</td><td>"+json.EXTRACT_TIME+"</td><td>"+json.EXTRACT_PERSON+"</td><td>"+json.CREATE_TIME+"</td><td>"+json.CREATE_PERSION_ID+"</td><td>"+json.DATA_STATE+"</td><td>"+json.MARK_GOODS_DESCRIBE+"</td><td>"+json.UPDATE_TIME+"</td></tr>");
         });               //序列号
     })
 }
@@ -797,3 +798,31 @@ function get_operation_type(){
     operation_type = "mark_things";
 }
 
+function mark_undefine(id) {
+    var x = document.getElementById(id);
+    if(x.style.display == "block"){
+        x.style.cssText = "display:none"
+    }else {
+        x.style.cssText = "display:block"
+    }
+    // $("#site_changes_button").click(function(){
+    //     $("#site_changes").toggle();
+    // });
+    //表内容修改
+    // document.getElementById("site_changes_table").rows[0].cells[0].innerText = "现场变动ID"
+    // document.getElementById("site_changes_table").rows[0].cells[1].innerText = "现场变动名称"
+
+    $("#mark_undefine_table").find("tr").remove();
+    $("#mark_undefine_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td></tr>")
+    // $("#mark_undefine_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td><td>物品类型ID</td><td>提取方法ID</td><td>基础勘验信息ID</td><td>提取时间</td><td>提取人</td><td>创建时间</td><td>创建人ID</td><td>数据状态</td><td>描述</td><td>修改时间</td></tr>")
+    $.get("/get_mark_goods", {
+    }, function (data) {
+        if (data.msg != undefined) {
+            alert(data.msg);
+            return;
+        }
+        data.forEach(function (json) {
+            $("#mark_undefine_table").append("<tr><td>"+json.MARK_GOODS_ID+"</td><td>"+json.MARK_GOODS_NAME+"</td></tr>");
+        });               //序列号
+    })
+}

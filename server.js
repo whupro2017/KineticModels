@@ -590,7 +590,7 @@ app.get('/store_mark_goods', function (req, res, next) {//痕迹物品
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from mark_goods")
     for (var i in form) {
-        connection.query("INSERT into mark_goods (MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE) value (" + "'" + form[i].痕迹物品ID + "','" + form[i].物品名称 + "','" + form[i].物品名称ID + "','" + form[i].提取方法ID + "','" + form[i].基础勘验信息ID + "','" + form[i].提取时间 + "','" + form[i].提取人 + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].数据状态 + "','" + form[i].描述  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into mark_goods (MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE,UPDATE_TIME) value (" + "'" + form[i].痕迹物品ID + "','" + form[i].物品名称 + "','" + form[i].物品类型ID + "','" + form[i].提取方法ID + "','" + form[i].勘验基础信息ID + "','" + form[i].提取时间 + "','" + form[i].提取人 + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].数据状态 + "','" + form[i].描述  + "','" + form[i].修改时间  + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -952,6 +952,7 @@ app.get('/get_site_changes', function (req, res, next) {
 });
 app.get('/get_inquest_base_info', function (req, res, next) {
     //form表单
+    // CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION
     connection.query("SELECT BASE_INFO_ID,FIELD_SURVEY_NUMBER,CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION from inquest_base_info", function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};

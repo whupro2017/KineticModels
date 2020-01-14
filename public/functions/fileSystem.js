@@ -633,6 +633,7 @@ function importNewExcel(obj){
     importMarkGoodsUnit(obj);
     importGoodsType(obj);
     importExtractMethod(obj);
-    // importCaseConclusionInfo(obj);
+    importGoodsType(obj);
+    importMarkGoods(obj);
 }
 

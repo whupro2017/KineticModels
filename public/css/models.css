@@ -1,7 +1,7 @@
 .caseMenuShow {
     position: absolute;
-    top: 00px;
-    right: 00px;
+    top: 300px;
+    left: 0px;
     z-index: 8888;
     display: none;
     width: 160px;
@@ -12,8 +12,8 @@
 }
 .collisionMenuShow {
     position: absolute;
-    top: 00px;
-    right: 00px;
+    top: 300px;
+    left: 0px;
     z-index: 8888;
     display: none;
     width: 200px;
@@ -24,8 +24,8 @@
 }
 .explodeMenuShow {
     position: absolute;
-    top: 00px;
-    right: 00px;
+    top: 300px;
+    left: 0px;
     z-index: 8888;
     display: none;
     width: 200px;
@@ -36,8 +36,8 @@
 }
 .killMenuShow {
     position: absolute;
-    top: 00px;
-    right: 00px;
+    top: 300px;
+    left: 0px;
     z-index: 8888;
     display: none;
     width: 380px;

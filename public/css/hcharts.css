@@ -1,10 +1,10 @@
 #rightmenu{
     float:right;
-    width: 500px;
-    height: 170px;
+    width: 470px;
+    height: 220px;
     background-color: rgba(42, 42, 42, 0.8);
     position: absolute;
-    margin-left: 1420px;
+    margin-left: 1450px;
 }
 .charts{
     display: block;
@@ -12,26 +12,26 @@
     border: #00a65a;
     background-color: rgba(42, 42, 42, 0.2);
     color: white;
-    vertical-align: top
+    vertical-align: top;
 }
 
 #line{
     display: none;
     background-color: #00acd6;
-    margin-left: 1420px;
-    margin-top: 170px;
+    margin-left: 1450px;
+    margin-top: 220px;
     position: absolute;
 }
 #bar{
     display: none;
-    margin-left: 1420px;
-    margin-top: 430px;
+    margin-left: 1450px;
+    margin-top: 465px;
     position: absolute;
 }
 #pie{
     display: none;
-    margin-left: 1420px;
-    margin-top: 690px;
+    margin-left: 1450px;
+    margin-top: 710px;
     position: absolute;
 }
 /*#bubble{*/

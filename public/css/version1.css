@@ -43,8 +43,8 @@ button {
 
 .toolbar_measure {
     position: absolute;
-    top: 50px;
-    right: 00px;
+    top: 300px;
+    left: 0px;
     z-index: 8888;
     display: none;
     width: 300px;
@@ -77,11 +77,11 @@ button {
 
 .Smodel {
     position: absolute;
-    top: 40px;
-    right: 226px;
+    top: 300px;
+    left: 0px;
     z-index: 20330;
     width: 176px;
-    height: 300px;
+    height: 310px;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 2px;
     border: 1px solid rgba(204, 212, 222, 1);
@@ -177,8 +177,8 @@ button {
     /*display:none;*/
     overflow-y:auto;
     overflow-x:auto;
-    width:460px;
-    height:425px;
+    width:300px;
+    height:784px;
 }
 #operations::-webkit-scrollbar-track {
     background-color: rgba(42, 42, 42, 0.8);

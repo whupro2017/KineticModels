@@ -53,7 +53,8 @@
 
         .table_thing{
             margin: 10px 10px;
-            position: relative;
+            position: absolute;
+            top: 0px;
         }
 
         /*.wrap {*/
@@ -184,6 +185,12 @@
             }
         }
 
+        function choosepath() {
+            thing_model = 'cesium/Models/Test/model.gltf';
+            var value = document.getElementById("table1");
+            value.setAttribute("content",thing_model)
+            console.log(value.getAttribute("content").valueOf())
+        }
 
     </script>
 

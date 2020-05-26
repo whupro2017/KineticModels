@@ -7,6 +7,9 @@ var mysql = require('mysql');
 var service = require('./service');
 var app = express();
 var readline = require('readline');
+var java = require('java')
+java.classpath.push('javaClass')
+var MyClass = java.import('Single');
 app.use(express.static("public")).listen(8080);
 console.log("server started at'http://127.0.0.1:8080/main.html'")
 
@@ -200,7 +203,7 @@ app.get("/get_mark_info", function (req, res) {
         res.end();
     });
 })
-app.get("/get_sub_menu", function (req, res) {
+app.get("/get_sub_icon_menu", function (req, res) {
     fs.readdir('public/cesium/icons/' + req.query.value, function (err, files) {
         if (err) {
             throw err;
@@ -357,7 +360,6 @@ app.get('/store_elements', function (req, res, next) {//获取表单 导入内�
     }
 });
 
-
 app.get('/store_things', function (req, res, next) {//新增内容
     //form表单
     var form = JSON.parse(req.query.form);
@@ -384,6 +386,453 @@ app.get('/store_things', function (req, res, next) {//新增内容
     }
 });
 
+app.get('/store_inquest_base_info', function (req, res, next) {//勘验基础信息
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from inquest_base_info")
+    for (var i in form) {
+        connection.query("INSERT into inquest_base_info (BASE_INFO_ID,FIELD_SURVEY_NUMBER,CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION) value (" + "'" + form[i].勘验基础信息ID + "','" + form[i].现场勘验号 + "','" + form[i].案事件编号 + "','" + form[i].发案地点 + "','" + form[i].勘验开始时间 + "','" + form[i].勘验结束时间 + "','" + form[i].现场勘验人员 + "','" + form[i].现场指挥人员ID + "','" + form[i].保护措施ID + "','" + form[i].现场变动情况ID + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].经度 + "','" + form[i].纬度 + "','" + form[i].天气情况ID   + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入inquest_base_info文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_field_commander', function (req, res, next) {//现场指挥人员
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from field_commander")
+    for (var i in form) {
+        connection.query("INSERT into field_commander (FIELD_COMMANDER_ID,FIELD_COMMANDER_NAME) value (" + "'" + form[i].现场指挥人员ID + "','" + form[i].现场指挥人员名称  + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入field_commander文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_protect_measure', function (req, res, next) {//暂无此表
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from protect_measure")
+    for (var i in form) {
+        connection.query("INSERT into protect_measure (Protect_MEASURE_ID,Protect_MEASURE_NAME) value (" + "'" + form[i].保护措施ID + "','" + form[i].保护措施名称  + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入protect_measure文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_site_changes', function (req, res, next) {//现场变动情况
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from site_changes")
+    for (var i in form) {
+        connection.query("INSERT into site_changes (SITE_CHANGES_ID,SITE_CHANGES_NAME) value (" + "'" + form[i].现场变动情况ID + "','" + form[i].现场变动情况名称  + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入site_changes文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_mark_goods_unit', function (req, res, next) {//单位
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from mark_goods_unit")
+    for (var i in form) {
+        connection.query("INSERT into mark_goods_unit (MARK_GOODS_UNIT_ID,MARK_GOODS_UNIT_NAME) value (" + "'" + form[i].单位ID + "','" + form[i].单位名称  + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入mark_goods_unit文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_weather', function (req, res, next) {//暂无此表
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from weather")
+    for (var i in form) {
+        connection.query("INSERT into weather (WRATHER_ID,WRATHER_NAME) value (" + "'" + form[i].天气情况ID + "','" + form[i].天气情况名称 + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入weather文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_full_photo', function (req, res, next) {//全貌照片
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from full_photo")
+    for (var i in form) {
+        connection.query("INSERT into full_photo (FULL_PHOTO_ID,FULL_PHOTO_NAME,FULL_PHOTO_CONTENT,MARK_GOODS_ID,CREATE_TIME) value (" + "'" + form[i].全貌照片ID + "','" + form[i].全貌照片名称 + "','" + form[i].全貌照片名称 + "','" + form[i].痕迹物品ID + "','" + form[i].创建时间 + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入full_photo文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_mark_goods', function (req, res, next) {//痕迹物品
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from mark_goods")
+    for (var i in form) {
+        connection.query("INSERT into mark_goods (MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE,UPDATE_TIME) value (" + "'" + form[i].痕迹物品ID + "','" + form[i].物品名称 + "','" + form[i].物品类型ID + "','" + form[i].提取方法ID + "','" + form[i].勘验基础信息ID + "','" + form[i].提取时间 + "','" + form[i].提取人 + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].数据状态 + "','" + form[i].描述  + "','" + form[i].修改时间  + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入mark_goods文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_goods_type', function (req, res, next) {//物品类型
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from goods_type")
+    for (var i in form) {
+        connection.query("INSERT into goods_type (GOODS_TYPE_ID,GOODS_TYPE_NAME) value (" + "'" + form[i].物品类型ID + "','" + form[i].物品类型名称 + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入goods_type文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_extract_method', function (req, res, next) {//提取方法
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from extract_method")
+    for (var i in form) {
+        connection.query("INSERT into extract_method (EXTRACT_METHOD_ID,EXTRACT_METHOD_NAME) value (" + "'" + form[i].提取方法ID + "','" + form[i].提取方法名称 + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入extract_method文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_corpse_info', function (req, res, next) {//尸体信息
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from corpse_info")
+    for (var i in form) {
+        connection.query("INSERT into corpse_info (CORPSE_INFO_ID,BASE_INFO_ID,CORPSE_INFO_CODE,CORPSE_INFO_NAME,CORPSE_FIND_PLACE,CORPSE_FEATURES,SCENE_BLOODSTAIN_SITUATION,SCENE_ES_SURVEY,CLOTHES_SITUATION,CORPSE_INCLUSIONS,CORPSE_COSTUMES,DEATH_NATURE,LETHAL_REASON,DEATH_TIME,CORPSE_INJURING_FORM,FEATURES_DESCRIBE,CREATE_PERSION_ID,CREATE_TIME,CORPSE_COMPLETION,DATA_STATE,UPDATE_TIME) value (" + "'" + form[i].尸体ID + "','" + form[i].勘验基础信息ID + "','" + form[i].尸体编号 + "','" + form[i].尸体名称 + "','" + form[i].尸体发现地点 + "','" + form[i].尸体姿态 + "','" + form[i].现场血迹情况 + "','" + form[i].现场环境情况 + "','" + form[i].随身物品 + "','" + form[i].尸体盛装物 + "','" + form[i].尸体包裹物 + "','" + form[i].死亡性质 + "','" + form[i].致死原因 + "','" + form[i].死亡时间推论 + "','" + form[i].尸体加害形式 + "','" + form[i].特征描述 + "','" + form[i].创建人ID + "','" + form[i].创建时间 + "','" + form[i].尸体完整度 + "','" + form[i].数据状态 + "','" + form[i].修改时间  + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入corpse_info文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_corpse_photo', function (req, res, next) {//尸体照片
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from corpse_photo")
+    for (var i in form) {
+        connection.query("INSERT into corpse_photo (CORPSE_PHOTO_ID,CORPSE_PHOTO_NAME,CORPSE_PHOTO_CONTENT,CREATE_TIME,CORPSE_INFO_ID) value (" + "'" + form[i].尸体照片ID + "','" + form[i].尸体照片名称 + "','" + form[i].尸体照片内容 + "','" + form[i].创建时间 + "','" + form[i].尸体ID  + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入corpse_photo文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_position_photo', function (req, res, next) {//方位照片
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from position_photo")
+    for (var i in form) {
+        connection.query("INSERT into position_photo (POSITION_PHOTO_ID,POSITION_PHOTO_NAME,POSITION_PHOTO_CONTENT,MARK_GOODS_ID,CREATE_TIME) value (" + "'" + form[i].方位照片ID + "','" + form[i].方位照片名称 + "','" + form[i].方位照片内容 + "','" + form[i].痕迹物品ID + "','" + form[i].创建时间 + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入position_photo文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_case_conclusion_info', function (req, res, next) {//案事件全貌
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from case_conclusion_info")
+    for (var i in form) {
+        connection.query("INSERT into case_conclusion_info (BASE_INFO_ID,MOTIVATION,CRIME_TOOLS,CRIME_TIME,CRIME_ADDRESS,VICTIME,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE) value (" + "'" + form[i].勘验基础信息ID + "','" + form[i].作案动机 + "','" + form[i].作案工具 + "','" + form[i].作案时间 + "','" + form[i].作案地点 + "','" + form[i].受害人员 + "','" + form[i].创建人ID + "','" + form[i].创建时间 + "','" + form[i].修改时间 + "','" + form[i].数据状态 + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入case_conclusion_info文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_ele_info', function (req, res, next) {//电子信息
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from ele_info")
+    for (var i in form) {
+        connection.query("INSERT into ele_info (BASE_INFO_ID,DEVICE_NAME,CONTENT_DESC,EXT_TIME,EXT_PERSON,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE) value (" + "'" + form[i].基础勘验信息ID + "','" + form[i].电子设备名称 + "','" + form[i].内容描述 + "','" + form[i].提取时间 + "','" + form[i].提取人 + "','" + form[i].创建人ID + "','" + form[i].创建时间 + "','" + form[i].修改时间 + "','" + form[i].数据状态 + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入ele_info文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
+
+app.get('/store_involved_goods_info', function (req, res, next) {//涉案物品信息
+    //form表单
+    var form = JSON.parse(req.query.form);
+    var scene_id = req.query.scene_id;
+    var jslength = 0;
+    connection.query("set foreign_key_checks = 0")
+    connection.query("DELETE from involved_goods_info")
+    for (var i in form) {
+        connection.query("INSERT into involved_goods_info (INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE) value (" + "'" + form[i].涉案物品信息ID + "','" + form[i].物品名称 + "','" + form[i].提取位置+ "','" + form[i].基础勘验信息ID+ "','" + form[i].创建人ID+ "','" + form[i].创建时间+ "','" + form[i].修改时间 + "','" + form[i].数据状态 + "')", function (error, results, fields) {//新网页数据
+            if (error) {
+                var data = {msg: "写入数据库错误，上传失败"};
+                // c.end();
+                res.send(data);
+                res.end();
+                return console.error(error);
+            } else if (jslength == form.length - 1) {
+                var data = {msg: "存入数据库成功"};
+                // c.end();
+                console.log("存入involved_goods_info文件成功");
+                res.send(data);
+                res.end();
+            }
+            jslength++;
+        });
+        connection.query("set foreign_key_checks = 1")
+    }
+});
 
 app.get('/element_location', function (req, res, next) {//左键点击绑定要素存入数据库
     var longitude = req.query.longitude;
@@ -433,7 +882,7 @@ app.get('/thing_location', function (req, res, next) {//新增内容
     var roll = req.query.roll;
     var thing_mark_id = req.query.id;
     //新增thing_relevant,设置自己的属性
-    connection.query("INSERT into thing_relevant (sceneid,thing_id,gltf_path,start_lon,start_lat,start_height,thing_type,heading,pitch,roll,thing_mark_id) value (" + scene_id + ",'" + thing_id + "','" + gltf_path + "','" + longitude + "','" + latitude + "','" + height + "','" + thing_type + "','" + heading + "','" + pitch + "','" + roll + "','" + thing_mark_id + "')", function (error, results, fields) {
+    connection.query("INSERT into thing_relevant (sceneid,thing_id,gltf_path,start_lon,start_lat,start_height,thing_type,thing_mark_id) value (" + scene_id + ",'" + thing_id + "','" + gltf_path + "','" + longitude + "','" + latitude + "','" + height + "','" + thing_type + "','" + thing_mark_id + "')", function (error, results, fields) {
         if (error) {
             var data = {status: 1};
             // c.end();
@@ -478,11 +927,334 @@ app.get('/get_element_info', function (req, res, next) {
         console.log(results);
         res.send(results);
         res.end();
-
     });
 
 });
 
+app.get('/get_site_changes', function (req, res, next) {
+    //form表单
+    connection.query("SELECT SITE_CHANGES_ID,SITE_CHANGES_NAME from site_changes", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_inquest_base_info', function (req, res, next) {
+    //form表单
+    // CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION
+    connection.query("SELECT BASE_INFO_ID,FIELD_SURVEY_NUMBER,CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION from inquest_base_info", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_field_commander', function (req, res, next) {
+    //form表单
+    connection.query("SELECT FIELD_COMMANDER_ID,FIELD_COMMANDER_NAME from field_commander", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_protect_measure', function (req, res, next) {
+    //form表单
+    connection.query("SELECT Protect_MEASURE_ID,Protect_MEASURE_NAME from protect_measure", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_site_changes', function (req, res, next) {
+    //form表单
+    connection.query("SELECT SITE_CHANGES_ID,SITE_CHANGES_NAME from site_changes", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_mark_goods_unit', function (req, res, next) {
+    //form表单
+    connection.query("SELECT MARK_GOODS_UNIT_ID,MARK_GOODS_UNIT_NAME from mark_goods_unit", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_weather', function (req, res, next) {
+    //form表单
+    connection.query("SELECT WRATHER_ID,WRATHER_NAME from weather", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_full_photo', function (req, res, next) {
+    //form表单
+    connection.query("SELECT FULL_PHOTO_ID,FULL_PHOTO_NAME,FULL_PHOTO_CONTENT,MARK_GOODS_ID,CREATE_TIME from full_photo", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_mark_goods', function (req, res, next) {
+    //form表单
+    connection.query("SELECT MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE from mark_goods", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_goods_type', function (req, res, next) {
+    //form表单
+    connection.query("SELECT GOODS_TYPE_ID,GOODS_TYPE_NAME from goods_type", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_extract_method', function (req, res, next) {
+    //form表单
+    connection.query("SELECT EXTRACT_METHOD_ID,EXTRACT_METHOD_NAME from extract_method", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_corpse_info', function (req, res, next) {
+    //form表单
+    connection.query("SELECT CORPSE_INFO_ID,BASE_INFO_ID,CORPSE_INFO_CODE,CORPSE_INFO_NAME,CORPSE_FIND_PLACE,CORPSE_FEATURES,SCENE_BLOODSTAIN_SITUATION,SCENE_ES_SURVEY,CLOTHES_SITUATION,CORPSE_INCLUSIONS,CORPSE_COSTUMES,DEATH_NATURE,LETHAL_REASON,DEATH_TIME,CORPSE_INJURING_FORM,FEATURES_DESCRIBE,CREATE_PERSION_ID,CREATE_TIME,CORPSE_COMPLETION,DATA_STATE,UPDATE_TIME from corpse_info", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_corpse_photo', function (req, res, next) {
+    //form表单
+    connection.query("SELECT CORPSE_PHOTO_ID,CORPSE_PHOTO_NAME,CORPSE_PHOTO_CONTENT,CREATE_TIME,CORPSE_INFO_ID from corpse_photo", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_position_photo', function (req, res, next) {
+    //form表单
+    connection.query("SELECT POSITION_PHOTO_ID,POSITION_PHOTO_NAME,POSITION_PHOTO_CONTENT,MARK_GOODS_ID,CREATE_TIME from position_photo", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_case_conclusion_info', function (req, res, next) {
+    //form表单
+    connection.query("SELECT BASE_INFO_ID,MOTIVATION,CRIME_TOOLS,CRIME_TIME,CRIME_ADDRESS,VICTIME,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from case_conclusion_info", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_ele_info', function (req, res, next) {
+    //form表单
+    connection.query("SELECT BASE_INFO_ID,DEVICE_NAME,CONTENT_DESC,EXT_TIME,EXT_PERSON,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from ele_info", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
+app.get('/get_involved_goods_info', function (req, res, next) {
+    //form表单
+    connection.query("SELECT INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from involved_goods_info", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+
+});
 
 app.get('/get_thing_info', function (req, res, next) {//新增内容
     //form表单
@@ -773,7 +1545,154 @@ app.post('/upload', function (req, res, next) {
         // fs.renameSync(path, form.uploadDir + filename);
         // //响应 格式化打印
         // console.log("上传完成");
+
         res.end();
         // res.end(util.inspect(files));
     });
+});
+var id;
+var name;
+var max_frame;
+var max_x;
+var max_y;
+var max_z;
+var file_folder;
+var first_file;
+var file_prefix;
+
+app.post('/update_transform', function (req, res, next) {
+    //form表单
+    var form = new formidable.IncomingForm();
+    //保留后缀
+    form.keepExtensions = true;
+    form.encoding = 'utf-8';
+    form.maxFileSize = 4 * 1024 * 1024 * 1024;
+    //上传文件路径,采用path路径拼接
+    form.uploadDir = path.join(__dirname, 'public/particle_source');
+    //如果上传文件夹（多个文件）需将 默认值改为TRUE
+    form.multiples = true;
+    form.parse(req, function(err,fields,files){
+        var folderPath = form.uploadDir;
+        var file=files.files;
+        var pathnameArray = file.name.split('/');
+        for (var j = 0; j < pathnameArray.length - 1; j++) {
+            folderPath = path.join(folderPath, pathnameArray[j]);
+            if (!fs.existsSync(folderPath)) {
+                try {
+                    fs.mkdirSync(folderPath, 0o777);
+                    ("成功创建目录" + folderPath);
+                } catch (e) {
+                    console.log(e.name + ": " + e.message);
+                }
+            }
+        }
+        var filename=pathnameArray[pathnameArray.length - 1];
+        var newpath=path.join(folderPath, filename);
+        fs.renameSync(file.path, newpath);
+        if (filename.split(".")[1] == "json") {
+            var data = fs.readFileSync(path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
+            var filedata = data.toString();//将二进制的数据转换为字符串
+            console.log(filedata);
+            filedata = JSON.parse(filedata);//将字符串转换为json对象
+            id = filedata.id;
+            name = filedata.name;
+            max_frame = parseInt(filedata.max_frame);
+            max_x = parseInt(filedata.max_x);
+            max_y = parseInt(filedata.max_y);
+            max_z = parseInt(filedata.max_z);
+            file_folder = filedata.file_folder;
+            first_file = filedata.first_file;
+            file_prefix = filedata.file_prefix;
+            var data = {target:1,msg: "json"};
+            // c.end();
+            res.send(data);
+            res.end();
+        }else if (filename.split(".")[1] == "dat") {
+            var number=parseInt(filename.split(".")[0].split(file_prefix)[1]);
+            MyClass.transform(number, max_x, max_y, max_z, file_folder, (error, info) => {
+                if (error) {
+                    console.log('put name Error: ', error);
+                    var data = {target:1,msg: number+"帧转换失败"};
+                    res.send(data);
+                    res.end();
+                    return;
+                }
+                var data = {target:1,msg: number+"帧tijiao成功"};
+                // c.end();
+                res.send(data);
+                res.end();
+            });
+        }else{
+            var data = {target:0};
+            res.send(data);
+            res.end();
+        }
+    });
+
+});
+
+
+
+app.post('/uploads_particle', function (req, res, next) {
+    var form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.encoding = 'utf-8';
+    form.maxFileSize = 4 * 1024 * 1024 * 1024;
+    form.uploadDir = path.join(__dirname, 'public/particle_source');
+    form.multiples = true;
+    form.parse(req, function (err, fields, files) {
+            console.log("开始上传粒子");
+            for (var i = 0; i < files.upload.length; i++) {
+                var file = files.upload[i];
+                var pathnameArray = file.name.split('/');
+                var folderPath = form.uploadDir;
+                for (var j = 0; j < pathnameArray.length - 1; j++) {
+                    folderPath = path.join(folderPath, pathnameArray[j]);
+                    if (!fs.existsSync(folderPath)) {
+                        //如果不存在上传文件夹名称，就创建
+                        try {
+                            fs.mkdirSync(folderPath, 0o777);
+                            ("成功创建目录" + folderPath);
+                        } catch (e) {
+                            console.log(e.name + ": " + e.message);
+                        }
+                    }
+                }
+                fs.renameSync(file.path, path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
+                if (pathnameArray[pathnameArray.length - 1].split(".")[1] == "json") {
+                    console.log("获得json文件");
+                    var data = fs.readFileSync(path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
+                    var filedata = data.toString();//将二进制的数据转换为字符串
+                    console.log(filedata);
+                    filedata = JSON.parse(filedata);//将字符串转换为json对象
+                    id = filedata.id;
+                    name = filedata.name;
+                    max_frame = parseInt(filedata.max_frame);
+                    max_x = parseInt(filedata.max_x);
+                    max_y = parseInt(filedata.max_y);
+                    max_z = parseInt(filedata.max_z);
+                    file_folder = filedata.file_folder;
+                    first_file = filedata.first_file;
+                }
+            }
+            // try {
+            MyClass.transform(file_folder, max_x, max_y, max_z, max_frame, (error, info) => {
+
+                if (error) {
+                    console.log('put name Error: ', error);
+                    return;
+                }
+                // c.end();
+                res.send(data);
+                res.end();
+            });
+            // } catch (e) {
+            //     console.log(e.name + ": " + e.message);
+            //     var data = {msg: "上传失败"};
+            //     // c.end();
+            //     res.send(data);
+            //     res.end();
+            // }
+        }
+    );
 });

@@ -5,7 +5,7 @@ body {
 }
 
 #toolbar {
-    background: rgba(42, 42, 42, 0.2);
+    background: rgba(42, 42, 42, 0.8);
     padding: 4px;
     border-radius: 4px;
 }
@@ -43,8 +43,8 @@ button {
 
 .toolbar_measure {
     position: absolute;
-    top: 50px;
-    right: 00px;
+    top: 300px;
+    left: 0px;
     z-index: 8888;
     display: none;
     width: 300px;
@@ -77,11 +77,11 @@ button {
 
 .Smodel {
     position: absolute;
-    top: 40px;
-    right: 226px;
+    top: 300px;
+    left: 0px;
     z-index: 20330;
     width: 176px;
-    height: 300px;
+    height: 310px;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 2px;
     border: 1px solid rgba(204, 212, 222, 1);
@@ -147,7 +147,46 @@ button {
 }
 .case_select{
     height: 22px;
-    width: 100px;
+    width: auto;
+    border-radius: 4px;
     background-color: rgba(10, 10, 10, 0.3);
     color: white;
+}
+
+.main_summary{
+    width: 100px;
+    margin: 4px;
+    color: white;
+}
+
+.first_button{
+    display: inline;
+    color: white;
+    width: 100px;
+    font-size: 15px;
+}
+.second_button{
+    display: block;
+    margin-left: 20px;
+    background-color: rgba(42, 42, 42, 0.2);
+    color: white;
+    border: transparent;
+}
+#operations{
+    float: left;
+    /*display:none;*/
+    overflow-y:auto;
+    overflow-x:auto;
+    width:300px;
+    height:784px;
+}
+#operations::-webkit-scrollbar-track {
+    background-color: rgba(42, 42, 42, 0.8);
+}
+#operations::-webkit-scrollbar {
+    width: 10px;
+}
+#operations::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 4px;
 }

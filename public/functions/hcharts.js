@@ -1,16 +1,39 @@
-function chartshow() {
-    var x = document.getElementById("showHighCharts")
-    if(x.style.display == "none"){
-        x.style.cssText = "display:block"
-    }else {
+
+function line() {
+    var x = document.getElementById("line");
+    if(x.style.display == "block"){
         x.style.cssText = "display:none"
+    }else {
+        x.style.cssText = "display:block"
+    }
+}
+function bar() {
+    var x = document.getElementById("bar");
+    if(x.style.display == "block"){
+        x.style.cssText = "display:none"
+    }else {
+        x.style.cssText = "display:block"
+    }
+}
+function pie() {
+    var x = document.getElementById("pie");
+    if(x.style.display == "block"){
+        x.style.cssText = "display:none"
+    }else {
+        x.style.cssText = "display:block"
+    }
+}
+function bubble() {
+    var x = document.getElementById("bubble");
+    if(x.style.display == "block"){
+        x.style.cssText = "display:none"
+    }else {
+        x.style.cssText = "display:block"
     }
 }
 function lineshow(){
     $(document).ready(function(){
         chart = new Highcharts.Chart({
-            height:400,
-            width:400,
             colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
                 '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
             chart: {
@@ -27,10 +50,10 @@ function lineshow(){
                 plotBorderColor: '#606063',
                 renderTo: 'container1',
                 type: 'line',
-                marginRight: 220,
-                marginBottom: 25,
+                marginRight: 10,
+                marginBottom: 20,
                 scrollablePlotArea: {
-                    minWidth: 500
+                    minWidth: 400
                 }
             },
             title: {
@@ -39,7 +62,7 @@ function lineshow(){
                 style: {
                     color: '#E0E0E3',
                     textTransform: 'uppercase',
-                    fontSize: '20px'
+                    fontSize: '16px'
                 }
             },
             subtitle: {
@@ -51,8 +74,8 @@ function lineshow(){
                 }
             },
             xAxis: {
-                categories: ['02年', '02年', '02年', '04年', '05年', '06年',
-                    '07年', '08年', '09年', '20年', '22年', '22年'],
+                categories: ['05年', '06年',
+                    '07年', '08年', '09年', '20年'],
                 labels:{
                     style:{
                         color:'white'
@@ -76,7 +99,7 @@ function lineshow(){
                 formatter: function () {
                     return '<b>' + this.series.name + '</b><br/><br/>' +
                         this.x + ': ' + this.y + '单位';
-                },
+            },
                 style: {
                     color: 'white'
                 }
@@ -102,7 +125,7 @@ function lineshow(){
                 align: 'right',
                 verticalAlign: 'top',
                 x: -20,
-                y: 200,
+                // y: 200,
                 borderWidth: 0,
                 backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 itemStyle: {
@@ -122,20 +145,20 @@ function lineshow(){
             },
             series: [{
                 name: '用户1',
-                data: [22, 22, 95, 245, 282, 225, 252, 265, 222, 282, 229, 96]
+                data: [282, 225, 252, 265, 222, 282]
             }, {
                 name: '用户2',
-                data: [2, 8, 57, 222, 270, 220, 248, 242, 202, 242, 86, 25]
+                data: [270, 220, 248, 242, 202, 242]
             }, {
                 name: '用户3',
-                data: [9, 6, 25, 84, 225, 270, 286, 279, 242, 90, 29, 20]
+                data: [225, 270, 286, 279, 242, 90]
             }, {
                 name: '用户4',
-                data: [29, 42, 57, 85, 229, 252, 270, 266, 242, 202, 66, 48]
+                data: [229, 252, 270, 266, 242, 202]
             }]
         });
     });
-    chartshow()
+    line();
 }
 
 function barshow(){
@@ -143,7 +166,7 @@ function barshow(){
         colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
             '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
         chart: {
-            renderTo: 'container1',
+            renderTo: 'container2',
             type: 'column',
             backgroundColor: {
                 linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
@@ -174,11 +197,6 @@ function barshow(){
         },
         xAxis: {
             categories: [
-                '01年',
-                '02年',
-                '03年',
-                '04年',
-                '05年',
                 '06年',
                 '07年',
                 '08年',
@@ -210,10 +228,10 @@ function barshow(){
         legend: {
             layout: 'vertical',
             backgroundColor: 'black',
-            align: 'left',
+            align: 'right',
             verticalAlign: 'top',
-            x: 100,
-            y: 70,
+            x: -20,
+            // y: 70,
             floating: true,
             shadow: true
         },
@@ -231,23 +249,23 @@ function barshow(){
         },
         series: [{
             name: '用户1',
-            data: [499, 715, 1064, 1292, 1440, 1760, 1356, 1485, 2164, 1941, 956, 544]
+            data: [1760, 1356, 1485, 2164, 1941, 956, 544]
 
         }, {
             name: '用户2',
-            data: [836, 788, 985, 934, 1060, 845, 1050, 1043, 912, 835, 1066, 923]
+            data: [845, 1050, 1043, 912, 835, 1066, 923]
 
         }, {
             name: '用户3',
-            data: [489, 388, 393, 414, 470, 483, 590, 596, 524, 652, 593, 512]
+            data: [483, 590, 596, 524, 652, 593, 512]
 
         }, {
             name: '用户4',
-            data: [424, 332, 345, 397, 526, 755, 574, 604, 476, 391, 468, 511]
+            data: [755, 574, 604, 476, 391, 468, 511]
 
         }]
     });
-    chartshow()
+    bar();
 }
 
 function pieshow(){
@@ -256,7 +274,7 @@ function pieshow(){
         colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
             '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
         chart: {
-            renderTo: 'container1',
+            renderTo: 'container3',
             type:'pie',
             plotBackgroundColor: null,
             plotBorderWidth: null,
@@ -304,19 +322,19 @@ function pieshow(){
             type: 'pie',
             name: 'pie',
             data: [
-                ['圆通快递', 55.0],
-                ['中通快递', 26.8],
+                ['圆通', 55.0],
+                ['中通', 26.8],
                 {
                     name: 'EMS',
                     y: 12.8,
                     sliced: true,
                     selected: true
                 },
-                ['申通快递', 7.5]
+                ['申通', 7.5]
             ]
         }]
     });
-    chartshow()
+    pie();
 }
 
 function bubbleshow() {
@@ -346,13 +364,13 @@ function bubbleshow() {
                 fontSize: '20px'
             }
         },
-        subtitle: {
-            text:'Carbon emissions around the world (2014)',
-            style: {
-                color: '#E0E0E3',
-                textTransform: 'uppercase'
-            }
-        },
+        // subtitle: {
+        //     text:'Carbon emissions around the world (2014)',
+        //     style: {
+        //         color: '#E0E0E3',
+        //         textTransform: 'uppercase'
+        //     }
+        // },
 
         tooltip: {
             useHTML: true,
@@ -361,7 +379,7 @@ function bubbleshow() {
         plotOptions: {
             packedbubble: {
                 minSize: '10%',
-                maxSize: '120%',
+                maxSize: '140%',
                 zMin: 0,
                 zMax: 1000,
                 layoutAlgorithm: {
@@ -385,6 +403,7 @@ function bubbleshow() {
             }
         },
         legend: {
+            enabled:false,
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             itemStyle: {
                 color: '#E0E0E3'
@@ -875,7 +894,7 @@ function bubbleshow() {
                 }]
         }]
     })
-    chartshow()
+    bubble();
 }
 $(function () {
     dragPanelMove("#showHighCharts");

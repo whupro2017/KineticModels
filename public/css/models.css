@@ -1,7 +1,33 @@
-.caseMenuShow {
+.toolbar_measure {
+    position: absolute;
+    top: 0px;
+    left: 310px;
+    z-index: 8888;
+    display: none;
+    width: 292px;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+}
+
+.full_view {
+    position: absolute;
+    top: 40px;
+    left: 310px;
+    z-index: 8888;
+    display: none;
+    /*width: 180px;*/
+    height: 260px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+}
+
+.Smodel {
     position: absolute;
     top: 300px;
-    left: 0px;
+    left: 310px;
     z-index: 8888;
     display: none;
     width: 160px;
@@ -10,10 +36,24 @@
     border-radius: 2px 0px 2px 2px;
     border: 1px solid rgba(204, 212, 222, 1);
 }
+
+.caseMenuShow {
+    position: absolute;
+    top: 300px;
+    left: 310px;
+    z-index: 8888;
+    display: none;
+    width: 160px;
+    height: 380px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
+}
+
 .collisionMenuShow {
     position: absolute;
     top: 300px;
-    left: 0px;
+    left: 310px;
     z-index: 8888;
     display: none;
     width: 200px;
@@ -22,10 +62,11 @@
     border-radius: 2px 0px 2px 2px;
     border: 1px solid rgba(204, 212, 222, 1);
 }
+
 .explodeMenuShow {
     position: absolute;
     top: 300px;
-    left: 0px;
+    left: 310px;
     z-index: 8888;
     display: none;
     width: 200px;
@@ -34,10 +75,11 @@
     border-radius: 2px 0px 2px 2px;
     border: 1px solid rgba(204, 212, 222, 1);
 }
+
 .killMenuShow {
     position: absolute;
     top: 300px;
-    left: 0px;
+    left: 310px;
     z-index: 8888;
     display: none;
     width: 380px;
@@ -46,32 +88,40 @@
     border-radius: 2px 0px 2px 2px;
     border: 1px solid rgba(204, 212, 222, 1);
 }
+
 .model_modify {
     position: absolute;
-    top: 00px;
-    right: 00px;
+    top: 700px;
+    left: 310px;
     z-index: 8888;
     display: none;
-    width: 180px;
-    height: 140px;
+    width: 200px;
+    height: 210px;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 2px 0px 2px 2px;
     border: 1px solid rgba(204, 212, 222, 1);
 }
 
-.full_view {
-    position: absolute;
-    top: 140px;
-    left: 130px;
-    z-index: 8888;
-    display: none;
-    /*width: 180px;*/
-    /*height: 140px;*/
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 2px 0px 2px 2px;
-    border: 1px solid rgba(204, 212, 222, 1);
+.toolbar_measure select {
+    border: 1px solid white;
+    border-radius: 2px;
+    background-color: transparent;
+    color: white;
 }
 
+.model_modify select {
+    border: 1px solid white;
+    border-radius: 2px;
+    background-color: transparent;
+    color: white;
+}
+
+.Smodel select {
+    border: 1px solid white;
+    border-radius: 2px;
+    background-color: transparent;
+    color: white;
+}
 
 .caseMenuShow select {
     border: 1px solid white;
@@ -79,18 +129,21 @@
     background-color: transparent;
     color: white;
 }
+
 .collisionMenuShow select {
     border: 1px solid white;
     border-radius: 2px;
     background-color: transparent;
     color: white;
 }
+
 .explodeMenuShow select {
     border: 1px solid white;
     border-radius: 2px;
     background-color: transparent;
     color: white;
 }
+
 .killMenuShow select {
     border: 1px solid white;
     border-radius: 2px;
@@ -98,34 +151,55 @@
     color: white;
 }
 
+.toolbar_measure option {
+    background-color: black;
+    color: white;
+    border-radius: inherit;
+}
+
+.model_modify option {
+    background-color: black;
+    color: white;
+    border-radius: inherit;
+}
+
+.Smodel option {
+    background-color: black;
+    color: white;
+    border-radius: inherit;
+}
+
 .caseMenuShow option {
     background-color: black;
     color: white;
     border-radius: inherit;
 }
+
 .collisionMenuShow option {
     background-color: black;
     color: white;
     border-radius: inherit;
 }
+
 .explodeMenuShow option {
     background-color: black;
     color: white;
     border-radius: inherit;
 }
+
 .killMenuShow option {
     background-color: black;
     color: white;
     border-radius: inherit;
 }
 
-.hrt{
-    height:5px;
-    border:none;
-    border-top:2px ridge white;
+.hrt {
+    height: 5px;
+    border: none;
+    border-top: 2px ridge white;
 }
 
-.killInput{
+.killInput {
     border-color: white;
     border-radius: 2px;
     width: 120px;

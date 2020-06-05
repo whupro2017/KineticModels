@@ -228,7 +228,6 @@ app.get("/get_things", function (req, res) {
 })
 
 
-
 app.get("/get_icon_menu", function (req, res) {
     fs.readdir('public/cesium/icons/' + req.query.top_name + '/' + req.query.sub_name, function (err, files) {
         if (err) {
@@ -394,7 +393,7 @@ app.get('/store_inquest_base_info', function (req, res, next) {//勘验基础信
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from inquest_base_info")
     for (var i in form) {
-        connection.query("INSERT into inquest_base_info (BASE_INFO_ID,FIELD_SURVEY_NUMBER,CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION) value (" + "'" + form[i].勘验基础信息ID + "','" + form[i].现场勘验号 + "','" + form[i].案事件编号 + "','" + form[i].发案地点 + "','" + form[i].勘验开始时间 + "','" + form[i].勘验结束时间 + "','" + form[i].现场勘验人员 + "','" + form[i].现场指挥人员ID + "','" + form[i].保护措施ID + "','" + form[i].现场变动情况ID + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].经度 + "','" + form[i].纬度 + "','" + form[i].天气情况ID   + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into inquest_base_info (BASE_INFO_ID,FIELD_SURVEY_NUMBER,CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION) value (" + "'" + form[i].勘验基础信息ID + "','" + form[i].现场勘验号 + "','" + form[i].案事件编号 + "','" + form[i].发案地点 + "','" + form[i].勘验开始时间 + "','" + form[i].勘验结束时间 + "','" + form[i].现场勘验人员 + "','" + form[i].现场指挥人员ID + "','" + form[i].保护措施ID + "','" + form[i].现场变动情况ID + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].经度 + "','" + form[i].纬度 + "','" + form[i].天气情况ID + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -422,7 +421,7 @@ app.get('/store_field_commander', function (req, res, next) {//现场指挥人�
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from field_commander")
     for (var i in form) {
-        connection.query("INSERT into field_commander (FIELD_COMMANDER_ID,FIELD_COMMANDER_NAME) value (" + "'" + form[i].现场指挥人员ID + "','" + form[i].现场指挥人员名称  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into field_commander (FIELD_COMMANDER_ID,FIELD_COMMANDER_NAME) value (" + "'" + form[i].现场指挥人员ID + "','" + form[i].现场指挥人员名称 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -450,7 +449,7 @@ app.get('/store_protect_measure', function (req, res, next) {//暂无此表
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from protect_measure")
     for (var i in form) {
-        connection.query("INSERT into protect_measure (Protect_MEASURE_ID,Protect_MEASURE_NAME) value (" + "'" + form[i].保护措施ID + "','" + form[i].保护措施名称  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into protect_measure (Protect_MEASURE_ID,Protect_MEASURE_NAME) value (" + "'" + form[i].保护措施ID + "','" + form[i].保护措施名称 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -478,7 +477,7 @@ app.get('/store_site_changes', function (req, res, next) {//现场变动情况
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from site_changes")
     for (var i in form) {
-        connection.query("INSERT into site_changes (SITE_CHANGES_ID,SITE_CHANGES_NAME) value (" + "'" + form[i].现场变动情况ID + "','" + form[i].现场变动情况名称  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into site_changes (SITE_CHANGES_ID,SITE_CHANGES_NAME) value (" + "'" + form[i].现场变动情况ID + "','" + form[i].现场变动情况名称 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -506,7 +505,7 @@ app.get('/store_mark_goods_unit', function (req, res, next) {//单位
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from mark_goods_unit")
     for (var i in form) {
-        connection.query("INSERT into mark_goods_unit (MARK_GOODS_UNIT_ID,MARK_GOODS_UNIT_NAME) value (" + "'" + form[i].单位ID + "','" + form[i].单位名称  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into mark_goods_unit (MARK_GOODS_UNIT_ID,MARK_GOODS_UNIT_NAME) value (" + "'" + form[i].单位ID + "','" + form[i].单位名称 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -590,7 +589,7 @@ app.get('/store_mark_goods', function (req, res, next) {//痕迹物品
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from mark_goods")
     for (var i in form) {
-        connection.query("INSERT into mark_goods (MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE,UPDATE_TIME) value (" + "'" + form[i].痕迹物品ID + "','" + form[i].物品名称 + "','" + form[i].物品类型ID + "','" + form[i].提取方法ID + "','" + form[i].勘验基础信息ID + "','" + form[i].提取时间 + "','" + form[i].提取人 + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].数据状态 + "','" + form[i].描述  + "','" + form[i].修改时间  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into mark_goods (MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE,UPDATE_TIME) value (" + "'" + form[i].痕迹物品ID + "','" + form[i].物品名称 + "','" + form[i].物品类型ID + "','" + form[i].提取方法ID + "','" + form[i].勘验基础信息ID + "','" + form[i].提取时间 + "','" + form[i].提取人 + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].数据状态 + "','" + form[i].描述 + "','" + form[i].修改时间 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -674,7 +673,7 @@ app.get('/store_corpse_info', function (req, res, next) {//尸体信息
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from corpse_info")
     for (var i in form) {
-        connection.query("INSERT into corpse_info (CORPSE_INFO_ID,BASE_INFO_ID,CORPSE_INFO_CODE,CORPSE_INFO_NAME,CORPSE_FIND_PLACE,CORPSE_FEATURES,SCENE_BLOODSTAIN_SITUATION,SCENE_ES_SURVEY,CLOTHES_SITUATION,CORPSE_INCLUSIONS,CORPSE_COSTUMES,DEATH_NATURE,LETHAL_REASON,DEATH_TIME,CORPSE_INJURING_FORM,FEATURES_DESCRIBE,CREATE_PERSION_ID,CREATE_TIME,CORPSE_COMPLETION,DATA_STATE,UPDATE_TIME) value (" + "'" + form[i].尸体ID + "','" + form[i].勘验基础信息ID + "','" + form[i].尸体编号 + "','" + form[i].尸体名称 + "','" + form[i].尸体发现地点 + "','" + form[i].尸体姿态 + "','" + form[i].现场血迹情况 + "','" + form[i].现场环境情况 + "','" + form[i].随身物品 + "','" + form[i].尸体盛装物 + "','" + form[i].尸体包裹物 + "','" + form[i].死亡性质 + "','" + form[i].致死原因 + "','" + form[i].死亡时间推论 + "','" + form[i].尸体加害形式 + "','" + form[i].特征描述 + "','" + form[i].创建人ID + "','" + form[i].创建时间 + "','" + form[i].尸体完整度 + "','" + form[i].数据状态 + "','" + form[i].修改时间  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into corpse_info (CORPSE_INFO_ID,BASE_INFO_ID,CORPSE_INFO_CODE,CORPSE_INFO_NAME,CORPSE_FIND_PLACE,CORPSE_FEATURES,SCENE_BLOODSTAIN_SITUATION,SCENE_ES_SURVEY,CLOTHES_SITUATION,CORPSE_INCLUSIONS,CORPSE_COSTUMES,DEATH_NATURE,LETHAL_REASON,DEATH_TIME,CORPSE_INJURING_FORM,FEATURES_DESCRIBE,CREATE_PERSION_ID,CREATE_TIME,CORPSE_COMPLETION,DATA_STATE,UPDATE_TIME) value (" + "'" + form[i].尸体ID + "','" + form[i].勘验基础信息ID + "','" + form[i].尸体编号 + "','" + form[i].尸体名称 + "','" + form[i].尸体发现地点 + "','" + form[i].尸体姿态 + "','" + form[i].现场血迹情况 + "','" + form[i].现场环境情况 + "','" + form[i].随身物品 + "','" + form[i].尸体盛装物 + "','" + form[i].尸体包裹物 + "','" + form[i].死亡性质 + "','" + form[i].致死原因 + "','" + form[i].死亡时间推论 + "','" + form[i].尸体加害形式 + "','" + form[i].特征描述 + "','" + form[i].创建人ID + "','" + form[i].创建时间 + "','" + form[i].尸体完整度 + "','" + form[i].数据状态 + "','" + form[i].修改时间 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -702,7 +701,7 @@ app.get('/store_corpse_photo', function (req, res, next) {//尸体照片
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from corpse_photo")
     for (var i in form) {
-        connection.query("INSERT into corpse_photo (CORPSE_PHOTO_ID,CORPSE_PHOTO_NAME,CORPSE_PHOTO_CONTENT,CREATE_TIME,CORPSE_INFO_ID) value (" + "'" + form[i].尸体照片ID + "','" + form[i].尸体照片名称 + "','" + form[i].尸体照片内容 + "','" + form[i].创建时间 + "','" + form[i].尸体ID  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into corpse_photo (CORPSE_PHOTO_ID,CORPSE_PHOTO_NAME,CORPSE_PHOTO_CONTENT,CREATE_TIME,CORPSE_INFO_ID) value (" + "'" + form[i].尸体照片ID + "','" + form[i].尸体照片名称 + "','" + form[i].尸体照片内容 + "','" + form[i].创建时间 + "','" + form[i].尸体ID + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -814,7 +813,7 @@ app.get('/store_involved_goods_info', function (req, res, next) {//涉案物品�
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from involved_goods_info")
     for (var i in form) {
-        connection.query("INSERT into involved_goods_info (INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE) value (" + "'" + form[i].涉案物品信息ID + "','" + form[i].物品名称 + "','" + form[i].提取位置+ "','" + form[i].基础勘验信息ID+ "','" + form[i].创建人ID+ "','" + form[i].创建时间+ "','" + form[i].修改时间 + "','" + form[i].数据状态 + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into involved_goods_info (INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE) value (" + "'" + form[i].涉案物品信息ID + "','" + form[i].物品名称 + "','" + form[i].提取位置 + "','" + form[i].基础勘验信息ID + "','" + form[i].创建人ID + "','" + form[i].创建时间 + "','" + form[i].修改时间 + "','" + form[i].数据状态 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -865,7 +864,6 @@ app.get('/element_location', function (req, res, next) {//左键点击绑定要�
             res.end();
         });
     });
-
 })
 
 
@@ -905,7 +903,6 @@ app.get('/thing_location', function (req, res, next) {//新增内容
             res.end();
         });
     });
-
 })
 
 
@@ -928,7 +925,6 @@ app.get('/get_element_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 
 app.get('/get_site_changes', function (req, res, next) {
@@ -948,7 +944,6 @@ app.get('/get_site_changes', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_inquest_base_info', function (req, res, next) {
     //form表单
@@ -968,7 +963,6 @@ app.get('/get_inquest_base_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_field_commander', function (req, res, next) {
     //form表单
@@ -987,7 +981,6 @@ app.get('/get_field_commander', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_protect_measure', function (req, res, next) {
     //form表单
@@ -1006,7 +999,6 @@ app.get('/get_protect_measure', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_site_changes', function (req, res, next) {
     //form表单
@@ -1025,7 +1017,6 @@ app.get('/get_site_changes', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_mark_goods_unit', function (req, res, next) {
     //form表单
@@ -1044,7 +1035,6 @@ app.get('/get_mark_goods_unit', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_weather', function (req, res, next) {
     //form表单
@@ -1063,7 +1053,6 @@ app.get('/get_weather', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_full_photo', function (req, res, next) {
     //form表单
@@ -1082,7 +1071,6 @@ app.get('/get_full_photo', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_mark_goods', function (req, res, next) {
     //form表单
@@ -1101,7 +1089,6 @@ app.get('/get_mark_goods', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_goods_type', function (req, res, next) {
     //form表单
@@ -1120,7 +1107,6 @@ app.get('/get_goods_type', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_extract_method', function (req, res, next) {
     //form表单
@@ -1139,7 +1125,6 @@ app.get('/get_extract_method', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_corpse_info', function (req, res, next) {
     //form表单
@@ -1158,7 +1143,6 @@ app.get('/get_corpse_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_corpse_photo', function (req, res, next) {
     //form表单
@@ -1177,7 +1161,6 @@ app.get('/get_corpse_photo', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_position_photo', function (req, res, next) {
     //form表单
@@ -1196,7 +1179,6 @@ app.get('/get_position_photo', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_case_conclusion_info', function (req, res, next) {
     //form表单
@@ -1215,7 +1197,6 @@ app.get('/get_case_conclusion_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_ele_info', function (req, res, next) {
     //form表单
@@ -1234,7 +1215,6 @@ app.get('/get_ele_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_involved_goods_info', function (req, res, next) {
     //form表单
@@ -1253,9 +1233,25 @@ app.get('/get_involved_goods_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
-
+app.get('/get_involved_person_info', function (req, res, next) {
+    //form表单
+    connection.query("SELECT INVOLVED_PERSON_INFO_ID,INVOLVED_PERSON_CODE,INVOLVED_PERSON_NAME,SEX,AGE,NATION,NATIONALITY,POSTURE,HEIGHT,CLOTHES_SITUATION,PHY_FUN,CARD_TYPE,DOMICILE,CARD_NUMBER,CURRENT_ADDRESS,WORK_UNIT,UNIT_ADDRESS,PHONE,JOB_DUTIES,BASE_INFO_ID,TYPE_ID,INVESTIGATION_TIME,INVESTIGATION_PERSION,INVESTIGATION_ADDRESS,REMARKS,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_SOURCES,DATA_STATE,RELATION_CORPSE,RELATION_PERSON from involved_person_info", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+});
 app.get('/get_thing_info', function (req, res, next) {//新增内容
     //form表单
     var thing_type = req.query.thing_type;
@@ -1571,9 +1567,9 @@ app.post('/update_transform', function (req, res, next) {
     form.uploadDir = path.join(__dirname, 'public/particle_source');
     //如果上传文件夹（多个文件）需将 默认值改为TRUE
     form.multiples = true;
-    form.parse(req, function(err,fields,files){
+    form.parse(req, function (err, fields, files) {
         var folderPath = form.uploadDir;
-        var file=files.files;
+        var file = files.files;
         var pathnameArray = file.name.split('/');
         for (var j = 0; j < pathnameArray.length - 1; j++) {
             folderPath = path.join(folderPath, pathnameArray[j]);
@@ -1586,8 +1582,8 @@ app.post('/update_transform', function (req, res, next) {
                 }
             }
         }
-        var filename=pathnameArray[pathnameArray.length - 1];
-        var newpath=path.join(folderPath, filename);
+        var filename = pathnameArray[pathnameArray.length - 1];
+        var newpath = path.join(folderPath, filename);
         fs.renameSync(file.path, newpath);
         if (filename.split(".")[1] == "json") {
             var data = fs.readFileSync(path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
@@ -1603,34 +1599,33 @@ app.post('/update_transform', function (req, res, next) {
             file_folder = filedata.file_folder;
             first_file = filedata.first_file;
             file_prefix = filedata.file_prefix;
-            var data = {target:1,msg: "json"};
+            var data = {target: 1, msg: "json"};
             // c.end();
             res.send(data);
             res.end();
-        }else if (filename.split(".")[1] == "dat") {
-            var number=parseInt(filename.split(".")[0].split(file_prefix)[1]);
+        } else if (filename.split(".")[1] == "dat") {
+            var number = parseInt(filename.split(".")[0].split(file_prefix)[1]);
             MyClass.transform(number, max_x, max_y, max_z, file_folder, (error, info) => {
                 if (error) {
                     console.log('put name Error: ', error);
-                    var data = {target:1,msg: number+"帧转换失败"};
+                    var data = {target: 1, msg: number + "帧转换失败"};
                     res.send(data);
                     res.end();
                     return;
                 }
-                var data = {target:1,msg: number+"帧tijiao成功"};
+                var data = {target: 1, msg: number + "帧tijiao成功"};
                 // c.end();
                 res.send(data);
                 res.end();
             });
-        }else{
-            var data = {target:0};
+        } else {
+            var data = {target: 0};
             res.send(data);
             res.end();
         }
     });
 
 });
-
 
 
 app.post('/uploads_particle', function (req, res, next) {

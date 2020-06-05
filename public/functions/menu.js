@@ -66,55 +66,55 @@ function get_element_menu(element_type) {
 }
 
 function get_inquest_base_info(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     $("#inquest_base_info_table").find("tr").remove();
     $("#inquest_base_info_table").append("<tr><td>勘验基础信息ID</td><td>现场勘验号</td><td>案事件编号</td></tr>")
     // $("#inquest_base_info_table").append("<tr><td>勘验基础信息ID</td><td>现场勘验号</td><td>案事件编号</td><td>发案地点</td><td>勘验开始时间</td><td>勘验结束时间</td><td>现场勘验人员</td><td>现场指挥人员ID</td><td>保护措施ID</td><td>现场变动情况ID</td><td>创建时间</td><td>创建人ID</td><td>经度</td><td>纬度</td><td>天气情况ID</td></tr>")
-    $.get("/get_inquest_base_info", {
-    }, function (data) {
+    $.get("/get_inquest_base_info", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#inquest_base_info_table").append("<tr><td>"+json.BASE_INFO_ID+"</td><td>"+json.FIELD_SURVEY_NUMBER+"</td><td>"+json.CASE_EVENT_CODE+"</td></tr>");
+            $("#inquest_base_info_table").append("<tr><td>" + json.BASE_INFO_ID + "</td><td>" + json.FIELD_SURVEY_NUMBER + "</td><td>" + json.CASE_EVENT_CODE + "</td></tr>");
             // $("#inquest_base_info_table").append("<tr><td>"+json.BASE_INFO_ID+"</td><td>"+json.FIELD_SURVEY_NUMBER+"</td><td>"+json.CASE_EVENT_CODE+"</td><td>"+json.HAPPENING_PLACE+"</td><td>"+json.INQUEST_START_TIME+"</td><td>"+json.INQUEST_END_TIME+"</td><td>"+json.FIELD_SURVEY_PERSON+"</td><td>"+json.FIELD_COMMANDER_ID+"</td><td>"+json.PROTECTIVE_MEASURES+"</td><td>"+json.SITE_CHANGES_ID+"</td><td>"+json.CREATE_TIME+"</td><td>"+json.CREATE_PERSION_ID+"</td><td>"+json.LONGITUDE+"</td><td>"+json.LATITUDE+"</td><td>"+json.WEATHER_CONDITION+"</td></tr>");
         });               //序列号
     })
 }
+
 function get_field_commander(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     $("#field_commander_table").find("tr").remove();
     $("#field_commander_table").append("<tr><td>现场指挥人员ID</td><td>现场指挥人员姓名</td></tr>")
-    $.get("/get_field_commander", {
-    }, function (data) {
+    $.get("/get_field_commander", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#field_commander_table").append("<tr><td>"+json.FIELD_COMMANDER_ID+"</td><td>"+json.FIELD_COMMANDER_NAME+"</td></tr>");
+            $("#field_commander_table").append("<tr><td>" + json.FIELD_COMMANDER_ID + "</td><td>" + json.FIELD_COMMANDER_NAME + "</td></tr>");
         });               //序列号
     })
 }
+
 function get_protect_measure(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -126,23 +126,23 @@ function get_protect_measure(id) {
 
     $("#protect_measure_table").find("tr").remove();
     $("#protect_measure_table").append("<tr><td>保护措施ID</td><td>保护措施名称</td></tr>")
-    $.get("/get_protect_measure", {
-    }, function (data) {
+    $.get("/get_protect_measure", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#protect_measure_table").append("<tr><td>"+json.SITE_CHANGES_ID+"</td><td>"+json.SITE_CHANGES_NAME+"</td></tr>");
+            $("#protect_measure_table").append("<tr><td>" + json.SITE_CHANGES_ID + "</td><td>" + json.SITE_CHANGES_NAME + "</td></tr>");
         });               //序列号
     })
 }
+
 function get_site_changes(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -154,23 +154,23 @@ function get_site_changes(id) {
 
     $("#site_changes_table").find("tr").remove();
     $("#site_changes_table").append("<tr><td>现场变动情况ID</td><td>现场变动情况名称</td></tr>")
-    $.get("/get_site_changes", {
-    }, function (data) {
+    $.get("/get_site_changes", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#site_changes_table").append("<tr><td>"+json.SITE_CHANGES_ID+"</td><td>"+json.SITE_CHANGES_NAME+"</td></tr>");
+            $("#site_changes_table").append("<tr><td>" + json.SITE_CHANGES_ID + "</td><td>" + json.SITE_CHANGES_NAME + "</td></tr>");
         });               //序列号
     })
 }
+
 function get_mark_goods_unit(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -182,23 +182,23 @@ function get_mark_goods_unit(id) {
 
     $("#mark_goods_unit_table").find("tr").remove();
     $("#mark_goods_unit_table").append("<tr><td>单位ID</td><td>单位名称</td></tr>")
-    $.get("/get_mark_goods_unit", {
-    }, function (data) {
+    $.get("/get_mark_goods_unit", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#mark_goods_unit_table").append("<tr><td>"+json.MARK_GOODS_UNIT_ID+"</td><td>"+json.MARK_GOODS_UNIT_NAME+"</td></tr>");
+            $("#mark_goods_unit_table").append("<tr><td>" + json.MARK_GOODS_UNIT_ID + "</td><td>" + json.MARK_GOODS_UNIT_NAME + "</td></tr>");
         });               //序列号
     })
 }
+
 function get_weather(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -210,23 +210,23 @@ function get_weather(id) {
 
     $("#weather_table").find("tr").remove();
     $("#weather_table").append("<tr><td>天气情况ID</td><td>天气情况名称</td></tr>")
-    $.get("/get_weather", {
-    }, function (data) {
+    $.get("/get_weather", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#weather_table").append("<tr><td>"+json.SITE_CHANGES_ID+"</td><td>"+json.SITE_CHANGES_NAME+"</td></tr>");
+            $("#weather_table").append("<tr><td>" + json.SITE_CHANGES_ID + "</td><td>" + json.SITE_CHANGES_NAME + "</td></tr>");
         });               //序列号
     })
 }
+
 function get_full_photo(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -239,23 +239,23 @@ function get_full_photo(id) {
     $("#full_photo_table").find("tr").remove();
     $("#full_photo_table").append("<tr><td>全貌图片ID</td><td>全貌图片名称</td></tr>")
     // $("#full_photo_table").append("<tr><td>全貌图片ID</td><td>全貌图片名称</td><td>全貌图片内容</td><td>痕迹物品ID</td><td>创建时间</td></tr>")
-    $.get("/get_full_photo", {
-    }, function (data) {
+    $.get("/get_full_photo", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#full_photo_table").append("<tr><td>"+json.FULL_PHOTO_ID+"</td><td>"+json.FULL_PHOTO_NAME+"</td></tr>");
+            $("#full_photo_table").append("<tr><td>" + json.FULL_PHOTO_ID + "</td><td>" + json.FULL_PHOTO_NAME + "</td></tr>");
         });               //序列号
     })
 }
-function get_mark_goods(id) {
-    $(".full_view").css("display","none");
+
+/*function mark_goods(id) {
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -269,24 +269,24 @@ function get_mark_goods(id) {
     // $("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td></tr>")
     $("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td></tr>")
     // $("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td><td>物品类型ID</td><td>提取方法ID</td><td>勘验基础信息ID</td><td>提取时间</td><td>提取人</td><td>创建时间</td><td>创建人ID</td><td>数据状态</td><td>描述</td><td>修改时间</td></tr>")
-    $.get("/get_mark_goods", {
-    }, function (data) {
+    $.get("/get_mark_goods", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#mark_goods_table").append("<tr><td>"+json.MARK_GOODS_ID+"</td><td>"+json.MARK_GOODS_NAME+"</td></tr>");
+            $("#mark_goods_table").append("<tr><td>" + json.MARK_GOODS_ID + "</td><td>" + json.MARK_GOODS_NAME + "</td></tr>");
             // $("#mark_goods_table").append("<tr><td>"+json.MARK_GOODS_ID+"</td><td>"+json.MARK_GOODS_NAME+"</td><td>"+json.GOODS_TYPE_ID+"</td><td>"+json.EXTRACT_METHOD_ID+"</td><td>"+json.BASE_INFO_ID+"</td><td>"+json.EXTRACT_TIME+"</td><td>"+json.EXTRACT_PERSON+"</td><td>"+json.CREATE_TIME+"</td><td>"+json.CREATE_PERSION_ID+"</td><td>"+json.DATA_STATE+"</td><td>"+json.MARK_GOODS_DESCRIBE+"</td><td>"+json.UPDATE_TIME+"</td></tr>");
         });               //序列号
     })
-}
+}*/
+
 function get_goods_type(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -298,23 +298,23 @@ function get_goods_type(id) {
 
     $("#goods_type_table").find("tr").remove();
     $("#goods_type_table").append("<tr><td>物品类型ID</td><td>物品类型名称</td></tr>")
-    $.get("/get_goods_type", {
-    }, function (data) {
+    $.get("/get_goods_type", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#goods_type_table").append("<tr><td>"+json.GOODS_TYPE_ID+"</td><td>"+json.GOODS_TYPE_NAME+"</td></tr>");
+            $("#goods_type_table").append("<tr><td>" + json.GOODS_TYPE_ID + "</td><td>" + json.GOODS_TYPE_NAME + "</td></tr>");
         });               //序列号
     })
 }
+
 function get_extract_method(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -326,23 +326,23 @@ function get_extract_method(id) {
 
     $("#extract_method_table").find("tr").remove();
     $("#extract_method_table").append("<tr><td>提取方法ID</td><td>提取方法名称</td></tr>")
-    $.get("/get_extract_method", {
-    }, function (data) {
+    $.get("/get_extract_method", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#extract_method_table").append("<tr><td>"+json.EXTRACT_METHOD_ID+"</td><td>"+json.EXTRACT_METHOD_NAME+"</td></tr>");
+            $("#extract_method_table").append("<tr><td>" + json.EXTRACT_METHOD_ID + "</td><td>" + json.EXTRACT_METHOD_NAME + "</td></tr>");
         });               //序列号
     })
 }
+
 function get_corpse_info(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -355,23 +355,23 @@ function get_corpse_info(id) {
     $("#corpse_info_table").find("tr").remove();
     $("#corpse_info_table").append("<tr><td>尸体ID</td><<td>尸体名称</td></tr>")
     // $("#corpse_info_table").append("<tr><td>尸体ID</td><td>勘验基础信息ID</td><td>尸体编号</td><td>尸体名称</td><td>尸体发现地点</td><td>尸体姿态</td><td>现场血迹情况</td><td>现场环境情况</td><td>随身物品</td><td>尸体盛装物</td><td>尸体包裹物</td><td>死亡性质</td><td>致死原因</td><td>死亡时间推论</td><td>尸体加害形式</td><td>特征描述</td><td>创建人ID</td><td>创建时间</td><td>尸体完整度</td><td>数据状态</td><td>修改时间</td></tr>")
-    $.get("/get_corpse_info", {
-    }, function (data) {
+    $.get("/get_corpse_info", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#corpse_info_table").append("<tr><td>"+json.CORPSE_INFO_ID+"</td><td>"+json.CORPSE_INFO_NAME+"</td></tr>");
+            $("#corpse_info_table").append("<tr><td>" + json.CORPSE_INFO_ID + "</td><td>" + json.CORPSE_INFO_NAME + "</td></tr>");
         });               //序列号
     })
 }
+
 function get_corpse_photo(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -384,23 +384,23 @@ function get_corpse_photo(id) {
     $("#corpse_photo_table").find("tr").remove();
     $("#corpse_photo_table").append("<tr><td>尸体照片ID</td><td>尸体照片名称</td></tr>")
     // $("#corpse_photo_table").append("<tr><td>尸体照片ID</td><td>尸体照片名称</td><td>尸体照片内容</td><td>创建时间</td><td>尸体ID</td></tr>")
-    $.get("/get_corpse_photo", {
-    }, function (data) {
+    $.get("/get_corpse_photo", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#corpse_photo_table").append("<tr><td>"+json.CORPSE_PHOTO_ID+"</td><td>"+json.CORPSE_PHOTO_NAME+"</td></tr>");
+            $("#corpse_photo_table").append("<tr><td>" + json.CORPSE_PHOTO_ID + "</td><td>" + json.CORPSE_PHOTO_NAME + "</td></tr>");
         });               //序列号
     })
 }
+
 function get_position_photo(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -413,23 +413,23 @@ function get_position_photo(id) {
     $("#position_photo_table").find("tr").remove();
     $("#position_photo_table").append("<tr><td>方位照片ID</td><td>方位照片名称</td></tr>")
     // $("#position_photo_table").append("<tr><td>方位照片ID</td><td>方位照片名称</td><td>方位照片内容</td><td>痕迹物品ID</td><td>创建时间</td></tr>")
-    $.get("/get_position_photo", {
-    }, function (data) {
+    $.get("/get_position_photo", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#position_photo_table").append("<tr><td>"+json.POSITION_PHOTO_ID+"</td><td>"+json.POSITION_PHOTO_NAME+"</td></tr>");
+            $("#position_photo_table").append("<tr><td>" + json.POSITION_PHOTO_ID + "</td><td>" + json.POSITION_PHOTO_NAME + "</td></tr>");
         });               //序列号
     })
 }
+
 function get_case_concolusion_info(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -442,24 +442,24 @@ function get_case_concolusion_info(id) {
     $("#case_conclusion_info_table").find("tr").remove();
     $("#case_conclusion_info_table").append("<tr><td>勘验基础信息ID</td><td>创建人ID</td></tr>")
     // $("#case_conclusion_info_table").append("<tr><td>勘验基础信息ID</td><td>作案动机</td><td>作案工具</td><td>作案时间</td><td>作案地点</td><td>受害人员</td><td>创建人ID</td><td>创建时间</td><td>修改时间</td><td>数据状态</td></tr>")
-    $.get("/get_case_conclusion_info", {
-    }, function (data) {
+    $.get("/get_case_conclusion_info", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#case_conclusion_info_table").append("<tr><td>"+json.BASE_INFO_ID+"</td><td>"+json.CREATE_PERSON_ID+"</td></tr>");
+            $("#case_conclusion_info_table").append("<tr><td>" + json.BASE_INFO_ID + "</td><td>" + json.CREATE_PERSON_ID + "</td></tr>");
             // $("#case_conclusion_info_table").append("<tr><td>"+json.BASE_INFO_ID+"</td><td>"+json.MOTIVATION+"</td><td>"+json.CRIME_TOOLS+"</td><td>"+json.CRIME_TIME+"</td><td>"+json.CRIME_ADDRESS+"</td><td>"+json.VICTIME+"</td><td>"+json.CREATE_PERSON_ID+"</td><td>"+json.CREATE_TIME+"</td><td>"+json.UPDATE_TIME+"</td><td>"+json.DATA_STATE+"</td></tr>");
         });               //序列号
     })
 }
+
 function get_ele_info(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -472,23 +472,23 @@ function get_ele_info(id) {
     $("#ele_info_table").find("tr").remove();
     $("#ele_info_table").append("<tr><td>基础勘验信息ID</td><td>电子设备名称</td></tr>")
     // $("#ele_info_table").append("<tr><td>基础勘验信息ID</td><td>电子设备名称</td><td>内容描述</td><td>提取时间</td><td>提取人</td><td>创建人ID</td><td>创建时间</td><td>修改时间</td><td>数据状态</td></tr>")
-    $.get("/get_ele_info", {
-    }, function (data) {
+    $.get("/get_ele_info", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#ele_info_table").append("<tr><td>"+json.BASE_INFO_ID+"</td><td>"+json.DEVICE_NAME+"</td></tr>");
+            $("#ele_info_table").append("<tr><td>" + json.BASE_INFO_ID + "</td><td>" + json.DEVICE_NAME + "</td></tr>");
         });               //序列号
     })
 }
+
 function get_involved_goods_info(id) {
-    $(".full_view").css("display","none");
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -501,14 +501,35 @@ function get_involved_goods_info(id) {
     $("#involved_goods_info_table").find("tr").remove();
     $("#involved_goods_info_table").append("<tr><td>涉案物品信息ID</td><td>物品名称</td></tr>")
     // $("#involved_goods_info_table").append("<tr><td>涉案物品信息ID</td><td>物品名称</td><td>提取位置</td><td>勘验基础信息ID</td><td>创建人ID</td><td>创建时间</td><td>修改时间</td><td>数据状态</td></tr>")
-    $.get("/get_involved_goods_info", {
-    }, function (data) {
+    $.get("/get_involved_goods_info", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#involved_goods_info_table").append("<tr><td>"+json.INVOLVED_GOODS_INFO_ID+"</td><td>"+json.INVOLVED_GOODS_NAME+"</td></tr>");
+            $("#involved_goods_info_table").append("<tr><td>" + json.INVOLVED_GOODS_INFO_ID + "</td><td>" + json.INVOLVED_GOODS_NAME + "</td></tr>");
+        });               //序列号
+    })
+}
+
+function get_involved_person_info(id) {
+    $(".full_view").css("display", "none");
+    var x = document.getElementById(id);
+    if (x.style.display == "block") {
+        x.style.cssText = "display:none"
+    } else {
+        x.style.cssText = "display:block"
+    }
+
+    $("#involved_person_info_table").find("tr").remove();
+    $("#involved_person_info_table").append("<tr><td>涉案人员信息ID</td><td>涉案人名字</td></tr>")
+    $.get("/get_involved_person_info", {}, function (data) {
+        if (data.msg != undefined) {
+            alert(data.msg);
+            return;
+        }
+        data.forEach(function (json) {
+            $("#involved_person_info_table").append("<tr><td>" + json.INVOLVED_PERSON_INFO_ID + "</td><td>" + json.INVOLVED_PERSON_NAME + "</td></tr>");
         });               //序列号
     })
 }
@@ -618,8 +639,6 @@ function get_model(icon_name) {
     thing_gltf = "cesium/Models/model/" + top_name + "/" + sub_name + "/" + icon_name + "/model.gltf";
     console.log(thing_gltf)
 }
-
-
 
 
 function select_scene(scene_id) {
@@ -747,12 +766,13 @@ function set_view(lon, lat) {
 
 function functions(id) {
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
 }
+
 function mixmodel() {
     clearFire();
     clearCollision();
@@ -800,6 +820,7 @@ function explosiveshow() {
         }
     });
 }
+
 function waveshow() {
     startBZ2();
     viewer.camera.setView({
@@ -814,24 +835,24 @@ function waveshow() {
 
 function mark_site_changes(id) {
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
 }
 
-function get_operation_type(){
+function get_operation_type() {
     console.log(operation_type);
     operation_type = "mark_things";
 }
 
-function mark_undefine(id) {
-    $(".full_view").css("display","none");
+function mark_goods(id) {
+    $(".full_view").css("display", "none");
     var x = document.getElementById(id);
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
     // $("#site_changes_button").click(function(){
@@ -841,17 +862,16 @@ function mark_undefine(id) {
     // document.getElementById("site_changes_table").rows[0].cells[0].innerText = "现场变动ID"
     // document.getElementById("site_changes_table").rows[0].cells[1].innerText = "现场变动名称"
 
-    $("#mark_undefine_table").find("tr").remove();
-    $("#mark_undefine_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td></tr>")
-    // $("#mark_undefine_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td><td>物品类型ID</td><td>提取方法ID</td><td>基础勘验信息ID</td><td>提取时间</td><td>提取人</td><td>创建时间</td><td>创建人ID</td><td>数据状态</td><td>描述</td><td>修改时间</td></tr>")
-    $.get("/get_mark_goods", {
-    }, function (data) {
+    $("#mark_goods_table").find("tr").remove();
+    $("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>痕迹描述</td></tr>")
+    // $("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td><td>物品类型ID</td><td>提取方法ID</td><td>基础勘验信息ID</td><td>提取时间</td><td>提取人</td><td>创建时间</td><td>创建人ID</td><td>数据状态</td><td>描述</td><td>修改时间</td></tr>")
+    $.get("/get_mark_goods", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
         data.forEach(function (json) {
-            $("#mark_undefine_table").append("<tr><td>"+json.MARK_GOODS_ID+"</td><td>"+json.MARK_GOODS_DESCRIBE+"</td></tr>");
+            $("#mark_goods_table").append("<tr><td>" + json.MARK_GOODS_ID + "</td><td>" + json.MARK_GOODS_DESCRIBE + "</td></tr>");
         });               //序列号
     })
 }
@@ -864,11 +884,11 @@ $(document).ready(function () {
         $("#files").click()
     })
     $(".second_button").click(function () {
-        $(this).css("display","block")
-        $(this).siblings(".full_view").css("display","none")
+        $(this).css("display", "block")
+        $(this).siblings(".full_view").css("display", "none")
     })
     $(".first_button").click(function () {
-        $(".full_view").css("display","none")
+        $(".full_view").css("display", "none")
     })
 })
 

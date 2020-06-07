@@ -57,7 +57,7 @@ function lineshow(){
                 }
             },
             title: {
-                text: '数据曲线图',
+                text: '参量曲线图',
                 x: -20, //center
                 style: {
                     color: '#E0E0E3',
@@ -181,7 +181,7 @@ function barshow(){
             plotBorderColor: '#606063'
         },
         title: {
-            text: '数据柱形图',
+            text: '比对柱形图',
             style: {
                 color: '#E0E0E3',
                 textTransform: 'uppercase',
@@ -292,7 +292,7 @@ function pieshow(){
             plotBorderColor: '#606063'
         },
         title: {
-            text: '数据饼状图',
+            text: '成分比例图',
             style: {
                 color: '#E0E0E3',
                 textTransform: 'uppercase',
@@ -357,7 +357,7 @@ function bubbleshow() {
             plotBorderColor: '#606063'
         },
         title: {
-            text: '数据气泡图',
+            text: '关联平面图',
             style: {
                 color: '#E0E0E3',
                 textTransform: 'uppercase',

@@ -22,6 +22,8 @@
     margin-left: 1450px;
     margin-top: 220px;
     position: absolute;
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
 }
 
 #bar {
@@ -29,6 +31,8 @@
     margin-left: 1450px;
     margin-top: 465px;
     position: absolute;
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
 }
 
 #pie {
@@ -36,13 +40,17 @@
     margin-left: 1450px;
     margin-top: 710px;
     position: absolute;
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
 }
 
 #bubble {
-    display: block;
+    display: none;
     margin-left: 1450px;
     margin-top: 220px;
     position: absolute;
+    border-radius: 2px 0px 2px 2px;
+    border: 1px solid rgba(204, 212, 222, 1);
 }
 
 .icon {

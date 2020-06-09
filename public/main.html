@@ -14,6 +14,10 @@
     <script src="cesium/Sandcastle-header.js"></script>
     <script src="cesium/jquery-2.1.4.min.js"></script>
     <script src="cesium/jquery-form.js"></script>
+    <script src="cesium/import/assets/js/jqGrid/jquery.jqGrid.min.js"></script>
+    <script src="cesium/import/assets/js/jqGrid/i18n/grid.locale-en.js"></script>
+    <script src="cesium/import/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+    <!--script src="cesium/import/js/queryjs/query_table.js"></script-->
     <script src="cesium/xlsx.core.min.js"></script>
     <script src="cesium/ysc/ysc.js"></script>
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
@@ -26,11 +30,14 @@
     <script src="functions/models.js"></script>
     <script src="functions/showrelations.js"></script>
     <script src="functions/iconfont.js"></script>
+
     <link type="text/css" rel="stylesheet" href="css/version1.css"/>
     <link type="text/css" rel="stylesheet" href="css/hcharts.css"/>
     <link type="text/css" rel="stylesheet" href="css/models.css"/>
-    <link rel="stylesheet" type="text/css" href="css/iconfont.css">
 
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
+    <link rel="stylesheet" href="cesium/import/assets/css/jquery-ui-1.10.3.full.min.css"/>
+    <link rel="stylesheet" href="cesium/import/assets/css/ui.jqgrid.css"/>
 </head>
 <body>
 
@@ -67,6 +74,15 @@
                                     onchange="get_scenes(this.value)">
                             <option value="volvo" hidden>ID</option>
                         </select></td>
+                        <td>
+                            <button id="CaseCreateButton" style="height:25px;width:80px;border: 1px solid white"
+                                    disabled="disabled">创建
+                            </button>
+                        </td>
+                        <td>
+                            <button id="CaseInqueryButton" style="height:25px;width:80px;border: 1px solid white">查询
+                            </button>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -82,6 +98,16 @@
                                     onchange="select_scene(this.value)">
                             <option value="" hidden>ID</option>
                         </select></td>
+                        <td>
+                            <button id="SceneCreateButton" style="height:25px;width:80px;border: 1px solid white"
+                                    disabled="disabled">创建
+                            </button>
+                        </td>
+                        <td>
+                            <button id="SceneInqueryButton" style="height:25px;width:80px;border: 1px solid white"
+                                    disabled="disabled">查询
+                            </button>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -95,53 +121,53 @@
                 <!--            <input type="text" size="3" data-bind="value: height">-->
                 <table>
                     <tr>
-                        <td><span style="color:white">Volume:</span></td>
+                        <td><span style="color:white">Enlarge:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
-                                   data-bind="value: Volume, valueUpdate: 'input'" style="width: 80px"></td>
-                        <td><input type="text" disabled="disabled" size="3" data-bind="value: Volume"
-                                   style="width: 32px"></td>
+                                   data-bind="value: Enlarge, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" disabled="disabled" size="3" data-bind="value: Enlarge"
+                                   style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">OffsetX:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
                                    data-bind="value: OffsetX, valueUpdate: 'input'" style="width: 80px"></td>
                         <td><input type="text" disabled="disabled" size="3" data-bind="value: OffsetX"
-                                   style="width: 32px"></td>
+                                   style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">OffsetY:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
-                                   data-bind="value: OffsetY, valueUpdate: 'input'" style="width: 80px"></td>
+                                   data-bind="value: 'OffsetY', valueUpdate: 'input'" style="width: 80px"></td>
                         <td><input type="text" disabled="disabled" size="3" data-bind="value: OffsetY"
-                                   style="width: 32px"></td>
+                                   style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">OffsetZ:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
                                    data-bind="value: OffsetZ, valueUpdate: 'input'" style="width: 80px"></td>
                         <td><input type="text" disabled="disabled" size="3" data-bind="value: OffsetZ"
-                                   style="width: 32px"></td>
+                                   style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">RotateX:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
                                    data-bind="value: RotateX, valueUpdate: 'input'" style="width: 80px"></td>
                         <td><input type="text" disabled="disabled" size="3" data-bind="value: RotateX"
-                                   style="width: 32px"></td>
+                                   style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">RotateY:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
                                    data-bind="value: RotateY, valueUpdate: 'input'" style="width: 80px"></td>
                         <td><input type="text" disabled="disabled" size="3" data-bind="value: RotateY"
-                                   style="width: 32px"></td>
+                                   style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">RotateZ:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
                                    data-bind="value: RotateZ, valueUpdate: 'input'" style="width: 80px"></td>
                         <td><input type="text" disabled="disabled" size="3" data-bind="value: RotateZ"
-                                   style="width: 32px"></td>
+                                   style="width: 40px"></td>
                     </tr>
                 </table>
             </div>
@@ -1321,12 +1347,6 @@
            onchange="importNewExcel(this)">
 </div>
 
-<script src="cesium/Cesium.js"></script>
-<script src="cesium/Sandcastle-header.js"></script>
-<script src="cesium/jquery-2.1.4.min.js"></script>
-<script src="cesium/jquery-form.js"></script>
-<script src="cesium/xlsx.core.min.js"></script>
-
 <script>
     var viewer = new Cesium.Viewer('cesiumContainer', {
         shouldAnimate: false,
@@ -1361,7 +1381,6 @@
     var scene = viewer.scene;
     var clock = viewer.clock;
 
-
     var operation_type;
     var element_image = "cesium/images/left_foot.JPG";
     var thing_gltf = 'cesium/Models/Test/model.gltf';
@@ -1370,6 +1389,10 @@
     var dataSourcePromise;
 
     var viewModel = {
+        Enlarge: 0,
+        OffsetX: 0,
+        OffsetY: 0,
+        OffsetZ: 0,
         RotateX: 0,
         RotateY: 0,
         RotateZ: 0

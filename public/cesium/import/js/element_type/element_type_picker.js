@@ -65,7 +65,7 @@ var element_type_picker={
 			   },
 };
    jQuery(document).ready(function($){
-	   var main_type=element_type_picker[0000000];
+	   var main_type=element_type_picker[0o0000000];
 	   $("#main_type").append("<option selected='selected' disabled='disabled'  style='display: none' value=''>请选择要素大类</option> ");
 	   for(var json in main_type){
            $("#main_type").append('<option value='+json+' >'+main_type[json]+'</option>');

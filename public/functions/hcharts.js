@@ -916,9 +916,10 @@ function bubbleshow() {
 }
 
 $(function () {
-    dragPanelMove("#showHighCharts");
+    dragPanelMove("#bubblechart");
 
-    // dragPanelMove("#container4");
+    //dragPanelMove("#container4");
+
     function dragPanelMove(moveDiv) {
         $(moveDiv).mousedown(function (e) {
             var isMove = true;

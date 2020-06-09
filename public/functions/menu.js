@@ -847,17 +847,6 @@ function get_operation_type() {
     operation_type = "mark_things";
 }
 
-jQuery(function ($) {
-    var grid_selector = "#mark_goods_table";
-    var jq = jQuery.noConflict();
-
-    function beforeSelectRow() {
-        $(grid_selector).jqGrid('resetSelection');
-        alert("Selected");
-        return (true);
-    }
-});
-
 function mark_goods(id) {
     $(".full_view").css("display", "none");
     var x = document.getElementById(id);

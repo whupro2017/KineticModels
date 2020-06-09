@@ -206,6 +206,67 @@ $.get("/get_cases", {"value": "get_cases"}, function (data) {
     });
 })
 
+jQuery(function ($) {
+    var grid_selector = "#mark_goods_table";
+
+    //var jq = jQuery.noConflict();
+
+    function beforeSelectRow() {
+        $(grid_selector).jqGrid('resetSelection');
+        alert("Selected");
+        return (true);
+    }
+
+    $('#CaseInqueryButton').on('click', function () {
+        alert("mark_goods_table refresh!");
+        console.log(from + "," + to + "," + pro + "," + city + "," + dis);
+        $(grid_selector).jqGrid('setGridParam', {
+            url: '/pro/CaseQueryController/getAllCase?beginTime=' + from
+                + '&endTime=' + to + '&pro=' + pro + '&city=' + city + '&dis=' + dis,
+            datatype: "json",
+            mtype: 'POST',
+        }).trigger("reloadGrid"); //重新载入
+    });
+
+    jQuery(grid_selector).jqGrid({
+        //direction: "rtl",
+        datatype: "json",
+        mtype: 'POST',
+        height: 240,
+        colNames: ['案件编号', '案件时间', '案件地点', '案件描述'],
+        colModel: [
+            {name: 'case_id', index: 'case_id', width: 35, sorttype: "int", editable: false},
+            {name: 'case_time', index: 'case_time', width: 50, editable: false},
+            {name: 'case_location', index: 'case_location', width: 120, editable: false},
+            {name: 'case_desc', index: 'case_desc', width: 50, sortable: false, editable: false}
+        ],
+        viewrecords: true,
+        //toppager: true,
+        multiselect: true,
+        //multikey: "ctrlKey",
+        multiboxonly: true,
+        beforeSelectRow: beforeSelectRow,
+        loadComplete: function () {
+            var table = this;
+            setTimeout(function () {
+            }, 0);
+        },
+
+        onSelectRow: function (id) {
+            var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+            var rowid = $(grid_selector).getGridParam("selrow");
+            var rowData = $(grid_selector).getRowData(rowid);
+            var cid = rowData.case_id;
+            //document.getElementById('e-correlation').value = '选中案件编号为 ' + cid + ' 的事件';
+            //document.getElementById('ematerial_show_all').value = '此处显示案件编号为 ' + cid + ' 的案件素材';
+        },
+
+        autowidth: true
+    });
+
+    alert("jQuery triggered!");
+});
+
 function mark_thing() {
     operation_type = 'mark_things';
     alert("请选择类型")

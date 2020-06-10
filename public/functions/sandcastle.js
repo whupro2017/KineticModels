@@ -210,22 +210,33 @@ jQuery(function ($) {
     var grid_selector = "#mark_goods_table";
 
     //var jq = jQuery.noConflict();
-
     function beforeSelectRow() {
         $(grid_selector).jqGrid('resetSelection');
-        alert("Selected");
         return (true);
     }
 
     $('#CaseInqueryButton').on('click', function () {
         alert("mark_goods_table refresh!");
-        console.log(from + "," + to + "," + pro + "," + city + "," + dis);
-        $(grid_selector).jqGrid('setGridParam', {
-            url: '/pro/CaseQueryController/getAllCase?beginTime=' + from
-                + '&endTime=' + to + '&pro=' + pro + '&city=' + city + '&dis=' + dis,
-            datatype: "json",
-            mtype: 'POST',
-        }).trigger("reloadGrid"); //重新载入
+        // Here releases a bug with uncleared header.
+        $(grid_selector).jqGrid("clearGridData", true).trigger("reloadGrid");
+        $(grid_selector).trigger('reloadGrid');
+        $.get("/get_mark_goods", {}, function (data) {
+            if (data.msg != undefined) {
+                alert(data.msg);
+                return;
+            }
+            var counter = 0;
+            data.forEach(function (json) {
+                var row = {
+                    MARK_GOODS_NAME: json.MARK_GOODS_NAME,
+                    CREATE_TIME: json.CREATE_TIME,
+                    EXTRACT_POSITION: json.EXTRACT_POSITION
+                };
+                if (counter < 5) alert(counter + ":" + row.MARK_GOODS_NAME);
+                $(grid_selector).jqGrid("addRowData", counter++, row);
+            });
+            $(grid_selector).trigger('reloadGrid');
+        })
     });
 
     jQuery(grid_selector).jqGrid({
@@ -233,12 +244,11 @@ jQuery(function ($) {
         datatype: "json",
         mtype: 'POST',
         height: 240,
-        colNames: ['案件编号', '案件时间', '案件地点', '案件描述'],
+        colNames: ['痕迹名称', '痕迹描述', '提取位置'],
         colModel: [
-            {name: 'case_id', index: 'case_id', width: 35, sorttype: "int", editable: false},
-            {name: 'case_time', index: 'case_time', width: 50, editable: false},
-            {name: 'case_location', index: 'case_location', width: 120, editable: false},
-            {name: 'case_desc', index: 'case_desc', width: 50, sortable: false, editable: false}
+            {name: 'MARK_GOODS_NAME', index: 'MARK_GOODS_NAME', width: 60, editable: false},
+            {name: 'CREATE_TIME', index: 'CREATE_TIME', sorttype: "datetime", width: 120, editable: false},
+            {name: 'EXTRACT_POSITION', index: 'EXTRACT_POSITION', width: 80, editable: false}
         ],
         viewrecords: true,
         //toppager: true,
@@ -247,6 +257,7 @@ jQuery(function ($) {
         multiboxonly: true,
         beforeSelectRow: beforeSelectRow,
         loadComplete: function () {
+            alert("jQuery load!");
             var table = this;
             setTimeout(function () {
             }, 0);
@@ -256,15 +267,13 @@ jQuery(function ($) {
             var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
             var rowid = $(grid_selector).getGridParam("selrow");
             var rowData = $(grid_selector).getRowData(rowid);
-            var cid = rowData.case_id;
+            alert(rowData.MARK_GOODS_NAME);
             //document.getElementById('e-correlation').value = '选中案件编号为 ' + cid + ' 的事件';
             //document.getElementById('ematerial_show_all').value = '此处显示案件编号为 ' + cid + ' 的案件素材';
         },
 
-        autowidth: true
+        autowidth: true, shrinkToFit: false
     });
-
-    alert("jQuery triggered!");
 });
 
 function mark_thing() {

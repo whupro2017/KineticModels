@@ -863,9 +863,9 @@ function mark_goods(id) {
     // document.getElementById("site_changes_table").rows[0].cells[1].innerText = "现场变动名称"
 
     $("#mark_goods_table").find("tr").remove();
-    $("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>痕迹描述</td></tr>")
+    //$("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>痕迹描述</td></tr>")
     // $("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td><td>物品类型ID</td><td>提取方法ID</td><td>基础勘验信息ID</td><td>提取时间</td><td>提取人</td><td>创建时间</td><td>创建人ID</td><td>数据状态</td><td>描述</td><td>修改时间</td></tr>")
-    $.get("/get_mark_goods", {}, function (data) {
+    /*$.get("/get_mark_goods", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
@@ -873,7 +873,7 @@ function mark_goods(id) {
         data.forEach(function (json) {
             $("#mark_goods_table").append("<tr><td>" + json.MARK_GOODS_ID + "</td><td>" + json.MARK_GOODS_DESCRIBE + "</td></tr>");
         });               //序列号
-    })
+    })*/
 }
 
 $(document).ready(function () {

@@ -1,44 +1,47 @@
-
 function line() {
     var x = document.getElementById("line");
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
 }
+
 function bar() {
     var x = document.getElementById("bar");
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
 }
+
 function pie() {
     var x = document.getElementById("pie");
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
 }
+
 function bubble() {
     var x = document.getElementById("bubble");
-    if(x.style.display == "block"){
+    if (x.style.display == "block") {
         x.style.cssText = "display:none"
-    }else {
+    } else {
         x.style.cssText = "display:block"
     }
 }
-function lineshow(){
-    $(document).ready(function(){
+
+function lineshow() {
+    $(document).ready(function () {
         chart = new Highcharts.Chart({
             colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
                 '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
             chart: {
                 backgroundColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                    linearGradient: {x1: 0, y1: 0, x2: 1, y2: 1},
                     stops: [
                         [0, '#2a2a2b'],
                         [1, '#3e3e40']
@@ -57,7 +60,7 @@ function lineshow(){
                 }
             },
             title: {
-                text: '数据曲线图',
+                text: '参量曲线图',
                 x: -20, //center
                 style: {
                     color: '#E0E0E3',
@@ -76,9 +79,9 @@ function lineshow(){
             xAxis: {
                 categories: ['05年', '06年',
                     '07年', '08年', '09年', '20年'],
-                labels:{
-                    style:{
-                        color:'white'
+                labels: {
+                    style: {
+                        color: 'white'
                     }
                 },
             },
@@ -90,8 +93,8 @@ function lineshow(){
                     }
                 },
                 labels: {
-                    style:{
-                        color:'white'
+                    style: {
+                        color: 'white'
                     }
                 }
             },
@@ -99,7 +102,7 @@ function lineshow(){
                 formatter: function () {
                     return '<b>' + this.series.name + '</b><br/><br/>' +
                         this.x + ': ' + this.y + '单位';
-            },
+                },
                 style: {
                     color: 'white'
                 }
@@ -161,7 +164,7 @@ function lineshow(){
     line();
 }
 
-function barshow(){
+function barshow() {
     chart = new Highcharts.Chart({
         colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
             '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
@@ -169,7 +172,7 @@ function barshow(){
             renderTo: 'container2',
             type: 'column',
             backgroundColor: {
-                linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                linearGradient: {x1: 0, y1: 0, x2: 1, y2: 1},
                 stops: [
                     [0, '#2a2a2b'],
                     [1, '#3e3e40']
@@ -181,7 +184,7 @@ function barshow(){
             plotBorderColor: '#606063'
         },
         title: {
-            text: '数据柱形图',
+            text: '比对柱形图',
             style: {
                 color: '#E0E0E3',
                 textTransform: 'uppercase',
@@ -205,9 +208,9 @@ function barshow(){
                 '11年',
                 '12年'
             ],
-            labels:{
-                style:{
-                    color:'white'
+            labels: {
+                style: {
+                    color: 'white'
                 }
             }
         },
@@ -215,13 +218,13 @@ function barshow(){
             min: 0,
             title: {
                 text: '数据',
-                style:{
-                    color:'white'
+                style: {
+                    color: 'white'
                 }
             },
-            labels:{
-                style:{
-                    color:'white'
+            labels: {
+                style: {
+                    color: 'white'
                 }
             }
         },
@@ -268,19 +271,19 @@ function barshow(){
     bar();
 }
 
-function pieshow(){
+function pieshow() {
     //饼状图初始化
     chart = new Highcharts.Chart({
         colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
             '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
         chart: {
             renderTo: 'container3',
-            type:'pie',
+            type: 'pie',
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false,
             backgroundColor: {
-                linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                linearGradient: {x1: 0, y1: 0, x2: 1, y2: 1},
                 stops: [
                     [0, '#2a2a2b'],
                     [1, '#3e3e40']
@@ -292,7 +295,7 @@ function pieshow(){
             plotBorderColor: '#606063'
         },
         title: {
-            text: '数据饼状图',
+            text: '成分比例图',
             style: {
                 color: '#E0E0E3',
                 textTransform: 'uppercase',
@@ -344,8 +347,11 @@ function bubbleshow() {
         chart: {
             renderTo: 'container4',
             type: 'packedbubble',
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
             backgroundColor: {
-                linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                linearGradient: {x1: 0, y1: 0, x2: 1, y2: 1},
                 stops: [
                     [0, '#2a2a2b'],
                     [1, '#3e3e40']
@@ -357,7 +363,7 @@ function bubbleshow() {
             plotBorderColor: '#606063'
         },
         title: {
-            text: '数据气泡图',
+            text: '案事件勘验研判全要素关联图',
             style: {
                 color: '#E0E0E3',
                 textTransform: 'uppercase',
@@ -374,7 +380,7 @@ function bubbleshow() {
 
         tooltip: {
             useHTML: true,
-            pointFormat: '<b>{point.name}:</b> {point.value}m CO<sub>2</sub>'
+            pointFormat: '<b>{point.name}:</b> {point.value}‰'//<sub>2</sub>
         },
         plotOptions: {
             packedbubble: {
@@ -403,7 +409,7 @@ function bubbleshow() {
             }
         },
         legend: {
-            enabled:false,
+            enabled: false,
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             itemStyle: {
                 color: '#E0E0E3'
@@ -421,6 +427,18 @@ function bubbleshow() {
             }
         },
         series: [{
+            name: '痕迹',
+            data: [{name: '血液', value: 332.0}, {name: '足迹', value: 334.0}, {name: '手印', value: 734.0}]
+        }, {
+            name: '物品',
+            data: [{name: '地板', value: 445.0}, {name: '扶手', value: 327.0}, {name: '门窗', value: 618.0}]
+        }, {
+            name: '主体',
+            data: [{name: '被害人1', value: 778.0}, {name: '被害人2', value: 318.0}, {name: '嫌疑人', value: 324.0}]
+        }, {
+            name: '信息', data: [{name: '录音', value: 581.0}, {name: '视频', value: 312.0}, {name: '基站', value: 327.0}]
+        }]
+        /*[{
             name: 'Europe',
             data: [{
                 name: 'Germany',
@@ -892,14 +910,16 @@ function bubbleshow() {
                     name: "Korea",
                     value: 610.1
                 }]
-        }]
+        }]*/
     })
     bubble();
 }
+
 $(function () {
-    dragPanelMove("#showHighCharts");
-    // dragPanelMove("#container4");
-    function dragPanelMove(moveDiv){
+    dragPanelMove("#mark_goods_table");
+    //dragPanelMove("#bubble");
+
+    function dragPanelMove(moveDiv) {
         $(moveDiv).mousedown(function (e) {
             var isMove = true;
             var div_x = e.pageX - $(moveDiv).offset().left;
@@ -907,7 +927,7 @@ $(function () {
             $(document).mousemove(function (e) {
                 if (isMove) {
                     var obj = $(moveDiv);
-                    obj.css({"left":e.pageX - div_x, "top":e.pageY - div_y});
+                    obj.css({"left": e.pageX - div_x, "top": e.pageY - div_y});
                 }
             }).mouseup(
                 function () {

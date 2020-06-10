@@ -14,9 +14,13 @@
     <script src="cesium/Sandcastle-header.js"></script>
     <script src="cesium/jquery-2.1.4.min.js"></script>
     <script src="cesium/jquery-form.js"></script>
+    <script src="cesium/import/assets/js/jqGrid/jquery.jqGrid.min.js"></script>
+    <script src="cesium/import/assets/js/jqGrid/i18n/grid.locale-en.js"></script>
+    <script src="cesium/import/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+    <!--script src="cesium/import/js/queryjs/query_table.js"></script-->
     <script src="cesium/xlsx.core.min.js"></script>
     <script src="cesium/ysc/ysc.js"></script>
-    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <!--script src="https://code.highcharts.com/highcharts.src.js"></script-->
     <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
     <script src="https://code.highcharts.com.cn/highcharts/highcharts-more.js"></script>
     <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
@@ -26,11 +30,14 @@
     <script src="functions/models.js"></script>
     <script src="functions/showrelations.js"></script>
     <script src="functions/iconfont.js"></script>
+
     <link type="text/css" rel="stylesheet" href="css/version1.css"/>
     <link type="text/css" rel="stylesheet" href="css/hcharts.css"/>
     <link type="text/css" rel="stylesheet" href="css/models.css"/>
-    <link rel="stylesheet" type="text/css" href="css/iconfont.css">
 
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
+    <link rel="stylesheet" href="cesium/import/assets/css/jquery-ui-1.10.3.full.min.css"/>
+    <link rel="stylesheet" href="cesium/import/assets/css/ui.jqgrid.css"/>
 </head>
 <body>
 
@@ -38,7 +45,7 @@
 <div class="leftMenu" id="modelInfo">
     <p></p>
 </div>
-<div id="toolbar" style="display:block;">
+<div id="toolbar" style="display:block; border-radius: 2px 0px 2px 2px; border: 3px solid rgba(204, 212, 222, 1)">
     <div style="color: white;align: center">
         按F9隐藏菜单
     </div>
@@ -67,6 +74,15 @@
                                     onchange="get_scenes(this.value)">
                             <option value="volvo" hidden>ID</option>
                         </select></td>
+                        <td>
+                            <button id="CaseCreateButton" style="height:25px;width:80px;border: 1px solid white"
+                                    disabled="disabled">创建
+                            </button>
+                        </td>
+                        <td>
+                            <button id="CaseInqueryButton" style="height:25px;width:80px;border: 1px solid white">查询
+                            </button>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -82,51 +98,81 @@
                                     onchange="select_scene(this.value)">
                             <option value="" hidden>ID</option>
                         </select></td>
+                        <td>
+                            <button id="SceneCreateButton" style="height:25px;width:80px;border: 1px solid white"
+                                    disabled="disabled">创建
+                            </button>
+                        </td>
+                        <td>
+                            <button id="SceneInqueryButton" style="height:25px;width:80px;border: 1px solid white"
+                                    disabled="disabled">查询
+                            </button>
+                        </td>
                     </tr>
                 </table>
             </div>
         </div>
     </div>
     <div id="operations" style="display: none">
-
         <div id="model_modify" class="model_modify" style="display: none">
             <div id="ModelModifyMenu" class="modelModify">
-
                 <!--            <div>Height-offset</div>-->
                 <!--            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: height, valueUpdate: 'input'">-->
                 <!--            <input type="text" size="3" data-bind="value: height">-->
-
-                <span style="color:white;">OffsetX:</span>
-                <input type="range" min="-180" max="180" step="1" data-bind="value: OffsetX, valueUpdate: 'input'"
-                       style="width: 80px">
-                <input type="text" disabled="disabled" size="3" data-bind="value: OffsetX" style="width: 28px">
-
-                <span style="color:white;">OffsetY:</span>
-                <input type="range" min="-180" max="180" step="1" data-bind="value: OffsetY, valueUpdate: 'input'"
-                       style="width: 80px">
-                <input type="text" disabled="disabled" size="3" data-bind="value: OffsetY" style="width: 28px">
-
-                <span style="color:white;">OffsetZ:</span>
-                <input type="range" min="0" max="90" step="1" data-bind="value: OffsetZ, valueUpdate: 'input'"
-                       style="width: 80px">
-                <input type="text" disabled="disabled" size="3" data-bind="value: OffsetZ" style="width: 28px">
-
-                <span style="color:white;">RotateX:</span>
-                <input type="range" min="-180" max="180" step="1" data-bind="value: RotateX, valueUpdate: 'input'"
-                       style="width: 80px">
-                <input type="text" disabled="disabled" size="3" data-bind="value: RotateX" style="width: 28px">
-
-                <span style="color:white;">RotateY:</span>
-                <input type="range" min="-180" max="180" step="1" data-bind="value: RotateY, valueUpdate: 'input'"
-                       style="width: 80px">
-                <input type="text" disabled="disabled" size="3" data-bind="value: RotateY" style="width: 28px">
-
-                <span style="color:white;">RotateZ:</span>
-                <input type="range" min="0" max="90" step="1" data-bind="value: RotateZ, valueUpdate: 'input'"
-                       style="width: 80px">
-                <input type="text" disabled="disabled" size="3" data-bind="value: RotateZ" style="width: 28px">
+                <table>
+                    <tr>
+                        <td><span style="color:white">Enlarge:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: Enlarge, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" disabled="disabled" size="3" data-bind="value: Enlarge"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">OffsetX:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: OffsetX, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" disabled="disabled" size="3" data-bind="value: OffsetX"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">OffsetY:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: 'OffsetY', valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" disabled="disabled" size="3" data-bind="value: OffsetY"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">OffsetZ:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: OffsetZ, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" disabled="disabled" size="3" data-bind="value: OffsetZ"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">RotateX:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: RotateX, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" disabled="disabled" size="3" data-bind="value: RotateX"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">RotateY:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: RotateY, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" disabled="disabled" size="3" data-bind="value: RotateY"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">RotateZ:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: RotateZ, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" disabled="disabled" size="3" data-bind="value: RotateZ"
+                                   style="width: 40px"></td>
+                    </tr>
+                </table>
             </div>
-            <div style="background-color: transparent; float:top;padding-top: 10px;text-align:center" align="center">
+            <div style="background-color: transparent; float:top;padding-top: 10px;text-align:center"
+                 align="center">
                 <button style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
                         onClick="modelModifyClose()">退出
                 </button>
@@ -213,16 +259,20 @@
                 <input type="button" class="second_button" value="现场指挥人员"
                        onclick="get_field_commander('field_commander')">
                 <input type="button" class="second_button" value="保护措施" onclick="">
-                <input type="button" class="second_button" value="现场变动情况" onclick="get_site_changes('site_changes')">
-                <input type="button" class="second_button" value="单位" onclick="get_mark_goods_unit('mark_goods_unit')">
+                <input type="button" class="second_button" value="现场变动情况"
+                       onclick="get_site_changes('site_changes')">
+                <input type="button" class="second_button" value="单位"
+                       onclick="get_mark_goods_unit('mark_goods_unit')">
                 <input type="button" class="second_button" value="天气情况" onclick="">
                 <input type="button" class="second_button" value="全貌照片" onclick="get_full_photo('full_photo')">
                 <!--                <input type="button" class="second_button" value="痕迹物品" onclick="get_mark_goods('mark_goods')">-->
                 <input type="button" class="second_button" value="物品类型" onclick="get_goods_type('goods_type')">
-                <input type="button" class="second_button" value="提取方法" onclick="get_extract_method('extract_method')">
+                <input type="button" class="second_button" value="提取方法"
+                       onclick="get_extract_method('extract_method')">
                 <!--                <input type="button" class="second_button" value="尸体信息" onclick="get_corpse_info('corpse_info')">-->
                 <input type="button" class="second_button" value="尸体照片" onclick="get_corpse_photo('corpse_photo')">
-                <input type="button" class="second_button" value="方位照片" onclick="get_position_photo('position_photo')">
+                <input type="button" class="second_button" value="方位照片"
+                       onclick="get_position_photo('position_photo')">
                 <input type="button" class="second_button" value="案事件全貌"
                        onclick="get_case_concolusion_info('case_conclusion')">
                 <input type="button" class="second_button" value="电子信息" onclick="get_ele_info('ele_info')">
@@ -1031,7 +1081,7 @@
     </div>
 </div>
 
-<div id="rightmenu" style="display:block;">
+<div id="rightmenu" style="display:block; border-radius: 2px 0px 2px 2px; border: 3px solid rgba(204, 212, 222, 1)">
     <div id="functionsarea">
         <div style="float: left;">
             <div>
@@ -1053,8 +1103,10 @@
                         <td></td>
                         <td></td>
                         <td>
-                            <button id="new" class="charts" onclick="document.getElementById('for_new').click()"><img
-                                    src="icons/new.png" width="25px" height="25px" title="新建" style="margin-left: -5px">
+                            <button id="new" class="charts" onclick="document.getElementById('for_new').click()">
+                                <img
+                                        src="icons/new.png" width="25px" height="25px" title="新建"
+                                        style="margin-left: -5px">
                             </button>
                         </td>
                         <td>
@@ -1073,10 +1125,11 @@
                                                                              style="margin-left: -20px"></button>
                         </td>
                         <td>
-                            <button id="adjust" class="charts" onclick="rightmodelmodify()"><img src="icons/adjust.png"
-                                                                                                 width="25px"
-                                                                                                 height="25px"
-                                                                                                 title="调整"></button>
+                            <button id="adjust" class="charts" onclick="rightmodelmodify()"><img
+                                    src="icons/adjust.png"
+                                    width="25px"
+                                    height="25px"
+                                    title="调整"></button>
                         </td>
                         <td>
                             <button id="track" class="charts" onclick=""><img src="icons/track.png" width="25px"
@@ -1088,7 +1141,8 @@
                         </td>
                         <td>
                             <button id="relate" class="charts" onclick="mdoelrelation()"><img src="icons/relate.png"
-                                                                                              width="25px" height="25px"
+                                                                                              width="25px"
+                                                                                              height="25px"
                                                                                               title="关联"></button>
                         </td>
                         <td>
@@ -1109,7 +1163,8 @@
             <div>
                 <table style="float: right;margin-right: 0px">
                     <tr>
-                        <td colspan="13" style="text-align: left;"><span style="color: deepskyblue;font-size: 1.2em">功能展示</span>
+                        <td colspan="13" style="text-align: left;"><span
+                                style="color: deepskyblue;font-size: 1.2em">功能展示</span>
                         </td>
                         <td colspan="5" style="text-align: left;"><span
                                 style="color: deepskyblue;font-size: 1.2em">模型演示</span></td>
@@ -1129,10 +1184,11 @@
                                                                                          title="自主路线"></button>
                         </td>
                         <td>
-                            <button id="study" class="charts" onclick="functions('Smodel')"><img src="icons/study.png"
-                                                                                                 width="27px"
-                                                                                                 height="27px"
-                                                                                                 title="研判标准"></button>
+                            <button id="study" class="charts" onclick="functions('Smodel')"><img
+                                    src="icons/study.png"
+                                    width="27px"
+                                    height="27px"
+                                    title="研判标准"></button>
                         </td>
                         <td>
                             <button id="g_measure" class="charts" onclick="functions('toolbar_measure')"><img
@@ -1143,7 +1199,8 @@
                                     src="icons/explosion.png" width="27x" height="27px" title="爆炸效果"></button>
                         </td>
                         <td>
-                            <button id="wave" class="charts" onclick="waveshow()"><img src="icons/wave.png" width="27px"
+                            <button id="wave" class="charts" onclick="waveshow()"><img src="icons/wave.png"
+                                                                                       width="27px"
                                                                                        height="27px" title="爆炸冲击波">
                             </button>
                         </td>
@@ -1179,7 +1236,8 @@
                 <tr></tr>
                 <tr></tr>
                 <tr>
-                    <td colspan="5" style="text-align: left"><span style="color: deepskyblue;font-size: 1.2em">图表</span>
+                    <td colspan="5" style="text-align: left"><span
+                            style="color: deepskyblue;font-size: 1.2em">图表</span>
                     </td>
                 </tr>
                 <tr>
@@ -1200,12 +1258,13 @@
                     </td>
                     <td>
                         <button id="piechart" class="charts" onclick="pieshow()"><img src="icons/pie.png" width="35px"
-                                                                                      height="35px" title="饼图"></button>
+                                                                                      height="35px" title="饼图">
+                        </button>
                     </td>
                     <td>
-                        <button id="bubblechart" class="charts" onclick="bubble()"><img src="icons/bubble.png"
-                                                                                        width="35px" height="35px"
-                                                                                        title="气泡图"></button>
+                        <button id="bubblechart" class="charts" onclick="bubbleshow()"><img src="icons/bubble.png"
+                                                                                            width="35px" height="35px"
+                                                                                            title="气泡图"></button>
                     </td>
                 </tr>
             </table>
@@ -1217,7 +1276,8 @@
                 <tr></tr>
                 <tr></tr>
                 <tr>
-                    <td colspan="5" style="text-align: left"><span style="color: deepskyblue;font-size: 1.2em">符号</span>
+                    <td colspan="5" style="text-align: left"><span
+                            style="color: deepskyblue;font-size: 1.2em">符号</span>
                     </td>
                 </tr>
                 <tr>
@@ -1241,7 +1301,8 @@
                 <tr></tr>
                 <tr></tr>
                 <tr>
-                    <td colspan="5" style="text-align: left"><span style="color: deepskyblue;font-size: 1.2em">模型</span>
+                    <td colspan="5" style="text-align: left"><span
+                            style="color: deepskyblue;font-size: 1.2em">模型</span>
                     </td>
                 </tr>
                 <tr>
@@ -1277,20 +1338,14 @@
 <div id="pie">
     <div id="container3" style="height: 245px;width: 470px;"></div>
 </div>
-<!--<div id="bubble">-->
-<!--    <div id="container4" style="height: 300px;width: 260px;"></div>-->
-<!--</div>-->
+<div id="bubble">
+    <div id="container4" style="height: 490px;width: 470px;"></div>
+</div>
 
 <div>
     <input id="for_new" type="file" style="display:none" accept=".xls,.xlsx"
            onchange="importNewExcel(this)">
 </div>
-
-<script src="cesium/Cesium.js"></script>
-<script src="cesium/Sandcastle-header.js"></script>
-<script src="cesium/jquery-2.1.4.min.js"></script>
-<script src="cesium/jquery-form.js"></script>
-<script src="cesium/xlsx.core.min.js"></script>
 
 <script>
     var viewer = new Cesium.Viewer('cesiumContainer', {
@@ -1326,7 +1381,6 @@
     var scene = viewer.scene;
     var clock = viewer.clock;
 
-
     var operation_type;
     var element_image = "cesium/images/left_foot.JPG";
     var thing_gltf = 'cesium/Models/Test/model.gltf';
@@ -1335,6 +1389,10 @@
     var dataSourcePromise;
 
     var viewModel = {
+        Enlarge: 0,
+        OffsetX: 0,
+        OffsetY: 0,
+        OffsetZ: 0,
         RotateX: 0,
         RotateY: 0,
         RotateZ: 0

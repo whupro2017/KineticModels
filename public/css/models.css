@@ -206,3 +206,24 @@
     background-color: transparent;
     color: white;
 }
+
+.jqgrid-header {
+    background: #000000; /*url(images/new_header_bck.png) repeat-x scroll 50% 50%;*/
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.evenTableRow {
+    background-color: #e8eef4;
+    color: #ffffff;
+}
+
+.oddTableRow {
+    background-color: #e8eef4;
+    color: #ffffff;
+}
+
+.sg-even-row td, .sg-even-row th {
+    background-color: #CCCCCC !important;
+}

@@ -916,7 +916,7 @@ function bubbleshow() {
 }
 
 $(function () {
-    dragPanelMove("#mark_goods_table");
+    //dragPanelMove("#mark_goods_table");
     //dragPanelMove("#bubble");
 
     function dragPanelMove(moveDiv) {

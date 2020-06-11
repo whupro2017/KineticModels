@@ -215,25 +215,34 @@ jQuery(function ($) {
         return (true);
     }
 
+    function changeColor(header) {
+        header.css('font-weight', 'bold');
+        header.css('color', '#ffffff');
+    };
+
     $('#CaseInqueryButton').on('click', function () {
-        alert("mark_goods_table refresh!");
         // Here releases a bug with uncleared header.
         $(grid_selector).jqGrid("clearGridData", true).trigger("reloadGrid");
-        $(grid_selector).trigger('reloadGrid');
+        var gridData = $(grid_selector).jqGrid("getRowData");
+        for (var i = 0; i < gridData.length; i++) {
+            alert("resting: " + gridData[i].MARK_GOODS_NAME);
+            $(grid_selector).jqGrid("delRowData", i);
+        }
         $.get("/get_mark_goods", {}, function (data) {
             if (data.msg != undefined) {
-                alert(data.msg);
+                alert("ajax" + data.msg);
                 return;
             }
             var counter = 0;
             data.forEach(function (json) {
-                var row = {
+                var rowData = {
                     MARK_GOODS_NAME: json.MARK_GOODS_NAME,
                     CREATE_TIME: json.CREATE_TIME,
                     EXTRACT_POSITION: json.EXTRACT_POSITION
                 };
-                if (counter < 5) alert(counter + ":" + row.MARK_GOODS_NAME);
-                $(grid_selector).jqGrid("addRowData", counter++, row);
+                if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+                $(grid_selector).jqGrid("addRowData", counter, rowData);
+                counter++;
             });
             $(grid_selector).trigger('reloadGrid');
         })
@@ -244,17 +253,33 @@ jQuery(function ($) {
         datatype: "json",
         mtype: 'POST',
         height: 240,
+        colColor: 'white',
         colNames: ['痕迹名称', '痕迹描述', '提取位置'],
         colModel: [
-            {name: 'MARK_GOODS_NAME', index: 'MARK_GOODS_NAME', width: 60, editable: false},
-            {name: 'CREATE_TIME', index: 'CREATE_TIME', sorttype: "datetime", width: 120, editable: false},
-            {name: 'EXTRACT_POSITION', index: 'EXTRACT_POSITION', width: 80, editable: false}
+            {name: 'MARK_GOODS_NAME', index: 'MARK_GOODS_NAME', width: 60, editable: false},//cellclassname: colorFondo},
+            {
+                name: 'CREATE_TIME',
+                index: 'CREATE_TIME',
+                sortable: true,
+                sorttype: "string",
+                width: 120,
+                editable: false
+                //cellclassname: colorFondo
+                /*rendered: changeColor,
+                formatter: "datetime",
+                formatoptions: {srcformat: "m/d/Y h:i:s", newformat: "m/d/Y h:i:s"}*/
+            },
+            {name: 'EXTRACT_POSITION', index: 'EXTRACT_POSITION', width: 80, editable: false} //cellclassname: colorFondo}
         ],
+        gridview: true,
         viewrecords: true,
-        //toppager: true,
+        toppager: false,
         multiselect: true,
         //multikey: "ctrlKey",
         multiboxonly: true,
+        /*gridComplete: function () {
+            $(grid_selector).addClass('jqgrid-header');
+        },*/
         beforeSelectRow: beforeSelectRow,
         loadComplete: function () {
             alert("jQuery load!");
@@ -262,21 +287,28 @@ jQuery(function ($) {
             setTimeout(function () {
             }, 0);
         },
-
+        afterInsertRow: function (rowid, rowData, rowelem) {
+            $(this).parent().css('color', 'red');
+            if (rowid % 2 == 0) $(this).jqGrid('setRowData', rowid, rowData, {color: '#ffffff', background: 'black'});
+            else $(this).jqGrid('setRowData', rowid, rowData, {color: '#ffffff', background: '#3f3f3f'});
+        },
         onSelectRow: function (id) {
             var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
             var rowid = $(grid_selector).getGridParam("selrow");
             var rowData = $(grid_selector).getRowData(rowid);
             alert(rowData.MARK_GOODS_NAME);
+            operation_type = "mark_elements";
             //document.getElementById('e-correlation').value = '选中案件编号为 ' + cid + ' 的事件';
             //document.getElementById('ematerial_show_all').value = '此处显示案件编号为 ' + cid + ' 的案件素材';
         },
 
-        autowidth: true, shrinkToFit: false
+        autowidth: false,
+        fixed: true
     });
 });
 
 function mark_thing() {
-    operation_type = 'mark_things';
+    if (operation_type == undefined)
+        operation_type = 'mark_things';
     alert("请选择类型")
 }

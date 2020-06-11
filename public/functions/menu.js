@@ -637,6 +637,7 @@ function get_model(icon_name) {
     var top_name = document.getElementById("top_model_menu").value;
     var sub_name = document.getElementById("sub_model_menu").value;
     thing_gltf = "cesium/Models/model/" + top_name + "/" + sub_name + "/" + icon_name + "/model.gltf";
+    operation_type = undefined;
     console.log(thing_gltf)
 }
 

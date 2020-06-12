@@ -276,7 +276,7 @@ handler.setInputAction(function (movement) {
                 "thing_type": $("#thing_type").val(),
                 "thing_id": $("#things").val(),
                 "gltf_path": thing_gltf,
-                "id":thing_mark_id
+                "id": thing_mark_id
             }, function (data) {
                 console.log(data, status);
                 if (data.status == 1) {
@@ -294,7 +294,7 @@ handler.setInputAction(function (movement) {
                         })
                     );
                     viewer.camera.flyTo({
-                        destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height+200)
+                        destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height + 200)
                     });//初始视角
 
                     update_model_hpr(entity4)

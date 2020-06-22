@@ -641,6 +641,34 @@ function get_model(icon_name) {
     console.log(thing_gltf)
 }
 
+function change_icon_col() {
+    alert("will change" + json[$("#element_type").val()] + "&id=" + $("#elements").val());
+
+    /*var longitude = relevant_info[i].start_lon;
+    var latitude = relevant_info[i].start_lat;
+    var height = relevant_info[i].start_height
+    var icon_path = relevant_info[i].icon_path;
+    var id = relevant_info[i].id;
+    var element_type = relevant_info[i].element_type;
+    var element_id = relevant_info[i].element_id;
+    viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+        billboard: {
+            image: icon_path,
+            // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+            // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+            scale: 0.2,
+            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+            horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+            disableDepthTestDistance: Number.POSITIVE_INFINITY
+        },
+        properties: {
+            type: "added",
+            element_id: element_id,
+            element_type, element_type
+        }
+    });*/
+}
 
 function select_scene(scene_id) {
     document.getElementById("operations").style.display = "";
@@ -676,7 +704,7 @@ function select_scene(scene_id) {
                     element_type, element_type
                 }
             });
-
+            console.log(element_id + "<->" + element_type + "<->" + id);
         }
         if (data.location[0].lon != null && data.location[0].lon != undefined) {
             set_view(data.location[0].lon, data.location[0].lat);

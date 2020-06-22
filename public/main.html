@@ -219,6 +219,7 @@
                                 <select id="top_model_menu" class="case_select"
                                         onchange="get_sub_model_menu(this.value)">
                                     <option value="volvo" hidden>选择模型大类</option>
+                                    <option value="重建">重建</option>
                                     <option value="茶几">茶几</option>
                                     <option value="thing_kitchen_supplies">厨房</option>
                                     <option value="thing_cupboard">橱柜</option>
@@ -1069,6 +1070,7 @@
 
     <div id="menu">
         <button id="show_model_info" type="button" style="width:125px;" onclick="show_model_info()">显示详情</button>
+        <button id="change_icon_col" type="button" style="width:125px;" onclick="change_icon_col()">高亮显示</button>
         <button type="button" style="width:125px;">删除标定</button>
         <button type="button" style="width:125px;">更改位置</button>
     </div>
@@ -1120,9 +1122,11 @@
                                                                                          title="标注"></button>
                         </td>
                         <td>
-                            <button id="show" class="charts" onclick=""><img src="icons/show.png" width="25x"
-                                                                             height="25px" title="显示"
-                                                                             style="margin-left: -20px"></button>
+                            <button id="show" class="charts" onclick="display_selected()"><img src="icons/show.png"
+                                                                                               width="25x" height="25px"
+                                                                                               title="显示"
+                                                                                               style="margin-left: -20px">
+                            </button>
                         </td>
                         <td>
                             <button id="adjust" class="charts" onclick="rightmodelmodify()"><img
@@ -1191,7 +1195,7 @@
                                     title="研判标准"></button>
                         </td>
                         <td>
-                            <button id="g_measure" class="charts" onclick="functions('toolbar_measure')"><img
+                            <button id="g_measure" class="charts" onclick="startMeausre(); functions('toolbar_measure')"><img
                                     src="icons/g_measure.png" width="27px" height="27px" title="地理量测"></button>
                         </td>
                         <td>

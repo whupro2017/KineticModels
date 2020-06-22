@@ -5,8 +5,13 @@ function cleanAll() {
     cleanPickMouseMove();
 }
 
+function startMeausre() {
+    operation_type = "toolbar_measure";
+}
+
 function stopMeasure() {
     cleanAll();
+    operation_type = undefined;
     $(".toolbar_measure").eq(0).hide();
 
 }

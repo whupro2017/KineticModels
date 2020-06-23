@@ -123,8 +123,8 @@ function onMarkElements(longitude, latitude, height) {
         "latitude": latitude,
         "height": height,
         "scene_id": $("#scene_id").val(),
-        "element_type": $("#element_type").val(),
-        "element_id": $("#elements").val(),
+        "element_type": activeObject.element_type,
+        "element_id": activeObject.element_id,
         "icon_path": element_image,
     }, function (data) {
         console.log(data, status);
@@ -143,8 +143,8 @@ function onMarkElements(longitude, latitude, height) {
                 },
                 properties: {
                     type: "added",
-                    element_type: $("#element_type").val(),
-                    element_id: $("#elements").val(),
+                    element_type: activeObject.element_type,
+                    element_id: activeObject.element_id,
                 }
             });
             alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
@@ -339,6 +339,15 @@ function onDrawRoute(longitude, latitude, height, cartesianCoordinates) {
     }
 }
 
+function onAdjustModel(movement) {
+    pick = viewer.scene.pick(movement.position);
+    if (pick != undefined) {
+        pick.primitive.silhouetteColor = Cesium.Color.RED;
+        entity3 = pick.primitive;
+        alert(pick.primitive.toString());
+    }
+}
+
 handler.setInputAction(function (movement) {
         var longitude;
         var latitude;
@@ -377,6 +386,9 @@ handler.setInputAction(function (movement) {
                 break;
             case "locate_model":
                 onLocateModel(longitude, latitude, height);
+                break;
+            case "adjust_model":
+                onAdjustModel(movement);
                 break;
             case "toolbar_measure":
                 break;

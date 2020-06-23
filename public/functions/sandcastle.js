@@ -238,8 +238,9 @@ jQuery(function ($) {
                 var rowData = {
                     MARK_GOODS_NAME: json.MARK_GOODS_NAME,
                     CREATE_TIME: json.CREATE_TIME,
-                    EXTRACT_POSITION: json.EXTRACT_POSITION
+                    MARK_GOODS_ID: json.MARK_GOODS_ID
                 };
+                //EXTRACT_POSITION: json.EXTRACT_POSITION,
                 if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
                 $(grid_selector).jqGrid("addRowData", counter, rowData);
                 counter++;
@@ -254,7 +255,7 @@ jQuery(function ($) {
         mtype: 'POST',
         height: 240,
         colColor: 'white',
-        colNames: ['痕迹名称', '痕迹描述', '提取位置'],
+        colNames: ['痕迹名称', '痕迹描述', '痕迹ID'],
         colModel: [
             {name: 'MARK_GOODS_NAME', index: 'MARK_GOODS_NAME', width: 60, editable: false},//cellclassname: colorFondo},
             {
@@ -268,8 +269,8 @@ jQuery(function ($) {
                 /*rendered: changeColor,
                 formatter: "datetime",
                 formatoptions: {srcformat: "m/d/Y h:i:s", newformat: "m/d/Y h:i:s"}*/
-            },
-            {name: 'EXTRACT_POSITION', index: 'EXTRACT_POSITION', width: 80, editable: false} //cellclassname: colorFondo}
+            }, //cellclassname: colorFondo}
+            {name: 'MARK_GOODS_ID', index: 'MARK_GOODS_ID', width: 80, editable: false}
         ],
         gridview: true,
         viewrecords: true,
@@ -296,7 +297,9 @@ jQuery(function ($) {
             var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
             var rowid = $(grid_selector).getGridParam("selrow");
             var rowData = $(grid_selector).getRowData(rowid);
-            alert(rowData.MARK_GOODS_NAME);
+            activeObject.element_type = 'mark_goods';
+            activeObject.element_id = rowData.MARK_GOODS_ID;
+            alert(rowData.MARK_GOODS_NAME + ":" + rowData.MARK_GOODS_ID + ":" + activeObject.element_type);
             operation_type = "mark_elements";
             //document.getElementById('e-correlation').value = '选中案件编号为 ' + cid + ' 的事件';
             //document.getElementById('ematerial_show_all').value = '此处显示案件编号为 ' + cid + ' 的案件素材';

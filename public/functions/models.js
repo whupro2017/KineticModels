@@ -130,14 +130,78 @@ function killModelClose() {
     $(".killMenuShow").eq(0).hide();
 }
 
+function modelModifyDone() {
+
+}
+
 function modelModifyClose() {
     cleanAll();
     $(".model_modify").eq(0).hide();
 }
 
 function rightmodelmodify() {
+    operation_type = "adjust_model";
     var x = document.getElementById("model_modify")
     if (x.style.display == "none") {
         x.style.cssText = "display:block"
     }
+}
+
+function update_model_hpr(entity) {
+    Cesium.knockout.getObservable(viewModel, 'Enlarge').subscribe(function (Enlarge) {
+        //originModelMadrix = entity.modelMatrix;
+        console.log(entity.modelMatrix.toString());
+        Enlarge = Number(Enlarge);
+        if (isNaN(Enlarge)) {
+            return;
+        }
+        entity.scale = originScale * Math.pow(1.1, Enlarge);
+        console.log(entity.modelMatrix.toString());
+    });
+
+    /*Cesium.knockout.getObservable(viewModel, 'OffsetX').subscribe(function (OffsetX) {
+        OffsetX = Number(OffsetX);
+        if (isNaN(OffsetX)) {
+            return;
+        }
+        var m = originModelMadrix;
+        var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
+        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        console.log(entity.modelMatrix.toString());
+    });*/
+
+    Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
+        RotateX = Number(RotateX);
+        if (isNaN(RotateX)) {
+            return;
+        }
+        var m = originModelMadrix;
+        var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
+        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        console.log(entity.modelMatrix.toString());
+    });
+
+    Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
+        RotateY = Number(RotateY);
+        if (isNaN(RotateY)) {
+            return;
+        }
+        var m = originModelMadrix;
+        var m1 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(RotateY));
+        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        console.log(entity.modelMatrix.toString());
+    });
+
+    Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
+        RotateZ = Number(RotateZ);
+        if (isNaN(RotateZ)) {
+            return;
+        }
+        var m = originModelMadrix;
+        var m1 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(RotateZ));
+        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        console.log(entity.modelMatrix.toString());
+    });//Sandcastle_End
+    //originModelMadrix = entity.modelMatrix;
+    Sandcastle.finishedLoading();
 }

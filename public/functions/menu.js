@@ -5,6 +5,11 @@ window.onclick = function (e) {
     document.querySelector('#menu').style.width = 0;
 }
 
+var activeObject = {
+    "element_type": "undefined",
+    "element_id": "undefined"
+};
+
 var json = {
     "scene_bio_evidence": "bio",
     "scene_elec_evidence": "elec",
@@ -25,7 +30,7 @@ function show_model_info() {
     }
     window
         .open(
-            "http://127.0.0.1:3000/web/index?type=" + json[$("#element_type").val()] + "&id=" + $("#elements").val(),
+            "http://127.0.0.1:3000/web/index?type=" + activeObject.element_type + "&id=" + activeObject.element_id,//json[$("#element_type").val()] + "&id=" + $("#elements").val(),
             "show_element_info",
             "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 }

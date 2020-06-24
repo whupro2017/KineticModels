@@ -208,5 +208,5 @@ $.get("/get_cases", {"value": "get_cases"}, function (data) {
 
 function mark_thing() {
     operation_type = 'mark_things';
-    alert("请选择类型")
+    alert("请选择类型");
 }

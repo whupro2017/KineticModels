@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-class MyRunnable implements Runnable {
+class SingleRunnable implements Runnable {
     int i;
     int maxx;
     int maxy;
@@ -27,7 +27,7 @@ class MyRunnable implements Runnable {
         }
     }
 
-    public MyRunnable(int i, int maxx, int maxy, int maxz, String path) {
+    public SingleRunnable(int i, int maxx, int maxy, int maxz, String path) {
         this.i = i;
         this.maxx = maxx;
         this.maxy = maxy;
@@ -53,7 +53,7 @@ public class Single {
             threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
             threadPoolExecutor.setKeepAliveTime(5, TimeUnit.SECONDS);
         }
-        threadPoolExecutor.submit(new MyRunnable(framenumber, maxx, maxy, maxz, path));
+        threadPoolExecutor.submit(new SingleRunnable(framenumber, maxx, maxy, maxz, path));
     }
 
     public static void createFrame(int frameN, int maxx, int maxy, int maxz, String filepath) throws IOException {

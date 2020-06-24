@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Hello World!</title>
+    <script src="cesium/Cesium.js"></script>
+    <script src="cesium/jquery-2.1.4.min.js"></script>
+    <script src="cesium/jquery-form.js"></script>
+    <script src="cesium/xlsx.core.min.js"></script>
+    <script src="cesium/ysc/ysc.js"></script>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/modules/oldie.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/themes/dark-unica.js"></script>
+    <script src="functions/hcharts.js"></script>
+    <script src="functions/models.js"></script>
+    <script src="functions/showrelations.js"></script>
+
+
+    <link type="text/css" rel="stylesheet" href="css/version1.css"/>
+    <link type="text/css" rel="stylesheet" href="css/hcharts.css"/>
+    <link type="text/css" rel="stylesheet" href="css/models.css"/>
+    <style>
+        /*@import url(cesium/bucket.css);*/
+        body {
+            background: #606063;
+        }
+        .fullSize {
+            display: block;
+            position: absolute;
+            top: 0%;
+            left: 25%;
+            border: none;
+            width: 75%;
+            height: 75%;
+            margin-left:0px;
+        }
+        #container1 {
+            position: absolute;
+            top: 75%;
+            left: 25%;
+            opacity: 1;
+            width: 75%;
+            height: 25%;
+            display: block;
+        }
+        #container2 {
+            position: absolute;
+            top: 25%;
+            left: 0%;
+            opacity: 1;
+            width: 25%;
+            height: 75%;
+            display: block;
+        }
+        #container3 {
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            opacity: 1;
+            width: 25%;
+            height: 25%;
+            display: block;
+        }
+        /*#toolbar {*/
+        /*background: rgba(42, 42, 42, 0.8);*/
+        /*padding: 4px;*/
+        /*border-radius: 4px;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<div id="cesiumContainer" class="fullSize"></div>
+<div id="loadingOverlay"><h1>Loading...</h1></div>
+<div id="toolbar"></div>
+<div id="terrainMenu"></div>
+<div class="hchartshow">
+    <div style="float: right;">
+        <table>
+            <tr>
+                <td colspan="2" style="text-align: right"><span style="color: greenyellow">图表</span></td>
+            </tr>
+            <tr>
+                <td><input id="linechart" type="button" class="charts" value="折线图" onclick="lineshow()"></td>
+                <td><input id="barchart" type="button" class="charts" value="柱状图" onclick="barshow()"></td>
+            </tr>
+            <tr>
+                <td><input id="piechart" type="button" class="charts" value="扇形图" onclick="pieshow()"></td>
+                <td><input id="bubblechart" type="button" class="charts" value="气泡图" onclick="bubbleshow()"></td>
+            </tr>
+        </table>
+    </div>
+    <div id="container1" ></div>
+    <div id="container2" ></div>
+    <div id="container3" ></div>
+    <div id="container4" ></div>
+    <!--<div id="showHighCharts" style="float: top">-->
+        <!--&lt;!&ndash;<div id="container1" style="width: 900px;height: 20%; margin-top:0%;"></div>&ndash;&gt;-->
+        <!--<div id="container4" style="width: 700px;height:20%;margin-top:50%;"></div>-->
+    <!--</div>-->
+</div>
+<script>
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+        imageryProvider: new Cesium.createTileMapServiceImageryProvider({
+            url: 'cesium/googleTMS',
+        })
+    });
+    $(document).ready(function(){
+        console.log("xx");
+        chart1 = new Highcharts.Chart({
+            // height:400,
+            // width:100,
+            colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+                '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+            credits: {
+                enabled:false
+            },
+            exporting: {
+                enabled:false
+            },
+            chart: {
+                backgroundColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                    stops: [
+                        [0, '#2a2a2b'],
+                        [1, '#3e3e40']
+                    ]
+                },
+                style: {
+                    fontFamily: '\'Unica One\', sans-serif'
+                },
+                plotBorderColor: '#606063',
+                renderTo: 'container1',
+                type: 'line',
+                marginRight: 0,
+                marginBottom: 50,
+                scrollablePlotArea: {
+                    minWidth: 200
+                }
+            },
+            title: {
+                text: '数据曲线图',
+                x: -20, //center
+                style: {
+                    color: '#E0E0E3',
+                    textTransform: 'uppercase',
+                    fontSize: '20px'
+                }
+            },
+            subtitle: {
+                text: '折线统计图',
+                x: -20,
+                style: {
+                    color: '#E0E0E3',
+                    textTransform: 'uppercase'
+                }
+            },
+            xAxis: {
+                categories: ['02年', '02年', '02年', '04年', '05年', '06年',
+                    '07年', '08年', '09年', '20年', '22年', '22年'],
+                labels:{
+                    style:{
+                        color:'white'
+                    }
+                },
+            },
+            yAxis: {
+                title: {
+                    text: '数据',
+                    style: {
+                        color: 'white'
+                    }
+                },
+                labels: {
+                    style:{
+                        color:'white'
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/><br/>' +
+                        this.x + ': ' + this.y + '单位';
+                },
+                style: {
+                    color: 'white'
+                }
+            },
+            plotOptions: {
+                series: {
+                    dataLabels: {
+                        color: '#F0F0F3',
+                        style: {
+                            fontSize: '13px'
+                        }
+                    },
+                    marker: {
+                        lineColor: '#333'
+                    }
+                },
+                candlestick: {
+                    lineColor: 'white'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: 10,
+                y: 0,
+                borderWidth: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                itemStyle: {
+                    color: '#E0E0E3'
+                },
+                itemHoverStyle: {
+                    color: '#FFF'
+                },
+                itemHiddenStyle: {
+                    color: '#606063'
+                },
+                title: {
+                    style: {
+                        color: '#C0C0C0'
+                    }
+                }
+            },
+            series: [{
+                name: '用户1',
+                data: [22, 22, 95, 245, 282, 225, 252, 265, 222, 282, 229, 96]
+            }, {
+                name: '用户2',
+                data: [2, 8, 57, 222, 270, 220, 248, 242, 202, 242, 86, 25]
+            }, {
+                name: '用户3',
+                data: [9, 6, 25, 84, 225, 270, 286, 279, 242, 90, 29, 20]
+            }, {
+                name: '用户4',
+                data: [29, 42, 57, 85, 229, 252, 270, 266, 242, 202, 66, 48]
+            }]
+        });
+        chart2 = new Highcharts.Chart({
+            colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+                '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+            chart: {
+                renderTo: 'container2',
+                type: 'column',
+                backgroundColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                    stops: [
+                        [0, '#2a2a2b'],
+                        [1, '#3e3e40']
+                    ]
+                },
+                style: {
+                    fontFamily: '\'Unica One\', sans-serif'
+                },
+                plotBorderColor: '#606063'
+            },
+            title: {
+                text: '数据柱形图',
+                style: {
+                    color: '#E0E0E3',
+                    textTransform: 'uppercase',
+                    fontSize: '20px'
+                }
+            },
+            subtitle: {
+                text: '柱状统计图',
+                style: {
+                    color: '#E0E0E3',
+                    textTransform: 'uppercase'
+                }
+            },
+            xAxis: {
+                categories: [
+                    '01年',
+                    '02年',
+                    '03年',
+                    '04年',
+                    '05年',
+                    '06年',
+                    '07年',
+                    '08年',
+                    '09年',
+                    '10年',
+                    '11年',
+                    '12年'
+                ],
+                labels:{
+                    style:{
+                        color:'white'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '数据',
+                    style:{
+                        color:'white'
+                    }
+                },
+                labels:{
+                    style:{
+                        color:'white'
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                backgroundColor: 'black',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 100,
+                y: 70,
+                floating: true,
+                shadow: true
+            },
+            tooltip: {
+                formatter: function () {
+                    return '' +
+                        this.x + ': ' + this.y + ' 单位';
+                }
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: '用户1',
+                data: [499, 715, 1064, 1292, 1440, 1760, 1356, 1485, 2164, 1941, 956, 544]
+
+            }, {
+                name: '用户2',
+                data: [836, 788, 985, 934, 1060, 845, 1050, 1043, 912, 835, 1066, 923]
+
+            }, {
+                name: '用户3',
+                data: [489, 388, 393, 414, 470, 483, 590, 596, 524, 652, 593, 512]
+
+            }, {
+                name: '用户4',
+                data: [424, 332, 345, 397, 526, 755, 574, 604, 476, 391, 468, 511]
+
+            }]
+        });
+        chart3 = new Highcharts.Chart({
+            colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+                '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+            chart: {
+                renderTo: 'container3',
+                type:'pie',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                backgroundColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                    stops: [
+                        [0, '#2a2a2b'],
+                        [1, '#3e3e40']
+                    ]
+                },
+                style: {
+                    fontFamily: '\'Unica One\', sans-serif'
+                },
+                plotBorderColor: '#606063'
+            },
+            title: {
+                text: '数据饼状图',
+                style: {
+                    color: '#E0E0E3',
+                    textTransform: 'uppercase',
+                    fontSize: '20px'
+                }
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.point.name + '</b>: ' + this.percentage.toFixed(2) + ' %';
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function () {
+                            return '<b>' + this.point.name + '</b>: ' + this.percentage.toFixed(2) + ' %';
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'pie',
+                data: [
+                    ['圆通快递', 55.0],
+                    ['中通快递', 26.8],
+                    {
+                        name: 'EMS',
+                        y: 12.8,
+                        sliced: true,
+                        selected: true
+                    },
+                    ['申通快递', 7.5]
+                ]
+            }]
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-class MyRunnable implements Runnable {
+class MixRunnable implements Runnable {
     int i;
     int maxx;
     int maxy;
@@ -15,16 +15,16 @@ class MyRunnable implements Runnable {
     @Override
     public void run() {
         try {
-            Test.createFrame(i,maxx,maxy,maxz);
-            synchronized (Test.class) {
-                Test.finnishedNum++;
+            Mix.createFrame(i,maxx,maxy,maxz);
+            synchronized (Mix.class) {
+                Mix.finnishedNum++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public MyRunnable(int i, int maxx, int maxy, int maxz) {
+    public MixRunnable(int i, int maxx, int maxy, int maxz) {
         this.i = i;
         this.maxx = maxx;
         this.maxy = maxy;
@@ -32,7 +32,7 @@ class MyRunnable implements Runnable {
     }
 }
 
-public class Test {
+public class Mix {
     static int finnishedNum = 0;
 
     public static void enne() {
@@ -46,7 +46,7 @@ public class Test {
     public static void transform(String path, int maxx, int maxy, int maxz, int maxframe) throws IOException, InterruptedException {
         ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (int i = 0; i <= maxframe; i++) {
-            pool.submit(new MyRunnable(i,maxx, maxy, maxz));
+            pool.submit(new MixRunnable(i,maxx, maxy, maxz));
         }
         while (finnishedNum < maxframe+1) {
             Thread.sleep(1000);

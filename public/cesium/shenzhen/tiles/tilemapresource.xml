@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<tilemap tilemapservice="http://www.osgeo.org/services/tilemapservice.xml" version="1.0.0">
+    <title>深圳市</title>
+    <abstract></abstract>
+    <srs>EPSG:4326</srs>
+    <vsrs></vsrs>
+    <boundingbox maxx="114.647105257102" maxy="22.8544399829189" minx="113.671859078634" miny="22.2368982552503"/>
+    <Origin x="-180" y="-90"/>
+    <tileformat extension="png" height="256" mime-type="image/png" width="256"/>
+    <tilesets profile="global-geodetic">
+        <tileset href="" order="1" units-per-pixel="0.3515625"/>
+        <tileset href="" order="2" units-per-pixel="0.17578125"/>
+        <tileset href="" order="3" units-per-pixel="0.087890625"/>
+        <tileset href="" order="4" units-per-pixel="0.0439453125"/>
+        <tileset href="" order="5" units-per-pixel="0.02197265625"/>
+        <tileset href="" order="6" units-per-pixel="0.010986328125"/>
+        <tileset href="" order="7" units-per-pixel="0.0054931640625"/>
+        <tileset href="" order="8" units-per-pixel="0.00274658203125"/>
+        <tileset href="" order="9" units-per-pixel="0.001373291015625"/>
+        <tileset href="" order="10" units-per-pixel="0.0006866455078125"/>
+        <tileset href="" order="11" units-per-pixel="0.00034332275390625"/>
+        <tileset href="" order="12" units-per-pixel="0.000171661376953125"/>
+        <tileset href="" order="13" units-per-pixel="8.58306884765625E-05"/>
+        <tileset href="" order="14" units-per-pixel="4.29153442382813E-05"/>
+    </tilesets>
+</tilemap>

@@ -76,6 +76,51 @@ $(function () {
         }
     })
 
+    $("#upload_files").change(function Start_upload() {
+        console.log("选择上传文件夹");
+        var ss = this.files; //获取当前选择的文件对象
+        total_num=ss.length;
+        done=0;
+        finished=0;
+        for (var m = 0; m < total_num; m++) { //循环添加进度条
+            sendfile(ss[m]);
+        }
+        function sendfile(target_file) {
+            var formData = new FormData();
+            formData.append('files', target_file); //将该file对象添加到formData对象中
+            $.ajax({
+                url: 'upload_things',
+                type: 'POST',
+                cache: false,
+                data: {},//需要什么参数，自己配置
+                data: formData,//文件以formData形式传入
+                processData: false,
+                contentType: false,
+                xhr: function () {   //监听用于上传显示进度
+                    var xhr = $.ajaxSettings.xhr();
+                    if (onprogress && xhr.upload) {
+                        xhr.upload.addEventListener("progress", onprogress, false);
+                        return xhr;
+                    }
+                },
+                success: function (data) {
+                    if(data.status==1){
+                        finished+=1;
+                    }else{
+                        console.log(data.msg);
+                    }
+                    done=done+1;
+                    if(done==total_num){
+                        alert("上传"+finished+"/"+total_num+"完成");
+                    }
+                },
+                error: function (xhr) {
+                    alert("上传出错");
+                }
+            });
+        }
+    })
+
     function onprogress(evt) {
         var loaded = evt.loaded;   //已经上传大小情况
         var tot = evt.total;   //附件总大小
@@ -113,7 +158,6 @@ function importFile(obj) {//导入
     }
     reader.readAsBinaryString(f);
 }
-
 
 
 function importInquestBaseInfo(obj) {//勘验基础信息
@@ -175,6 +219,7 @@ function importFieldCommander(obj) {//现场指挥人员
     }
     reader.readAsBinaryString(f);
 }
+
 function importProtectMeasure(obj) {//保护措施
     console.log("已选择文件");
     if (!obj.files) {
@@ -202,6 +247,7 @@ function importProtectMeasure(obj) {//保护措施
     }
     reader.readAsBinaryString(f);
 }
+
 function importSiteChanges(obj) {//现场变动情况
     console.log("已选择文件");
     if (!obj.files) {
@@ -229,6 +275,7 @@ function importSiteChanges(obj) {//现场变动情况
     }
     reader.readAsBinaryString(f);
 }
+
 function importMarkGoodsUnit(obj) {//单位
     console.log("已选择文件");
     if (!obj.files) {
@@ -256,6 +303,7 @@ function importMarkGoodsUnit(obj) {//单位
     }
     reader.readAsBinaryString(f);
 }
+
 function importWeather(obj) {//天气情况
     console.log("已选择文件");
     if (!obj.files) {
@@ -283,6 +331,7 @@ function importWeather(obj) {//天气情况
     }
     reader.readAsBinaryString(f);
 }
+
 function importFullPhoto(obj) {//全貌照片
     console.log("已选择文件");
     if (!obj.files) {
@@ -310,6 +359,7 @@ function importFullPhoto(obj) {//全貌照片
     }
     reader.readAsBinaryString(f);
 }
+
 function importMarkGoods(obj) {//痕迹物品
     console.log("已选择文件");
     if (!obj.files) {
@@ -337,6 +387,7 @@ function importMarkGoods(obj) {//痕迹物品
     }
     reader.readAsBinaryString(f);
 }
+
 function importGoodsType(obj) {//物品类型
     console.log("已选择文件");
     if (!obj.files) {
@@ -364,6 +415,7 @@ function importGoodsType(obj) {//物品类型
     }
     reader.readAsBinaryString(f);
 }
+
 function importExtractMethod(obj) {//提取方法
     console.log("已选择文件");
     if (!obj.files) {
@@ -391,6 +443,7 @@ function importExtractMethod(obj) {//提取方法
     }
     reader.readAsBinaryString(f);
 }
+
 function importCorpseInfo(obj) {//尸体信息
     console.log("已选择文件");
     if (!obj.files) {
@@ -418,6 +471,7 @@ function importCorpseInfo(obj) {//尸体信息
     }
     reader.readAsBinaryString(f);
 }
+
 function importCorpsePhoto(obj) {//尸体照片
     console.log("已选择文件");
     if (!obj.files) {
@@ -445,6 +499,7 @@ function importCorpsePhoto(obj) {//尸体照片
     }
     reader.readAsBinaryString(f);
 }
+
 function importPositionPhoto(obj) {//方位照片
     console.log("已选择文件");
     if (!obj.files) {
@@ -472,6 +527,7 @@ function importPositionPhoto(obj) {//方位照片
     }
     reader.readAsBinaryString(f);
 }
+
 function importCaseConclusionInfo(obj) {//案事件全貌
     console.log("已选择文件");
     if (!obj.files) {
@@ -499,6 +555,7 @@ function importCaseConclusionInfo(obj) {//案事件全貌
     }
     reader.readAsBinaryString(f);
 }
+
 function importEleInfo(obj) {//电子信息
     console.log("已选择文件");
     if (!obj.files) {
@@ -526,6 +583,7 @@ function importEleInfo(obj) {//电子信息
     }
     reader.readAsBinaryString(f);
 }
+
 function importInvoledGoodsInfo(obj) {//涉案物品信息
     console.log("已选择文件");
     if (!obj.files) {
@@ -626,7 +684,7 @@ $(function () {
 // })
 // }
 
-function importNewExcel(obj){
+function importNewExcel(obj) {
     importInquestBaseInfo(obj);
     importFieldCommander(obj);
     importSiteChanges(obj);

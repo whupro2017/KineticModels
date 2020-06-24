@@ -418,7 +418,10 @@ jQuery(function ($) {
     });
 });
 
-
+jQuery(function ($) {
+    var grid_selector = "#table_handprint";
+    var jq = jQuery.noConflict();
+    var begin_date;
     var end_date;
     var key_word;
 

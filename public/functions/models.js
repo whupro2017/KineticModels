@@ -1,28 +1,28 @@
 function fireModelConfirm() {
-    var type="";
+    var type = "";
     var fire_output = document.getElementById("fire_output").checked;
     var smoke_output = document.getElementById("smoke_output").checked;
     var model_output = document.getElementById("model_output").checked;
     var temperature_output = document.getElementById("temperature_output").checked;
-    if(fire_output==true){
-        type=type+"1";
-    }else{
-        type=type+"0";
+    if (fire_output == true) {
+        type = type + "1";
+    } else {
+        type = type + "0";
     }
-    if(smoke_output==true){
-        type=type+"1";
-    }else{
-        type=type+"0";
+    if (smoke_output == true) {
+        type = type + "1";
+    } else {
+        type = type + "0";
     }
-    if(model_output==true){
-        type=type+"1";
-    }else{
-        type=type+"0";
+    if (model_output == true) {
+        type = type + "1";
+    } else {
+        type = type + "0";
     }
-    if(temperature_output==true){
-        type=type+"1";
-    }else{
-        type=type+"0";
+    if (temperature_output == true) {
+        type = type + "1";
+    } else {
+        type = type + "0";
     }
     console.log(type);
     var position = document.getElementById("position").value;
@@ -65,6 +65,7 @@ function collisionModelClose() {
     cleanAll();
     $(".collisionMenuShow").eq(0).hide();
 }
+
 function explodeModelConfirm() {
     clearFire();
     clearCollision();
@@ -84,6 +85,10 @@ function explodeModelConfirm() {
 function explodeModelClose() {
     cleanAll();
     $(".explodeMenuShow").eq(0).hide();
+}
+
+function display_selected() {
+    operation_type = "display_selected";
 }
 
 function stru_changed() {
@@ -115,22 +120,88 @@ function stru_changed() {
             break;
     }
 }
+
 function killModelConfirm() {
 
 }
+
 function killModelClose() {
     cleanAll();
     $(".killMenuShow").eq(0).hide();
 }
+
+function modelModifyDone() {
+
+}
+
 function modelModifyClose() {
     cleanAll();
     $(".model_modify").eq(0).hide();
 }
 
 function rightmodelmodify() {
+    operation_type = "adjust_model";
     var x = document.getElementById("model_modify")
-    if(x.style.display == "none"){
+    if (x.style.display == "none") {
         x.style.cssText = "display:block"
-
     }
+}
+
+function update_model_hpr(entity) {
+    Cesium.knockout.getObservable(viewModel, 'Enlarge').subscribe(function (Enlarge) {
+        //originModelMadrix = entity.modelMatrix;
+        console.log(entity.modelMatrix.toString());
+        Enlarge = Number(Enlarge);
+        if (isNaN(Enlarge)) {
+            return;
+        }
+        entity.scale = originScale * Math.pow(1.1, Enlarge);
+        console.log(entity.modelMatrix.toString());
+    });
+
+    /*Cesium.knockout.getObservable(viewModel, 'OffsetX').subscribe(function (OffsetX) {
+        OffsetX = Number(OffsetX);
+        if (isNaN(OffsetX)) {
+            return;
+        }
+        var m = originModelMadrix;
+        var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
+        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        console.log(entity.modelMatrix.toString());
+    });*/
+
+    Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
+        RotateX = Number(RotateX);
+        if (isNaN(RotateX)) {
+            return;
+        }
+        var m = originModelMadrix;
+        var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
+        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        console.log(entity.modelMatrix.toString());
+    });
+
+    Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
+        RotateY = Number(RotateY);
+        if (isNaN(RotateY)) {
+            return;
+        }
+        var m = originModelMadrix;
+        var m1 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(RotateY));
+        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        console.log(entity.modelMatrix.toString());
+    });
+
+    Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
+        RotateZ = Number(RotateZ);
+        if (isNaN(RotateZ)) {
+            return;
+        }
+        var m = originModelMadrix;
+        var m1 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(RotateZ));
+        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        console.log(entity.modelMatrix.toString());
+    });//Sandcastle_End
+    //originModelMadrix = entity.modelMatrix;
+    Sandcastle.finishedLoading();
 }

@@ -206,7 +206,112 @@ $.get("/get_cases", {"value": "get_cases"}, function (data) {
     });
 })
 
+jQuery(function ($) {
+    var grid_selector = "#mark_goods_table";
+
+    //var jq = jQuery.noConflict();
+    function beforeSelectRow() {
+        $(grid_selector).jqGrid('resetSelection');
+        return (true);
+    }
+
+    function changeColor(header) {
+        header.css('font-weight', 'bold');
+        header.css('color', '#ffffff');
+    };
+
+    $('#CaseInqueryButton').on('click', function () {
+        // Here releases a bug with uncleared header.
+        $(grid_selector).jqGrid("clearGridData", true).trigger("reloadGrid");
+        var gridData = $(grid_selector).jqGrid("getRowData");
+        for (var i = 0; i < gridData.length; i++) {
+            alert("resting: " + gridData[i].MARK_GOODS_NAME);
+            $(grid_selector).jqGrid("delRowData", i);
+        }
+        $.get("/get_mark_goods", {}, function (data) {
+            if (data.msg != undefined) {
+                alert("ajax" + data.msg);
+                return;
+            }
+            var counter = 0;
+            data.forEach(function (json) {
+                var rowData = {
+                    MARK_GOODS_NAME: json.MARK_GOODS_NAME,
+                    CREATE_TIME: json.CREATE_TIME,
+                    MARK_GOODS_ID: json.MARK_GOODS_ID
+                };
+                //EXTRACT_POSITION: json.EXTRACT_POSITION,
+                if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+                $(grid_selector).jqGrid("addRowData", counter, rowData);
+                counter++;
+            });
+            $(grid_selector).trigger('reloadGrid');
+        })
+    });
+
+    jQuery(grid_selector).jqGrid({
+        //direction: "rtl",
+        datatype: "json",
+        mtype: 'POST',
+        height: 240,
+        colColor: 'white',
+        colNames: ['痕迹名称', '痕迹描述', '痕迹ID'],
+        colModel: [
+            {name: 'MARK_GOODS_NAME', index: 'MARK_GOODS_NAME', width: 60, editable: false},//cellclassname: colorFondo},
+            {
+                name: 'CREATE_TIME',
+                index: 'CREATE_TIME',
+                sortable: true,
+                sorttype: "string",
+                width: 120,
+                editable: false
+                //cellclassname: colorFondo
+                /*rendered: changeColor,
+                formatter: "datetime",
+                formatoptions: {srcformat: "m/d/Y h:i:s", newformat: "m/d/Y h:i:s"}*/
+            }, //cellclassname: colorFondo}
+            {name: 'MARK_GOODS_ID', index: 'MARK_GOODS_ID', width: 80, editable: false}
+        ],
+        gridview: true,
+        viewrecords: true,
+        toppager: false,
+        multiselect: true,
+        //multikey: "ctrlKey",
+        multiboxonly: true,
+        /*gridComplete: function () {
+            $(grid_selector).addClass('jqgrid-header');
+        },*/
+        beforeSelectRow: beforeSelectRow,
+        loadComplete: function () {
+            alert("jQuery load!");
+            var table = this;
+            setTimeout(function () {
+            }, 0);
+        },
+        afterInsertRow: function (rowid, rowData, rowelem) {
+            $(this).parent().css('color', 'red');
+            if (rowid % 2 == 0) $(this).jqGrid('setRowData', rowid, rowData, {color: '#ffffff', background: 'black'});
+            else $(this).jqGrid('setRowData', rowid, rowData, {color: '#ffffff', background: '#3f3f3f'});
+        },
+        onSelectRow: function (id) {
+            var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+            var rowid = $(grid_selector).getGridParam("selrow");
+            var rowData = $(grid_selector).getRowData(rowid);
+            activeObject.element_type = 'mark_goods';
+            activeObject.element_id = rowData.MARK_GOODS_ID;
+            alert(rowData.MARK_GOODS_NAME + ":" + rowData.MARK_GOODS_ID + ":" + activeObject.element_type);
+            operation_type = "mark_elements";
+            //document.getElementById('e-correlation').value = '选中案件编号为 ' + cid + ' 的事件';
+            //document.getElementById('ematerial_show_all').value = '此处显示案件编号为 ' + cid + ' 的案件素材';
+        },
+
+        autowidth: false,
+        fixed: true
+    });
+});
+
 function mark_thing() {
+    // if (operation_type == undefined)
     operation_type = 'mark_things';
-    alert("请选择类型");
+    alert("请选择类型")
 }

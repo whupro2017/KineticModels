@@ -72,7 +72,282 @@ var a = 0;
 var b = 0;
 var time = "2018-07-19T15:18:00Z";
 var endtime;
+
 //设置鼠标左键点击事件
+function onMarkElements(longitude, latitude, height) {
+    // if ($("#elements").val() == "volvo") {
+    //     alert("请先选择待绑定要素");
+    // } else {
+    //     console.log("选择待绑定要素:" + $("#elements").val());
+    //     console.log(height);
+    //     $.get("/element_location", {
+    //         "longitude": longitude,
+    //         "latitude": latitude,
+    //         "height": height,
+    //         "scene_id": $("#scene_id").val(),
+    //         "element_type": $("#element_type").val(),
+    //         "element_id": $("#elements").val(),
+    //         "icon_path": element_image,
+    //     }, function (data) {
+    //         console.log(data, status);
+    //         if (data.status == 1) {
+    //             viewer.entities.add({
+    //                 position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+    //                 billboard: {
+    //                     image: element_image,
+    //                     // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+    //                     // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+    //                     scale: 0.2,
+    //                     color: mark_color,
+    //                     verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+    //                     horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+    //                     disableDepthTestDistance: Number.POSITIVE_INFINITY
+    //                 },
+    //                 properties: {
+    //                     type: "added",
+    //                     element_type: $("#element_type").val(),
+    //                     element_id: $("#elements").val(),
+    //                 }
+    //             });
+    //             alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
+    //             operation_type == null;
+    //         } else {
+    //             alert("存入数据库出错，保存要素位置失败");
+    //         }
+    //     })
+    // }
+    console.log("选择待绑定要素:" + $("#elements").val());
+    console.log(height);
+    $.get("/element_location", {
+        "longitude": longitude,
+        "latitude": latitude,
+        "height": height,
+        "scene_id": $("#scene_id").val(),
+        "element_type": activeObject.element_type,
+        "element_id": activeObject.element_id,
+        "icon_path": element_image,
+    }, function (data) {
+        console.log(data, status);
+        if (data.status == 1) {
+            viewer.entities.add({
+                position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+                billboard: {
+                    image: element_image,
+                    // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+                    // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+                    scale: 0.2,
+                    color: mark_color,
+                    verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                    horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+                    disableDepthTestDistance: Number.POSITIVE_INFINITY
+                },
+                properties: {
+                    type: "added",
+                    element_type: activeObject.element_type,
+                    element_id: activeObject.element_id,
+                }
+            });
+            alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
+            operation_type == null;
+        } else {
+            alert("存入数据库出错，保存要素位置失败");
+        }
+    })
+}
+
+function onMarkThings(longitude, latitude, height, thing_mark_id) {
+    // if ($("#things").val() == "volvo") {
+    //     alert("请先选择待绑定物品");
+    // } else {
+    //     console.log("选择待绑定物品子类:" + $("#things").val());
+    //     console.log(height);
+    //     $.get("/thing_location", {//to be done
+    //         "longitude": longitude,
+    //         "latitude": latitude,
+    //         "height": height,
+    //         // "heading": heading,
+    //         // "pitch":pitch,
+    //         // "roll":roll,
+    //         "scene_id": $("#scene_id").val(),
+    //         "thing_type": $("#thing_type").val(),
+    //         "thing_id": $("#things").val(),
+    //         "gltf_path": thing_gltf,
+    //         "id":thing_mark_id
+    //     }, function (data) {
+    //         console.log(data, status);
+    //         if (data.status == 1) {
+    //
+    //             var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
+    //                 Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
+    //             );
+    //             console.log(thing_gltf)
+    //             var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
+    //                     url: thing_gltf,
+    //                     modelMatrix: modelMatrix,
+    //                     // minimumPixelSize : 512,
+    //                     scale: 10
+    //                     // maximumScale : 200000
+    //                 })
+    //             );
+    //             viewer.camera.flyTo({
+    //                 destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height+200)
+    //             });//初始视角
+    //
+    //             update_model_hpr(entity4)
+    //
+    //             // var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
+    //             // var hpRoll = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+    //             // var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpRoll);
+    //             //
+    //             // var entity2 =  viewer.entities.add({
+    //             //     //id: thing_mark_id,
+    //             //     position: position,
+    //             //     orientation: orientation,
+    //             //     model: {
+    //             //         uri: thing_gltf,
+    //             //         //modelMatrix:modelMatrix,
+    //             //         //minimumPixelSize: 100,
+    //             //         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+    //             //     },
+    //             //     scale: 1000.0,
+    //             //     show: true
+    //             // });
+    //             // update_model_hpr(entity2)
+    //
+    //             alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
+    //             operation_type == null;
+    //         } else {
+    //             alert("存入数据库出错，保存要素位置失败");
+    //         }
+    //     })
+    // }
+    $.get("/thing_location", {//to be done
+        "longitude": longitude,
+        "latitude": latitude,
+        "height": height,
+        // "heading": heading,
+        // "pitch":pitch,
+        // "roll":roll,
+        "scene_id": $("#scene_id").val(),
+        "thing_type": $("#thing_type").val(),
+        "thing_id": $("#things").val(),
+        "gltf_path": thing_gltf,
+        "id": thing_mark_id
+    }, function (data) {
+        console.log(data, status);
+        if (data.status == 1) {
+
+            var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
+                Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
+            );
+            console.log(thing_gltf)
+            var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
+                    url: thing_gltf,
+                    modelMatrix: modelMatrix,
+                    // minimumPixelSize : 512,
+                    scale: 10
+                    // maximumScale : 200000
+                })
+            );
+            viewer.camera.flyTo({
+                destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height + 200)
+            });//初始视角
+
+            update_model_hpr(entity4)
+
+            // var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
+            // var hpRoll = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+            // var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpRoll);
+            //
+            // var entity2 =  viewer.entities.add({
+            //     //id: thing_mark_id,
+            //     position: position,
+            //     orientation: orientation,
+            //     model: {
+            //         uri: thing_gltf,
+            //         //modelMatrix:modelMatrix,
+            //         //minimumPixelSize: 100,
+            //         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+            //     },
+            //     scale: 1000.0,
+            //     show: true
+            // });
+            // update_model_hpr(entity2)
+
+            alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
+            operation_type == null;
+        } else {
+            alert("存入数据库出错，保存要素位置失败");
+        }
+    })
+}
+
+function onLocateModel(longitude, latitude, height) {
+    var url = "Files/" + $("#models").val();
+    var name = $("#models").find("option:selected").text();
+    alert("标定模型位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height + ", 模型：" + name);
+    var x = viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+        model: {
+            uri: url,
+            // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+            scale: 0.1,
+        },
+        scale: .0,
+        minimumPixelSize: 100,
+        properties: {
+            type: "added",
+        }
+    });
+    operation_type = null;
+    $.get("/model_location", {
+        "longitude": longitude,
+        "latitude": latitude,
+        "height": height,
+        "scene_id": $("#scene_id").val(),
+        "model_name": name
+    }, function (data) {
+        console.log("更改模型：" + name + "位置");
+    })
+}
+
+function onObjectPicking(longitude, latitude, height) {
+    alert("需要指定当前操作类型，F10显示操作菜单后选取其中任意一个操作！");
+}
+
+function onDrawRoute(longitude, latitude, height, cartesianCoordinates) {
+    // var ellipsoid = viewer.scene.globe.ellipsoid;
+    // var cartographic = Cesium.Cartographic.fromDegrees(longitude, latitude, height);
+    // var cartesian3 = ellipsoid.cartographicToCartesian(cartographic);
+    if (cartesianCoordinates == undefined) {
+        alert("Draw route without cartesianCoordinates");
+        return;
+    }
+    if (positions.length == 0) {
+        positions.push(cartesianCoordinates.clone());
+    }
+    positions.push(cartesianCoordinates);
+    var date = new Date(2019, 2, 1, 15, b, a);
+    time = timeFormat(date);
+    endtime = time;
+    dyn_czml[1].position.cartographicDegrees.push(time, longitude, latitude, height);
+    if (a == 59) {
+        a = 0;
+        b += 1;
+    } else {
+        a += 2;
+    }
+}
+
+function onAdjustModel(movement) {
+    pick = viewer.scene.pick(movement.position);
+    if (pick != undefined) {
+        pick.primitive.silhouetteColor = Cesium.Color.RED;
+        entity3 = pick.primitive;
+        alert(pick.primitive.toString());
+    }
+}
+
 handler.setInputAction(function (movement) {
         var longitude;
         var latitude;
@@ -98,261 +373,29 @@ handler.setInputAction(function (movement) {
             latitude = Cesium.Math.toDegrees(cartoCoordinates.latitude);
             height = cartoCoordinates.height;
             console.log("经度" + longitude + "纬度" + latitude + '高度：:' + height);
-            if (operation_type == "drawRoute") {
-                // var ellipsoid = viewer.scene.globe.ellipsoid;
-                // var cartographic = Cesium.Cartographic.fromDegrees(longitude, latitude, height);
-                // var cartesian3 = ellipsoid.cartographicToCartesian(cartographic);
-                if (positions.length == 0) {
-                    positions.push(cartesianCoordinates.clone());
-                }
-                positions.push(cartesianCoordinates);
-                var date = new Date(2019, 2, 1, 15, b, a);
-                time = timeFormat(date);
-                endtime = time;
-                dyn_czml[1].position.cartographicDegrees.push(time, longitude, latitude, height);
-                if (a == 59) {
-                    a = 0;
-                    b += 1;
-                } else {
-                    a += 2;
-                }
-            }
         }
-        if (operation_type == "mark_elements") {
-            // if ($("#elements").val() == "volvo") {
-            //     alert("请先选择待绑定要素");
-            // } else {
-            //     console.log("选择待绑定要素:" + $("#elements").val());
-            //     console.log(height);
-            //     $.get("/element_location", {
-            //         "longitude": longitude,
-            //         "latitude": latitude,
-            //         "height": height,
-            //         "scene_id": $("#scene_id").val(),
-            //         "element_type": $("#element_type").val(),
-            //         "element_id": $("#elements").val(),
-            //         "icon_path": element_image,
-            //     }, function (data) {
-            //         console.log(data, status);
-            //         if (data.status == 1) {
-            //             viewer.entities.add({
-            //                 position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
-            //                 billboard: {
-            //                     image: element_image,
-            //                     // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
-            //                     // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-            //                     scale: 0.2,
-            //                     color: mark_color,
-            //                     verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-            //                     horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
-            //                     disableDepthTestDistance: Number.POSITIVE_INFINITY
-            //                 },
-            //                 properties: {
-            //                     type: "added",
-            //                     element_type: $("#element_type").val(),
-            //                     element_id: $("#elements").val(),
-            //                 }
-            //             });
-            //             alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
-            //             operation_type == null;
-            //         } else {
-            //             alert("存入数据库出错，保存要素位置失败");
-            //         }
-            //     })
-            // }
-            console.log("选择待绑定要素:" + $("#elements").val());
-            console.log(height);
-            $.get("/element_location", {
-                "longitude": longitude,
-                "latitude": latitude,
-                "height": height,
-                "scene_id": $("#scene_id").val(),
-                "element_type": $("#element_type").val(),
-                "element_id": $("#elements").val(),
-                "icon_path": element_image,
-            }, function (data) {
-                console.log(data, status);
-                if (data.status == 1) {
-                    viewer.entities.add({
-                        position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
-                        billboard: {
-                            image: element_image,
-                            // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
-                            // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-                            scale: 0.2,
-                            color: mark_color,
-                            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                            horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
-                            disableDepthTestDistance: Number.POSITIVE_INFINITY
-                        },
-                        properties: {
-                            type: "added",
-                            element_type: $("#element_type").val(),
-                            element_id: $("#elements").val(),
-                        }
-                    });
-                    alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
-                    operation_type == null;
-                } else {
-                    alert("存入数据库出错，保存要素位置失败");
-                }
-            })
-        }
-
-        if (operation_type == "mark_things") {
-            // if ($("#things").val() == "volvo") {
-            //     alert("请先选择待绑定物品");
-            // } else {
-            //     console.log("选择待绑定物品子类:" + $("#things").val());
-            //     console.log(height);
-            //     $.get("/thing_location", {//to be done
-            //         "longitude": longitude,
-            //         "latitude": latitude,
-            //         "height": height,
-            //         // "heading": heading,
-            //         // "pitch":pitch,
-            //         // "roll":roll,
-            //         "scene_id": $("#scene_id").val(),
-            //         "thing_type": $("#thing_type").val(),
-            //         "thing_id": $("#things").val(),
-            //         "gltf_path": thing_gltf,
-            //         "id":thing_mark_id
-            //     }, function (data) {
-            //         console.log(data, status);
-            //         if (data.status == 1) {
-            //
-            //             var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
-            //                 Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
-            //             );
-            //             console.log(thing_gltf)
-            //             var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
-            //                     url: thing_gltf,
-            //                     modelMatrix: modelMatrix,
-            //                     // minimumPixelSize : 512,
-            //                     scale: 10
-            //                     // maximumScale : 200000
-            //                 })
-            //             );
-            //             viewer.camera.flyTo({
-            //                 destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height+200)
-            //             });//初始视角
-            //
-            //             update_model_hpr(entity4)
-            //
-            //             // var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
-            //             // var hpRoll = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-            //             // var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpRoll);
-            //             //
-            //             // var entity2 =  viewer.entities.add({
-            //             //     //id: thing_mark_id,
-            //             //     position: position,
-            //             //     orientation: orientation,
-            //             //     model: {
-            //             //         uri: thing_gltf,
-            //             //         //modelMatrix:modelMatrix,
-            //             //         //minimumPixelSize: 100,
-            //             //         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-            //             //     },
-            //             //     scale: 1000.0,
-            //             //     show: true
-            //             // });
-            //             // update_model_hpr(entity2)
-            //
-            //             alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
-            //             operation_type == null;
-            //         } else {
-            //             alert("存入数据库出错，保存要素位置失败");
-            //         }
-            //     })
-            // }
-            $.get("/thing_location", {//to be done
-                "longitude": longitude,
-                "latitude": latitude,
-                "height": height,
-                // "heading": heading,
-                // "pitch":pitch,
-                // "roll":roll,
-                "scene_id": $("#scene_id").val(),
-                "thing_type": $("#thing_type").val(),
-                "thing_id": $("#things").val(),
-                "gltf_path": thing_gltf,
-                "id":thing_mark_id
-            }, function (data) {
-                console.log(data, status);
-                if (data.status == 1) {
-
-                    var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
-                        Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
-                    );
-                    console.log(thing_gltf)
-                    var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
-                            url: thing_gltf,
-                            modelMatrix: modelMatrix,
-                            // minimumPixelSize : 512,
-                            scale: 10
-                            // maximumScale : 200000
-                        })
-                    );
-                    viewer.camera.flyTo({
-                        destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height+200)
-                    });//初始视角
-
-                    update_model_hpr(entity4)
-
-                    // var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
-                    // var hpRoll = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-                    // var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpRoll);
-                    //
-                    // var entity2 =  viewer.entities.add({
-                    //     //id: thing_mark_id,
-                    //     position: position,
-                    //     orientation: orientation,
-                    //     model: {
-                    //         uri: thing_gltf,
-                    //         //modelMatrix:modelMatrix,
-                    //         //minimumPixelSize: 100,
-                    //         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                    //     },
-                    //     scale: 1000.0,
-                    //     show: true
-                    // });
-                    // update_model_hpr(entity2)
-
-                    alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
-                    operation_type == null;
-                } else {
-                    alert("存入数据库出错，保存要素位置失败");
-                }
-            })
-        }
-
-        if (operation_type == "locate_model") {
-            var url = "Files/" + $("#models").val();
-            alert("标定模型位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
-            var name = $("#models").find("option:selected").text();
-            var x = viewer.entities.add({
-                position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
-                model: {
-                    uri: url,
-                    // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                    scale: 0.1,
-                },
-                scale: .0,
-                minimumPixelSize: 100,
-                properties: {
-                    type: "added",
-                }
-            });
-            operation_type = null;
-            $.get("/model_location", {
-                "longitude": longitude,
-                "latitude": latitude,
-                "height": height,
-                "scene_id": $("#scene_id").val(),
-                "model_name": name
-            }, function (data) {
-                console.log("更改模型：" + name + "位置");
-            })
+        switch (operation_type) {
+            case "mark_elements":
+                onMarkElements(longitude, latitude, height);
+                break;
+            case "mark_things":
+                onMarkThings(longitude, latitude, height, thing_mark_id);
+                break;
+            case "drawRoute":
+                onDrawRoute(longitude, latitude, height, cartesianCoordinates);
+                break;
+            case "locate_model":
+                onLocateModel(longitude, latitude, height);
+                break;
+            case "adjust_model":
+                onAdjustModel(movement);
+                break;
+            case "toolbar_measure":
+                break;
+            case "display_selected":
+            default:
+                onObjectPicking(longitude, latitude, height);
+                break;
         }
     },
     Cesium.ScreenSpaceEventType.LEFT_CLICK

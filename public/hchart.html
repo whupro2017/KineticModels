@@ -16,24 +16,21 @@
 
         function chartshow() {
             var x = document.getElementById("showHighCharts")
-            if(x.style.display == "none"){
+            if (x.style.display == "none") {
                 x.style.cssText = "display:block"
-<<<<<<< HEAD
-=======
-
->>>>>>> 347ee222ea98c30ce024a92385aff490aac847d4
-            }else {
+            } else {
                 x.style.cssText = "display:none"
             }
         }
-        function lineshow(){
-            $(document).ready(function(){
+
+        function lineshow() {
+            $(document).ready(function () {
                 chart = new Highcharts.Chart({
                     colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
                         '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
                     chart: {
                         backgroundColor: {
-                            linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                            linearGradient: {x1: 0, y1: 0, x2: 1, y2: 1},
                             stops: [
                                 [0, '#2a2a2b'],
                                 [1, '#3e3e40']
@@ -71,9 +68,9 @@
                     xAxis: {
                         categories: ['02年', '02年', '02年', '04年', '05年', '06年',
                             '07年', '08年', '09年', '20年', '22年', '22年'],
-                        labels:{
-                            style:{
-                                color:'white'
+                        labels: {
+                            style: {
+                                color: 'white'
                             }
                         },
                     },
@@ -85,8 +82,8 @@
                             }
                         },
                         labels: {
-                            style:{
-                                color:'white'
+                            style: {
+                                color: 'white'
                             }
                         }
                     },
@@ -156,7 +153,7 @@
             chartshow()
         }
 
-        function barshow(){
+        function barshow() {
             chart = new Highcharts.Chart({
                 colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
                     '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
@@ -164,7 +161,7 @@
                     renderTo: 'container1',
                     type: 'column',
                     backgroundColor: {
-                        linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                        linearGradient: {x1: 0, y1: 0, x2: 1, y2: 1},
                         stops: [
                             [0, '#2a2a2b'],
                             [1, '#3e3e40']
@@ -205,9 +202,9 @@
                         '11年',
                         '12年'
                     ],
-                    labels:{
-                        style:{
-                            color:'white'
+                    labels: {
+                        style: {
+                            color: 'white'
                         }
                     }
                 },
@@ -215,13 +212,13 @@
                     min: 0,
                     title: {
                         text: '数据',
-                        style:{
-                            color:'white'
+                        style: {
+                            color: 'white'
                         }
                     },
-                    labels:{
-                        style:{
-                            color:'white'
+                    labels: {
+                        style: {
+                            color: 'white'
                         }
                     }
                 },
@@ -268,19 +265,19 @@
             chartshow()
         }
 
-        function pieshow(){
+        function pieshow() {
             //饼状图初始化
             chart = new Highcharts.Chart({
                 colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
                     '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
                 chart: {
                     renderTo: 'container1',
-                    type:'pie',
+                    type: 'pie',
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
                     plotShadow: false,
                     backgroundColor: {
-                        linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                        linearGradient: {x1: 0, y1: 0, x2: 1, y2: 1},
                         stops: [
                             [0, '#2a2a2b'],
                             [1, '#3e3e40']
@@ -345,7 +342,7 @@
                     renderTo: 'container4',
                     type: 'packedbubble',
                     backgroundColor: {
-                        linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                        linearGradient: {x1: 0, y1: 0, x2: 1, y2: 1},
                         stops: [
                             [0, '#2a2a2b'],
                             [1, '#3e3e40']
@@ -365,7 +362,7 @@
                     }
                 },
                 subtitle: {
-                    text:'Carbon emissions around the world (2014)',
+                    text: 'Carbon emissions around the world (2014)',
                     style: {
                         color: '#E0E0E3',
                         textTransform: 'uppercase'
@@ -895,52 +892,54 @@
             })
             chartshow()
         }
+
+        $(function () {
+            dragPanelMove("#showHighCharts");
+
+            // dragPanelMove("#container4");
+            function dragPanelMove(moveDiv) {
+                $(moveDiv).mousedown(function (e) {
+                    var isMove = true;
+                    var div_x = e.pageX - $(moveDiv).offset().left;
+                    var div_y = e.pageY - $(moveDiv).offset().top;
+                    $(document).mousemove(function (e) {
+                        if (isMove) {
+                            var obj = $(moveDiv);
+                            obj.css({"left": e.pageX - div_x, "top": e.pageY - div_y});
+                        }
+                    }).mouseup(
+                        function () {
+                            isMove = false;
+                        });
+                });
+            }
+        });
     </script>
-    <!--<script>-->
-        <!--$(function () {-->
-            <!--dragPanelMove("#showHighCharts");-->
-            <!--// dragPanelMove("#container4");-->
-            <!--function dragPanelMove(moveDiv){-->
-                <!--$(moveDiv).mousedown(function (e) {-->
-                    <!--var isMove = true;-->
-                    <!--var div_x = e.pageX - $(moveDiv).offset().left;-->
-                    <!--var div_y = e.pageY - $(moveDiv).offset().top;-->
-                    <!--$(document).mousemove(function (e) {-->
-                        <!--if (isMove) {-->
-                            <!--var obj = $(moveDiv);-->
-                            <!--obj.css({"left":e.pageX - div_x, "top":e.pageY - div_y});-->
-                        <!--}-->
-                    <!--}).mouseup(-->
-                        <!--function () {-->
-                            <!--isMove = false;-->
-                        <!--});-->
-                <!--});-->
-            <!--}-->
-        <!--});-->
-    <!--</script>-->
     <style>
-        .charts{
+        .charts {
             display: block;
             border-radius: 4px;
             border-color: greenyellow;
             background-color: black;
             color: white;
         }
-        #showHighCharts{
+
+        #showHighCharts {
             display: none;
-            position: absolute;//key
+            position: absolute;
+        / / key
         }
     </style>
 </head>
 <body>
 <div>
     <div style="float: right">
-    <form>
-        <input id="linechart" type="button" class="charts" value="折线图" onclick="lineshow()"><br/>
-        <input id="barchart" type="button" class="charts" value="柱状图" onclick="barshow()"><br/>
-        <input id="piechart" type="button" class="charts" value="扇形图" onclick="pieshow()"><br/>
-        <input id="bubblechart" type="button" class="charts" value="气泡图" onclick="bubbleshow()">
-    </form>
+        <form>
+            <input id="linechart" type="button" class="charts" value="折线图" onclick="lineshow()"><br/>
+            <input id="barchart" type="button" class="charts" value="柱状图" onclick="barshow()"><br/>
+            <input id="piechart" type="button" class="charts" value="扇形图" onclick="pieshow()"><br/>
+            <input id="bubblechart" type="button" class="charts" value="气泡图" onclick="bubbleshow()">
+        </form>
     </div>
     <div id="showHighCharts" style="float: right">
         <div id="container1" style="width: 900px; height: 360px; margin: 0 auto"></div>
@@ -950,8 +949,9 @@
 <script>
     $(function () {
         dragPanelMove("#showHighCharts");
+
         // dragPanelMove("#container4");
-        function dragPanelMove(moveDiv){
+        function dragPanelMove(moveDiv) {
             $(moveDiv).mousedown(function (e) {
                 var isMove = true;
                 var div_x = e.pageX - $(moveDiv).offset().left;
@@ -959,7 +959,7 @@
                 $(document).mousemove(function (e) {
                     if (isMove) {
                         var obj = $(moveDiv);
-                        obj.css({"left":e.pageX - div_x, "top":e.pageY - div_y});
+                        obj.css({"left": e.pageX - div_x, "top": e.pageY - div_y});
                     }
                 }).mouseup(
                     function () {

@@ -31,7 +31,7 @@
     z-index: 8888;
     display: none;
     width: 160px;
-    height: 380px;
+    height: 405px;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 2px 0px 2px 2px;
     border: 1px solid rgba(204, 212, 222, 1);
@@ -96,7 +96,7 @@
     z-index: 8888;
     display: none;
     width: 200px;
-    height: 210px;
+    height: 240px;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 2px 0px 2px 2px;
     border: 1px solid rgba(204, 212, 222, 1);
@@ -205,4 +205,25 @@
     width: 120px;
     background-color: transparent;
     color: white;
+}
+
+.jqgrid-header {
+    background: #000000; /*url(images/new_header_bck.png) repeat-x scroll 50% 50%;*/
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.evenTableRow {
+    background-color: #e8eef4;
+    color: #ffffff;
+}
+
+.oddTableRow {
+    background-color: #e8eef4;
+    color: #ffffff;
+}
+
+.sg-even-row td, .sg-even-row th {
+    background-color: #CCCCCC !important;
 }

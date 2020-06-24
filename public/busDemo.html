@@ -169,11 +169,11 @@
             </div>
             <div style="float: left">
                 <input type="model_file" id="case_file" style="display:none">
-                <form id="kinetic_files" method="post" enctype="multipart/form-data" style="display:none"
-                      action="/uploads" target="nm_iframe">
-                    <input type="file" id="files" onchange="formSubmit()" name="upload" webkitdirectory mozdirectory>
-                    <input type="submit" id="upload_confirm" value="确认上传动力学模型">
-                </form>
+                <!--<form id="kinetic_files" method="post" enctype="multipart/form-data" style="display:none"-->
+                      <!--action="/uploads" target="nm_iframe">-->
+                    <!--<input type="file" id="files" onchange="formSubmit()" name="upload" webkitdirectory mozdirectory>-->
+                    <!--<input type="submit" id="upload_confirm" value="确认上传动力学模型">-->
+                <!--</form>-->
                 <form id="particle_file" method="post" enctype="multipart/form-data" style="display:none"
                       action="/uploads_particle" target="nm_iframe">
                     <input type="file" id="particle_files" onchange="particle_file_formSubmit()" name="upload" webkitdirectory mozdirectory>
@@ -1838,7 +1838,6 @@
     // }, 'caseMenu');
     Sandcastle.addToolbarButton('上传动力学模型', function () {
         $("#files").trigger("click");
-
     }, 'KineticMenu');
     Sandcastle.addToolbarButton('上传动力学粒子素材', function () {
         $("#particle_files").trigger("click");

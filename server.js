@@ -161,7 +161,7 @@ app.get("/select_scene", function (req, res) {
             connection.query('SELECT id,element_type,element_id,icon_path,start_lon,start_lat,start_height from relevant_t where scene_id=' + req.query.value, function (error, results, fields) {
                 if (error) return console.error(error);
                 data.relevant_info = results;
-                console.log(data);
+                // console.log(data);
                 res.send(data);
                 res.end();
             });
@@ -172,7 +172,7 @@ app.get("/select_scene", function (req, res) {
 
 
 app.get("/select_thing_scene", function (req, res) {
-    console.log("选定场景号：" + req.query.value);
+    // console.log("选定场景号：" + req.query.value);
     scene_id = req.query.value;
     data = {};
     connection.query('SELECT id,kinetic_id from kinetic_t where scene_id=' + req.query.value, function (error, results, fields) {
@@ -184,7 +184,7 @@ app.get("/select_thing_scene", function (req, res) {
             connection.query('SELECT id,thing_type,thing_id,gltf_path,start_lon,start_lat,start_height from thing_relevant where sceneid=' + req.query.value, function (error, results, fields) {
                 if (error) return console.error(error);
                 data.relevant_info = results;
-                console.log(data);
+                // console.log(data);
                 res.send(data);
                 res.end();
             });
@@ -226,7 +226,6 @@ app.get("/get_things", function (req, res) {
         res.end();
     });
 })
-
 
 
 app.get("/get_icon_menu", function (req, res) {
@@ -394,7 +393,7 @@ app.get('/store_inquest_base_info', function (req, res, next) {//勘验基础信
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from inquest_base_info")
     for (var i in form) {
-        connection.query("INSERT into inquest_base_info (BASE_INFO_ID,FIELD_SURVEY_NUMBER,CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION) value (" + "'" + form[i].勘验基础信息ID + "','" + form[i].现场勘验号 + "','" + form[i].案事件编号 + "','" + form[i].发案地点 + "','" + form[i].勘验开始时间 + "','" + form[i].勘验结束时间 + "','" + form[i].现场勘验人员 + "','" + form[i].现场指挥人员ID + "','" + form[i].保护措施ID + "','" + form[i].现场变动情况ID + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].经度 + "','" + form[i].纬度 + "','" + form[i].天气情况ID   + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into inquest_base_info (BASE_INFO_ID,FIELD_SURVEY_NUMBER,CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION) value (" + "'" + form[i].勘验基础信息ID + "','" + form[i].现场勘验号 + "','" + form[i].案事件编号 + "','" + form[i].发案地点 + "','" + form[i].勘验开始时间 + "','" + form[i].勘验结束时间 + "','" + form[i].现场勘验人员 + "','" + form[i].现场指挥人员ID + "','" + form[i].保护措施ID + "','" + form[i].现场变动情况ID + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].经度 + "','" + form[i].纬度 + "','" + form[i].天气情况ID + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -422,7 +421,7 @@ app.get('/store_field_commander', function (req, res, next) {//现场指挥人�
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from field_commander")
     for (var i in form) {
-        connection.query("INSERT into field_commander (FIELD_COMMANDER_ID,FIELD_COMMANDER_NAME) value (" + "'" + form[i].现场指挥人员ID + "','" + form[i].现场指挥人员名称  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into field_commander (FIELD_COMMANDER_ID,FIELD_COMMANDER_NAME) value (" + "'" + form[i].现场指挥人员ID + "','" + form[i].现场指挥人员名称 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -450,7 +449,7 @@ app.get('/store_protect_measure', function (req, res, next) {//暂无此表
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from protect_measure")
     for (var i in form) {
-        connection.query("INSERT into protect_measure (Protect_MEASURE_ID,Protect_MEASURE_NAME) value (" + "'" + form[i].保护措施ID + "','" + form[i].保护措施名称  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into protect_measure (Protect_MEASURE_ID,Protect_MEASURE_NAME) value (" + "'" + form[i].保护措施ID + "','" + form[i].保护措施名称 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -478,7 +477,7 @@ app.get('/store_site_changes', function (req, res, next) {//现场变动情况
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from site_changes")
     for (var i in form) {
-        connection.query("INSERT into site_changes (SITE_CHANGES_ID,SITE_CHANGES_NAME) value (" + "'" + form[i].现场变动情况ID + "','" + form[i].现场变动情况名称  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into site_changes (SITE_CHANGES_ID,SITE_CHANGES_NAME) value (" + "'" + form[i].现场变动情况ID + "','" + form[i].现场变动情况名称 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -506,7 +505,7 @@ app.get('/store_mark_goods_unit', function (req, res, next) {//单位
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from mark_goods_unit")
     for (var i in form) {
-        connection.query("INSERT into mark_goods_unit (MARK_GOODS_UNIT_ID,MARK_GOODS_UNIT_NAME) value (" + "'" + form[i].单位ID + "','" + form[i].单位名称  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into mark_goods_unit (MARK_GOODS_UNIT_ID,MARK_GOODS_UNIT_NAME) value (" + "'" + form[i].单位ID + "','" + form[i].单位名称 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -590,7 +589,7 @@ app.get('/store_mark_goods', function (req, res, next) {//痕迹物品
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from mark_goods")
     for (var i in form) {
-        connection.query("INSERT into mark_goods (MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE,UPDATE_TIME) value (" + "'" + form[i].痕迹物品ID + "','" + form[i].物品名称 + "','" + form[i].物品类型ID + "','" + form[i].提取方法ID + "','" + form[i].勘验基础信息ID + "','" + form[i].提取时间 + "','" + form[i].提取人 + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].数据状态 + "','" + form[i].描述  + "','" + form[i].修改时间  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into mark_goods (MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE,UPDATE_TIME) value (" + "'" + form[i].痕迹物品ID + "','" + form[i].物品名称 + "','" + form[i].物品类型ID + "','" + form[i].提取方法ID + "','" + form[i].勘验基础信息ID + "','" + form[i].提取时间 + "','" + form[i].提取人 + "','" + form[i].创建时间 + "','" + form[i].创建人ID + "','" + form[i].数据状态 + "','" + form[i].描述 + "','" + form[i].修改时间 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -674,7 +673,7 @@ app.get('/store_corpse_info', function (req, res, next) {//尸体信息
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from corpse_info")
     for (var i in form) {
-        connection.query("INSERT into corpse_info (CORPSE_INFO_ID,BASE_INFO_ID,CORPSE_INFO_CODE,CORPSE_INFO_NAME,CORPSE_FIND_PLACE,CORPSE_FEATURES,SCENE_BLOODSTAIN_SITUATION,SCENE_ES_SURVEY,CLOTHES_SITUATION,CORPSE_INCLUSIONS,CORPSE_COSTUMES,DEATH_NATURE,LETHAL_REASON,DEATH_TIME,CORPSE_INJURING_FORM,FEATURES_DESCRIBE,CREATE_PERSION_ID,CREATE_TIME,CORPSE_COMPLETION,DATA_STATE,UPDATE_TIME) value (" + "'" + form[i].尸体ID + "','" + form[i].勘验基础信息ID + "','" + form[i].尸体编号 + "','" + form[i].尸体名称 + "','" + form[i].尸体发现地点 + "','" + form[i].尸体姿态 + "','" + form[i].现场血迹情况 + "','" + form[i].现场环境情况 + "','" + form[i].随身物品 + "','" + form[i].尸体盛装物 + "','" + form[i].尸体包裹物 + "','" + form[i].死亡性质 + "','" + form[i].致死原因 + "','" + form[i].死亡时间推论 + "','" + form[i].尸体加害形式 + "','" + form[i].特征描述 + "','" + form[i].创建人ID + "','" + form[i].创建时间 + "','" + form[i].尸体完整度 + "','" + form[i].数据状态 + "','" + form[i].修改时间  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into corpse_info (CORPSE_INFO_ID,BASE_INFO_ID,CORPSE_INFO_CODE,CORPSE_INFO_NAME,CORPSE_FIND_PLACE,CORPSE_FEATURES,SCENE_BLOODSTAIN_SITUATION,SCENE_ES_SURVEY,CLOTHES_SITUATION,CORPSE_INCLUSIONS,CORPSE_COSTUMES,DEATH_NATURE,LETHAL_REASON,DEATH_TIME,CORPSE_INJURING_FORM,FEATURES_DESCRIBE,CREATE_PERSION_ID,CREATE_TIME,CORPSE_COMPLETION,DATA_STATE,UPDATE_TIME) value (" + "'" + form[i].尸体ID + "','" + form[i].勘验基础信息ID + "','" + form[i].尸体编号 + "','" + form[i].尸体名称 + "','" + form[i].尸体发现地点 + "','" + form[i].尸体姿态 + "','" + form[i].现场血迹情况 + "','" + form[i].现场环境情况 + "','" + form[i].随身物品 + "','" + form[i].尸体盛装物 + "','" + form[i].尸体包裹物 + "','" + form[i].死亡性质 + "','" + form[i].致死原因 + "','" + form[i].死亡时间推论 + "','" + form[i].尸体加害形式 + "','" + form[i].特征描述 + "','" + form[i].创建人ID + "','" + form[i].创建时间 + "','" + form[i].尸体完整度 + "','" + form[i].数据状态 + "','" + form[i].修改时间 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -702,7 +701,7 @@ app.get('/store_corpse_photo', function (req, res, next) {//尸体照片
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from corpse_photo")
     for (var i in form) {
-        connection.query("INSERT into corpse_photo (CORPSE_PHOTO_ID,CORPSE_PHOTO_NAME,CORPSE_PHOTO_CONTENT,CREATE_TIME,CORPSE_INFO_ID) value (" + "'" + form[i].尸体照片ID + "','" + form[i].尸体照片名称 + "','" + form[i].尸体照片内容 + "','" + form[i].创建时间 + "','" + form[i].尸体ID  + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into corpse_photo (CORPSE_PHOTO_ID,CORPSE_PHOTO_NAME,CORPSE_PHOTO_CONTENT,CREATE_TIME,CORPSE_INFO_ID) value (" + "'" + form[i].尸体照片ID + "','" + form[i].尸体照片名称 + "','" + form[i].尸体照片内容 + "','" + form[i].创建时间 + "','" + form[i].尸体ID + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -814,7 +813,7 @@ app.get('/store_involved_goods_info', function (req, res, next) {//涉案物品�
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from involved_goods_info")
     for (var i in form) {
-        connection.query("INSERT into involved_goods_info (INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE) value (" + "'" + form[i].涉案物品信息ID + "','" + form[i].物品名称 + "','" + form[i].提取位置+ "','" + form[i].基础勘验信息ID+ "','" + form[i].创建人ID+ "','" + form[i].创建时间+ "','" + form[i].修改时间 + "','" + form[i].数据状态 + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into involved_goods_info (INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE) value (" + "'" + form[i].涉案物品信息ID + "','" + form[i].物品名称 + "','" + form[i].提取位置 + "','" + form[i].基础勘验信息ID + "','" + form[i].创建人ID + "','" + form[i].创建时间 + "','" + form[i].修改时间 + "','" + form[i].数据状态 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -865,7 +864,6 @@ app.get('/element_location', function (req, res, next) {//左键点击绑定要�
             res.end();
         });
     });
-
 })
 
 
@@ -905,7 +903,6 @@ app.get('/thing_location', function (req, res, next) {//新增内容
             res.end();
         });
     });
-
 })
 
 
@@ -928,7 +925,6 @@ app.get('/get_element_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 
 app.get('/get_site_changes', function (req, res, next) {
@@ -948,7 +944,6 @@ app.get('/get_site_changes', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_inquest_base_info', function (req, res, next) {
     //form表单
@@ -968,7 +963,6 @@ app.get('/get_inquest_base_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_field_commander', function (req, res, next) {
     //form表单
@@ -987,7 +981,6 @@ app.get('/get_field_commander', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_protect_measure', function (req, res, next) {
     //form表单
@@ -1006,7 +999,6 @@ app.get('/get_protect_measure', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_site_changes', function (req, res, next) {
     //form表单
@@ -1025,7 +1017,6 @@ app.get('/get_site_changes', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_mark_goods_unit', function (req, res, next) {
     //form表单
@@ -1044,7 +1035,6 @@ app.get('/get_mark_goods_unit', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_weather', function (req, res, next) {
     //form表单
@@ -1063,7 +1053,6 @@ app.get('/get_weather', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_full_photo', function (req, res, next) {
     //form表单
@@ -1082,7 +1071,6 @@ app.get('/get_full_photo', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_mark_goods', function (req, res, next) {
     //form表单
@@ -1101,7 +1089,6 @@ app.get('/get_mark_goods', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_goods_type', function (req, res, next) {
     //form表单
@@ -1120,7 +1107,6 @@ app.get('/get_goods_type', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_extract_method', function (req, res, next) {
     //form表单
@@ -1139,7 +1125,6 @@ app.get('/get_extract_method', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_corpse_info', function (req, res, next) {
     //form表单
@@ -1158,7 +1143,6 @@ app.get('/get_corpse_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_corpse_photo', function (req, res, next) {
     //form表单
@@ -1177,7 +1161,6 @@ app.get('/get_corpse_photo', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_position_photo', function (req, res, next) {
     //form表单
@@ -1196,7 +1179,6 @@ app.get('/get_position_photo', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_case_conclusion_info', function (req, res, next) {
     //form表单
@@ -1215,7 +1197,6 @@ app.get('/get_case_conclusion_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_ele_info', function (req, res, next) {
     //form表单
@@ -1234,7 +1215,6 @@ app.get('/get_ele_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
 app.get('/get_involved_goods_info', function (req, res, next) {
     //form表单
@@ -1253,9 +1233,25 @@ app.get('/get_involved_goods_info', function (req, res, next) {
         res.send(results);
         res.end();
     });
-
 });
-
+app.get('/get_involved_person_info', function (req, res, next) {
+    //form表单
+    connection.query("SELECT INVOLVED_PERSON_INFO_ID,INVOLVED_PERSON_CODE,INVOLVED_PERSON_NAME,SEX,AGE,NATION,NATIONALITY,POSTURE,HEIGHT,CLOTHES_SITUATION,PHY_FUN,CARD_TYPE,DOMICILE,CARD_NUMBER,CURRENT_ADDRESS,WORK_UNIT,UNIT_ADDRESS,PHONE,JOB_DUTIES,BASE_INFO_ID,TYPE_ID,INVESTIGATION_TIME,INVESTIGATION_PERSION,INVESTIGATION_ADDRESS,REMARKS,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_SOURCES,DATA_STATE,RELATION_CORPSE,RELATION_PERSON from involved_person_info", function (error, results, fields) {
+        if (error) {
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+});
 app.get('/get_thing_info', function (req, res, next) {//新增内容
     //form表单
     var thing_type = req.query.thing_type;
@@ -1374,182 +1370,182 @@ app.get('/update_element_info', function (req, res, next) {
 // })
 
 
-app.post('/uploads', function (req, res, next) {
-    //form表单
-    var form = new formidable.IncomingForm();
-    //保留后缀
-    form.keepExtensions = true;
-    form.encoding = 'utf-8';
-    form.maxFileSize = 4 * 1024 * 1024 * 1024;
-    //上传文件路径,采用path路径拼接
-    form.uploadDir = path.join(__dirname, 'public/Files');
-    //如果上传文件夹（多个文件）需将 默认值改为TRUE
-    form.multiples = true;
-    //该方法会转换请求中所包含的表单数据，callback会包含所有字段域和文件信息
-    // fields 是普通表单数据
-    // files 是文件数据
-    form.parse(req, function (err, fields, files) {
-            console.log("开始上传");
-            // var Client = require('node-ftp');
-            // var c = new Client();
-            // var targetOptions = {
-            //     host: '127.0.0.1',
-            //     port: '2121',
-            //     user: 'anonymous',
-            //     password: '',
-            // };
-            // c.connect(targetOptions);
-            //该属性upload是在HTML文件的name中设置的
-            // c.on('ready', function () {
-            //     console.log("ftp连接成功");
-            for (var i = 0; i < files.upload.length; i++) {
-                var file = files.upload[i];
-                var pathnameArray = file.name.split('/');
-                var folderPath = form.uploadDir;
-                var FTPfolderPath = "";
-                for (var j = 0; j < pathnameArray.length - 1; j++) {
-                    folderPath = path.join(folderPath, pathnameArray[j]);
-                    // FTPfolderPath = path.join(FTPfolderPath, pathnameArray[j]);
-                    // c.get(FTPfolderPath, function (err) {
-                    //     console.log("获取FTP文件夹" + FTPfolderPath);
-                    //     if (err) {
-                    //         c.mkdir(FTPfolderPath, function (err) {
-                    //             if (err) throw err;
-                    //             console.log("FTP服务器创建目录" + FTPfolderPath);
-                    //             if(j==pathnameArray.length - 2){
-                    //                 c.put(file.path, path.join(FTPfolderPath, pathnameArray[pathnameArray.length - 1]), function (err) {
-                    //                     console.log("本地路径："+path.join(folderPath, pathnameArray[pathnameArray.length - 1])+"；ftp服务器路径："+path.join(FTPfolderPath, pathnameArray[pathnameArray.length - 1]));
-                    //                     if (err) throw err;
-                    //                     console.log("上传FTP文件" + pathnameArray[pathnameArray.length - 1]);
-                    //                 });
-                    //             }
-                    //         })
-                    //     }
-                    //     ;
-                    // });
-                    if (!fs.existsSync(folderPath)) {
-                        //如果不存在上传文件夹名称，就创建
-                        try {
-                            fs.mkdirSync(folderPath, 0o777);
-                            ("成功创建目录" + folderPath);
-                        } catch (e) {
-                            console.log(e.name + ": " + e.message);
-                        }
-                    }
-                    //移动文件夹并更改名称
-                    //  fs.rename(oldpath, newpath, callback)
-                    // fs.rename(file.path, path.join(folderPath, pathnameArray[1]));
-                }
+// app.post('/uploads', function (req, res, next) {
+//     //form表单
+//     var form = new formidable.IncomingForm();
+//     //保留后缀
+//     form.keepExtensions = true;
+//     form.encoding = 'utf-8';
+//     form.maxFileSize = 4 * 1024 * 1024 * 1024;
+//     //上传文件路径,采用path路径拼接
+//     form.uploadDir = path.join(__dirname, 'public/Files');
+//     //如果上传文件夹（多个文件）需将 默认值改为TRUE
+//     form.multiples = true;
+//     //该方法会转换请求中所包含的表单数据，callback会包含所有字段域和文件信息
+//     // fields 是普通表单数据
+//     // files 是文件数据
+//     form.parse(req, function (err, fields, files) {
+//             console.log("开始上传");
+//             // var Client = require('node-ftp');
+//             // var c = new Client();
+//             // var targetOptions = {
+//             //     host: '127.0.0.1',
+//             //     port: '2121',
+//             //     user: 'anonymous',
+//             //     password: '',
+//             // };
+//             // c.connect(targetOptions);
+//             //该属性upload是在HTML文件的name中设置的
+//             // c.on('ready', function () {
+//             //     console.log("ftp连接成功");
+//             for (var i = 0; i < files.upload.length; i++) {
+//                 var file = files.upload[i];
+//                 var pathnameArray = file.name.split('/');
+//                 var folderPath = form.uploadDir;
+//                 var FTPfolderPath = "";
+//                 for (var j = 0; j < pathnameArray.length - 1; j++) {
+//                     folderPath = path.join(folderPath, pathnameArray[j]);
+//                     // FTPfolderPath = path.join(FTPfolderPath, pathnameArray[j]);
+//                     // c.get(FTPfolderPath, function (err) {
+//                     //     console.log("获取FTP文件夹" + FTPfolderPath);
+//                     //     if (err) {
+//                     //         c.mkdir(FTPfolderPath, function (err) {
+//                     //             if (err) throw err;
+//                     //             console.log("FTP服务器创建目录" + FTPfolderPath);
+//                     //             if(j==pathnameArray.length - 2){
+//                     //                 c.put(file.path, path.join(FTPfolderPath, pathnameArray[pathnameArray.length - 1]), function (err) {
+//                     //                     console.log("本地路径："+path.join(folderPath, pathnameArray[pathnameArray.length - 1])+"；ftp服务器路径："+path.join(FTPfolderPath, pathnameArray[pathnameArray.length - 1]));
+//                     //                     if (err) throw err;
+//                     //                     console.log("上传FTP文件" + pathnameArray[pathnameArray.length - 1]);
+//                     //                 });
+//                     //             }
+//                     //         })
+//                     //     }
+//                     //     ;
+//                     // });
+//                     if (!fs.existsSync(folderPath)) {
+//                         //如果不存在上传文件夹名称，就创建
+//                         try {
+//                             fs.mkdirSync(folderPath, 0o777);
+//                             ("成功创建目录" + folderPath);
+//                         } catch (e) {
+//                             console.log(e.name + ": " + e.message);
+//                         }
+//                     }
+//                     //移动文件夹并更改名称
+//                     //  fs.rename(oldpath, newpath, callback)
+//                     // fs.rename(file.path, path.join(folderPath, pathnameArray[1]));
+//                 }
+//
+//                 try {
+//                     fs.renameSync(file.path, path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
+//                     if (pathnameArray[pathnameArray.length - 1] == "kinetic.json") {
+//                         console.log("获得json文件");
+//                         var info = {};
+//                         fs.readFile(path.join(folderPath, pathnameArray[pathnameArray.length - 1]), function (err, data) {
+//                             if (err) {
+//                                 return console.error(err);
+//                             }
+//                             var filedata = data.toString();//将二进制的数据转换为字符串
+//                             filedata = JSON.parse(filedata);//将字符串转换为json对象
+//                             var kinetic_id = filedata.kinetic_id;
+//                             connection.query("INSERT into kinetic_t (scene_id,kinetic_id) value (" + scene_id + ",'" + kinetic_id + "')", function (error, results, fields) {
+//                                 if (error) {
+//                                     var data = {msg: "写入数据库错误，上传失败"};
+//                                     // c.end();
+//                                     res.send(data);
+//                                     res.end();
+//                                     return console.error(error);
+//                                 }
+//                                 info.kinetic_id = kinetic_id;
+//
+//                             });
+//                             var model_info = [];
+//                             var index = 0;
+//                             for (var gltf in filedata.gltfs) {
+//                                 connection.query("INSERT into modelinfo (scene_id,path,name) value (" + scene_id + ",'" + filedata.gltfs[index].path + "','" + filedata.gltfs[index].name + "')", function (error, results, fields) {
+//                                     if (error) {
+//                                         var data = {msg: "写入数据库错误，上传失败"};
+//                                         // c.end();
+//                                         res.send(data);
+//                                         res.end();
+//                                         return console.error(error);
+//                                     }
+//                                     model_info.push(filedata.gltfs[index].name, filedata.gltfs[index].path);
+//                                     if (index == filedata.gltfs.length - 1) {
+//                                         console.log("sql完成");
+//                                         console.log("上传成功");
+//                                         info.msg = '上传成功';
+//                                         info.model_info = model_info;
+//                                         res.send(info);
+//                                         res.end();
+//                                     }
+//                                     index++;
+//                                 });
+//                             }
+//                             //  返回此案件包含案件列表
+//                             // connection.query("SELECT from modelinfo where scene_id=" + scene_id, function (error, results, fields) {
+//                             //     if (error) {
+//                             //         var data = {msg: "写入数据库错误，上传失败"};
+//                             //         // c.end();
+//                             //         res.send(data);
+//                             //         res.end();
+//                             //         return console.error(err);
+//                             //     }
+//                             //     ;
+//                             // });
+//                             // console.log(filedata.gltfs[0].path);
+//
+//                         })
+//                     }
+//                 } catch (e) {
+//                     console.log(e.name + ": " + e.message);
+//                     var data = {msg: "上传失败"};
+//                     // c.end();
+//                     res.send(data);
+//                     res.end();
+//
+//                 }
+//             }
+//             //响应 格式化打印 String
+//             // console.log("上传结束");
+//             // var data = {msg: "上传完成"};
+//             // c.end();
+//             // res.send(data);
+//             // if (sql_finished==true)
+//             //     res.end();
+//             // });
+//         }
+//     );
+// });
 
-                try {
-                    fs.renameSync(file.path, path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
-                    if (pathnameArray[pathnameArray.length - 1] == "kinetic.json") {
-                        console.log("获得json文件");
-                        var info = {};
-                        fs.readFile(path.join(folderPath, pathnameArray[pathnameArray.length - 1]), function (err, data) {
-                            if (err) {
-                                return console.error(err);
-                            }
-                            var filedata = data.toString();//将二进制的数据转换为字符串
-                            filedata = JSON.parse(filedata);//将字符串转换为json对象
-                            var kinetic_id = filedata.kinetic_id;
-                            connection.query("INSERT into kinetic_t (scene_id,kinetic_id) value (" + scene_id + ",'" + kinetic_id + "')", function (error, results, fields) {
-                                if (error) {
-                                    var data = {msg: "写入数据库错误，上传失败"};
-                                    // c.end();
-                                    res.send(data);
-                                    res.end();
-                                    return console.error(error);
-                                }
-                                info.kinetic_id = kinetic_id;
-
-                            });
-                            var model_info = [];
-                            var index = 0;
-                            for (var gltf in filedata.gltfs) {
-                                connection.query("INSERT into modelinfo (scene_id,path,name) value (" + scene_id + ",'" + filedata.gltfs[index].path + "','" + filedata.gltfs[index].name + "')", function (error, results, fields) {
-                                    if (error) {
-                                        var data = {msg: "写入数据库错误，上传失败"};
-                                        // c.end();
-                                        res.send(data);
-                                        res.end();
-                                        return console.error(error);
-                                    }
-                                    model_info.push(filedata.gltfs[index].name, filedata.gltfs[index].path);
-                                    if (index == filedata.gltfs.length - 1) {
-                                        console.log("sql完成");
-                                        console.log("上传成功");
-                                        info.msg = '上传成功';
-                                        info.model_info = model_info;
-                                        res.send(info);
-                                        res.end();
-                                    }
-                                    index++;
-                                });
-                            }
-                            //  返回此案件包含案件列表
-                            // connection.query("SELECT from modelinfo where scene_id=" + scene_id, function (error, results, fields) {
-                            //     if (error) {
-                            //         var data = {msg: "写入数据库错误，上传失败"};
-                            //         // c.end();
-                            //         res.send(data);
-                            //         res.end();
-                            //         return console.error(err);
-                            //     }
-                            //     ;
-                            // });
-                            // console.log(filedata.gltfs[0].path);
-
-                        })
-                    }
-                } catch (e) {
-                    console.log(e.name + ": " + e.message);
-                    var data = {msg: "上传失败"};
-                    // c.end();
-                    res.send(data);
-                    res.end();
-
-                }
-            }
-            //响应 格式化打印 String
-            // console.log("上传结束");
-            // var data = {msg: "上传完成"};
-            // c.end();
-            // res.send(data);
-            // if (sql_finished==true)
-            //     res.end();
-            // });
-        }
-    );
-});
-
-app.post('/upload', function (req, res, next) {
-    //form表单
-    console.log("开始上传");
-    var form = new formidable.IncomingForm();
-    //保留后缀
-    form.keepExtensions = true;
-    form.encoding = 'utf-8';
-    form.maxFileSize = 4 * 1024 * 1024 * 1024;
-    //上传的数据保存的路径
-    form.uploadDir = path.join(__dirname, 'Files');
-    //该方法会转换请求中所包含的表单数据，callback会包含所有字段域和文件信息
-    // fields 是普通表单数据
-    // files 是文件数据
-    form.parse(req, function (err, fields, files) {
-        // var filename = files.upload.name;
-        console.log(files);
-        // var path = files.upload.path;
-        //移动并更名
-        // console.log("重命名");
-        // fs.renameSync(path, form.uploadDir + filename);
-        // //响应 格式化打印
-        // console.log("上传完成");
-
-        res.end();
-        // res.end(util.inspect(files));
-    });
-});
+// app.post('/upload', function (req, res, next) {
+//     //form表单
+//     console.log("开始上传");
+//     var form = new formidable.IncomingForm();
+//     //保留后缀
+//     form.keepExtensions = true;
+//     form.encoding = 'utf-8';
+//     form.maxFileSize = 4 * 1024 * 1024 * 1024;
+//     //上传的数据保存的路径
+//     form.uploadDir = path.join(__dirname, 'Files');
+//     //该方法会转换请求中所包含的表单数据，callback会包含所有字段域和文件信息
+//     // fields 是普通表单数据
+//     // files 是文件数据
+//     form.parse(req, function (err, fields, files) {
+//         // var filename = files.upload.name;
+//         console.log(files);
+//         // var path = files.upload.path;
+//         //移动并更名
+//         // console.log("重命名");
+//         // fs.renameSync(path, form.uploadDir + filename);
+//         // //响应 格式化打印
+//         // console.log("上传完成");
+//
+//         res.end();
+//         // res.end(util.inspect(files));
+//     });
+// });
 var id;
 var name;
 var max_frame;
@@ -1571,9 +1567,9 @@ app.post('/update_transform', function (req, res, next) {
     form.uploadDir = path.join(__dirname, 'public/particle_source');
     //如果上传文件夹（多个文件）需将 默认值改为TRUE
     form.multiples = true;
-    form.parse(req, function(err,fields,files){
+    form.parse(req, function (err, fields, files) {
         var folderPath = form.uploadDir;
-        var file=files.files;
+        var file = files.files;
         var pathnameArray = file.name.split('/');
         for (var j = 0; j < pathnameArray.length - 1; j++) {
             folderPath = path.join(folderPath, pathnameArray[j]);
@@ -1586,8 +1582,8 @@ app.post('/update_transform', function (req, res, next) {
                 }
             }
         }
-        var filename=pathnameArray[pathnameArray.length - 1];
-        var newpath=path.join(folderPath, filename);
+        var filename = pathnameArray[pathnameArray.length - 1];
+        var newpath = path.join(folderPath, filename);
         fs.renameSync(file.path, newpath);
         if (filename.split(".")[1] == "json") {
             var data = fs.readFileSync(path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
@@ -1603,27 +1599,27 @@ app.post('/update_transform', function (req, res, next) {
             file_folder = filedata.file_folder;
             first_file = filedata.first_file;
             file_prefix = filedata.file_prefix;
-            var data = {target:1,msg: "json"};
+            var data = {target: 1, msg: "json"};
             // c.end();
             res.send(data);
             res.end();
-        }else if (filename.split(".")[1] == "dat") {
-            var number=parseInt(filename.split(".")[0].split(file_prefix)[1]);
+        } else if (filename.split(".")[1] == "dat") {
+            var number = parseInt(filename.split(".")[0].split(file_prefix)[1]);
             MyClass.transform(number, max_x, max_y, max_z, file_folder, (error, info) => {
                 if (error) {
                     console.log('put name Error: ', error);
-                    var data = {target:1,msg: number+"帧转换失败"};
+                    var data = {target: 1, msg: number + "帧转换失败"};
                     res.send(data);
                     res.end();
                     return;
                 }
-                var data = {target:1,msg: number+"帧tijiao成功"};
+                var data = {target: 1, msg: number + "帧转换成功"};
                 // c.end();
                 res.send(data);
                 res.end();
             });
-        }else{
-            var data = {target:0};
+        } else {
+            var data = {target: 0};
             res.send(data);
             res.end();
         }
@@ -1632,67 +1628,113 @@ app.post('/update_transform', function (req, res, next) {
 });
 
 
-//
-// app.post('/uploads_particle', function (req, res, next) {
-//     var form = new formidable.IncomingForm();
-//     form.keepExtensions = true;
-//     form.encoding = 'utf-8';
-//     form.maxFileSize = 4 * 1024 * 1024 * 1024;
-//     form.uploadDir = path.join(__dirname, 'public/particle_source');
-//     form.multiples = true;
-//     form.parse(req, function (err, fields, files) {
-//             console.log("开始上传粒子");
-//             for (var i = 0; i < files.upload.length; i++) {
-//                 var file = files.upload[i];
-//                 var pathnameArray = file.name.split('/');
-//                 var folderPath = form.uploadDir;
-//                 for (var j = 0; j < pathnameArray.length - 1; j++) {
-//                     folderPath = path.join(folderPath, pathnameArray[j]);
-//                     if (!fs.existsSync(folderPath)) {
-//                         //如果不存在上传文件夹名称，就创建
-//                         try {
-//                             fs.mkdirSync(folderPath, 0o777);
-//                             ("成功创建目录" + folderPath);
-//                         } catch (e) {
-//                             console.log(e.name + ": " + e.message);
-//                         }
-//                     }
-//                 }
-//                 fs.renameSync(file.path, path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
-//                 if (pathnameArray[pathnameArray.length - 1].split(".")[1] == "json") {
-//                     console.log("获得json文件");
-//                     var data = fs.readFileSync(path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
-//                     var filedata = data.toString();//将二进制的数据转换为字符串
-//                     console.log(filedata);
-//                     filedata = JSON.parse(filedata);//将字符串转换为json对象
-//                     id = filedata.id;
-//                     name = filedata.name;
-//                     max_frame = parseInt(filedata.max_frame);
-//                     max_x = parseInt(filedata.max_x);
-//                     max_y = parseInt(filedata.max_y);
-//                     max_z = parseInt(filedata.max_z);
-//                     file_folder = filedata.file_folder;
-//                     first_file = filedata.first_file;
-//                 }
-//             }
-//             // try {
-//             MyClass.transform(file_folder, max_x, max_y, max_z, max_frame, (error, info) => {
-//
-//                 if (error) {
-//                     console.log('put name Error: ', error);
-//                     return;
-//                 }
-//                 // c.end();
-//                 res.send(data);
-//                 res.end();
-//             });
-//             // } catch (e) {
-//             //     console.log(e.name + ": " + e.message);
-//             //     var data = {msg: "上传失败"};
-//             //     // c.end();
-//             //     res.send(data);
-//             //     res.end();
-//             // }
-//         }
-//     );
-// });
+//一般文件上传函数，存于public/Files文件夹，Files文件夹（如无请新建）被项目忽略，如还未设置请项目根目录下.gitignore文件（如无请新建）中添加文本public/Files
+app.post('/upload_things', function (req, res, next) {
+    //form表单
+    try {
+        var form = new formidable.IncomingForm();
+        //保留后缀
+        form.keepExtensions = true;
+        form.encoding = 'utf-8';
+        form.maxFileSize = 4 * 1024 * 1024 * 1024;
+        //上传文件路径,采用path路径拼接
+        form.uploadDir = path.join(__dirname, 'public/Files');
+        //如果上传文件夹（多个文件）需将 默认值改为TRUE
+        form.multiples = true;
+        form.parse(req, function (err, fields, files) {
+            var folderPath = form.uploadDir;
+            var file = files.files;
+            var pathnameArray = file.name.split('/');
+            for (var j = 0; j < pathnameArray.length - 1; j++) {
+                folderPath = path.join(folderPath, pathnameArray[j]);
+                if (!fs.existsSync(folderPath)) {
+                    try {
+                        fs.mkdirSync(folderPath, 0o777);
+                        ("成功创建目录" + folderPath);
+                    } catch (e) {
+                        console.log(e.name + ": " + e.message);
+                    }
+                }
+            }
+            var filename = pathnameArray[pathnameArray.length - 1];
+            var newpath = path.join(folderPath, filename);
+            fs.renameSync(file.path, newpath);
+            // console.log(newpath);
+            var data = {status: 1, msg: filename+"上传成功"};
+            // c.end();
+            res.send(data);
+            res.end();
+        })
+    } catch (error) {
+        console.log(error.name + ": " + error.message);
+        var data = {status: 0, msg: filename+"上传失败"};
+        // c.end();
+        res.send(data);
+        res.end();
+    }
+});
+
+
+app.post('/uploads_particle', function (req, res, next) {
+    var form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.encoding = 'utf-8';
+    form.maxFileSize = 4 * 1024 * 1024 * 1024;
+    form.uploadDir = path.join(__dirname, 'public/particle_source');
+    form.multiples = true;
+    form.parse(req, function (err, fields, files) {
+            console.log("开始上传粒子");
+            for (var i = 0; i < files.upload.length; i++) {
+                var file = files.upload[i];
+                var pathnameArray = file.name.split('/');
+                var folderPath = form.uploadDir;
+                for (var j = 0; j < pathnameArray.length - 1; j++) {
+                    folderPath = path.join(folderPath, pathnameArray[j]);
+                    if (!fs.existsSync(folderPath)) {
+                        //如果不存在上传文件夹名称，就创建
+                        try {
+                            fs.mkdirSync(folderPath, 0o777);
+                            ("成功创建目录" + folderPath);
+                        } catch (e) {
+                            console.log(e.name + ": " + e.message);
+                        }
+                    }
+                }
+                fs.renameSync(file.path, path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
+                if (pathnameArray[pathnameArray.length - 1].split(".")[1] == "json") {
+                    console.log("获得json文件");
+                    var data = fs.readFileSync(path.join(folderPath, pathnameArray[pathnameArray.length - 1]));
+                    var filedata = data.toString();//将二进制的数据转换为字符串
+                    console.log(filedata);
+                    filedata = JSON.parse(filedata);//将字符串转换为json对象
+                    id = filedata.id;
+                    name = filedata.name;
+                    max_frame = parseInt(filedata.max_frame);
+                    max_x = parseInt(filedata.max_x);
+                    max_y = parseInt(filedata.max_y);
+                    max_z = parseInt(filedata.max_z);
+                    file_folder = filedata.file_folder;
+                    first_file = filedata.first_file;
+                }
+            }
+            // try {
+            MyClass.transform(file_folder, max_x, max_y, max_z, max_frame, (error, info) => {
+
+                if (error) {
+                    console.log('put name Error: ', error);
+                    return;
+                }
+                // c.end();
+                res.send(data);
+                res.end();
+            });
+            // } catch (e) {
+            //     console.log(e.name + ": " + e.message);
+            //     var data = {msg: "上传失败"};
+            //     // c.end();
+            //     res.send(data);
+            //     res.end();
+            // }
+        }
+    );
+});

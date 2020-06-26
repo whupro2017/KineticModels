@@ -241,6 +241,7 @@ function onMarkThings(longitude, latitude, height, thing_mark_id) {
                 Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
             );
             console.log(thing_gltf)
+            console.log(modelMatrix);
             var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
                     url: thing_gltf,
                     modelMatrix: modelMatrix,
@@ -340,11 +341,30 @@ function onDrawRoute(longitude, latitude, height, cartesianCoordinates) {
 }
 
 function onAdjustModel(movement) {
-    pick = viewer.scene.pick(movement.position);
+    /*var windowPosition = viewer.camera.getPickRay(movement.position);
+    var cartesianCoordinates = viewer.scene.globe.pick(windowPosition, viewer.scene);
+    var pick = viewer.scene.pick(movement.position);
+    // if (scene.pickPositionSupported && Cesium.defined(pickedObject)) {
+    if (cartesianCoordinates != undefined) {
+        if (Cesium.defined(pick)) {
+            console.log("点击到物体");
+            console.log(pick);
+            cartesianCoordinates = viewer.scene.pickPosition(movement.position);
+        } else {
+            console.log("点击到地面");
+        }
+        var cartoCoordinates = viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesianCoordinates);
+        var longitude = Cesium.Math.toDegrees(cartoCoordinates.longitude);
+        var latitude = Cesium.Math.toDegrees(cartoCoordinates.latitude);
+        var height = cartoCoordinates.height;
+        console.log("经度" + longitude + "纬度" + latitude + '高度：:' + height);
+    }*/
+    var pick = viewer.scene.pick(movement.position);
     if (pick != undefined) {
         pick.primitive.silhouetteColor = Cesium.Color.RED;
+        pick.primitive.silhouetteSize = 15.0;
         entity3 = pick.primitive;
-        alert(pick.primitive.toString());
+        console.log(pick.primitive.toString());
     }
 }
 

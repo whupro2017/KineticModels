@@ -63,8 +63,8 @@
                 <input type="file" id="fileMutiply" name="fileMutiply" style="display:none" webkitdirectory>
                 <input type="file" id="upload_files" name="upload_files" style="display:none" webkitdirectory>
                 <!--<form action="/upload" , enctype="multipart/form-data" method="post" style="display:none">-->
-                    <!--<input type="file" name="upload" multiple="multipart">-->
-                    <!--<input type="submit" value="确认上传文件">-->
+                <!--<input type="file" name="upload" multiple="multipart">-->
+                <!--<input type="submit" value="确认上传文件">-->
                 <!--</form>-->
                 <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
                 <!--<input type="file" id="kinetic_file" webkitdirectory directory style="display:none" onchange="get_kinetic_file(this.value)">-->
@@ -138,7 +138,7 @@
                     <tr>
                         <td><span style="color:white">OffsetY:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
-                                   data-bind="value: 'OffsetY', valueUpdate: 'input'" style="width: 80px"></td>
+                                   data-bind="value: OffsetY, valueUpdate: 'input'" style="width: 80px"></td>
                         <td><input type="text" disabled="disabled" size="3" data-bind="value: OffsetY"
                                    style="width: 40px"></td>
                     </tr>
@@ -1116,9 +1116,11 @@
                             </button>
                         </td>
                         <td>
-                            <button id="import" class="charts" onclick="upload_things()"><img src="icons/import.png" width="25px"
-                                                                               height="25px" title="上传"
-                                                                               style="margin-left: -30px"></button>
+                            <button id="import" class="charts" onclick="upload_things()"><img src="icons/import.png"
+                                                                                              width="25px"
+                                                                                              height="25px" title="上传"
+                                                                                              style="margin-left: -30px">
+                            </button>
                         </td>
                         <td>
                             <button id="mark" class="charts" onclick="mark_thing()"><img src="icons/mark.png"
@@ -1426,11 +1428,14 @@
     );
     var originModelMadrix = entity3.modelMatrix.clone();
     var originScale = entity3.scale;
+    var originOffset = {"lng": 0, "lat": 0, "height": 0};
+
     viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 700.0)
     });//初始视角
 
     update_model_hpr(entity3);
+
     function upload_things() {
         $("#upload_files").click();
     }

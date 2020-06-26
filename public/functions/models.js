@@ -147,6 +147,23 @@ function rightmodelmodify() {
     }
 }
 
+var currentPos = {"lng": 0, "lat": 0, "height": 0};
+
+function extract_model_pos(entity, result) {
+    var originCart3 = new Cesium.Cartesian3();
+    Cesium.Matrix4.getTranslation(entity.modelMatrix, originCart3);
+    var originCarto = Cesium.Cartographic.fromCartesian(originCart3);
+    var lng = Cesium.Math.toDegrees(originCarto.longitude);
+    var lat = Cesium.Math.toDegrees(originCarto.latitude);
+    var height = originCarto.height;
+
+    console.log(originCart3 + " " + lng + " " + lat + " " + height);
+    result.lng = lng;
+    result.lat = lat;
+    result.height = height;
+    //const mat3 = Cesium.Matrix4.getRotation(m3, new Cesium.Matrix3());
+}
+
 function update_model_hpr(entity) {
     Cesium.knockout.getObservable(viewModel, 'Enlarge').subscribe(function (Enlarge) {
         //originModelMadrix = entity.modelMatrix;
@@ -159,16 +176,60 @@ function update_model_hpr(entity) {
         console.log(entity.modelMatrix.toString());
     });
 
-    /*Cesium.knockout.getObservable(viewModel, 'OffsetX').subscribe(function (OffsetX) {
+    Cesium.knockout.getObservable(viewModel, 'OffsetX').subscribe(function (OffsetX) {
         OffsetX = Number(OffsetX);
         if (isNaN(OffsetX)) {
             return;
         }
-        var m = originModelMadrix;
-        var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
-        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        extract_model_pos(entity, currentPos);
+        var rect = new Cesium.Rectangle();
+        viewer.camera.computeViewRectangle(viewer.scene.globe.ellipsoid, rect);
+        var vx = (Cesium.Math.toDegrees(rect.east) - Cesium.Math.toDegrees(rect.west)) / 100;
+        var x = currentPos.lng + vx * (OffsetX - originOffset.lng);
+        var position = Cesium.Cartesian3.fromDegrees(x, currentPos.lat, currentPos.height);
+        var m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+        entity.modelMatrix = m;
+        originOffset.lng = OffsetX;
         console.log(entity.modelMatrix.toString());
-    });*/
+        //var m = originModelMadrix;
+        /*var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
+        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
+        console.log(entity.modelMatrix.toString());*/
+    });
+
+    Cesium.knockout.getObservable(viewModel, 'OffsetY').subscribe(function (OffsetY) {
+        OffsetY = Number(OffsetY);
+        if (isNaN(OffsetY)) {
+            return;
+        }
+        extract_model_pos(entity, currentPos);
+        var rect = new Cesium.Rectangle();
+        viewer.camera.computeViewRectangle(viewer.scene.globe.ellipsoid, rect);
+        var vy = (Cesium.Math.toDegrees(rect.north) - Cesium.Math.toDegrees(rect.south)) / 100;
+        var y = currentPos.lat + vy * (OffsetY - originOffset.lat);
+        var position = Cesium.Cartesian3.fromDegrees(currentPos.lng, y, currentPos.height);
+        var m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+        entity.modelMatrix = m;
+        originOffset.lat = OffsetY;
+        console.log(entity.modelMatrix.toString());
+    });
+
+    Cesium.knockout.getObservable(viewModel, 'OffsetZ').subscribe(function (OffsetZ) {
+        OffsetZ = Number(OffsetZ);
+        if (isNaN(OffsetZ)) {
+            return;
+        }
+        extract_model_pos(entity, currentPos);
+        var rect = new Cesium.Rectangle();
+        viewer.camera.computeViewRectangle(viewer.scene.globe.ellipsoid, rect);
+        var vz = currentPos.height / 100;
+        var z = currentPos.height + vz * (OffsetZ - originOffset.height);
+        var position = Cesium.Cartesian3.fromDegrees(currentPos.lng, currentPos.lat, z);
+        var m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+        entity.modelMatrix = m;
+        originOffset.height = OffsetZ;
+        console.log(entity.modelMatrix.toString());
+    });
 
     Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
         RotateX = Number(RotateX);

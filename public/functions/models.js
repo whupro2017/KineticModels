@@ -166,14 +166,14 @@ function extract_model_pos(entity, result) {
 
 function update_model_hpr(entity) {
     Cesium.knockout.getObservable(viewModel, 'Enlarge').subscribe(function (Enlarge) {
-        //originModelMadrix = entity.modelMatrix;
-        console.log(entity.modelMatrix.toString());
+        //console.log(entity.modelMatrix.toString());
         Enlarge = Number(Enlarge);
         if (isNaN(Enlarge)) {
             return;
         }
         entity.scale = originScale * Math.pow(1.1, Enlarge);
-        console.log(entity.modelMatrix.toString());
+        //originScale = entity.scale;
+        //console.log(entity.modelMatrix.toString());
     });
 
     Cesium.knockout.getObservable(viewModel, 'OffsetX').subscribe(function (OffsetX) {
@@ -236,10 +236,12 @@ function update_model_hpr(entity) {
         if (isNaN(RotateX)) {
             return;
         }
+        //extract_model_pos(entity, currentPos);
         var m = originModelMadrix;
         var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
         entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
         console.log(entity.modelMatrix.toString());
+        originModelMadrix = entity.modelMatrix;
     });
 
     Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
@@ -251,6 +253,7 @@ function update_model_hpr(entity) {
         var m1 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(RotateY));
         entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
         console.log(entity.modelMatrix.toString());
+        originModelMadrix = entity.modelMatrix;
     });
 
     Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
@@ -262,7 +265,9 @@ function update_model_hpr(entity) {
         var m1 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(RotateZ));
         entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
         console.log(entity.modelMatrix.toString());
+        originModelMadrix = entity.modelMatrix;
     });//Sandcastle_End
-    //originModelMadrix = entity.modelMatrix;
+    alert("Step 0");
     Sandcastle.finishedLoading();
+    alert("Step 1");
 }

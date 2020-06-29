@@ -361,10 +361,15 @@ function onAdjustModel(movement) {
     }*/
     var pick = viewer.scene.pick(movement.position);
     if (pick != undefined) {
-        pick.primitive.silhouetteColor = Cesium.Color.RED;
-        pick.primitive.silhouetteSize = 15.0;
-        entity3 = pick.primitive;
-        console.log(pick.primitive.toString());
+        //pick.primitive.silhouetteColor = Cesium.Color.RED;
+        //pick.primitive.silhouetteSize = 15.0;
+        //entity3 = pick.primitive;
+        pick.primitive.color = Cesium.Color.RED;
+        alert(pick.primitive.modelMatrix + "****" + pick.primitive.toString());
+        originModelMadrix = pick.primitive.modelMatrix.clone();
+        originScale = pick.primitive.scale;
+        originOffset = {"lng": 0, "lat": 0, "height": 0};
+        update_model_hpr(pick.primitive);
     }
 }
 

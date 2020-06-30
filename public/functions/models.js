@@ -164,16 +164,32 @@ function extract_model_pos(entity, result) {
     //const mat3 = Cesium.Matrix4.getRotation(m3, new Cesium.Matrix3());
 }
 
+function update_model_pos(position, entity) {
+    var m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+    /*const rx = Cesium.Matrix4.fromRotationTranslation(Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(originParam.rx)));
+    const ry = Cesium.Matrix4.fromRotationTranslation(Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(originParam.ry)));
+    const rz = Cesium.Matrix4.fromRotationTranslation(Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(originParam.rz)));
+    m = Cesium.Matrix4.multiply(m, rx, m);
+    m = Cesium.Matrix4.multiply(m, ry, m);
+    m = Cesium.Matrix4.multiply(m, rz, m);*/
+    const m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(originParam.rx));
+    Cesium.Matrix4.multiplyByMatrix3(m, m1, m);
+    const m2 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(originParam.ry));
+    Cesium.Matrix4.multiplyByMatrix3(m, m2, m);
+    const m3 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(originParam.rz));
+    Cesium.Matrix4.multiplyByMatrix3(m, m3, m);
+    entity.modelMatrix = m.clone();
+    originModelMadrix = entity.modelMatrix.clone();
+    console.log(entity.modelMatrix.toString());
+}
+
 function update_model_hpr(entity) {
     Cesium.knockout.getObservable(viewModel, 'Enlarge').subscribe(function (Enlarge) {
-        //console.log(entity.modelMatrix.toString());
         Enlarge = Number(Enlarge);
         if (isNaN(Enlarge)) {
             return;
         }
-        entity.scale = originScale * Math.pow(1.1, Enlarge);
-        //originScale = entity.scale;
-        //console.log(entity.modelMatrix.toString());
+        entity.scale = originParam.scale * Math.pow(1.1, Enlarge);
     });
 
     Cesium.knockout.getObservable(viewModel, 'OffsetX').subscribe(function (OffsetX) {
@@ -182,19 +198,13 @@ function update_model_hpr(entity) {
             return;
         }
         extract_model_pos(entity, currentPos);
-        var rect = new Cesium.Rectangle();
+        const rect = new Cesium.Rectangle();
         viewer.camera.computeViewRectangle(viewer.scene.globe.ellipsoid, rect);
-        var vx = (Cesium.Math.toDegrees(rect.east) - Cesium.Math.toDegrees(rect.west)) / 100;
-        var x = currentPos.lng + vx * (OffsetX - originOffset.lng);
-        var position = Cesium.Cartesian3.fromDegrees(x, currentPos.lat, currentPos.height);
-        var m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-        entity.modelMatrix = m;
-        originOffset.lng = OffsetX;
-        console.log(entity.modelMatrix.toString());
-        //var m = originModelMadrix;
-        /*var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
-        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
-        console.log(entity.modelMatrix.toString());*/
+        const vx = (Cesium.Math.toDegrees(rect.east) - Cesium.Math.toDegrees(rect.west)) / 100;
+        const x = currentPos.lng + vx * (OffsetX - originParam.lng);
+        const position = Cesium.Cartesian3.fromDegrees(x, currentPos.lat, currentPos.height);
+        update_model_pos(position, entity);
+        originParam.lng = OffsetX;
     });
 
     Cesium.knockout.getObservable(viewModel, 'OffsetY').subscribe(function (OffsetY) {
@@ -203,15 +213,13 @@ function update_model_hpr(entity) {
             return;
         }
         extract_model_pos(entity, currentPos);
-        var rect = new Cesium.Rectangle();
+        const rect = new Cesium.Rectangle();
         viewer.camera.computeViewRectangle(viewer.scene.globe.ellipsoid, rect);
-        var vy = (Cesium.Math.toDegrees(rect.north) - Cesium.Math.toDegrees(rect.south)) / 100;
-        var y = currentPos.lat + vy * (OffsetY - originOffset.lat);
-        var position = Cesium.Cartesian3.fromDegrees(currentPos.lng, y, currentPos.height);
-        var m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-        entity.modelMatrix = m;
-        originOffset.lat = OffsetY;
-        console.log(entity.modelMatrix.toString());
+        const vy = (Cesium.Math.toDegrees(rect.north) - Cesium.Math.toDegrees(rect.south)) / 100;
+        const y = currentPos.lat + vy * (OffsetY - originParam.lat);
+        const position = Cesium.Cartesian3.fromDegrees(currentPos.lng, y, currentPos.height);
+        update_model_pos(position, entity);
+        originParam.lat = OffsetY;
     });
 
     Cesium.knockout.getObservable(viewModel, 'OffsetZ').subscribe(function (OffsetZ) {
@@ -220,15 +228,13 @@ function update_model_hpr(entity) {
             return;
         }
         extract_model_pos(entity, currentPos);
-        var rect = new Cesium.Rectangle();
+        const rect = new Cesium.Rectangle();
         viewer.camera.computeViewRectangle(viewer.scene.globe.ellipsoid, rect);
-        var vz = currentPos.height / 100;
-        var z = currentPos.height + vz * (OffsetZ - originOffset.height);
-        var position = Cesium.Cartesian3.fromDegrees(currentPos.lng, currentPos.lat, z);
-        var m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-        entity.modelMatrix = m;
-        originOffset.height = OffsetZ;
-        console.log(entity.modelMatrix.toString());
+        const vz = (viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).height) / 100;
+        const z = currentPos.height + vz * (OffsetZ - originParam.height);
+        const position = Cesium.Cartesian3.fromDegrees(currentPos.lng, currentPos.lat, z);
+        update_model_pos(position, entity);
+        originParam.height = OffsetZ;
     });
 
     Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
@@ -236,12 +242,10 @@ function update_model_hpr(entity) {
         if (isNaN(RotateX)) {
             return;
         }
-        //extract_model_pos(entity, currentPos);
-        var m = originModelMadrix;
-        var m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(RotateX));
-        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
-        console.log(entity.modelMatrix.toString());
-        originModelMadrix = entity.modelMatrix;
+        extract_model_pos(entity, currentPos);
+        originParam.rx = RotateX;
+        const position = Cesium.Cartesian3.fromDegrees(currentPos.lng, currentPos.lat, currentPos.height);
+        update_model_pos(position, entity);
     });
 
     Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
@@ -249,11 +253,10 @@ function update_model_hpr(entity) {
         if (isNaN(RotateY)) {
             return;
         }
-        var m = originModelMadrix;
-        var m1 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(RotateY));
-        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
-        console.log(entity.modelMatrix.toString());
-        originModelMadrix = entity.modelMatrix;
+        extract_model_pos(entity, currentPos);
+        originParam.ry = RotateY;
+        const position = Cesium.Cartesian3.fromDegrees(currentPos.lng, currentPos.lat, currentPos.height);
+        update_model_pos(position, entity);
     });
 
     Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
@@ -261,13 +264,10 @@ function update_model_hpr(entity) {
         if (isNaN(RotateZ)) {
             return;
         }
-        var m = originModelMadrix;
-        var m1 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(RotateZ));
-        entity.modelMatrix = Cesium.Matrix4.multiplyByMatrix3(m, m1, new Cesium.Matrix4());
-        console.log(entity.modelMatrix.toString());
-        originModelMadrix = entity.modelMatrix;
+        extract_model_pos(entity, currentPos);
+        originParam.rz = RotateZ;
+        const position = Cesium.Cartesian3.fromDegrees(currentPos.lng, currentPos.lat, currentPos.height);
+        update_model_pos(position, entity);
     });//Sandcastle_End
-    alert("Step 0");
     Sandcastle.finishedLoading();
-    alert("Step 1");
 }

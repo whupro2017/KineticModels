@@ -181,7 +181,7 @@ app.get("/select_thing_scene", function (req, res) {
         connection.query('SELECT lon,lat from scene_t where scene_id=' + req.query.value, function (error, results, fields) {
             if (error) return console.error(error);
             data.location = results;
-            connection.query('SELECT id,thing_type,thing_id,gltf_path,start_lon,start_lat,start_height from thing_relevant where sceneid=' + req.query.value, function (error, results, fields) {
+            connection.query('SELECT id,thing_type,thing_id,gltf_path,scale,start_lon,start_lat,start_height,end_lon,end_lat,end_height,angle_lon,angle_lat,angle_height from thing_relevant where sceneid=' + req.query.value, function (error, results, fields) {
                 if (error) return console.error(error);
                 data.relevant_info = results;
                 // console.log(data);

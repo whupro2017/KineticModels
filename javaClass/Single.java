@@ -15,8 +15,7 @@ class SingleRunnable implements Runnable {
     int maxz;
     String path;
 
-    @Override
-    public void run() {
+    @Override public void run() {
         try {
             Single.createFrame(i, maxx, maxy, maxz, path);
             synchronized (Single.class) {
@@ -48,9 +47,11 @@ public class Single {
     public static void main(String[] args) throws IOException, InterruptedException {
     }
 
-    public static void transform(int framenumber, int maxx, int maxy, int maxz, String path) throws IOException, InterruptedException {
-        if (threadPoolExecutor == null){
-            threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    public static void transform(int framenumber, int maxx, int maxy, int maxz, String path)
+            throws IOException, InterruptedException {
+        if (threadPoolExecutor == null) {
+            threadPoolExecutor =
+                    (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
             threadPoolExecutor.setKeepAliveTime(5, TimeUnit.SECONDS);
         }
         threadPoolExecutor.submit(new SingleRunnable(framenumber, maxx, maxy, maxz, path));
@@ -62,18 +63,19 @@ public class Single {
             file.mkdirs();
         }
 
-        FileReader somke_fr = new FileReader(System.getProperty("user.dir") + "/public/particle_source/" + filepath + "frame" + frameN + ".dat");
+        FileReader somke_fr = new FileReader(
+                System.getProperty("user.dir") + "/public/particle_source/" + filepath + "frame" + frameN + ".dat");
         BufferedReader smoke_bf = new BufferedReader(somke_fr);
-//        FileReader fire_fr = new FileReader("E:\\Desktop\\room\\room_06_02\\trace\\frame" + frameN + ".dat");
-//        BufferedReader fire_bf = new BufferedReader(fire_fr);
+        //        FileReader fire_fr = new FileReader("E:\\Desktop\\room\\room_06_02\\trace\\frame" + frameN + ".dat");
+        //        BufferedReader fire_bf = new BufferedReader(fire_fr);
         int[] smoke = new int[80000];
-//        int[] fire = new int[80000];
+        //        int[] fire = new int[80000];
         String line1 = null;
-//        String line2 = null;
+        //        String line2 = null;
         int p = 0;
         while ((line1 = smoke_bf.readLine()) != null) {
             smoke[p++] = Integer.parseInt(line1);
-//            fire[p++] = Integer.parseInt(line2);
+            //            fire[p++] = Integer.parseInt(line2);
         }
         for (int k = 0; k <= maxz; k++) {
             createImage(maxx, maxy, k, frameN, smoke, filepath);
@@ -82,11 +84,14 @@ public class Single {
         smoke_bf.close();
     }
 
-    public static void createImage(int maxx, int maxy, int heightN, int frameN, int[] smoke, String path) throws IOException {
+    public static void createImage(int maxx, int maxy, int heightN, int frameN, int[] smoke, String path)
+            throws IOException {
         BufferedImage bi = new BufferedImage(maxx + 1, maxy + 1, BufferedImage.TYPE_INT_BGR);
 
-        File picture = new File(System.getProperty("user.dir") + "/public/particle/" + path + "frame" + frameN + "/image" + heightN + ".png");
-//        File picture = new File("E:\\Desktop\\new\\fire2\\frame" + frameN + "\\image" + heightN + ".png");
+        File picture = new File(
+                System.getProperty("user.dir") + "/public/particle/" + path + "frame" + frameN + "/image" + heightN
+                        + ".png");
+        //        File picture = new File("E:\\Desktop\\new\\fire2\\frame" + frameN + "\\image" + heightN + ".png");
         try {
             if (picture.exists()) {
                 picture.delete();

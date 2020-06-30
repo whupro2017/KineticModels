@@ -1427,8 +1427,8 @@
         })
     );
     var originModelMadrix = entity3.modelMatrix.clone();
-    var originScale = entity3.scale;
-    var originOffset = {"lng": 0, "lat": 0, "height": 0};
+    var originParam = {"scale": entity3.scale, "lng": 0, "lat": 0, "height": 0, "rx": 0, "ry": 0, "rz": 0};
+    var originPickedObject = null;
 
     viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 700.0)

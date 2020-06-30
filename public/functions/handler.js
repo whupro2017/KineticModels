@@ -234,7 +234,8 @@ function onMarkThings(longitude, latitude, height, thing_mark_id) {
         "gltf_path": thing_gltf,
         "id": thing_mark_id
     }, function (data) {
-        console.log(data, status);
+        alert(data + "\n" + status);
+        //console.log(data, status);
         if (data.status == 1) {
 
             var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
@@ -340,7 +341,7 @@ function onDrawRoute(longitude, latitude, height, cartesianCoordinates) {
     }
 }
 
-function onAdjustModel(movement) {
+function onAdjustModel(pick) {
     /*var windowPosition = viewer.camera.getPickRay(movement.position);
     var cartesianCoordinates = viewer.scene.globe.pick(windowPosition, viewer.scene);
     var pick = viewer.scene.pick(movement.position);
@@ -359,17 +360,21 @@ function onAdjustModel(movement) {
         var height = cartoCoordinates.height;
         console.log("经度" + longitude + "纬度" + latitude + '高度：:' + height);
     }*/
-    var pick = viewer.scene.pick(movement.position);
+    //var pick = viewer.scene.pick(movement.position);
     if (pick != undefined) {
         //pick.primitive.silhouetteColor = Cesium.Color.RED;
         //pick.primitive.silhouetteSize = 15.0;
         //entity3 = pick.primitive;
         pick.primitive.color = Cesium.Color.RED;
-        alert(pick.primitive.modelMatrix + "****" + pick.primitive.toString());
+        console.log(pick.primitive.modelMatrix + "****" + pick.primitive);
+        if (pick.primitive.modelMatrix == undefined) return;
         originModelMadrix = pick.primitive.modelMatrix.clone();
-        originScale = pick.primitive.scale;
-        originOffset = {"lng": 0, "lat": 0, "height": 0};
+        originParam = {"scale": pick.primitive.scale, "lng": 0, "lat": 0, "height": 0, "rx": 0, "ry": 0, "rz": 0};
+        if (originPickedObject != null) {
+            originPickedObject.color = Cesium.Color.WHITE;
+        }
         update_model_hpr(pick.primitive);
+        originPickedObject = pick.primitive;
     }
 }
 
@@ -413,7 +418,7 @@ handler.setInputAction(function (movement) {
                 onLocateModel(longitude, latitude, height);
                 break;
             case "adjust_model":
-                onAdjustModel(movement);
+                onAdjustModel(pick);
                 break;
             case "toolbar_measure":
                 break;

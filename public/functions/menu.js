@@ -729,9 +729,16 @@ function select_scene(scene_id) {
         console.log(data);//
         var relevant_info = data.relevant_info;
         for (var i = 0; i < relevant_info.length; i++) {
+            var scale = relevant_info[i].scale;
             var longitude = relevant_info[i].start_lon;
             var latitude = relevant_info[i].start_lat;
-            var height = relevant_info[i].start_height
+            var height = relevant_info[i].start_height;
+            var end_lon = relevant_info[i].end_lon;
+            var end_lat = relevant_info[i].end_lat;
+            var end_height = relevant_info[i].end_height;
+            var angle_lon = relevant_info[i].angle_lon;
+            var angle_lat = relevant_info[i].angle_lat;
+            var angle_height = relevant_info[i].angle_height;
             var gltf_path = relevant_info[i].gltf_path;
             var id = relevant_info[i].id;
             var thing_type = relevant_info[i].thing_type;
@@ -745,14 +752,34 @@ function select_scene(scene_id) {
                 Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
             );
 
+            var m = Cesium.Transforms.eastNorthUpToFixedFrame(Cesium.Cartesian3.fromDegrees(longitude, latitude, height));
+            const m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(angle_lon));
+            Cesium.Matrix4.multiplyByMatrix3(m, m1, m);
+            const m2 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(angle_lat));
+            Cesium.Matrix4.multiplyByMatrix3(m, m2, m);
+            const m3 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(angle_height));
+            Cesium.Matrix4.multiplyByMatrix3(m, m3, m);
+
             var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
                     url: gltf_path,
-                    modelMatrix: modelMatrix,
+                    modelMatrix: m,
                     // minimumPixelSize : 512,
-                    scale: 10,
+                    scale: scale,
                     // maximumScale : 200000
                 })
             );
+
+            originModelMadrix = entity4.modelMatrix.clone();
+            originParam = {
+                "scale": scale,
+                "lng": longitude,
+                "lat": latitude,
+                "height": height,
+                "rx": angle_lon,
+                "ry": angle_lat,
+                "rz": angle_height
+            };
+
             // const position = Cesium.Cartesia n3.fromDegrees(longitude, latitude, height);
             // const hpRoll = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(0), Cesium.Math.toRadians(0), Cesium.Math.toRadians(0));
             // const orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpRoll);

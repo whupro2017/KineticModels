@@ -12,10 +12,9 @@ class MixRunnable implements Runnable {
     int maxy;
     int maxz;
 
-    @Override
-    public void run() {
+    @Override public void run() {
         try {
-            Mix.createFrame(i,maxx,maxy,maxz);
+            Mix.createFrame(i, maxx, maxy, maxz);
             synchronized (Mix.class) {
                 Mix.finnishedNum++;
             }
@@ -39,25 +38,28 @@ public class Mix {
         System.out.println("success");
     }
 
-
     public static void main(String[] args) throws IOException, InterruptedException {
     }
 
-    public static void transform(String path, int maxx, int maxy, int maxz, int maxframe) throws IOException, InterruptedException {
+    public static void transform(String path, int maxx, int maxy, int maxz, int maxframe)
+            throws IOException, InterruptedException {
         ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (int i = 0; i <= maxframe; i++) {
-            pool.submit(new MixRunnable(i,maxx, maxy, maxz));
+            pool.submit(new MixRunnable(i, maxx, maxy, maxz));
         }
-        while (finnishedNum < maxframe+1) {
+        while (finnishedNum < maxframe + 1) {
             Thread.sleep(1000);
         }
         pool.shutdown();
     }
 
-    public static void createImage(int maxx,int maxy,int heightN, int frameN, int[] smoke, int[] fire) throws IOException {
-        BufferedImage bi = new BufferedImage(maxx+1, maxy+1, BufferedImage.TYPE_INT_BGR);
-        File picture = new File(System.getProperty("user.dir") + "/particle/mix/frame" + frameN + "/image" + heightN + ".png");
-//        File picture = new File("E:\\Desktop\\new\\fire2\\frame" + frameN + "\\image" + heightN + ".png");
+    public static void createImage(int maxx, int maxy, int heightN, int frameN, int[] smoke, int[] fire)
+            throws IOException {
+        BufferedImage bi = new BufferedImage(maxx + 1, maxy + 1, BufferedImage.TYPE_INT_BGR);
+        File picture =
+                new File(System.getProperty("user.dir") + "/particle/mix/frame" + frameN + "/image" + heightN + ".png");
+        // File picture = new File("E:\\Desktop\\new\\fire2\\frame" + frameN + "\\image"
+        // + heightN + ".png");
         try {
             if (picture.exists()) {
                 picture.delete();
@@ -67,10 +69,10 @@ public class Mix {
             e.printStackTrace();
         }
         Graphics2D g = bi.createGraphics();
-        bi = g.getDeviceConfiguration().createCompatibleImage(maxx+1, maxy+1, Transparency.TRANSLUCENT);
+        bi = g.getDeviceConfiguration().createCompatibleImage(maxx + 1, maxy + 1, Transparency.TRANSLUCENT);
         g.dispose();
         g = bi.createGraphics();
-        int count = heightN * (maxx+1)*(maxy+1);
+        int count = heightN * (maxx + 1) * (maxy + 1);
         for (int i = 0; i <= maxx; i++) {
             for (int j = 0; j <= maxy; j++) {
                 if (smoke[count] != 0) {
@@ -112,7 +114,7 @@ public class Mix {
             fire[p++] = Integer.parseInt(line2);
         }
         for (int k = 0; k <= maxz; k++) {
-            createImage(maxx,maxy,k, frameN, smoke, fire);
+            createImage(maxx, maxy, k, frameN, smoke, fire);
         }
         System.out.println(frameN + "  finished");
         smoke_bf.close();

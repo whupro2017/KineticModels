@@ -131,7 +131,8 @@ function killModelClose() {
 }
 
 function modelModifyDone() {
-
+    if (currentPickedObject == undefined) return;
+    onSaveMarkThings(currentPickedObject.id);
 }
 
 function modelModifyClose() {
@@ -186,7 +187,8 @@ function update_model_pos(position, entity) {
 function update_model_hpr(entity) {
     Cesium.knockout.getObservable(viewModel, 'Enlarge').subscribe(function (Enlarge) {
         Enlarge = Number(Enlarge);
-        if (isNaN(Enlarge)) {
+        console.log(Enlarge);
+        if (isNaN(Enlarge) || entity.id != currentPickedObject.id) {
             return;
         }
         entity.scale = originParam.scale * Math.pow(1.1, Enlarge);
@@ -194,7 +196,7 @@ function update_model_hpr(entity) {
 
     Cesium.knockout.getObservable(viewModel, 'OffsetX').subscribe(function (OffsetX) {
         OffsetX = Number(OffsetX);
-        if (isNaN(OffsetX)) {
+        if (isNaN(OffsetX) || entity.id != currentPickedObject.id) {
             return;
         }
         extract_model_pos(entity, currentPos);
@@ -209,7 +211,7 @@ function update_model_hpr(entity) {
 
     Cesium.knockout.getObservable(viewModel, 'OffsetY').subscribe(function (OffsetY) {
         OffsetY = Number(OffsetY);
-        if (isNaN(OffsetY)) {
+        if (isNaN(OffsetY) || entity.id != currentPickedObject.id) {
             return;
         }
         extract_model_pos(entity, currentPos);
@@ -224,7 +226,7 @@ function update_model_hpr(entity) {
 
     Cesium.knockout.getObservable(viewModel, 'OffsetZ').subscribe(function (OffsetZ) {
         OffsetZ = Number(OffsetZ);
-        if (isNaN(OffsetZ)) {
+        if (isNaN(OffsetZ) || entity.id != currentPickedObject.id) {
             return;
         }
         extract_model_pos(entity, currentPos);
@@ -239,7 +241,7 @@ function update_model_hpr(entity) {
 
     Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
         RotateX = Number(RotateX);
-        if (isNaN(RotateX)) {
+        if (isNaN(RotateX) || entity.id != currentPickedObject.id) {
             return;
         }
         extract_model_pos(entity, currentPos);
@@ -250,7 +252,7 @@ function update_model_hpr(entity) {
 
     Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
         RotateY = Number(RotateY);
-        if (isNaN(RotateY)) {
+        if (isNaN(RotateY) || entity.id != currentPickedObject.id) {
             return;
         }
         extract_model_pos(entity, currentPos);
@@ -261,7 +263,7 @@ function update_model_hpr(entity) {
 
     Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
         RotateZ = Number(RotateZ);
-        if (isNaN(RotateZ)) {
+        if (isNaN(RotateZ) || entity.id != currentPickedObject.id) {
             return;
         }
         extract_model_pos(entity, currentPos);

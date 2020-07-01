@@ -123,51 +123,51 @@
                 <table>
                     <tr>
                         <td><span style="color:white">Enlarge:</span></td>
-                        <td><input type="range" min="-180" max="180" step="1"
+                        <td><input type="range" min="-180" max="180" step="1" id="input-enlarge"
                                    data-bind="value: Enlarge, valueUpdate: 'input'" style="width: 80px"></td>
-                        <td><input type="text" disabled="disabled" size="3" data-bind="value: Enlarge"
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: Enlarge"
                                    style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">OffsetX:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
                                    data-bind="value: OffsetX, valueUpdate: 'input'" style="width: 80px"></td>
-                        <td><input type="text" disabled="disabled" size="3" data-bind="value: OffsetX"
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: OffsetX"
                                    style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">OffsetY:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
                                    data-bind="value: OffsetY, valueUpdate: 'input'" style="width: 80px"></td>
-                        <td><input type="text" disabled="disabled" size="3" data-bind="value: OffsetY"
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: OffsetY"
                                    style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">OffsetZ:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
                                    data-bind="value: OffsetZ, valueUpdate: 'input'" style="width: 80px"></td>
-                        <td><input type="text" disabled="disabled" size="3" data-bind="value: OffsetZ"
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: OffsetZ"
                                    style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">RotateX:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
                                    data-bind="value: RotateX, valueUpdate: 'input'" style="width: 80px"></td>
-                        <td><input type="text" disabled="disabled" size="3" data-bind="value: RotateX"
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: RotateX"
                                    style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">RotateY:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
                                    data-bind="value: RotateY, valueUpdate: 'input'" style="width: 80px"></td>
-                        <td><input type="text" disabled="disabled" size="3" data-bind="value: RotateY"
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: RotateY"
                                    style="width: 40px"></td>
                     </tr>
                     <tr>
                         <td><span style="color:white">RotateZ:</span></td>
                         <td><input type="range" min="-180" max="180" step="1"
                                    data-bind="value: RotateZ, valueUpdate: 'input'" style="width: 80px"></td>
-                        <td><input type="text" disabled="disabled" size="3" data-bind="value: RotateZ"
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: RotateZ"
                                    style="width: 40px"></td>
                     </tr>
                 </table>
@@ -1414,21 +1414,23 @@
     var toolbar_hpr = document.getElementById('ModelModifyMenu'); // 获取前端监控div
     Cesium.knockout.applyBindings(viewModel, toolbar_hpr); // 绑定监控
 
+    let objectMap = new Map();
 
     var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
         Cesium.Cartesian3.fromDegrees(114.22139307626317, 30.357628207462255, 2.289440174119258)
     );
     var entity3 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
             url: dog_gltf,
+            id: -1,
             modelMatrix: modelMatrix,
             // minimumPixelSize : 512,
-            scale: 0.1,
+            scale: .0
             // maximumScale : 200000
         })
     );
     var originModelMadrix = entity3.modelMatrix.clone();
     var originParam = {"scale": entity3.scale, "lng": 0, "lat": 0, "height": 0, "rx": 0, "ry": 0, "rz": 0};
-    var originPickedObject = null;
+    var originPickedObject, currentPickedObject;
 
     viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 700.0)

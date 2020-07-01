@@ -866,6 +866,43 @@ app.get('/element_location', function (req, res, next) {//左键点击绑定要�
     });
 })
 
+app.get('/adjust_thing_location', function (req, res, next) {
+    var longitude = req.query.longitude;
+    var latitude = req.query.latitude;
+    var height = req.query.height;
+    var scale = req.query.scale;
+    var angle_lon = req.query.rx;
+    var angle_lat = req.query.ry;
+    var angle_height = req.query.rz;
+    var id = req.query.id;
+    connection.query("UPDATE thing_relevant SET scale=" + scale +
+        ",start_lon=" + longitude +
+        ",start_lat=" + latitude +
+        ",start_height=" + height +
+        ",angle_lon=" + angle_lon +
+        ",angle_lat=" + angle_lat +
+        ",angle_height=" + angle_height + " WHERE id=" + id + "", function (error, results, fields) {
+        if (error) {
+            alert("数据库写入错误：" + id);
+            var data = {status: 0};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {status: 1};
+        // c.end();
+        console.log("更新物品位置成功" + "UPDATE thing_relevant SET scale=" + scale +
+            ",start_lon=" + longitude +
+            ",start_lat=" + latitude +
+            ",start_height=" + height +
+            ",angle_lon=" + angle_lon +
+            ",angle_lat=" + angle_lat +
+            ",angle_height=" + angle_height + " WHERE thing_mark_id=" + id);//存储要素位置成功
+        res.send(data);
+        res.end();
+    });
+});
 
 app.get('/thing_location', function (req, res, next) {//新增内容
     var longitude = req.query.longitude;
@@ -888,7 +925,7 @@ app.get('/thing_location', function (req, res, next) {//新增内容
             res.end();
             return console.error(error);
         }
-        connection.query("UPDATE  scene_t SET lon=" + longitude + ",lat=" + latitude + " WHERE scene_id=" + scene_id + "", function (error, results, fields) {
+        connection.query("UPDATE scene_t SET lon=" + longitude + ",lat=" + latitude + " WHERE scene_id=" + scene_id + "", function (error, results, fields) {
             if (error) {
                 var data = {status: 0};
                 // c.end();
@@ -904,7 +941,6 @@ app.get('/thing_location', function (req, res, next) {//新增内容
         });
     });
 })
-
 
 app.get('/get_element_info', function (req, res, next) {
     //form表单

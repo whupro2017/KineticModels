@@ -155,72 +155,26 @@ function onMarkElements(longitude, latitude, height) {
     })
 }
 
+function onSaveMarkThings(thing_mark_id) {
+    let info = {"lng": -1, "lat": -1, "height": -1, "rx": -1, "ry": -1, "rz": -1};
+    getInfoFromModelMatrix(currentPickedObject, info);
+    $.get("/adjust_thing_location", {
+        "longitude": info.lng,
+        "latitude": info.lat,
+        "height": info.height,
+        "scale": currentPickedObject.scale,
+        "rx": info.rx,
+        "ry": info.ry,
+        "rz": info.rz,
+        "id": thing_mark_id
+    }, function (data) {
+        if (data.status == 1) {
+            alert("成功保存标注：" + thing_mark_id + info.toString());
+        }
+    })
+}
+
 function onMarkThings(longitude, latitude, height, thing_mark_id) {
-    // if ($("#things").val() == "volvo") {
-    //     alert("请先选择待绑定物品");
-    // } else {
-    //     console.log("选择待绑定物品子类:" + $("#things").val());
-    //     console.log(height);
-    //     $.get("/thing_location", {//to be done
-    //         "longitude": longitude,
-    //         "latitude": latitude,
-    //         "height": height,
-    //         // "heading": heading,
-    //         // "pitch":pitch,
-    //         // "roll":roll,
-    //         "scene_id": $("#scene_id").val(),
-    //         "thing_type": $("#thing_type").val(),
-    //         "thing_id": $("#things").val(),
-    //         "gltf_path": thing_gltf,
-    //         "id":thing_mark_id
-    //     }, function (data) {
-    //         console.log(data, status);
-    //         if (data.status == 1) {
-    //
-    //             var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
-    //                 Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
-    //             );
-    //             console.log(thing_gltf)
-    //             var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
-    //                     url: thing_gltf,
-    //                     modelMatrix: modelMatrix,
-    //                     // minimumPixelSize : 512,
-    //                     scale: 10
-    //                     // maximumScale : 200000
-    //                 })
-    //             );
-    //             viewer.camera.flyTo({
-    //                 destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height+200)
-    //             });//初始视角
-    //
-    //             update_model_hpr(entity4)
-    //
-    //             // var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
-    //             // var hpRoll = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-    //             // var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpRoll);
-    //             //
-    //             // var entity2 =  viewer.entities.add({
-    //             //     //id: thing_mark_id,
-    //             //     position: position,
-    //             //     orientation: orientation,
-    //             //     model: {
-    //             //         uri: thing_gltf,
-    //             //         //modelMatrix:modelMatrix,
-    //             //         //minimumPixelSize: 100,
-    //             //         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-    //             //     },
-    //             //     scale: 1000.0,
-    //             //     show: true
-    //             // });
-    //             // update_model_hpr(entity2)
-    //
-    //             alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
-    //             operation_type == null;
-    //         } else {
-    //             alert("存入数据库出错，保存要素位置失败");
-    //         }
-    //     })
-    // }
     $.get("/thing_location", {//to be done
         "longitude": longitude,
         "latitude": latitude,
@@ -256,25 +210,6 @@ function onMarkThings(longitude, latitude, height, thing_mark_id) {
             });//初始视角
 
             update_model_hpr(entity4)
-
-            // var position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
-            // var hpRoll = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-            // var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpRoll);
-            //
-            // var entity2 =  viewer.entities.add({
-            //     //id: thing_mark_id,
-            //     position: position,
-            //     orientation: orientation,
-            //     model: {
-            //         uri: thing_gltf,
-            //         //modelMatrix:modelMatrix,
-            //         //minimumPixelSize: 100,
-            //         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-            //     },
-            //     scale: 1000.0,
-            //     show: true
-            // });
-            // update_model_hpr(entity2)
 
             alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
             operation_type == null;
@@ -341,6 +276,31 @@ function onDrawRoute(longitude, latitude, height, cartesianCoordinates) {
     }
 }
 
+function getInfoFromModelMatrix(entity, info) {
+    const originCart3 = new Cesium.Cartesian3();
+    Cesium.Matrix4.getTranslation(entity.modelMatrix, originCart3);
+    const originCarto = Cesium.Cartographic.fromCartesian(originCart3);
+    const lng = Cesium.Math.toDegrees(originCarto.longitude);
+    const lat = Cesium.Math.toDegrees(originCarto.latitude);
+    const height = originCarto.height;
+    const position = Cesium.Cartesian3.fromDegrees(lng, lat, height);
+
+    var m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+    const m3 = Cesium.Matrix4.multiply(Cesium.Matrix4.inverse(m, new Cesium.Matrix4()), entity.modelMatrix, new Cesium.Matrix4());
+    const mat3 = Cesium.Matrix4.getRotation(m3, new Cesium.Matrix3());
+    const q = Cesium.Quaternion.fromRotationMatrix(mat3);
+    const hpr = Cesium.HeadingPitchRoll.fromQuaternion(q);
+    const heading = Cesium.Math.toDegrees(hpr.heading);
+    const pitch = Cesium.Math.toDegrees(hpr.pitch);
+    const roll = Cesium.Math.toDegrees(hpr.roll);
+    info.lng = lng;
+    info.lat = lat;
+    info.height = height;
+    info.rx = heading;
+    info.ry = pitch;
+    info.rz = roll;
+}
+
 function onAdjustModel(pick) {
     /*var windowPosition = viewer.camera.getPickRay(movement.position);
     var cartesianCoordinates = viewer.scene.globe.pick(windowPosition, viewer.scene);
@@ -365,14 +325,38 @@ function onAdjustModel(pick) {
         //pick.primitive.silhouetteColor = Cesium.Color.RED;
         //pick.primitive.silhouetteSize = 15.0;
         //entity3 = pick.primitive;
-        pick.primitive.color = Cesium.Color.RED;
         console.log(pick.primitive.modelMatrix + "****" + pick.primitive);
         if (pick.primitive.modelMatrix == undefined) return;
         originModelMadrix = pick.primitive.modelMatrix.clone();
         originParam = {"scale": pick.primitive.scale, "lng": 0, "lat": 0, "height": 0, "rx": 0, "ry": 0, "rz": 0};
-        if (originPickedObject != null) {
+        if (originPickedObject != undefined) {
             originPickedObject.color = Cesium.Color.WHITE;
         }
+        pick.primitive.color = Cesium.Color.RED;
+
+        let info = {"lng": -1, "lat": -1, "height": -1, "rx": -1, "ry": -1, "rz": -1};
+        getInfoFromModelMatrix(pick.primitive, info);
+
+        // entity3为一个哑对象，这里为了调整viewModel的项
+        currentPickedObject = entity3;
+        Cesium.knockout.track(viewModel);
+        viewModel.Enlarge = pick.primitive.scale;
+        viewModel.OffsetX = info.lng - objectMap.get(pick.primitive.id).lng;
+        viewModel.OffsetY = info.lat - objectMap.get(pick.primitive.id).lat;
+        viewModel.OffsetZ = info.height - objectMap.get(pick.primitive.id).height;
+        viewModel.RotateX = info.rx;
+        viewModel.OffsetY = info.ry;
+        viewModel.OffsetZ = info.rx;
+        Cesium.knockout.track(viewModel);
+
+        console.log(info);
+        currentPickedObject = pick.primitive;
+        /*$("#OffsetX").val(info.lng);
+        $("#OffsetY").val(info.lat);
+        $("#OffsetZ").val(info.height);
+        $("#RotateX").val(info.rx);
+        $("#RotateY").val(info.ry);
+        $("#RotateZ").val(info.rz);*/
         update_model_hpr(pick.primitive);
         originPickedObject = pick.primitive;
     }

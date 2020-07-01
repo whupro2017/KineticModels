@@ -760,11 +760,14 @@ function select_scene(scene_id) {
             const m3 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(angle_height));
             Cesium.Matrix4.multiplyByMatrix3(m, m3, m);
 
+            const mat3 = Cesium.Matrix4.getRotation(m, new Cesium.Matrix3());
+
             var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
                     url: gltf_path,
+                    id: id,
                     modelMatrix: m,
                     // minimumPixelSize : 512,
-                    scale: scale,
+                    scale: scale
                     // maximumScale : 200000
                 })
             );
@@ -779,6 +782,16 @@ function select_scene(scene_id) {
                 "ry": angle_lat,
                 "rz": angle_height
             };
+
+            objectMap.set(id, {
+                "scale": scale,
+                "lng": longitude,
+                "lat": latitude,
+                "height": height,
+                "rx": angle_lon,
+                "ry": angle_lat,
+                "rz": angle_height
+            });
 
             // const position = Cesium.Cartesia n3.fromDegrees(longitude, latitude, height);
             // const hpRoll = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(0), Cesium.Math.toRadians(0), Cesium.Math.toRadians(0));

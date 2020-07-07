@@ -217,6 +217,21 @@ function onMarkThings(longitude, latitude, height, thing_mark_id) {
             alert("存入数据库出错，保存要素位置失败");
         }
     })
+    $.get('/thing_location_latest', {
+        "scene_id": $("#scene_id").val(),
+        "gltf_path": thing_gltf
+    }, function (data) {
+        alert(data)
+        objectMap.set(id, {
+            "scale": data[0].scale,
+            "lng": data[0].start_lon,
+            "lat": data[0].start_lat,
+            "height": data[0].start_height,
+            "rx": data[0].angle_lon,
+            "ry": data[0].angle_lat,
+            "rz": data[0].angle_height
+        });
+    })
 }
 
 function onLocateModel(longitude, latitude, height) {

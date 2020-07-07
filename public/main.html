@@ -189,8 +189,7 @@
                     <table>
                         <tr>
                             <td>
-                                <select id="top_icon_menu" class="case_select"
-                                        onchange="get_sub_icon_menu(this.value)">
+                                <select id="top_icon_menu" class="case_select" onchange="get_sub_icon_menu(this.value)">
                                     <option value="volvo" hidden>选择图标大类</option>
                                     <option value="办公类">办公类</option>
                                     <option value="电子类">电子类</option>
@@ -292,9 +291,28 @@
                 </summary>
                 <input type="button" class="second_button" value="上传动力学模型" id="upload_kinetic">
                 <input type="button" class="second_button" value="创建动力学模型" id="create_kinetic">
-                <select id="kinetic_model" class="case_select" style="margin-left: 20px;">
-                    <option value="volvo" hidden>选择动力学模型</option>
-                </select>
+                <table>
+                    <tr>
+                        <td>
+                            <select id="kinetic_model" class="case_select" style="width: 80px; margin-left: 20px;">
+                                <option value="volvo" hidden>模型大类</option>
+                                <option id="burning_set" value="volvo">燃烧模型</option>
+                                <option id="boom_set" value="volvo">爆炸模型</option>
+                                <option id="collision_set" value="volvo">碰撞模型</option>
+                                <option id="kill_set" value="volvo">砍杀模型</option>
+                            </select>
+                        </td>
+                        <td><select id="sub_kinetic_menu" class="case_select" style="width: 93px"
+                                    onchange="get_kinetic_set(this.value)">
+                            <option value="volvo" hidden>模型要素集</option>
+                        </select></td>
+
+                        <td><select id="kinetic_element_menu" class="case_select" style="width: 93px"
+                                    onchange="get_kinetic_item(this.value)">
+                            <option value="volvo" hidden>动力学要素</option>
+                        </select></td>
+                    </tr>
+                </table>
             </details>
         </div>
 

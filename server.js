@@ -904,6 +904,22 @@ app.get('/adjust_thing_location', function (req, res, next) {
     });
 });
 
+app.get('/thing_location_latest', function (req, res, next) {
+    var scene_id = req.query.scene_id;
+    var gltf_path = req.query.gltf_path;
+    console.log("@@@@@@@@@@@@@@@@" + scene_id + ":" + gltf_path);
+    connection.query("SELECT id, scale, start_lon, start_lat, start_height, angle_lon, angle_lat, angle_height from thing_relevant where gltf_path=" + "\"" + gltf_path + "\" AND sceneid=" + scene_id + " order by id desc limit 1", function (error, results, fields) {
+        if (error) {
+            console.log('Error when refresh latest object: ' + scene_id + ":" + gltf_path)
+            return console.error(error);
+        }
+        console.log('Success when refresh latest object: ' + scene_id + ":" + gltf_path);
+        res.send(results);
+        res.end();
+    });
+
+});
+
 app.get('/thing_location', function (req, res, next) {//新增内容
     var longitude = req.query.longitude;
     var latitude = req.query.latitude;
@@ -1641,6 +1657,7 @@ app.post('/update_transform', function (req, res, next) {
             res.end();
         } else if (filename.split(".")[1] == "dat") {
             var number = parseInt(filename.split(".")[0].split(file_prefix)[1]);
+            console.log(number + ":" + max_x + ":" + max_y + ":" + max_z + ":" + file_folder + ":" + file_prefix + number);
             MyClass.transform(number, max_x, max_y, max_z, file_folder, (error, info) => {
                 if (error) {
                     console.log('put name Error: ', error);
@@ -1660,7 +1677,6 @@ app.post('/update_transform', function (req, res, next) {
             res.end();
         }
     });
-
 });
 
 

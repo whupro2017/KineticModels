@@ -70,7 +70,7 @@ $(function () {
                     //   }
                 },
                 error: function (xhr) {
-                    alert("上传出错");
+                    alert("fs1上传出错");
                 }
             });
         }
@@ -79,12 +79,13 @@ $(function () {
     $("#upload_files").change(function Start_upload() {
         console.log("选择上传文件夹");
         var ss = this.files; //获取当前选择的文件对象
-        total_num=ss.length;
-        done=0;
-        finished=0;
+        total_num = ss.length;
+        done = 0;
+        finished = 0;
         for (var m = 0; m < total_num; m++) { //循环添加进度条
             sendfile(ss[m]);
         }
+
         function sendfile(target_file) {
             var formData = new FormData();
             formData.append('files', target_file); //将该file对象添加到formData对象中
@@ -104,18 +105,18 @@ $(function () {
                     }
                 },
                 success: function (data) {
-                    if(data.status==1){
-                        finished+=1;
-                    }else{
+                    if (data.status == 1) {
+                        finished += 1;
+                    } else {
                         console.log(data.msg);
                     }
-                    done=done+1;
-                    if(done==total_num){
-                        alert("上传"+finished+"/"+total_num+"完成");
+                    done = done + 1;
+                    if (done == total_num) {
+                        alert("上传" + finished + "/" + total_num + "完成");
                     }
                 },
                 error: function (xhr) {
-                    alert("上传出错");
+                    alert("fs2上传出错");
                 }
             });
         }

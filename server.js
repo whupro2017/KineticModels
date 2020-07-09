@@ -10,8 +10,32 @@ var readline = require('readline');
 var java = require('java')
 java.classpath.push('javaClass')
 var MyClass = java.import('Single');
+
+/*const http = require('http');
+//const hostname = '127.0.0.1';
+const port = 8080;
+const requestListener = function (req, res) {
+    fs.readFile("public/main.html")
+        .then(contents => {
+            res.setHeader("Content-Type", "text/html");
+            res.writeHead(200);
+            res.end(contents);
+        })
+        .catch(err => {
+            res.writeHead(500);
+            res.end(err);
+            return;
+        });
+    // res.statusCode = 200;
+    // res.setHeader('Content-Type', 'text/plain');
+    // res.end('Hello World!\n');
+};
+const server = http.createServer(requestListener);
+server.listen(port, () => {
+    console.log(`server running at ${port}/`);
+});*/
 app.use(express.static("public")).listen(8080);
-console.log("server started at'http://127.0.0.1:8080/main.html'")
+console.log("server started at 'http://127.0.0.1:8080/main.html'")
 
 
 // c.on('ready', function () {

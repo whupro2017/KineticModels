@@ -1,11 +1,18 @@
 var i = 0;
 var j = 0;
+
+function sleep(delay) {
+    var start = new Date().getTime();
+    while (new Date().getTime() < start + delay) ;
+}
+
 $(function () {
     $("#fileMutiply").change(function eventStart() {
-        console.log("选择上传文件夹");
+        console.log("选择上传文件夹" + this.files.length);
         var ss = this.files; //获取当前选择的文件对象
         var flag = true;
         var start;
+        //var ajaxNum = 0;
         for (var m = 0; m < ss.length; m++) { //循环添加进度条
             efileName = ss[m].name;
             var pathnameArray = efileName.split('/');
@@ -32,6 +39,8 @@ $(function () {
             //     }
             // }
             var formData = new FormData();
+            //while (ajaxNum >= 128) sleep(1);
+            //ajaxNum++;
             formData.append('files', ss[j]); //将该file对象添加到formData对象中
             $.ajax({
                 url: 'update_transform',
@@ -43,8 +52,8 @@ $(function () {
                 //必须false才会自动加上正确的Content-Type
                 contentType: false,
                 /*  beforeSend:beforeSend,//发送请求
-                  complete:complete,//请求完成
-          */      xhr: function () {   //监听用于上传显示进度
+                  complete:complete,//请求完成*/
+                xhr: function () {   //监听用于上传显示进度
                     var xhr = $.ajaxSettings.xhr();
                     if (onprogress && xhr.upload) {
                         xhr.upload.addEventListener("progress", onprogress, false);
@@ -52,6 +61,7 @@ $(function () {
                     }
                 },
                 success: function (data) {
+                    //ajaxNum--;
                     if (data.target == 1) {
                         if (data.msg == "json") {
                             console.log("get json");
@@ -60,9 +70,9 @@ $(function () {
                                     sendAjax(m);
                                 }
                             }
-                        } //else {
-                        //     console.log(data.msg);
-                        // }
+                        } else {
+                            // console.log(data.msg);
+                        }
                     }
                     // $(".filelist").find("#" + j + "file").remove();//移除进度条样式
                     // j=(j+1)%ss.length; //递归条件
@@ -70,8 +80,13 @@ $(function () {
                     //   }
                 },
                 error: function (xhr) {
-                    alert("fs1上传出错");
+                    //ajaxNum--;
+                    alert("fs1上传出错:" + ajaxNum);
                 }
+                /*,
+                final: function (data) {
+                    ajaxNum--;
+                }*/
             });
         }
     })

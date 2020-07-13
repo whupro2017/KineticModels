@@ -489,6 +489,7 @@ function get_ele_info(id) {
 }
 
 function get_involved_goods_info(id) {
+    table = "#involved_goods_info_table";
     $(".full_view").css("display", "none");
     var x = document.getElementById(id);
     if (x.style.display == "block") {
@@ -504,17 +505,56 @@ function get_involved_goods_info(id) {
     // document.getElementById("site_changes_table").rows[0].cells[1].innerText = "现场变动名称"
 
     $("#involved_goods_info_table").find("tr").remove();
-    $("#involved_goods_info_table").append("<tr><td>涉案物品信息ID</td><td>物品名称</td></tr>")
-    // $("#involved_goods_info_table").append("<tr><td>涉案物品信息ID</td><td>物品名称</td><td>提取位置</td><td>勘验基础信息ID</td><td>创建人ID</td><td>创建时间</td><td>修改时间</td><td>数据状态</td></tr>")
+
     $.get("/get_involved_goods_info", {}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
-        data.forEach(function (json) {
-            $("#involved_goods_info_table").append("<tr><td>" + json.INVOLVED_GOODS_INFO_ID + "</td><td>" + json.INVOLVED_GOODS_NAME + "</td></tr>");
-        });               //序列号
-    })
+        console.log(data);
+
+        jQuery(table).jqGrid({
+            //direction: "rtl",
+            datatype: "local",
+            data:data,
+            height: 240,
+            colColor: 'white',
+            colNames: ['物品名称', '创建时间', '物品ID'],
+            colModel: [
+                {name: 'INVOLVED_GOODS_NAME', index: 'INVOLVED_GOODS_NAME', width: 60, editable: false},//cellclassname: colorFondo},
+                {
+                    name: 'CREATE_TIME',
+                    index: 'CREATE_TIME',
+                    sortable: true,
+                    sorttype: "string",
+                    width: 120,
+                    editable: false
+                },
+                {name: 'INVOLVED_GOODS_INFO_ID', index: 'INVOLVED_GOODS_INFO_ID', width: 80, editable: false}
+            ],
+            gridview: true,
+            viewrecords: true,
+            toppager: false,
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+            autowidth: false,
+            fixed: true,
+            onSelectRow: function (id) {
+                var grid_selector = "#involved_goods_info_table";
+                //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                var rowid = $(grid_selector).getGridParam("selrow");
+                var rowData = $(grid_selector).getRowData(rowid);
+                activeObject.element_type = 'involved_goods_info';
+                activeObject.element_id = rowData.INVOLVED_GOODS_INFO_ID;
+                alert(rowData.INVOLVED_GOODS_NAME + ":" + rowData.INVOLVED_GOODS_INFO_ID + ":" + activeObject.element_type);
+                operation_type = "mark_elements";
+                //document.getElementById('e-correlation').value = '选中案件编号为 ' + cid + ' 的事件';
+                //document.getElementById('ematerial_show_all').value = '此处显示案件编号为 ' + cid + ' 的案件素材';
+            },
+        });
+        $(table).jqGrid().trigger('reloadGrid');
+    });
 }
 
 function get_involved_person_info(id) {

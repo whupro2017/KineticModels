@@ -11,7 +11,7 @@ const pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
     user: 'root',
-    password: 'lwh791209',
+    password: 'czl887',
     database: 'pointcloud'
 });
 

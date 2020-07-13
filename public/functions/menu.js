@@ -719,9 +719,9 @@ function select_scene(scene_id) {
     document.getElementById("operations").style.display = "";
     $.get("/select_scene", {"value": scene_id}, function (data) {
         console.log("选择场景号：" + scene_id);
-        for (var i = 0; i < data.kinetic_info.length; i++) {
+        /*for (var i = 0; i < data.kinetic_info.length; i++) {
             $("#kinetic_model").append('<option value=' + data.kinetic_info[i].id + ' >' + data.kinetic_info[i].kinetic_id + '</option>');
-        }
+        }*/
         console.log(data);
         var relevant_info = data.relevant_info;
         for (var i = 0; i < relevant_info.length; i++) {

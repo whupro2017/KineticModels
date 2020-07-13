@@ -375,8 +375,8 @@ function onAdjustModel(pick) {
         update_model_hpr(pick.primitive);
         originPickedObject = pick.primitive;
     }
-}
-
+};
+// Left click event can support marking mark_goods/involved_goods_info/burning_element
 handler.setInputAction(function (movement) {
         var longitude;
         var latitude;
@@ -428,8 +428,8 @@ handler.setInputAction(function (movement) {
         }
     },
     Cesium.ScreenSpaceEventType.LEFT_CLICK
-)
-//设置鼠标移动事件
+);
+// Draw trajectory incrementally.
 handler.setInputAction(function (movement) {
     if (operation_type == "drawRoute") {
         var longitude;
@@ -461,7 +461,7 @@ handler.setInputAction(function (movement) {
         }
     }
 }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-
+// Dummy operation with clicked objects informed as a possible menu..
 handler.setInputAction(function (movement) {
         var pick = viewer.scene.pick(movement.position);
         if (Cesium.defined(pick) && pick.id != undefined && pick.id.properties != undefined && pick.id.properties.type.toString() == "added") {
@@ -502,8 +502,7 @@ handler.setInputAction(function (movement) {
         }
     },
     Cesium.ScreenSpaceEventType.RIGHT_CLICK
-)
-;
+);
 //设置鼠标左键双击事件
 handler.setInputAction(function (movement) {
     if (operation_type == "drawRoute") {

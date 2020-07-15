@@ -220,6 +220,10 @@ jQuery(function ($) {
         header.css('color', '#ffffff');
     };
 
+    $('#SceneInqueryButton').on('click', function () {
+        alert("How are you doing?");
+        //http://106.15.190.54:8081/involvedGoodsInfo.html?involvedGoodsInfoId=2c91fa9d6ec59058016ec5a7ba38004c
+    });
     $('#CaseInqueryButton').on('click', function () {
         // Here releases a bug with uncleared header.
         $(grid_selector).jqGrid("clearGridData", true).trigger("reloadGrid");

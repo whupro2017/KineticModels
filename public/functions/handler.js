@@ -464,15 +464,15 @@ handler.setInputAction(function (movement) {
 // Dummy operation with clicked objects informed as a possible menu..
 handler.setInputAction(function (movement) {
         var pick = viewer.scene.pick(movement.position);
+        console.log("Right click")
         if (Cesium.defined(pick) && pick.id != undefined && pick.id.properties != undefined && pick.id.properties.type.toString() == "added") {
             console.log("点击到物体");
-            var element_type = pick.id.properties._element_type._value;
-            var element_id = pick.id.properties._element_id._value;
-            $("#element_type").val(element_type);
+            var element_type = pick.id.properties.element_type._value;
+            var element_id = pick.id.properties.element_id._value;
             $("#elements").append('<option value=' + element_id + ' > 序号' + element_id + '</option>');
-            $("#elements").val(element_id);
-            console.log($("#element_type").val());
-            console.log($("#elements").val());
+            console.log($("#elements").toString());
+            activeObject.element_type = element_type;
+            activeObject.element_id = element_id;
             var menu = document.getElementById("menu");
             menu.style.left = movement.position.x + 'px';
             menu.style.top = movement.position.y + 'px';

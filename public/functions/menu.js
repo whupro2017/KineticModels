@@ -19,10 +19,45 @@ var json = {
     "scene_tool": "tool"
 }
 
+/*
+现勘详情
+http://localhost:8089/inquestBaseInfo.html?baseInfoId=2c91fa9d6ec45183016ec45443750001
+痕迹物品
+http://localhost:8089/markGoods.html?markGoodsId=e1613e91256d463f92512e062eb8b1ca
+涉案物品
+http://localhost:8089/involvedGoodsInfo.html?involvedGoodsInfoId=2c91fa9d6ec59058016ec5a7ba38004c
+媒介环境信息
+http://localhost:8089/mediaEnvironmentInfo.html?mediaEnvironmentInfoId=2c91facc6ec4364d016ec4776d700009
+案事件全貌
+http://localhost:8089/caseConclusionInfo.html?caseConclusionId=2c91fa0072e0614c0172e0655c430010
+走访情况
+http://localhost:8089/visitSituation.html?visitId=2c91fa9d6ec556fe016ec55df2930007
+电子信息
+http://localhost:8089/eleInfo.html?eleInfoId=2c91facc6ecfb073016ecfbd9d2d0014
+嫌疑人供述
+http://localhost:8089/staOfSuspect.html?staId=2c91facc6ece8724016ecf8bcedd0039
+涉案人员
+http://localhost:8089/involvedPersonInfo.html?involvedPersonInfoId=2c91fa9d6ec556fe016ec5618c380013
+尸体信息
+http://localhost:8089/bodyBasic.html?bodyId=2c91fa9d6ec59058016ec5aa0a72004f
+侦察实验
+http://localhost:8089/scoutAtta.html?scoutId=2c91fa9d6ec494a2016ec4973d0b0001
+媒介信息
+http://localhost:8089/medium.html?mediumId=2c91facc6ece8724016ecf93b72b003c
+*/
+
 function show_model_info() {
-    var json = {
-        "scene_bio_evidence": "bio",
-        "scene_elec_evidence": "elec",
+    var pages = {
+        "mark_goods": "markGoods",
+        "involved_goods_info": "involvedGoodsInfo",
+        "scene_file_evidence": "file",
+        "scene_footprint": "foot",
+        "scene_handprint": "hand",
+        "scene_toolmark": "tool"
+    }
+    var title = {
+        "mark_goods": "markGoods",
+        "involved_goods_info": "involvedGoodsInfo",
         "scene_file_evidence": "file",
         "scene_footprint": "foot",
         "scene_handprint": "hand",
@@ -30,9 +65,9 @@ function show_model_info() {
     }
     window
         .open(
-            "http://127.0.0.1:3000/web/index?type=" + activeObject.element_type + "&id=" + activeObject.element_id,//json[$("#element_type").val()] + "&id=" + $("#elements").val(),
+            "http://127.0.0.1:8089/" + pages[activeObject.element_type] + ".html?" + title[activeObject.element_type] + "Id=" + activeObject.element_id,
             "show_element_info",
-            "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+            "height=700, width=1000, top=200, left=450, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 }
 
 function locate_model(path) {
@@ -82,9 +117,9 @@ function mergeJsonObject(jsonbject1, jsonbject2) {
     return resultJsonObject;
 };
 
-var jgird_table_settings= {
+var jgird_table_settings = {
     height: 240,
-    autowidth : true,
+    autowidth: true,
     colColor: 'white',
     gridview: true,
     viewrecords: true,
@@ -114,7 +149,7 @@ function get_inquest_base_info(id) {
 
         var show_json = {
             datatype: "local",
-            data:data,
+            data: data,
             colNames: ['勘验基础信息', '现场勘验号', '案件编号'],
             colModel: [
                 {name: 'BASE_INFO_ID', index: 'BASE_INFO_ID', width: 100, editable: false},//cellclassname: colorFondo},
@@ -129,7 +164,7 @@ function get_inquest_base_info(id) {
                 {name: 'CASE_EVENT_CODE', index: 'CASE_EVENT_CODE', width: 80, editable: false}
             ],
         };
-        var op_json = mergeJsonObject(show_json,jgird_table_settings);
+        var op_json = mergeJsonObject(show_json, jgird_table_settings);
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
@@ -156,14 +191,14 @@ function get_field_commander(id) {
 
         var show_json = {
             datatype: "local",
-            data:data,
+            data: data,
             colNames: ['现场指挥人员', '现场指挥人员姓名'],
             colModel: [
                 {name: 'FIELD_COMMANDER_ID', index: 'FIELD_COMMANDER_ID', width: 150, editable: false},
-                {name: 'FIELD_COMMANDER_NAME', index: 'FIELD_COMMANDER_NAME', width: 120, editable: false },
+                {name: 'FIELD_COMMANDER_NAME', index: 'FIELD_COMMANDER_NAME', width: 120, editable: false},
             ],
         };
-        var op_json = mergeJsonObject(show_json,jgird_table_settings);
+        var op_json = mergeJsonObject(show_json, jgird_table_settings);
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
@@ -218,14 +253,14 @@ function get_site_changes(id) {
 
         var show_json = {
             datatype: "local",
-            data:data,
+            data: data,
             colNames: ['现场变动ID', '现场现场变动名称'],
             colModel: [
                 {name: 'SITE_CHANGES_ID', index: 'SITE_CHANGES_ID', width: 150, editable: false},
                 {name: 'SITE_CHANGES_NAME', index: 'SITE_CHANGES_NAME', width: 120, editable: false},
             ],
         };
-        var op_json = mergeJsonObject(show_json,jgird_table_settings);
+        var op_json = mergeJsonObject(show_json, jgird_table_settings);
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
@@ -250,14 +285,14 @@ function get_mark_goods_unit(id) {
 
         var show_json = {
             datatype: "local",
-            data:data,
+            data: data,
             colNames: ['单位ID', '单位名称'],
             colModel: [
                 {name: 'MARK_GOODS_UNIT_ID', index: 'MARK_GOODS_UNIT_ID', width: 150, editable: false},
                 {name: 'MARK_GOODS_UNIT_NAME', index: 'MARK_GOODS_UNIT_NAME', width: 120, editable: false},
             ],
         };
-        var op_json = mergeJsonObject(show_json,jgird_table_settings);
+        var op_json = mergeJsonObject(show_json, jgird_table_settings);
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
@@ -310,14 +345,14 @@ function get_full_photo(id) {
 
         var show_json = {
             datatype: "local",
-            data:data,
+            data: data,
             colNames: ['全貌ID', '全貌名称'],
             colModel: [
                 {name: 'FULL_PHOTO_ID', index: 'FULL_PHOTO_ID', width: 150, editable: false},
                 {name: 'FULL_PHOTO_NAME', index: 'FULL_PHOTO_NAME', width: 120, editable: false},
             ],
         };
-        var op_json = mergeJsonObject(show_json,jgird_table_settings);
+        var op_json = mergeJsonObject(show_json, jgird_table_settings);
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
@@ -372,14 +407,14 @@ function get_goods_type(id) {
 
         var show_json = {
             datatype: "local",
-            data:data,
+            data: data,
             colNames: ['物品类型ID', '物品类型名称'],
             colModel: [
                 {name: 'GOODS_TYPE_ID', index: 'GOODS_TYPE_ID', width: 150, editable: false},
                 {name: 'GOODS_TYPE_NAME', index: 'GOODS_TYPE_NAME', width: 120, editable: false},
             ],
         };
-        var op_json = mergeJsonObject(show_json,jgird_table_settings);
+        var op_json = mergeJsonObject(show_json, jgird_table_settings);
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
@@ -405,14 +440,14 @@ function get_extract_method(id) {
 
         var show_json = {
             datatype: "local",
-            data:data,
+            data: data,
             colNames: ['提取方法ID', '提取方法名称'],
             colModel: [
                 {name: 'EXTRACT_METHOD_ID', index: 'EXTRACT_METHOD_ID', width: 150, editable: false},
                 {name: 'EXTRACT_METHOD_NAME', index: 'EXTRACT_METHOD_NAME', width: 120, editable: false},
             ],
         };
-        var op_json = mergeJsonObject(show_json,jgird_table_settings);
+        var op_json = mergeJsonObject(show_json, jgird_table_settings);
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
@@ -439,14 +474,14 @@ function get_corpse_photo(id) {
 
         var show_json = {
             datatype: "local",
-            data:data,
+            data: data,
             colNames: ['尸体照片ID', '尸体照片名称'],
             colModel: [
                 {name: 'CORPSE_PHOTO_ID', index: 'CORPSE_PHOTO_ID', width: 150, editable: false},
                 {name: 'CORPSE_PHOTO_NAME', index: 'CORPSE_PHOTO_NAME', width: 120, editable: false},
             ],
         };
-        var op_json = mergeJsonObject(show_json,jgird_table_settings);
+        var op_json = mergeJsonObject(show_json, jgird_table_settings);
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
@@ -472,14 +507,14 @@ function get_position_photo(id) {
 
         var show_json = {
             datatype: "local",
-            data:data,
+            data: data,
             colNames: ['方位照片ID', '方位照片名称'],
             colModel: [
                 {name: 'POSITION_PHOTO_ID', index: 'POSITION_PHOTO_ID', width: 150, editable: false},
                 {name: 'POSITION_PHOTO_NAME', index: 'POSITION_PHOTO_NAME', width: 120, editable: false},
             ],
         };
-        var op_json = mergeJsonObject(show_json,jgird_table_settings);
+        var op_json = mergeJsonObject(show_json, jgird_table_settings);
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
@@ -505,14 +540,14 @@ function get_case_conclusion_info(id) {
 
         var show_json = {
             datatype: "local",
-            data:data,
+            data: data,
             colNames: ['勘验基础信息ID', '创建人ID'],
             colModel: [
                 {name: 'BASE_INFO_ID', index: 'BASE_INFO_ID', width: 150, editable: false},
                 {name: 'CREATE_PERSON_ID', index: 'CREATE_PERSON_NAME_ID', width: 120, editable: false},
             ],
         };
-        var op_json = mergeJsonObject(show_json,jgird_table_settings);
+        var op_json = mergeJsonObject(show_json, jgird_table_settings);
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
@@ -538,14 +573,14 @@ function get_ele_info(id) {
 
         var show_json = {
             datatype: "local",
-            data:data,
+            data: data,
             colNames: ['基础勘验信息ID', '电子设备名称'],
             colModel: [
                 {name: 'BASE_INFO_ID', index: 'BASE_INFO_ID', width: 150, editable: false},
                 {name: 'DEVICE_NAME', index: 'DEVICE_NAME', width: 120, editable: false},
             ],
         };
-        var op_json = mergeJsonObject(show_json,jgird_table_settings);
+        var op_json = mergeJsonObject(show_json, jgird_table_settings);
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
@@ -579,7 +614,7 @@ function get_involved_goods_info(id) {
         jQuery(table).jqGrid({
             //direction: "rtl",
             datatype: "local",
-            data:data,
+            data: data,
             height: 240,
             colColor: 'white',
             colNames: ['物品名称', '创建时间', '物品ID'],
@@ -793,7 +828,7 @@ function select_scene(scene_id) {
             var height = relevant_info[i].start_height
             var icon_path = relevant_info[i].icon_path;
             var id = relevant_info[i].id;
-            var element_type = relevant_info[i].element_type;
+            var current_type = relevant_info[i].element_type;
             var element_id = relevant_info[i].element_id;
             viewer.entities.add({
                 position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
@@ -809,10 +844,10 @@ function select_scene(scene_id) {
                 properties: {
                     type: "added",
                     element_id: element_id,
-                    element_type, element_type
+                    element_type: current_type
                 }
             });
-            console.log(element_id + "<->" + element_type + "<->" + id);
+            console.log(element_id + "<->" + current_type + "<->" + id);
         }
         if (data.location[0].lon != null && data.location[0].lon != undefined) {
             set_view(data.location[0].lon, data.location[0].lat);

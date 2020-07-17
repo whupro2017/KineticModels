@@ -3,9 +3,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.io.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.TimeUnit;
 
 class SingleRunnable implements Runnable {
@@ -47,13 +50,31 @@ public class Single {
     public static void main(String[] args) throws IOException, InterruptedException {
     }
 
+    public static class BlockWhenQueueFull implements RejectedExecutionHandler {
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+            // The pool is full. Wait, then try again.
+            try {
+                long waitMs = 250;
+                Thread.sleep(waitMs);
+            } catch (InterruptedException interruptedException) {
+            }
+
+            executor.execute(r);
+        }
+    }
+
     public static void transform(int framenumber, int maxx, int maxy, int maxz, String path)
             throws IOException, InterruptedException {
         if (threadPoolExecutor == null) {
-            threadPoolExecutor =
+            BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<Runnable>(32);
+
+            threadPoolExecutor = new ThreadPoolExecutor(10, 32, 5000, TimeUnit.MILLISECONDS, blockingQueue,
+                    new BlockWhenQueueFull());
+            /*threadPoolExecutor =
                     (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-            threadPoolExecutor.setKeepAliveTime(5, TimeUnit.SECONDS);
+            threadPoolExecutor.setKeepAliveTime(5, TimeUnit.SECONDS);*/
         }
+        //threadPoolExecutor.submit(new SingleRunnable(framenumber, maxx, maxy, maxz, path));
         threadPoolExecutor.submit(new SingleRunnable(framenumber, maxx, maxy, maxz, path));
     }
 

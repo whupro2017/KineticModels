@@ -2,8 +2,12 @@ var i = 0;
 var j = 0;
 
 function sleep(delay) {
-    var start = new Date().getTime();
-    while (new Date().getTime() < start + delay) ;
+    setTimeout(() => {
+        console.log("Idle!");
+    }, delay * 1000);
+    console.log("reenter");
+    /*var start = new Date().getTime();
+    while (new Date().getTime() < start + delay) ;*/
 }
 
 $(function () {
@@ -18,7 +22,9 @@ $(function () {
             var pathnameArray = efileName.split('/');
             if (pathnameArray[pathnameArray.length - 1].split(".")[1] == "json") {
                 start = m;
+                console.log('addressing:' + ajaxNum);
                 sendAjax(m);
+                ajaxNum++;
                 var flag = false;
                 break;
             }
@@ -26,8 +32,6 @@ $(function () {
         if (flag == true) {
             alert("没有找到json文件");
         }
-
-        while (ajaxNum >= 128) sleep(1);
 
         function sendAjax(j) {
             // if (j==start)  //采用递归的方式循环发送ajax请求
@@ -41,9 +45,7 @@ $(function () {
             //     }
             // }
             var formData = new FormData();
-            ajaxNum++;
             formData.append('files', ss[j]); //将该file对象添加到formData对象中
-            console.log(fromData.ss[j]);
             $.ajax({
                 url: 'update_transform',
                 type: 'POST',
@@ -58,15 +60,14 @@ $(function () {
                 xhr: function () {   //监听用于上传显示进度
                     var xhr = $.ajaxSettings.xhr();
                     if (onprogress && xhr.upload) {
-                        xhr.upload.addEventListener("progress", onprogress, false);
                         console.log("xhr:" + ajaxNum);
-                        ajaxNum--;
+                        xhr.upload.addEventListener("progress", onprogress, false);
+                        console.log("xhr:" + --ajaxNum);
                         return xhr;
                     }
                 },
                 success: function (data) {
-                    ajaxNum--;
-                    console.log(formData + "<->" + ajaxNum);
+                    //console.log(formData + "<->" + ajaxNum);
                     if (data.target == 1) {
                         if (data.msg == "json") {
                             console.log("get json");
@@ -85,15 +86,17 @@ $(function () {
                     //   }
                 },
                 error: function (xhr) {
-                    ajaxNum--;
-                    alert("fs1上传出错:" + ajaxNum);
-                }
-                ,
+                    alert("fs1上传出错:" + ajaxNum + ":" + ajaxNum);
+                },
                 final: function (data) {
-                    ajaxNum--;
+                    console.log("final:" + ajaxNum--);
                     alert("fs1 final for what:" + ajaxNum);
                 }
             });
+
+            console.log('addressing:' + ajaxNum++);
+            while (ajaxNum >= 32) sleep(1);
+            console.log('addressing:' + ajaxNum);
         }
     })
 

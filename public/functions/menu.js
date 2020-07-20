@@ -1098,9 +1098,12 @@ $(document).ready(function () {
     $("#upload_kinetic").click(function () {
         $("#fileMutiply").click()
     })
+    $("#upload_kinetic_element").click(function () {
+        $("#upload_files").click()
+    })
     $("#create_kinetic").click(function () {
         window.open(visualpage_addr + "createKineticModel.html?markGoodsId='xyz'", "show_element_info",
-            "height=400, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");
+            "height=500, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");
         //$("#files").click()
     })
     $(".second_button").click(function () {

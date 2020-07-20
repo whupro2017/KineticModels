@@ -9,7 +9,6 @@ var activeObject = {
     "element_type": "undefined",
     "element_id": "undefined"
 };
-
 var json = {
     "scene_bio_evidence": "bio",
     "scene_elec_evidence": "elec",
@@ -17,6 +16,22 @@ var json = {
     "scene_footprint": "foot",
     "scene_handprint": "hand",
     "scene_tool": "tool"
+}
+var redirect_pages = {
+    "mark_goods": "markGoods",
+    "involved_goods_info": "involvedGoodsInfo",
+    "scene_file_evidence": "file",
+    "scene_footprint": "foot",
+    "scene_handprint": "hand",
+    "scene_toolmark": "tool"
+}
+var redirect_title = {
+    "mark_goods": "markGoods",
+    "involved_goods_info": "involvedGoodsInfo",
+    "scene_file_evidence": "file",
+    "scene_footprint": "foot",
+    "scene_handprint": "hand",
+    "scene_toolmark": "tool"
 }
 
 /*
@@ -47,27 +62,10 @@ http://localhost:8089/medium.html?mediumId=2c91facc6ece8724016ecf93b72b003c
 */
 
 function show_model_info() {
-    var pages = {
-        "mark_goods": "markGoods",
-        "involved_goods_info": "involvedGoodsInfo",
-        "scene_file_evidence": "file",
-        "scene_footprint": "foot",
-        "scene_handprint": "hand",
-        "scene_toolmark": "tool"
-    }
-    var title = {
-        "mark_goods": "markGoods",
-        "involved_goods_info": "involvedGoodsInfo",
-        "scene_file_evidence": "file",
-        "scene_footprint": "foot",
-        "scene_handprint": "hand",
-        "scene_toolmark": "tool"
-    }
-    window
-        .open(
-            "http://127.0.0.1:8089/" + pages[activeObject.element_type] + ".html?" + title[activeObject.element_type] + "Id=" + activeObject.element_id,
-            "show_element_info",
-            "height=700, width=1000, top=200, left=450, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    window.open(visualpage_addr + redirect_pages[activeObject.element_type] + ".html?" +
+        redirect_title[activeObject.element_type] + "Id=" + activeObject.element_id,
+        "show_element_info",
+        "height=700, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");
 }
 
 function locate_model(path) {
@@ -717,6 +715,14 @@ function show_specific_thing() {
         "height=400, width=410, top=340, left=200,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 }
 
+function get_kinetic_set(kinetic_name) {
+
+}
+
+function get_kinetic_element(kinetic_elment) {
+
+}
+
 function get_sub_icon_menu(top_name) {
     console.log("图标大类名为：" + top_name);
     $("#sub_icon_menu").find("option").remove();
@@ -861,9 +867,9 @@ function select_scene(scene_id) {
     //加载物品标注
     $.get("/select_thing_scene", {"value": scene_id}, function (data) {
         console.log("选择场景号：" + scene_id);//选择场景
-        for (var i = 0; i < data.kinetic_info.length; i++) {
+        /*for (var i = 0; i < data.kinetic_info.length; i++) {
             $("#kinetic_model").append('<option value=' + data.kinetic_info[i].id + ' >' + data.kinetic_info[i].kinetic_id + '</option>');
-        }
+        }*/
         console.log(data);//
         var relevant_info = data.relevant_info;
         for (var i = 0; i < relevant_info.length; i++) {
@@ -1093,7 +1099,9 @@ $(document).ready(function () {
         $("#fileMutiply").click()
     })
     $("#create_kinetic").click(function () {
-        $("#files").click()
+        window.open(visualpage_addr + "createKineticModel.html?markGoodsId='xyz'", "show_element_info",
+            "height=400, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");
+        //$("#files").click()
     })
     $(".second_button").click(function () {
         $(this).css("display", "block")

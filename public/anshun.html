@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Vport</title>
+    <script src="cesium/Cesium.js"></script>
+    <script src="cesium/Sandcastle-header.js"></script>
+    <script src="cesium/jquery-3.5.1.min.js"></script>
+    <script src="cesium/jquery-form.js"></script>
+    <script src="cesium/import/assets/js/jqGrid/jquery.jqGrid.min.js"></script>
+    <script src="cesium/import/assets/js/jqGrid/i18n/grid.locale-en.js"></script>
+    <script src="cesium/import/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <!--script src="cesium/import/js/queryjs/query_table.js"></script-->
+    <script src="cesium/xlsx.core.min.js"></script>
+    <script src="cesium/ysc/ysc.js"></script>
+    <!--script src="https://code.highcharts.com/highcharts.src.js"></script-->
+    <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/modules/oldie.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/themes/dark-unica.js"></script>
+    <script src="functions/hcharts.js"></script>
+    <script src="functions/models.js"></script>
+    <script src="functions/showrelations.js"></script>
+    <script src="functions/iconfont.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="css/version1.css"/>
+    <link type="text/css" rel="stylesheet" href="css/hcharts.css"/>
+    <link type="text/css" rel="stylesheet" href="css/models.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
+    <link rel="stylesheet" href="cesium/import/assets/css/jquery-ui-1.10.3.custom.min.css"/>
+    <link rel="stylesheet" href="cesium/import/assets/css/ui.jqgrid.css"/>
+</head>
+<body>
+
+<div id="cesiumContainer" class="fullSize"></div>
+<div class="leftMenu" id="modelInfo">
+    <p></p>
+</div>
+<div id="toolbar" style="display:block; border-radius: 2px 0px 2px 2px; border: 3px solid rgba(204, 212, 222, 1)">
+    <div style="color: white;align: center">
+        按F9隐藏菜单
+    </div>
+    <div>
+        <div style="float:left;width:100%;">
+            <div id="CreateCase" style="float: left">
+            </div>
+            <div style="float: left">
+                <input type="file" id="case_file" style="display:none">
+                <!--<form id="kinetic_files" method="post" enctype="multipart/form-data" style="display:none"-->
+                <!--action="/uploads" target="nm_iframe">-->
+                <!--<input type="file" id="files" onchange="formSubmit()" name="upload" webkitdirectory mozdirectory>-->
+                <!--<input type="submit" id="upload_confirm" value="确认上传文件夹">-->
+                <!--</form>-->
+                <input type="file" id="fileMutiply" name="fileMutiply" style="display:none" webkitdirectory>
+                <input type="file" id="upload_files" name="upload_files" style="display:none" webkitdirectory>
+                <!--<form action="/upload" , enctype="multipart/form-data" method="post" style="display:none">-->
+                <!--<input type="file" name="upload" multiple="multipart">-->
+                <!--<input type="submit" value="确认上传文件">-->
+                <!--</form>-->
+                <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+                <!--<input type="file" id="kinetic_file" webkitdirectory directory style="display:none" onchange="get_kinetic_file(this.value)">-->
+                <table>
+                    <tr>
+                        <td style="color: white">请选择案件：</td>
+                        <td><select id="case_id" class="case_select" style="width: 50px"
+                                    onchange="get_scenes(this.value)">
+                            <option value="volvo" hidden>ID</option>
+                        </select></td>
+                        <td>
+                            <button id="CaseCreateButton" style="height:25px;width:80px;border: 1px solid white"
+                                    disabled="disabled">创建
+                            </button>
+                        </td>
+                        <td>
+                            <button id="CaseInqueryButton" style="height:25px;width:80px;border: 1px solid white">查询
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="width:100%">
+            <div id="CreateScene" style="float: left">
+            </div>
+            <div style="float: left">
+                <table>
+                    <tr>
+                        <td style="color: white">请选择场景：</td>
+                        <td><select id="scene_id" class="case_select" style="width: 50px"
+                                    onchange="select_scene(this.value)">
+                            <option value="" hidden>ID</option>
+                        </select></td>
+                        <td>
+                            <button id="SceneCreateButton" style="height:25px;width:80px;border: 1px solid white"
+                                    disabled="disabled">创建
+                            </button>
+                        </td>
+                        <td>
+                            <button id="SceneInqueryButton" style="height:25px;width:80px;border: 1px solid white">查询
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="operations" style="display: none">
+        <div id="model_modify" class="model_modify" style="display: none">
+            <div id="ModelModifyMenu" class="modelModify">
+                <!--            <div>Height-offset</div>-->
+                <!--            <input type="range" min="-180.0" max="180.0" step="1" data-bind="value: height, valueUpdate: 'input'">-->
+                <!--            <input type="text" size="3" data-bind="value: height">-->
+                <table>
+                    <tr>
+                        <td><span style="color:white">Enlarge:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1" id="input-enlarge"
+                                   data-bind="value: Enlarge, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: Enlarge"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">OffsetX:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: OffsetX, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: OffsetX"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">OffsetY:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: OffsetY, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: OffsetY"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">OffsetZ:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: OffsetZ, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: OffsetZ"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">RotateX:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: RotateX, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: RotateX"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">RotateY:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: RotateY, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: RotateY"
+                                   style="width: 40px"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:white">RotateZ:</span></td>
+                        <td><input type="range" min="-180" max="180" step="1"
+                                   data-bind="value: RotateZ, valueUpdate: 'input'" style="width: 80px"></td>
+                        <td><input type="text" enabled="enabled" size="3" data-bind="value: RotateZ"
+                                   style="width: 40px"></td>
+                    </tr>
+                </table>
+            </div>
+            <div style="background-color: transparent; float:top;padding-top: 10px;text-align:center"
+                 align="center">
+                <button style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                        onClick="modelModifyDone()">保存
+                </button>
+                <button style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                        onClick="modelModifyClose()">退出
+                </button>
+            </div>
+        </div>
+
+        <div id="icon_and_model">
+            <div id=icon>
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                <select id="top_icon_menu" class="case_select" onchange="get_sub_icon_menu(this.value)">
+                                    <option value="volvo" hidden>选择图标大类</option>
+                                    <option value="办公类">办公类</option>
+                                    <option value="电子类">电子类</option>
+                                    <option value="交通类">交通类</option>
+                                    <option value="器具类">器具类</option>
+                                    <option value="生活类">生活类</option>
+                                    <option value="植物类">植物类</option>
+                                    <option value="主体类">主体类</option>
+                                    <option value="装饰类">装饰类</option>
+                                </select>
+                            </td>
+                            <td><select id="sub_icon_menu" class="case_select"
+                                        onchange="get_icon_menu(this.value)">
+                                <option value="volvo" hidden>选择图标子类</option>
+                            </select></td>
+
+                            <td><select id="icon_menu" class="case_select"
+                                        onchange="get_icon_image(this.value)">
+                                <option value="volvo" hidden>选择图标</option>
+                            </select></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id=model>
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                <select id="top_model_menu" class="case_select"
+                                        onchange="get_sub_model_menu(this.value)">
+                                    <option value="volvo" hidden>选择模型大类</option>
+                                    <option value="重建">重建</option>
+                                    <option value="茶几">茶几</option>
+                                    <option value="thing_kitchen_supplies">厨房</option>
+                                    <option value="thing_cupboard">橱柜</option>
+                                    <option value="thing_window">窗户</option>
+                                    <option value="thing_bed">床</option>
+                                    <option value="thing_stool">凳子</option>
+                                    <option value="thing_electronic_device">电子器件</option>
+                                    <option value="thing_shelf">架子</option>
+                                    <option value="thing_door">门</option>
+                                    <option value="thing_person">人</option>
+                                    <option value="thing_sofa">沙发</option>
+                                    <option value="thing_toiletries">卫浴用品</option>
+                                    <option value="thing_chair">椅子</option>
+                                    <option value="thing_table">桌子</option>
+                                </select>
+                            </td>
+                            <td><select id="sub_model_menu" class="case_select"
+                                        onchange="get_model_menu(this.value)">
+                                <option value="volvo" hidden>选择模型子类</option>
+                            </select></td>
+
+                            <td><select id="model_menu" class="case_select"
+                                        onchange="get_model(this.value)">
+                                <option value="volvo" hidden>选择模型</option>
+                            </select></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="overview">
+            <details>
+                <summary class="main_summary">
+                    <p class="first_button">全貌</p>
+                </summary>
+                <input type="button" class="second_button" value="勘验基础信息"
+                       onclick="get_inquest_base_info('inquest_base_info')">
+                <input type="button" class="second_button" value="现场指挥人员"
+                       onclick="get_field_commander('field_commander')">
+                <input type="button" class="second_button" value="保护措施" onclick="">
+                <input type="button" class="second_button" value="现场变动情况"
+                       onclick="get_site_changes('site_changes')">
+                <input type="button" class="second_button" value="单位"
+                       onclick="get_mark_goods_unit('mark_goods_unit')">
+                <input type="button" class="second_button" value="天气情况" onclick="">
+                <input type="button" class="second_button" value="全貌照片" onclick="get_full_photo('full_photo')">
+                <!--                <input type="button" class="second_button" value="痕迹物品" onclick="get_mark_goods('mark_goods')">-->
+                <input type="button" class="second_button" value="物品类型" onclick="get_goods_type('goods_type')">
+                <input type="button" class="second_button" value="提取方法"
+                       onclick="get_extract_method('extract_method')">
+                <!--                <input type="button" class="second_button" value="尸体信息" onclick="get_corpse_info('corpse_info')">-->
+                <input type="button" class="second_button" value="尸体照片" onclick="get_corpse_photo('corpse_photo')">
+                <input type="button" class="second_button" value="方位照片"
+                       onclick="get_position_photo('position_photo')">
+                <input type="button" class="second_button" value="案事件全貌"
+                       onclick="get_case_conclusion_info('case_conclusion_info')">
+                <input type="button" class="second_button" value="电子信息" onclick="get_ele_info('ele_info')">
+                <!--input type="button" class="second_button" value="涉案物品信息" onclick="get_involved_goods_info('involved_goods_info')"-->
+            </details>
+        </div>
+
+        <div id="kinetic">
+            <details>
+                <summary class="main_summary">
+                    <p class="first_button">动力学</p>
+                </summary>
+                <input type="button" class="second_button" value="新建动力学模型" id="create_kinetic">
+                <input type="button" class="second_button" value="上传场数据集合" id="upload_kinetic">
+                <input type="button" class="second_button" value="上传动力学要素" id="upload_kinetic_element">
+                <table>
+                    <tr>
+                        <td>
+                            <select id="kinetic_model" class="case_select" style="width: 80px; margin-left: 20px;">
+                                <option value="volvo" hidden>模型大类</option>
+                                <option id="burning_set" value="volvo">燃烧模型</option>
+                                <option id="boom_set" value="volvo">爆炸模型</option>
+                                <option id="collision_set" value="volvo">碰撞模型</option>
+                                <option id="kill_set" value="volvo">砍杀模型</option>
+                            </select>
+                        </td>
+                        <td><select id="sub_kinetic_menu" class="case_select" style="width: 93px"
+                                    onchange="get_kinetic_set(this.value)">
+                            <option value="volvo" hidden>模型要素集</option>
+                        </select></td>
+
+                        <td><select id="kinetic_element_menu" class="case_select" style="width: 93px"
+                                    onchange="get_kinetic_element(this.value)">
+                            <option value="volvo" hidden>动力学要素</option>
+                        </select></td>
+                    </tr>
+                </table>
+            </details>
+        </div>
+
+        <div id="imprint">
+            <details>
+                <summary class="main_summary">
+                    <p class="first_button">痕迹</p>
+                </summary>
+                <input type="button" class="second_button" value="痕迹物品" onclick="mark_goods('mark_goods')">
+                <!--input type="button" class="second_button" value="尸体尸块" onclick="mark_thing()">
+                <input type="button" class="second_button" value="损伤" onclick="">
+                <input type="button" class="second_button" value="血迹">
+                <input type="button" class="second_button" value="生物物证">
+                <input type="button" class="second_button" value="指纹">
+                <input type="button" class="second_button" value="足迹">
+                <input type="button" class="second_button" value="工痕">
+                <input type="button" class="second_button" value="枪弹痕迹">
+                <input type="button" class="second_button" value="燃烧痕迹">
+                <input type="button" class="second_button" value="烟熏痕迹">
+                <input type="button" class="second_button" value="爆炸痕迹">
+                <input type="button" class="second_button" value="碰撞痕迹">
+                <input type="button" class="second_button" value="轮胎痕迹">
+                <input type="button" class="second_button" value="其他痕迹">
+                <input type="button" class="second_button" value="微量物质">
+                <input type="button" class="second_button" value="声音信息">
+                <input type="button" class="second_button" value="文书">
+                <input type="button" class="second_button" value="影像">
+                <input type="button" class="second_button" value="电子数据">
+                <input type="button" class="second_button" value="物品">
+                <input type="button" class="second_button" value="其他"-->
+            </details>
+        </div>
+
+        <div id="thing">
+            <details>
+                <summary class="main_summary">
+                    <p class="first_button">物品</p>
+                </summary>
+                <input type="button" class="second_button" value="涉案物品"
+                       onclick="get_involved_goods_info('involved_goods_info')">
+                <!--input type="button" class="second_button" value="茶几" onclick="mark_thing()">
+                <input type="button" class="second_button" value="厨房">
+                <input type="button" class="second_button" value="橱柜">
+                <input type="button" class="second_button" value="窗户">
+                <input type="button" class="second_button" value="床">
+                <input type="button" class="second_button" value="凳子">
+                <input type="button" class="second_button" value="电子器件">
+                <input type="button" class="second_button" value="架子">
+                <input type="button" class="second_button" value="门">
+                <input type="button" class="second_button" value="人">
+                <input type="button" class="second_button" value="沙发">
+                <input type="button" class="second_button" value="卫浴用品">
+                <input type="button" class="second_button" value="椅子">
+                <input type="button" class="second_button" value="桌子"-->
+            </details>
+        </div>
+
+        <div id="subject">
+            <details>
+                <summary class="main_summary">
+                    <p class="first_button">主体</p>
+                </summary>
+                <input type="button" class="second_button" value="涉案人员"
+                       onclick="get_involved_person_info('involved_person_info')">
+                <!--input type="button" class="second_button" value="足迹痕迹">
+                <input type="button" class="second_button" value="工具痕迹">
+                <input type="button" class="second_button" value="生物物证">
+                <input type="button" class="second_button" value="文检物证">
+                <input type="button" class="second_button" value="电子物证"-->
+            </details>
+        </div>
+
+        <div id="information">
+            <details>
+                <summary class="main_summary">
+                    <p class="first_button">信息</p>
+                </summary>
+                <input type="button" class="second_button" value="遥感信息">
+                <input type="button" class="second_button" value="WIFI信息">
+                <input type="button" class="second_button" value="基站信息">
+                <input type="button" class="second_button" value="设备信息">
+                <input type="button" class="second_button" value="蓝牙信息">
+                <input type="button" class="second_button" value="GPS信息">
+                <input type="button" class="second_button" value="对讲机信息">
+                <input type="button" class="second_button" value="RFID信息">
+            </details>
+        </div>
+
+        <div id="investigation">
+            <details>
+                <summary class="main_summary">
+                    <p class="first_button">调查</p>
+                </summary>
+                <input type="button" class="second_button" value="走访情况">
+                <input type="button" class="second_button" value="嫌疑人供述">
+                <input type="button" class="second_button" value="媒介信息">
+                <input type="button" class="second_button" value="电子信息">
+            </details>
+        </div>
+        <!--        <div id="functions">-->
+        <!--            <details>-->
+        <!--                <summary class="main_summary">-->
+        <!--                    <p class="first_button">功能展示</p>-->
+        <!--                </summary>-->
+        <!--                <input type="button" class="second_button" value="自主路线" onclick="routeshow()">-->
+        <!--                <input type="button" class="second_button" value="研判标准" onclick="functions('Smodel')">-->
+        <!--                <input type="button" class="second_button" value="地理测量" onclick="functions('toolbar_measure')">-->
+        <!--                <input type="button" class="second_button" value="爆炸效果" onclick="explosiveshow()">-->
+        <!--                <input type="button" class="second_button" value="冲击波" onclick="waveshow()">-->
+        <!--            </details>-->
+        <!--        </div>-->
+
+        <!--        <div id="modeltype">-->
+        <!--            <details>-->
+        <!--                <summary class="main_summary">-->
+        <!--                    <p class="first_button">模型演示</p>-->
+        <!--                </summary>-->
+        <!--                <input type="button" class="second_button" value="燃烧模型" onclick="functions('caseMenuShow')">-->
+        <!--                <input type="button" class="second_button" value="碰撞模型" onclick="functions('collisionMenuShow')">-->
+        <!--                <input type="button" class="second_button" value="爆炸模型" onclick="functions('explodeMenuShow')">-->
+        <!--                <input type="button" class="second_button" value="砍杀模型" onclick="functions('killMenuShow')">-->
+        <!--                <input type="button" class="second_button" value="混合模型" onclick="mixmodel()">-->
+        <!--            </details>-->
+        <!--        </div>-->
+
+        <div id="inquest_base_info" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="inquest_base_info_table" border="1"></table>
+        </div>
+        <div id="field_commander" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="field_commander_table" border="1"></table>
+        </div>
+        <div id="protect_measure" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="protect_measure_table" border="1"></table>
+        </div>
+        <div id="mark_goods_unit" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="mark_goods_unit_table" border="1"></table>
+        </div>
+        <div id="site_changes" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="site_changes_table" border="1"></table>
+        </div>
+        <div id="weather" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="weather_table" border="1"></table>
+        </div>
+        <div id="full_photo" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="full_photo_table" border="1"></table>
+        </div>
+        <div id="mark_goods" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="mark_goods_table" border="1"></table>
+        </div>
+        <div id="goods_type" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="goods_type_table" border="1"></table>
+        </div>
+        <div id="extract_method" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="extract_method_table" border="1"></table>
+        </div>
+        <div id="corpse_info" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="corpse_info_table" border="1"></table>
+        </div>
+        <div id="corpse_photo" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="corpse_photo_table" border="1"></table>
+        </div>
+        <div id="position_photo" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="position_photo_table" border="1"></table>
+        </div>
+        <div id="case_conclusion_info" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="case_conclusion_info_table" border="1"></table>
+        </div>
+        <div id="ele_info" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="ele_info_table" border="1"></table>
+        </div>
+        <div id="involved_goods_info" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="involved_goods_info_table" border="1"></table>
+        </div>
+        <div id="involved_person_info" class="full_view" style="display: none">
+            <table width="300px" style="color:white" id="involved_goods_person_table" border="1"></table>
+        </div>
+
+        <!--div id="mark_goods" class="full_view" style="display: none"><table width="300px" style="color:white" id="mark_goods_table" border="1"></table></div-->
+
+        <div id="caseMenu"></div>
+        <div id="MeasureMenu"></div>
+        <div id="modelMenu"></div>
+        <div id="DynRoute"></div>
+        <!--        <div>-->
+        <!--            <div>-->
+        <!--                <div id="KineticMenu" style="float: left;"></div>-->
+        <!--                <div style="float: left;">-->
+        <!--                    <table>-->
+        <!--                        <tr>-->
+        <!--                            <td><select id="kinetic_model" class="case_select">-->
+        <!--                                <option value="volvo" hidden>选择动力学模型</option>-->
+        <!--                            </select></td>-->
+        <!--                        </tr>-->
+        <!--                    </table>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div>-->
+        <!--            <div>-->
+        <!--                <div id="ModelMeasure" style="float: left;"></div>-->
+        <!--                <div style="float: left;">-->
+        <!--                    <table>-->
+        <!--                        <tr>-->
+        <!--                            <td><select id="models" class="case_select" onchange="locate_model(this.value)">-->
+        <!--                                <option value="volvo" hidden>要素与场信息</option>-->
+        <!--                            </select></td>-->
+        <!--                        </tr>-->
+        <!--                    </table>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div>-->
+        <!--            <div>-->
+        <!--                <table>-->
+        <!--                    <tr>-->
+        <!--                        <td>-->
+        <!--                            <select id="top_icon_menu" class="case_select"-->
+        <!--                                    onchange="get_sub_menu(this.value)">-->
+        <!--                                <option value="volvo" hidden>选择图标大类</option>-->
+        <!--                                <option value="办公类">办公类</option>-->
+        <!--                                <option value="电子类">电子类</option>-->
+        <!--                                <option value="交通类">交通类</option>-->
+        <!--                                <option value="器具类">器具类</option>-->
+        <!--                                <option value="生活类">生活类</option>-->
+        <!--                                <option value="植物类">植物类</option>-->
+        <!--                                <option value="主体类">主体类</option>-->
+        <!--                                <option value="装饰类">装饰类</option>-->
+        <!--                            </select>-->
+        <!--                        </td>-->
+        <!--                        <td><select id="sub_icon_menu" class="case_select"-->
+        <!--                                    onchange="get_icon_menu(this.value)">-->
+        <!--                            <option value="volvo" hidden>选择图标子类</option>-->
+        <!--                        </select></td>-->
+
+        <!--                        <td><select id="icon_menu" class="case_select"-->
+        <!--                                    onchange="get_icon_image(this.value)">-->
+        <!--                            <option value="volvo" hidden>选择图标图片</option>-->
+        <!--                        </select></td>-->
+        <!--                    </tr>-->
+
+        <!--                </table>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div>-->
+        <!--            <div>-->
+        <!--                <div id="NewAddedMenu" style="float: left;"></div>-->
+        <!--                <div> &lt;!&ndash;style="float: left;"&ndash;&gt;-->
+        <!--                    <table>-->
+        <!--                        <tr>-->
+        <!--                            <td><select id="begin_end" class="case_select" onchange="route_choose(this.value)">-->
+        <!--                                <option value="route_choose">城市路线推荐</option>-->
+        <!--                                <option value="route_begin">路线起点</option>-->
+        <!--                                <option value="route_end">路线终点</option>-->
+        <!--                            </select></td>-->
+        <!--                        </tr>-->
+        <!--                    </table>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div>-->
+        <!--            <div style="float: left">-->
+        <!--                <div id="markMenu" style="float: left"></div>-->
+        <!--                <div style="float: left">-->
+        <!--                    <input id="element_file" type="file" style="display:none" accept=".xls,.xlsx"-->
+        <!--                           onchange="importFile(this)">-->
+        <!--                    <table>-->
+        <!--                        <tr>-->
+        <!--                            <td><select id="element_type" class="case_select"-->
+        <!--                                        onchange="get_element_menu(this.value)">-->
+        <!--                                <option value="volvo" hidden>要素类别</option>-->
+        <!--                                <option value="scene_handprint">手印痕迹</option>-->
+        <!--                                <option value="scene_footprint">足迹痕迹</option>-->
+        <!--                                <option value="scene_toolmark">工具痕迹</option>-->
+        <!--                                <option value="scene_bio_evidence">生物物证</option>-->
+        <!--                                <option value="scene_file_evidence">文检物证</option>-->
+        <!--                                <option value="scene_elec_evidence">电子物证</option>-->
+        <!--                            </select></td>-->
+        <!--                            <td><select id="elements" class="case_select">-->
+        <!--                                <option value="volvo" hidden>绑定要素</option>-->
+        <!--                            </select></td>-->
+        <!--                        </tr>-->
+
+        <!--                    </table>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div>-->
+        <!--            <div style="float: left">-->
+        <!--                <div id="infoMenu" style="float: left"></div>-->
+        <!--                <div style="float: left">-->
+        <!--                    <input id="info_file" type="file" style="display:none" accept=".xls,.xlsx"-->
+        <!--                           onchange="importFile(this)">-->
+        <!--                    <table>-->
+        <!--                        <tr>-->
+        <!--                            <td><select id="info_type" class="case_select"-->
+        <!--                                        onchange="get_element_menu(this.value)">-->
+        <!--                                <option value="volvo" hidden>信息类别</option>-->
+        <!--                                <option value="scene_handprint">手印痕迹</option>-->
+        <!--                                <option value="scene_footprint">足迹痕迹</option>-->
+        <!--                                <option value="scene_toolmark">工具痕迹</option>-->
+        <!--                                <option value="scene_bio_evidence">生物物证</option>-->
+        <!--                                <option value="scene_file_evidence">文检物证</option>-->
+        <!--                                <option value="scene_elec_evidence">电子物证</option>-->
+        <!--                            </select></td>-->
+        <!--                            <td><select id="infos" class="case_select">-->
+        <!--                                <option value="volvo" hidden>绑定要素</option>-->
+        <!--                            </select></td>-->
+        <!--                        </tr>-->
+
+        <!--                    </table>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            <div>-->
+        <!--                <div style="float: left">-->
+        <!--                    <div id="thingMenu" style="float: left"></div>-->
+        <!--                    <div style="float: left">-->
+        <!--                        <input id="thing_file" type="file" style="display:none" accept=".gltf,.xlsx,.xls"-->
+        <!--                               onchange="importThingFile(this)">-->
+        <!--                        <table>-->
+        <!--                            <tr>-->
+        <!--                                <td><select id="thing_type" class="case_select"-->
+        <!--                                            onchange="get_thing_menu(this.value)">//thing_type-->
+        <!--                                    <option value="volvo" hidden>物品类别</option>-->
+        <!--                                    <option value="茶几">茶几</option>-->
+        <!--                                    <option value="thing_kitchen_supplies">厨房</option>-->
+        <!--                                    <option value="thing_cupboard">橱柜</option>-->
+        <!--                                    <option value="thing_window">窗户</option>-->
+        <!--                                    <option value="thing_bed">床</option>-->
+        <!--                                    <option value="thing_stool">凳子</option>-->
+        <!--                                    <option value="thing_electronic_device">电子器件</option>-->
+        <!--                                    <option value="thing_shelf">架子</option>-->
+        <!--                                    <option value="thing_door">门</option>-->
+        <!--                                    <option value="thing_person">人</option>-->
+        <!--                                    <option value="thing_sofa">沙发</option>-->
+        <!--                                    <option value="thing_toiletries">卫浴用品</option>-->
+        <!--                                    <option value="thing_chair">椅子</option>-->
+        <!--                                    <option value="thing_table">桌子</option>-->
+        <!--                                </select></td>-->
+        <!--                                <td><select id="things" class="case_select" onchange="">//things-->
+        <!--                                    //onchange=show_specific_thing()>//things-->
+        <!--                                    <option value="volvo" hidden>选择物品</option>-->
+        <!--                                </select></td>-->
+        <!--                            </tr>-->
+
+        <!--                        </table>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            <div>-->
+        <!--                <div style="float: left">-->
+        <!--                    <div id="humanMenu" style="float: left"></div>-->
+        <!--                    <div style="float: left">-->
+        <!--                        <input id="human_file" type="file" style="display:none" accept=".xls,.xlsx"-->
+        <!--                               onchange="importFile(this)">-->
+        <!--                        <table>-->
+        <!--                            <tr>-->
+        <!--                                <td><select id="human_type" class="case_select"-->
+        <!--                                            onchange="get_element_menu(this.value)">-->
+        <!--                                    <option value="volvo" hidden>人物类别</option>-->
+        <!--                                    <option value="scene_handprint">手印痕迹</option>-->
+        <!--                                    <option value="scene_footprint">足迹痕迹</option>-->
+        <!--                                    <option value="scene_toolmark">工具痕迹</option>-->
+        <!--                                    <option value="scene_bio_evidence">生物物证</option>-->
+        <!--                                    <option value="scene_file_evidence">文检物证</option>-->
+        <!--                                    <option value="scene_elec_evidence">电子物证</option>-->
+        <!--                                </select></td>-->
+        <!--                                <td><select id="humen" class="case_select">-->
+        <!--                                    <option value="volvo" hidden>绑定要素</option>-->
+        <!--                                </select></td>-->
+        <!--                            </tr>-->
+
+        <!--                        </table>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+    </div>
+    <div class="toolbar_measure" id="toolbar_measure">
+        <button type="button" onclick="pick()">坐标</button>
+        <button type="button" onclick="heightMeasuring()">高度</button>
+        <button type="button" onclick="distanceDraw()">距离</button>
+        <button type="button" onclick="areaMeasuring()">面积</button>
+        <button type="button" onclick="stopMeasure()">退出</button>
+    </div>
+
+    <div id="Smodel" class="Smodel">
+        <div class="model_content">
+            <p><span>名称：</span><input type="text" class="Sname" placeholder="请输入名称"></p>
+            <p><span>经度：</span><input type="number" class="Slongitude" placeholder="请输入经度" step="0.00001"></p>
+            <p><span>纬度：</span><input type="number" class="Slatitude" placeholder="请输入纬度" step="0.00001"></p>
+            <p><span>高度：</span><input type="number" class="Sheight" placeholder="请输入高度" step="0.1"></p>
+            <p><span>方向：</span><input type="number" class="Sdirection" placeholder="请输入方向" value="0"></p>
+            <p><span>比例：</span><input type="number" class="Sproportion" placeholder="请输入比例" value="1" min="0.1"
+                                      step="0.1">
+            </p>
+            <p><span>预案：</span><select class="planOption">
+                <option value="1">预案一</option>
+                <option value="2">预案二</option>
+                <option value="3">预案三</option>
+            </select></p>
+            <p class="modelselect_p"><span>选择模型：</span><select class="dropdownMenu">
+                <option value="./img/modelImg/gou.glb">警犬</option>
+                <option value="./img/modelImg/yisheng.glb">医生</option>
+                <option value="./img/modelImg/wujing.glb">武警</option>
+                <option value="./img/modelImg/xiaofangyuan.glb">消防员</option>
+                <option value="./img/modelImg/jingchanan.glb">警察男</option>
+                <option value="./img/modelImg/jingchanv.glb">警察女</option>
+                <option value="./img/modelImg/fangbaoche.glb">防暴车</option>
+                <option value="./img/modelImg/jingche.glb">警车</option>
+                <option value="./img/modelImg/motuoche.glb">摩托车</option>
+                <option value="./img/modelImg/zhihuiche.glb">指挥车</option>
+                <option value="./img/modelImg/gongjiaoche.glb">公交车</option>
+                <option value="./img/modelImg/jijuche.glb">救护车</option>
+                <option value="./img/modelImg/jiuyuanche.glb">救援车</option>
+                <option value="./img/modelImg/xiaofangche.glb">消防车</option>
+                <option value="./img/modelImg/jingyonggongjiaoche.glb">警用公交车</option>
+                <option value="./img/modelImg/luzhang.glb">路障</option>
+                <option value="./img/modelImg/miehuoche.glb">灭火器</option>
+                <option value="./img/modelImg/zucheding.glb">阻车钉</option>
+            </select></p>
+            <button type="button" class="StakeBtn" onclick="siteModelTake('.Slongitude','.Slatitude','.Sheight')">量取
+            </button>
+            <button type="button" class="Ssubmit" onclick="addModelInfo()">提交</button>
+            <button type="button" class="Sdropout" onclick="stopModel()">退出</button>
+
+        </div>
+    </div>
+
+    <div class="caseMenuShow" id="caseMenuShow">
+        <div class="firemodel">
+            <table style="background-color:transparent;">
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: #ffffcc">放火位置：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="position" style="width:70px;height:20px">
+                            <option value="smoke">沙发上</option>
+                            <option value="fire2">床上</option>
+                            <option value="bus">公交车</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: #ffffcc">门窗开关：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="door_status" style="width:70px;height:20px">
+                            <option value="1">开</option>
+                            <option value="2">关</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: #ffffcc">燃剂类型：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="fuel" style="width:70px;height:20px">
+                            <option value="1">汽油</option>
+                            <option value="2">酒精</option>
+                            <option value="3">稀料</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: #ffffcc">燃剂容量：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="capacity" style="width:70px;height:20px">
+                            <option value="1">200ml</option>
+                            <option value="2">500ml</option>
+                            <option value="3">1L</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: #ffffcc">材料选择：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="material" style="width:70px;height:20px">
+                            <option value="1">木头</option>
+                            <option value="2">塑料</option>
+                            <option value="3">织物</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: #ffffcc">持续时间：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="duration" style="width:70px;height:20px">
+                            <option value="1">2分钟</option>
+                            <option value="2">10分钟</option>
+                            <option value="3">20分钟</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: #ffffcc">输出信息：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <p style="color: #ffffcc"><input type="checkbox" id="fire_output" value="Bike"/>火焰</p>
+                        <p style="color: #ffffcc"><input type="checkbox" id="smoke_output" value="Bike"/>烟雾</p>
+                        <p style="color: #ffffcc"><input type="checkbox" id="model_output" value="Bike"
+                                                         checked="checked"/>模型</p>
+                        <p style="color: #ffffcc"><input type="checkbox" id="temperature_output" value="Bike"
+                                                         checked="checked"/>截面温度</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="background-color: transparent; float:top;padding-top: 10px;text-align:center" align="center">
+            <button id="fireAdd"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="fireModelConfirm()">确定
+            </button>
+            <!--            <button id="close" style="height:25px;width:65px" onClick="window.close()">取消</button>-->
+            <button id="fireExit"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="fireModelClose()">退出
+            </button>
+        </div>
+    </div>
+    <div class="collisionMenuShow" id="collisionMenuShow">
+        <div class="collisionModel">
+            <table style="background-color:transparent;">
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">身高：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="height" style="width:120px;height:25px">
+                            <option value="1">高</option>
+                            <option value="2">中</option>
+                            <option value="3">矮</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">姿态方向：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="posture" style="width:120px;height:25px">
+                            <option value="1">正面</option>
+                            <option value="2">侧面</option>
+                            <option value="3">背面</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">车辆类型：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="car_type" style="width:120px;height:25px">
+                            <option value="1">轿车</option>
+                            <option value="2">越野车</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">道路位置：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="roadPosition" style="width:120px;height:25px">
+                            <option value="1">路段</option>
+                            <option value="2">交叉口</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">痕迹：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="trace" style="width:120px;height:25px">
+                            <option value="1">人体痕迹-有无</option>
+                            <option value="2">车辆痕迹-有无</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="background-color: transparent; float:top;padding-top: 20px;text-align:center" align="center">
+            <button id="collisionAdd"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="collisionModelConfirm()">确定
+            </button>
+            <!--            <button id="close" style="height:25px;width:65px" onClick="window.close()">取消</button>-->
+            <button id="collisionExit"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="collisionModelClose()">退出
+            </button>
+        </div>
+    </div>
+    <div class="explodeMenuShow" id="explodeMenuShow">
+        <div class="explodeModel">
+            <table style="background-color:transparent;">
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">结构体：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="structure" style="width:120px;height:25px" onchange="stru_changed()">
+                            <option value="1">土体-一般土体</option>
+                            <option value="2">土体-沥青地面</option>
+                            <option value="3">土体-混凝土地面</option>
+                            <option value="4">建筑</option>
+                            <option value="5">车体</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">爆点位置：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="explodePosition" style="width:120px;height:25px">
+                            <option value="1">接触</option>
+                            <option value="2">悬空</option>
+                            <option value="3">埋爆</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">炸药类型：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="type" style="width:120px;height:25px">
+                            <option value="1">TNT</option>
+                            <option value="2">硝铵</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">炸药当量：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="weight" style="width:120px;height:25px">
+                            <option value="1">1kg</option>
+                            <option value="2">5kg</option>
+                            <option value="3">10kg</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="background-color: transparent; float:top;padding-top: 20px;text-align:center" align="center">
+            <button id="explodeAdd"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="explodeModelConfirm()">确定
+            </button>
+            <!--            <button id="close" style="height:25px;width:65px" onClick="window.close()">取消</button>-->
+            <button id="explodeExit"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="explodeModelClose()">退出
+            </button>
+        </div>
+    </div>
+    <div class="killMenuShow" id="killMenuShow">
+        <div class="killModel">
+            <table style="background-color:transparent;">
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">加害人信息：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="criminal" style="width:120px;height:25px">
+                            <option value="1">身高</option>
+                            <option value="2">体重</option>
+                            <option value="3">性别</option>
+                            <option value="4">年龄</option>
+                        </select>
+                    </td>
+                    <td style="padding-left:5px;padding-top:10px">
+                        <input type="text" class="killInput">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">被害人信息：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="victim" style="width:120px;height:25px">
+                            <option value="1">身高</option>
+                            <option value="2">体重</option>
+                            <option value="3">性别</option>
+                            <option value="4">年龄</option>
+                        </select>
+                    </td>
+                    <td style="padding-left:5px;padding-top:10px">
+                        <input type="text" class="killInput">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">被害人体位信息：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="victim_posture" style="width:120px;height:25px">
+                            <option value="1">正面站姿</option>
+                            <option value="2">反面站姿</option>
+                            <option value="3">正面坐姿</option>
+                            <option value="4">正面坐姿</option>
+                            <option value="5">俯卧</option>
+                            <option value="6">侧卧</option>
+                        </select>
+                    </td>
+                    <td style="padding-left:5px;padding-top:10px">
+                        <input type="text" class="killInput">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">道路位置：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="criminal_posture" style="width:120px;height:25px">
+                            <option value="1">动力学-砍击或刺杀</option>
+                            <option value="2">体位姿态-站姿或坐姿</option>
+                        </select>
+                    </td>
+                    <td style="padding-left:5px;padding-top:10px">
+                        <input type="text" class="killInput">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">刀具信息：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="knife" style="width:120px;height:25px">
+                            <option value="1">重量</option>
+                            <option value="2">材质</option>
+                            <option value="3">刀柄长</option>
+                            <option value="4">刀柄宽</option>
+                            <option value="5">刀柄厚</option>
+                            <option value="6">刀身长</option>
+                            <option value="7">刀身宽</option>
+                            <option value="8">刀身厚</option>
+                        </select>
+                    </td>
+                    <td style="padding-left:5px;padding-top:10px">
+                        <input type="text" class="killInput">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">环境信息：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="environment" style="width:120px;height:25px">
+                            <option value="1">-开阔</option>
+                            <option value="2">-狭窄</option>
+                            <option value="3">-室内</option>
+                            <option value="4">-室外</option>
+                        </select>
+                    </td>
+                    <td style="padding-left:5px;padding-top:10px">
+                        <input type="text" class="killInput">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:5px;padding-top:10px;color: white">砍创信息：</td>
+                    <td style="padding-left:4px;padding-top:10px">
+                        <select id="wound" style="width:120px;height:25px">
+                            <option value="1">砍创部位</option>
+                            <option value="2">--头</option>
+                            <option value="3">--颈</option>
+                            <option value="4">--胸</option>
+                            <option value="5">--腹</option>
+                            <option value="6">--上肢</option>
+                            <option value="7">砍创形态</option>
+                            <option value="8">--特征</option>
+                            <option value="9">--宽度</option>
+                            <option value="10">--深度</option>
+                        </select>
+                    </td>
+                    <td style="padding-left:5px;padding-top:10px">
+                        <input type="text" class="killInput">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="background-color: transparent; float:top;padding-top: 20px;text-align:center" align="center">
+            <button id="killAdd"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="killModelConfirm()">确定
+            </button>
+            <!--            <button id="close" style="height:25px;width:65px" onClick="window.close()">取消</button>-->
+            <button id="killExit"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="killModelClose()">退出
+            </button>
+        </div>
+    </div>
+
+    <div id="menu">
+        <button id="show_model_info" type="button" style="width:125px;" onclick="show_model_info()">显示详情</button>
+        <button id="change_icon_col" type="button" style="width:125px;" onclick="change_icon_col()">高亮显示</button>
+        <button type="button" style="width:125px;">删除标定</button>
+        <button type="button" style="width:125px;">更改位置</button>
+    </div>
+    <div id="start_kinetic_model" style="display: none">
+        <button id="start_fire_model" onclick="start_fire()"></button>
+        <input id="fire_type_name" value="smoke">
+        <button id="start_collision_model" onclick="start_collision()"></button>
+        <button id="start_explosion_model" onclick="start_explosion()"></button>
+        <button id="start_kill_model" onclick="start_kill()"></button>
+    </div>
+</div>
+
+<div id="rightmenu" style="display:block; border-radius: 2px 0px 2px 2px; border: 3px solid rgba(204, 212, 222, 1)">
+    <div id="functionsarea">
+        <div style="float: left;">
+            <div>
+                <table style="float: right;margin-right: 0px">
+                    <tr>
+                        <td colspan="10" style="text-align: center;padding-left: 90px"><span
+                                style="color: #00c0ef;font-size: 1.2em;">按F10隐藏菜单</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="10" style="text-align: left;"><span
+                                style="color: deepskyblue;font-size: 1.2em">操作</span></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button id="new" class="charts" onclick="document.getElementById('for_new').click()">
+                                <img
+                                        src="icons/new.png" width="25px" height="25px" title="新建"
+                                        style="margin-left: -5px">
+                            </button>
+                        </td>
+                        <td>
+                            <button id="import" class="charts" onclick="upload_things()"><img src="icons/import.png"
+                                                                                              width="25px"
+                                                                                              height="25px" title="上传"
+                                                                                              style="margin-left: -30px">
+                            </button>
+                        </td>
+                        <td>
+                            <button id="mark" class="charts" onclick="mark_thing()"><img src="icons/mark.png"
+                                                                                         width="25px" height="25px"
+                                                                                         title="标注"></button>
+                        </td>
+                        <td>
+                            <button id="show" class="charts" onclick="display_selected()"><img src="icons/show.png"
+                                                                                               width="25x" height="25px"
+                                                                                               title="显示"
+                                                                                               style="margin-left: -20px">
+                            </button>
+                        </td>
+                        <td>
+                            <button id="adjust" class="charts" onclick="rightmodelmodify()"><img
+                                    src="icons/adjust.png"
+                                    width="25px"
+                                    height="25px"
+                                    title="调整"></button>
+                        </td>
+                        <td>
+                            <button id="track" class="charts" onclick=""><img src="icons/track.png" width="25px"
+                                                                              height="25px" title="轨迹"></button>
+                        </td>
+                        <td>
+                            <button id="area" class="charts" onclick=""><img src="icons/area.png" width="25px"
+                                                                             height="25px" title="范围"></button>
+                        </td>
+                        <td>
+                            <button id="relate" class="charts" onclick="mdoelrelation()"><img src="icons/relate.png"
+                                                                                              width="25px"
+                                                                                              height="25px"
+                                                                                              title="关联"></button>
+                        </td>
+                        <td>
+                            <button id="align" class="charts" onclick=""><img src="icons/align.png" width="25px"
+                                                                              height="25px" title="对齐"></button>
+                        </td>
+                        <td>
+                            <button id="measure" class="charts" onclick=""><img src="icons/measure.png" width="25px"
+                                                                                height="25px" title="测量"></button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="functions_models">
+        <div style="float: left;">
+            <div>
+                <table style="float: right;margin-right: 0px">
+                    <tr>
+                        <td colspan="13" style="text-align: left;"><span
+                                style="color: deepskyblue;font-size: 1.2em">功能展示</span>
+                        </td>
+                        <td colspan="5" style="text-align: left;"><span
+                                style="color: deepskyblue;font-size: 1.2em">模型演示</span></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button id="route" class="charts" onclick="routeshow()"><img src="icons/route.png"
+                                                                                         width="27px" height="27px"
+                                                                                         title="自主路线"></button>
+                        </td>
+                        <td>
+                            <button id="study" class="charts" onclick="functions('Smodel')"><img
+                                    src="icons/study.png"
+                                    width="27px"
+                                    height="27px"
+                                    title="研判标准"></button>
+                        </td>
+                        <td>
+                            <button id="g_measure" class="charts"
+                                    onclick="startMeausre(); functions('toolbar_measure')"><img
+                                    src="icons/g_measure.png" width="27px" height="27px" title="地理量测"></button>
+                        </td>
+                        <td>
+                            <button id="explosion" class="charts" onclick="explosiveshow()"><img
+                                    src="icons/explosion.png" width="27x" height="27px" title="爆炸效果"></button>
+                        </td>
+                        <td>
+                            <button id="wave" class="charts" onclick="waveshow()"><img src="icons/wave.png"
+                                                                                       width="27px"
+                                                                                       height="27px" title="爆炸冲击波">
+                            </button>
+                        </td>
+                        <td>
+                            <button id="fire" class="charts" onclick="functions('caseMenuShow')"><img
+                                    src="icons/fire.png" width="27px" height="27px" title="燃烧"></button>
+                        </td>
+                        <td>
+                            <button id="collision" class="charts" onclick="functions('collisionMenuShow')"><img
+                                    src="icons/collision.png" width="27px" height="27px" title="碰撞"></button>
+                        </td>
+                        <td>
+                            <button id="explode" class="charts" onclick="functions('explodeMenuShow')"><img
+                                    src="icons/explode.png" width="27px" height="27px" title="爆炸"></button>
+                        </td>
+                        <td>
+                            <button id="kill" class="charts" onclick="functions('killMenuShow')"><img
+                                    src="icons/kill.png" width="27px" height="27px" title="砍杀"></button>
+                        </td>
+                        <td>
+                            <button id="mixture" class="charts" onclick="mixmodel()"><img src="icons/mixture.png"
+                                                                                          width="27px" height="27px"
+                                                                                          title="混合"></button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="hchartshow">
+        <div style="float: left;">
+            <table style="float: right;margin-right: 0px">
+                <tr></tr>
+                <tr></tr>
+                <tr>
+                    <td colspan="5" style="text-align: left"><span
+                            style="color: deepskyblue;font-size: 1.2em">图表</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button id="linechart" class="charts" onclick="lineshow()"><img src="icons/line.png"
+                                                                                        width="35px" height="35px"
+                                                                                        title="折线图"></button>
+                    </td>
+                    <td>
+                        <button id="barchart" class="charts" onclick="barshow()"><img src="icons/bar.png" width="35px"
+                                                                                      height="35px" title="柱状图">
+                        </button>
+                    </td>
+                    <td>
+                        <button id="piechart" class="charts" onclick="pieshow()"><img src="icons/pie.png" width="35px"
+                                                                                      height="35px" title="饼图">
+                        </button>
+                    </td>
+                    <td>
+                        <button id="bubblechart" class="charts" onclick="bubbleshow()"><img src="icons/bubble.png"
+                                                                                            width="35px" height="35px"
+                                                                                            title="气泡图"></button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="signs">
+        <div style="float: left;margin-right: 0px">
+            <table>
+                <tr></tr>
+                <tr></tr>
+                <tr>
+                    <td colspan="5" style="text-align: left"><span
+                            style="color: deepskyblue;font-size: 1.2em">符号</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button id="sign_upload" class="charts" onclick=""><img src="icons/upload.png" width="30px"
+                                                                                height="30px" title="新建"></button>
+                    </td>
+                    <td>
+                        <button id="sign_create" class="charts" onclick=""><img src="icons/create.png" width="30px"
+                                                                                height="30px" title="上传"></button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="sign_models">
+        <div style="float: left">
+            <table>
+                <tr></tr>
+                <tr></tr>
+                <tr>
+                    <td colspan="5" style="text-align: left"><span
+                            style="color: deepskyblue;font-size: 1.2em">模型</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button id="model_upload" class="charts" onclick=""><img src="icons/upload.png" width="30px"
+                                                                                 height="30px" title="新建"></button>
+                    </td>
+                    <td>
+                        <button id="model_create" class="charts" onclick=""><img src="icons/create.png" width="30px"
+                                                                                 height="30px" title="上传"></button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!--<style>-->
+<!--#menu {-->
+<!--width: 0; /*设置为0 隐藏自定义菜单*/-->
+<!--overflow: hidden; /*隐藏溢出的元素*/-->
+<!--box-shadow: 0 1px 1px #888, 1px 0 1px #ccc;-->
+<!--position: absolute; /*自定义菜单相对与body元素进行定位*/-->
+<!--}-->
+<!--</style>-->
+
+<!--</div>-->
+<div id="line">
+    <div id="container1" style="height: 245px;width: 470px;"></div>
+</div>
+<div id="bar">
+    <div id="container2" style="height: 245px;width: 470px;"></div>
+</div>
+<div id="pie">
+    <div id="container3" style="height: 245px;width: 470px;"></div>
+</div>
+<div id="bubble">
+    <div id="container4" style="height: 490px;width: 470px;"></div>
+</div>
+
+<div>
+    <input id="for_new" type="file" style="display:none" accept=".xls,.xlsx"
+           onchange="importNewExcel(this)">
+</div>
+
+<script>
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+        shouldAnimate: false,
+        baseLayerPicker: false,
+        homeButton: false,       //是否显示home键
+        timeline: true,        //是否显示时间线控件
+        fullscreenButton: false, //是否全屏显示
+        scene3DOnly: true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+        infoBox: true,         //是否显示点击要素之后显示的信息
+        sceneModePicker: false,  //是否显示投影方式控件  三维/二维
+        navigationInstructionsInitiallyVisible: false,
+        navigationHelpButton: false,     //是否显示帮助信息控件
+        selectionIndicator: false,        //是否显示指示器组件
+        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+            url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+        }),
+        /*terrainProvider: new Cesium.CesiumTerrainProvider({
+            url: 'http://localhost:9000/terrain/47a16750140a11eabbe9d917023534d8'
+        })*/
+        // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
+        //     url: 'cesium/googleTMS',
+        // }),
+        // terrainProvider: Cesium.createWorldTerrain()//加载地势
+    });
+    viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
+    viewer.scene.globe.depthTestAgainstTerrain = false;
+    // viewer.camera.setView({
+    //     destination: Cesium.Cartesian3.fromDegrees(105.07224017290507, 36.56475804850547, 4889916.564370803),
+    //     orientation: {
+    //         heading: 0.0,
+    //         pitch: Cesium.Math.toRadians(-90.0),
+    //         roll: 0.0
+    //     }
+    // });
+    var scene = viewer.scene;
+    var clock = viewer.clock;
+
+    var operation_type;
+    var element_image = "cesium/images/left_foot.JPG";
+    var thing_gltf = 'cesium/Models/Test/model.gltf';
+    var dog_gltf = 'cesium/Models/Test/dog.gltf';
+    var mark_color = Cesium.Color.WHITE;
+    var dataSourcePromise;
+
+    var viewModel = {
+        OffsetX: 0,
+        OffsetY: 0,
+        OffsetZ: 0,
+        RotateX: 0,
+        RotateY: 0,
+        RotateZ: 0,
+        Enlarge: 1
+    };
+
+    Cesium.knockout.track(viewModel); // 跟踪此Model
+    // var toolbar_hpr = document.getElementById('toolbar_hpr'); // 获取前端监控div
+    var toolbar_hpr = document.getElementById('ModelModifyMenu'); // 获取前端监控div
+    Cesium.knockout.applyBindings(viewModel, toolbar_hpr); // 绑定监控
+
+    let objectMap = new Map();
+
+    var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
+        Cesium.Cartesian3.fromDegrees(114.22139307626317, 30.357628207462255, 2.289440174119258)
+    );
+    var entity3 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
+            url: dog_gltf,
+            id: -1,
+            modelMatrix: modelMatrix,
+            // minimumPixelSize : 512,
+            scale: .0
+            // maximumScale : 200000
+        })
+    );
+    var originModelMadrix = entity3.modelMatrix.clone();
+    var originParam = {"scale": entity3.scale, "lng": 0, "lat": 0, "height": 0, "rx": 0, "ry": 0, "rz": 0};
+    var originPickedObject, currentPickedObject;
+
+    viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 700.0)
+    });//初始视角
+
+    //update_model_hpr(entity3);
+
+    function upload_things() {
+        $("#upload_files").click();
+    }
+</script>
+<script src='./js/measuring.js'></script>
+<script src='./js/blast.js'></script>
+<script src='./js/collision.js '></script>
+<script src='./js/modelMark.js'></script>
+<script src='./js/plug-in.js '></script>
+
+<script src='./functions/config.js'></script>
+<script src='./functions/czmlanshun.js '></script>      <!--czml相关-->
+<script src='./functions/sandcastle.js '></script>  <!-- cesium控件-->
+<script src='./functions/handler.js '></script>     <!-- 鼠标事件-->
+<script src='./functions/fire.js '></script>        <!-- 燃烧功能-->
+<script src='./functions/collision.js '></script>   <!-- 碰撞演示功能-->
+<script src='./functions/explosion.js '></script>    <!-- 爆炸演示功能-->
+<script src='./functions/mix.js '></script>   <!-- 燃烧碰撞混合演示功能-->
+<script src='./functions/dynamicRouteanshun.js '></script>   <!-- 动态划线函数-->
+<script src='./functions/tilesetanshun.js '></script>   <!-- 显示瓦片地图-->
+<script src='./functions/menuanshun.js '></script>   <!-- 菜单操作功能-->
+<script src='./functions/onkey.js '></script>     <!--快捷键相关-->
+<script src='./functions/fileSystem.js '></script>     <!--文件上传相关-->
+</body>
+</html>

@@ -22,6 +22,7 @@ function show_tileset() {
         var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, height);
         var translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
         tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
+        //alert(cartographic.longitude + ", " + cartographic.latitude + ", " + clippingPlanes.length + "\n," + tileset.modelMatrix.toString());
         console.log("加载中");
 
         for (var i = 0; i < clippingPlanes.length; ++i) {

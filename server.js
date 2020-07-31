@@ -117,14 +117,14 @@ app.get("/get_dat_arr", function (req, res) {
 })
 
 var connection = mysql.createConnection({
-    host: '127.0.0.1',
+    /*host: '127.0.0.1',
     user: 'root',
     password: 'czl887',
-    database: 'pointcloud'
-    // host: '172.17.0.15',
-    // user: 'wuzheng',
-    // password: '111111',
-    // database: 'wuzheng0727'
+    database: 'pointcloud'*/
+    host: '172.17.0.153',
+    user: 'wuzheng',
+    password: '111111',
+    database: 'wuzheng0727'
 });
 connection.connect();
 

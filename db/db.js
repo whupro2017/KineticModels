@@ -8,15 +8,15 @@
  */
 const mysql = require('mysql');
 const pool = mysql.createPool({
-    host: '127.0.0.1',
+    /*host: '127.0.0.1',
     user: 'root',
     password: 'czl887',
-    database: 'pointcloud'
-    // connectionLimit: 10,
-    // host: '172.17.0.15',
-    // user: 'wuzheng',
-    // password: '111111',
-    // database: 'wuzheng0727'
+    database: 'pointcloud'*/
+    connectionLimit: 10,
+    host: '172.17.0.153',
+    user: 'wuzheng',
+    password: '111111',
+    database: 'wuzheng0727'
 });
 
 /**六张表
@@ -31,7 +31,7 @@ const pool = mysql.createPool({
  * @param values
  * @param callback
  */
-function query (sql, values, callback) {
+function query(sql, values, callback) {
     pool.getConnection(function (err, connection) {
         if (err) throw err;
         //Use the connection
@@ -40,7 +40,7 @@ function query (sql, values, callback) {
             callback(err, results);
             // connection.release();
             if (err) throw err;
-    });
+        });
         pool.releaseConnection(connection);
     });
 }

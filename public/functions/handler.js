@@ -493,7 +493,7 @@ handler.setInputAction(function (movement) {
             operation_type = null;
         }
         // anshun disabled
-        if (operation_type == "drawRoute") {
+        /*if (operation_type == "drawRoute") {
             if (positions.length != 0) {
                 positions.pop();
                 dyn_czml[0].clock.interval = dyn_czml[0].clock.interval + endtime;
@@ -501,7 +501,7 @@ handler.setInputAction(function (movement) {
                 startDynRoute(dyn_czml);
                 operation_type = null;
             }
-        } else if (operation_type == "drawRoute") {
+        } else*/ if (operation_type == "drawRoute") {
             const input = [
                 /*{"lon":105.92575,"lat":26.2586},
                 {"lon":105.92575,"lat":26.2586},

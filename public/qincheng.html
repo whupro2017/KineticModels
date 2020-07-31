@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Hello World!</title>
+    <script src="cesium/Cesium.js"></script>
+    <script src="cesium/Sandcastle-header.js"></script>
+    <script src="cesium/jquery-2.1.4.min.js"></script>
+    <script src="cesium/jquery-form.js"></script>
+    <script src="cesium/xlsx.core.min.js"></script>
+    <style>
+        @import url(cesium/bucket.css);
+
+        body {
+            color: #000;
+        }
+
+        #toolbar {
+            background: rgba(42, 42, 42, 0.8);
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        #toolbar_measure {
+            background: rgba(42, 42, 42, 0.8);
+            padding: 4px;
+            border-radius: 4px;
+            z-index: 99999;
+        }
+
+        button {
+            color: #fff;
+            background-color: #666666;
+            text-align: center;
+            border: 1px solid #1E90FF;
+            border-radius: 4px;
+        }
+
+        .toolbar_measure button {
+            width: 50px;
+            height: 24px;
+            border-radius: 0px;
+            opacity: 0.8;
+            border: 1px solid rgba(255, 255, 255, 1);
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.8);
+            margin-left: 4px;
+        }
+
+        .toolbar_measure {
+            position: absolute;
+            top: 50px;
+            right: 00px;
+            z-index: 8888;
+            display: none;
+            width: 300px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 2px 0px 2px 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+        }
+
+        /* //坐标样式 */
+
+        .leftMenu {
+            width: 160px;
+            height: 80px;
+            background-color: #f1f1f1;
+            position: absolute;
+            display: none;
+            left: 300px;
+            top: 300px;
+            border-radius: 5px;
+            z-index: 9999;
+            line-height: 26px;
+            padding-left: 5px;
+        }
+
+        .leftMenu p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .Smodel {
+            position: absolute;
+            top: 40px;
+            right: 226px;
+            z-index: 20330;
+            width: 176px;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+            display: none;
+            font-size: 12px;
+        }
+
+        .Smodel .model_content p {
+            margin: 10px 7px;
+            font-size: 12px;
+        }
+
+        .Smodel .model_content span {
+            color: #fff;
+        }
+
+        .Smodel .model_content input {
+            width: 105px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+            color: #fff;
+            padding-left: 5px;
+            font-size: 12px;
+        }
+
+        .Smodel .model_content select {
+            width: 105px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 2px;
+            border: 1px solid rgba(204, 212, 222, 1);
+            color: #fff;
+            padding-left: 5px;
+            font-size: 12px;
+        }
+
+        .Smodel .modelselect_p select {
+            width: 80px !important;
+        }
+
+        .Smodel .model_content button {
+            width: 40px;
+            height: 20px;
+            background: rgba(0, 0, 0, 1);
+            border-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 1);
+            margin-left: 10px;
+            color: #fff;
+            font-size: 10px;
+        }
+
+        .Smodel .model_content button:hover {
+            background: rgba(204, 212, 222, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+<div id="cesiumContainer" class="fullSize"></div>
+<div class="leftMenu" id="modelInfo">
+    <p></p>
+</div>
+<div id="toolbar" style="display:block;">
+    <div align="center">
+        按 F9 隐 藏 菜 单
+    </div>
+    <div>
+        <div style="float:left;width:100%;">
+            <div id="CreateCase" style="float: left">
+            </div>
+            <div style="float: left">
+                <input type="model_file" id="case_file" style="display:none">
+                <form id="kinetic_files" method="post" enctype="multipart/form-data" style="display:none"
+                      action="/uploads" target="nm_iframe">
+                    <input type="file" id="files" onchange="formSubmit()" name="upload" webkitdirectory mozdirectory>
+                    <input type="submit" id="upload_confirm" value="确认上传动力学模型">
+                </form>
+                <form id="particle_file" method="post" enctype="multipart/form-data" style="display:none"
+                      action="/uploads_particle" target="nm_iframe">
+                    <input type="file" id="particle_files" onchange="particle_file_formSubmit()" name="upload"
+                           webkitdirectory mozdirectory>
+                    <input type="submit" id="particle_upload_confirm" value="确认上传粒子素材">
+                </form>
+
+                <form action="/upload" , enctype="multipart/form-data" method="post" style="display:none">
+                    <input type="file" name="upload" multiple="multipart">
+                    <input type="submit" value="确认上传文件">
+                </form>
+                <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+                <!--<input type="file" id="kinetic_file" webkitdirectory directory style="display:none" onchange="get_kinetic_file(this.value)">-->
+                <table>
+                    <tr>
+                        <td>案 件 id：</td>
+                        <td><select id="case_id" style="width:120px;height:25px" onchange="get_scenes(this.value)">
+                            <option value="volvo" hidden>请选择案件</option>
+                        </select></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="width:100%">
+            <div id="CreateScene" style="float: left">
+            </div>
+            <div style="float: left">
+                <table>
+                    <tr>
+                        <td>场 景 id：</td>
+                        <td><select id="scene_id" style="width:120px;height:25px"
+                                    onchange="select_scene(this.value)">
+                            <option value="" hidden>请选择场景</option>
+                        </select></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="operations" style="float: left;display:none">
+        <div id="caseMenu"></div>
+        <div id="MeasureMenu"></div>
+        <div id="modelMenu"></div>
+        <div id="DynRoute"></div>
+        <div>
+            <div id="KineticMenu" style="float: left;"></div>
+            <div style="float: left;">
+                <table>
+                    <tr>
+                        <td><select id="kinetic_model" style="width:100px;height:25px">
+                            <option value="volvo" hidden>选择动力学模型</option>
+                        </select></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div>
+            <div id="ModelMeasure" style="float: left;"></div>
+            <div style="float: left;">
+                <table>
+                    <tr>
+                        <td><select id="models" style="width:100px;height:25px" onchange="locate_model(this.value)">
+                            <option value="volvo" hidden>要素与场信息</option>
+                        </select></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        <select id="top_icon_menu" style="width:100px;height:25px" onchange="get_sub_menu(this.value)">
+                            <option value="volvo" hidden>选择图标大类</option>
+                            <option value="办公类">办公类</option>
+                            <option value="电子类">电子类</option>
+                            <option value="交通类">交通类</option>
+                            <option value="器具类">器具类</option>
+                            <option value="生活类">生活类</option>
+                            <option value="植物类">植物类</option>
+                            <option value="主体类">主体类</option>
+                            <option value="装饰类">装饰类</option>
+                        </select>
+                    </td>
+                    <td><select id="sub_icon_menu" style="width:100px;height:25px" onchange="get_icon_menu(this.value)">
+                        <option value="volvo" hidden>选择图标子类</option>
+                    </select></td>
+
+                    <td><select id="icon_menu" style="width:100px;height:25px" onchange="get_icon_image(this.value)">
+                        <option value="volvo" hidden>选择图标图片</option>
+                    </select></td>
+                </tr>
+
+            </table>
+        </div>
+        <div style="float: left">
+            <div id="markMenu" style="float: left"></div>
+            <div style="float: left">
+                <input id="element_file" type="file" style="display:none" accept=".xls,.xlsx"
+                       onchange="importFile(this)">
+                <table>
+                    <tr>
+                        <td><select id="element_type" style="width:80px;height:25px"
+                                    onchange="get_element_menu(this.value)">
+                            <option value="volvo" hidden>要素类别</option>
+                            <option value="scene_handprint">手印痕迹</option>
+                            <option value="scene_footprint">足迹痕迹</option>
+                            <option value="scene_toolmark">工具痕迹</option>
+                            <option value="scene_bio_evidence">生物物证</option>
+                            <option value="scene_file_evidence">文检物证</option>
+                            <option value="scene_elec_evidence">电子物证</option>
+                        </select></td>
+                        <td><select id="elements" style="width:80px;height:25px">
+                            <option value="volvo" hidden>绑定要素</option>
+                        </select></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        <div>
+            <div style="float: left">
+                <div id="infoMenu" style="float: left"></div>
+                <div style="float: left">
+                    <input id="info_file" type="file" style="display:none" accept=".xls,.xlsx"
+                           onchange="importFile(this)">
+                    <table>
+                        <tr>
+                            <td><select id="info_type" style="width:80px;height:25px"
+                                        onchange="get_element_menu(this.value)">
+                                <option value="volvo" hidden>信息类别</option>
+                                <option value="scene_handprint">手印痕迹</option>
+                                <option value="scene_footprint">足迹痕迹</option>
+                                <option value="scene_toolmark">工具痕迹</option>
+                                <option value="scene_bio_evidence">生物物证</option>
+                                <option value="scene_file_evidence">文检物证</option>
+                                <option value="scene_elec_evidence">电子物证</option>
+                            </select></td>
+                            <td><select id="infos" style="width:80px;height:25px">
+                                <option value="volvo" hidden>绑定要素</option>
+                            </select></td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div>
+                <div style="float: left">
+                    <div id="thingMenu" style="float: left"></div>
+                    <div style="float: left">
+                        <input id="thing_file" type="file" style="display:none" accept=".xls,.xlsx"
+                               onchange="importFile(this)">
+                        <table>
+                            <tr>
+                                <td><select id="thing_type" style="width:80px;height:25px"
+                                            onchange="get_element_menu(this.value)">
+                                    <option value="volvo" hidden>物品类别</option>
+                                    <option value="scene_handprint">手印痕迹</option>
+                                    <option value="scene_footprint">足迹痕迹</option>
+                                    <option value="scene_toolmark">工具痕迹</option>
+                                    <option value="scene_bio_evidence">生物物证</option>
+                                    <option value="scene_file_evidence">文检物证</option>
+                                    <option value="scene_elec_evidence">电子物证</option>
+                                </select></td>
+                                <td><select id="things" style="width:80px;height:25px">
+                                    <option value="volvo" hidden>绑定要素</option>
+                                </select></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div style="float: left">
+                    <div id="humanMenu" style="float: left"></div>
+                    <div style="float: left">
+                        <input id="human_file" type="file" style="display:none" accept=".xls,.xlsx"
+                               onchange="importFile(this)">
+                        <table>
+                            <tr>
+                                <td><select id="human_type" style="width:80px;height:25px"
+                                            onchange="get_element_menu(this.value)">
+                                    <option value="volvo" hidden>涉案人类别</option>
+                                    <option value="scene_handprint">手印痕迹</option>
+                                    <option value="scene_footprint">足迹痕迹</option>
+                                    <option value="scene_toolmark">工具痕迹</option>
+                                    <option value="scene_bio_evidence">生物物证</option>
+                                    <option value="scene_file_evidence">文检物证</option>
+                                    <option value="scene_elec_evidence">电子物证</option>
+                                </select></td>
+                                <td><select id="humen" style="width:80px;height:25px">
+                                    <option value="volvo" hidden>绑定要素</option>
+                                </select></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="toolbar_measure">
+    <button type="button" onclick="pick()">坐标</button>
+
+    <button type="button" onclick="heightMeasuring()">高度</button>
+    <button type="button" onclick="distanceDraw()">距离</button>
+    <button type="button" onclick="areaMeasuring()">面积</button>
+    <button type="button" onclick="stopMeasure()">退出</button>
+</div>
+
+<div class="Smodel">
+    <div class="model_content">
+        <p><span>名称：</span><input type="text" class="Sname" placeholder="请输入名称"></p>
+        <p><span>经度：</span><input type="number" class="Slongitude" placeholder="请输入经度" step="0.00001"></p>
+        <p><span>纬度：</span><input type="number" class="Slatitude" placeholder="请输入纬度" step="0.00001"></p>
+        <p><span>高度：</span><input type="number" class="Sheight" placeholder="请输入高度" step="0.1"></p>
+        <p><span>方向：</span><input type="number" class="Sdirection" placeholder="请输入方向" value="0"></p>
+        <p><span>比例：</span><input type="number" class="Sproportion" placeholder="请输入比例" value="1" min="0.1" step="0.1">
+        </p>
+        <p><span>预案：</span><select class="planOption">
+            <option value="1">预案一</option>
+            <option value="2">预案二</option>
+            <option value="3">预案三</option>
+        </select></p>
+        <p class="modelselect_p"><span>选择模型：</span><select class="dropdownMenu">
+            <option value="./img/modelImg/gou.glb">警犬</option>
+            <option value="./img/modelImg/yisheng.glb">医生</option>
+            <option value="./img/modelImg/wujing.glb">武警</option>
+            <option value="./img/modelImg/xiaofangyuan.glb">消防员</option>
+            <option value="./img/modelImg/jingchanan.glb">警察男</option>
+            <option value="./img/modelImg/jingchanv.glb">警察女</option>
+            <option value="./img/modelImg/fangbaoche.glb">防暴车</option>
+            <option value="./img/modelImg/jingche.glb">警车</option>
+            <option value="./img/modelImg/motuoche.glb">摩托车</option>
+            <option value="./img/modelImg/zhihuiche.glb">指挥车</option>
+            <option value="./img/modelImg/gongjiaoche.glb">公交车</option>
+            <option value="./img/modelImg/jijuche.glb">救护车</option>
+            <option value="./img/modelImg/jiuyuanche.glb">救援车</option>
+            <option value="./img/modelImg/xiaofangche.glb">消防车</option>
+            <option value="./img/modelImg/jingyonggongjiaoche.glb">警用公交车</option>
+            <option value="./img/modelImg/luzhang.glb">路障</option>
+            <option value="./img/modelImg/miehuoche.glb">灭火器</option>
+            <option value="./img/modelImg/zucheding.glb">阻车钉</option>
+        </select></p>
+        <button type="button" class="StakeBtn" onclick="siteModelTake('.Slongitude','.Slatitude','.Sheight')">量取
+        </button>
+        <button type="button" class="Ssubmit" onclick="addModelInfo()">提交</button>
+        <button type="button" class="Sdropout" onclick="stopModel()">退出</button>
+
+    </div>
+</div>
+<div id="menu">
+    <button id="show_model_info" type="button" style="width:125px;" onclick="show_model_info()">显示详情</button>
+    <button type="button" style="width:125px;">删除标定</button>
+    <button type="button" style="width:125px;">更改位置</button>
+</div>
+<div id="start_kinetic_model" style="display: none">
+    <button id="start_fire_model" onclick="start_fire()"></button>
+    <input id="fire_type_name" value="smoke">
+    <button id="start_collision_model" onclick="start_collision()"></button>
+    <button id="start_explosion_model" onclick="start_explosion()"></button>
+    <button id="start_kill_model" onclick="start_kill()"></button>
+</div>
+
+<style>
+    #menu {
+        width: 0; /*设置为0 隐藏自定义菜单*/
+        overflow: hidden; /*隐藏溢出的元素*/
+        box-shadow: 0 1px 1px #888, 1px 0 1px #ccc;
+        position: absolute; /*自定义菜单相对与body元素进行定位*/
+    }
+</style>
+
+<script>
+
+
+    //关闭右键菜单，很简单
+    window.onclick = function (e) {
+
+//用户触发click事件就可以关闭了，因为绑定在window上，按事件冒泡处理，不会影响菜单的功能
+        document.querySelector('#menu').style.height = 0;
+    }
+
+    //导入要素表格文件
+    function importFile(obj) {//导入
+        console.log("已选择文件");
+        if (!obj.files) {
+            alert("文件有误");
+            return;
+        }
+        // alert(obj.files[0].name);文件名
+        var f = obj.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var wb = XLSX.read(data, {
+                type: 'binary' //以二进制的方式读取
+            });
+            var sheet0 = wb.Sheets[wb.SheetNames[0]];//sheet0代表excel表格中的第一页
+            var str = XLSX.utils.sheet_to_json(sheet0);//利用接口实现转换。
+            var templates = new Array();
+            var str1 = obj.files[0].name;
+            templates = str1.split(".");//将导入文件名去掉后缀
+            var form = JSON.stringify(str);
+            console.log("这" + form);
+            $.get("/store_elements", {"form": form, "scene_id": $("#scene_id").val()}, function (data) {
+                alert(data.msg);
+            })
+        }
+        reader.readAsBinaryString(f);
+    }
+
+    $(document).ready(function () {
+        var options1 = {
+            target: '#output1',   // target element(s) to be updated with server response
+            beforeSubmit:
+                function (data) {
+                    console.log("提交前函数");
+                },
+            success:
+                function showResponse(responseText, statusText, xhr, $form) {
+                    console.log(responseText);
+                    alert(responseText.msg);
+                    var gltfs = responseText.model_info;
+                    for (var i = 0; i < gltfs.length; i += 2) {
+                        $("#models").append('<option value=' + gltfs[i + 1] + ' >' + gltfs[i] + '</option>');
+                    }
+                    var kin = responseText.kinetic_id;
+
+                    $("#kinetic_model").append('<option value=' + kin + ' >' + kin + '</option>');
+                    $("#kinetic_model").val(kin);
+                    // if(responseText.status == "0"){
+                    //     console.log("上传成功");
+                    //     /**
+                    //      * 请求成功后的操作
+                    //      */
+                    //     alert(responseText);
+                    // } else {
+                    //     alert('上传失败');
+                    // }
+                },
+            // other available options:
+            //url:       url         // override for form's 'action' attribute
+            //type:      type        // 'get' or 'post', override for form's 'method' attribute
+            dataType: 'json'        // 'xml', 'script', or 'json' (expected server response type)
+            //clearForm: true        // clear all form fields after successful submit
+            //resetForm: true        // reset the form after successful submit
+
+            // $.ajax options can be used here too, for example:
+            //timeout:   3000
+        };
+        var options2 = {
+            target: '#output2',   // target element(s) to be updated with server response
+            beforeSubmit:
+                function (data) {
+                    console.log("开始提交粒子素材");
+                },
+            success:
+                function showResponse(responseText, statusText, xhr, $form) {
+                    console.log(responseText);
+                    alert(responseText.msg);
+                },
+            // other available options:
+            //url:       url         // override for form's 'action' attribute
+            //type:      type        // 'get' or 'post', override for form's 'method' attribute
+            dataType: 'json'        // 'xml', 'script', or 'json' (expected server response type)
+            //clearForm: true        // clear all form fields after successful submit
+            //resetForm: true        // reset the form after successful submit
+
+            // $.ajax options can be used here too, for example:
+            //timeout:   3000
+        };
+
+        $('#kinetic_files').submit(function () {
+            $(this).ajaxSubmit(options1);
+            return false;
+        });
+        $('#particle_file').submit(function () {
+            $(this).ajaxSubmit(options2);
+            return false;
+        });
+    });
+
+    function formSubmit() {
+        document.getElementById("upload_confirm").click();
+    }
+
+    function particle_file_formSubmit() {
+        document.getElementById("particle_upload_confirm").click();
+    }
+
+    $(function () {
+        $("#files").on("change", function (e) {
+            $.each(this.files, function (k, v) {
+                console.log(v.type + "=" + v.webkitRelativePath);
+            });
+        });
+    })
+
+    function select_case() {
+        $("#case_file").trigger("click");
+    }
+
+    //快捷键函数
+    function keyDown(e) {
+        ie = (document.all) ? true : false;
+        if (ie) {
+            //IE浏览器
+            if (event.keyCode == 120) {//F2
+                event.keyCode = 0;
+                event.returnValue = false;
+                console.log("按F9");
+                var box = document.getElementById("toolbar");
+                if (box.style.display != "block") {
+                    box.style.display = "block";
+                } else {
+                    box.style.display = "none";
+                }
+            }
+        } else {
+            //非IE浏览器
+            if (e.which == 120) {//F2
+                e.which = 0;
+                e.returnValue = false;
+                //注意：此句不能少，否则火狐下个别热键会被重复调用；
+                //如F5键：会先调用自定义函数，再刷新页面，其他同理
+                console.log("按F9");
+                var box = document.getElementById("toolbar");
+                if (box.style.display != "block") {
+                    box.style.display = "block";
+                } else {
+                    box.style.display = "none";
+                }
+            }
+            // return false;
+        }
+
+    }
+
+    document.onkeydown = keyDown;
+
+
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+        shouldAnimate: false,
+        baseLayerPicker: false,
+        homeButton: false,       //是否显示home键
+        timeline: true,        //是否显示时间线控件
+        fullscreenButton: false, //是否全屏显示
+        scene3DOnly: true,     //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+        infoBox: true,         //是否显示点击要素之后显示的信息
+        sceneModePicker: false,  //是否显示投影方式控件  三维/二维
+        navigationInstructionsInitiallyVisible: false,
+        navigationHelpButton: false,     //是否显示帮助信息控件
+        selectionIndicator: false,        //是否显示指示器组件
+        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+            url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+        }),
+        // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
+        //     url: 'cesium/googleTMS',
+        // }),
+        // terrainProvider: Cesium.createWorldTerrain()//加载地势
+    });
+    viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
+    viewer.scene.globe.depthTestAgainstTerrain = false;
+    viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(105.07224017290507, 36.56475804850547, 4889916.564370803),
+        orientation: {
+            heading: 0.0,
+            pitch: Cesium.Math.toRadians(-90.0),
+            roll: 0.0
+        }
+    });
+    var scene = viewer.scene;
+    var clock = viewer.clock;
+
+    var czml = [{
+        "id": "document",
+        "name": "CZML_Model",
+        "version": "1.0",
+        "clock": {
+            "interval": "2018-07-19T15:18:00Z/2018-07-19T15:18:30Z",
+            "currentTime": "2018-07-19T15:18:00Z",
+            "multiplier": 3,
+            "range": "LOOP_STOP",
+            "step": "SYSTEM_CLOCK_MULTIPLIER"
+        }
+    }, {
+        "id": "GroundVehicle_model1",
+        "name": "Cesium GroundVehicle",
+        "position": {
+            "cartographicDegrees": [
+                "2018-07-19T15:18:00Z", 114.2200811287065, 30.3569751443063, 8.434443546338331,
+                "2018-07-19T15:18:15Z", 114.22068911951403, 30.357117281841425, 5.611844410848972,
+                "2018-07-19T15:18:20Z", 114.22091729174423, 30.357229692992718, 4.4444397595503435,
+                "2018-07-19T15:18:30Z", 114.22091752014487, 30.357229805516393, 4.4444397595503435,
+                // "2018-07-19T15:19:00Z", 114.22093114547536,30.357237367635022,4.400228014758974,
+            ]
+
+        },
+        "model": {
+            "gltf": "cesium/Models/CesiumMilkTruck/CesiumMilkTruck.glb",
+            "scale": 1.0,
+            "minimumPixelSize": 58
+        }
+    }, {
+        "id": "GroundVehicle_model2",
+        "name": "Cesium GroundVehicle",
+        "position": {
+            "cartographicDegrees": [
+                "2018-07-19T15:18:00Z", 114.22135699410939, 30.357588742948707, 2.833868465423425,
+                "2018-07-19T15:18:15Z", 114.221093521622, 30.35733869548169, 3.9409554351758564,
+                "2018-07-19T15:18:20Z", 114.22094661461396, 30.35724446381247, 3.9409554351758564,
+                "2018-07-19T15:18:30Z", 114.2209464675599, 30.357244369486477, 3.9409554351758564,
+                // "2018-07-19T15:19:00Z", 114.22095167155386,30.357249918059647,4.358166447886486
+            ]
+            // "interpolationAlgorithm": "LINEAR",
+            // "forwardExtrapolationType": "HOLD",
+            // "cartesian": [
+            //     "2018-07-19T15:18:00Z", 1060223.7482783734, -4988588.280207378, 3817382.622330465,
+            //     "2018-07-19T15:18:40Z", 1060192.2168934273, -4988607.771653484, 3817366.019811927,
+            //     "2018-07-19T15:19:00Z", 1060192.0488749647, -4988607.875620845, 3817365.9312060727
+            // ]
+        },
+        "model": {
+            "gltf": "cesium/Models/CesiumMilkTruck/CesiumMilkTruck.glb",
+            "scale": 1.0,
+            "minimumPixelSize": 58
+        }
+    }, {
+        "id": "fragment1",
+        "name": "fragment1",
+        "position": {
+            "cartographicDegrees": [
+                "2018-07-19T15:18:20Z", 114.22093543536897, 30.357231324330957, 4.398605145091237,
+                "2018-07-19T15:18:30Z", 114.22080757285443, 30.356893850955675, 50
+            ]
+        },
+        "model": {
+            "gltf": "cesium/Models/fire.gltf",
+            "scale": 0.01,
+            "minimumPixelSize": 30
+        }
+    }, {
+        "id": "fragment2",
+        "name": "fragment2",
+        "position": {
+            "cartographicDegrees": [
+                "2018-07-19T15:18:20Z", 114.22093543536897, 30.357231324330957, 4.398605145091237,
+                "2018-07-19T15:18:30Z", 114.22110595099932, 30.357035094582617, 50
+            ]
+        },
+        "model": {
+            "gltf": "cesium/Models/fire.gltf",
+            "scale": 0.01,
+            "minimumPixelSize": 30
+        }
+    }, {
+        "id": "fragment3",
+        "name": "fragment3",
+        "position": {
+            "cartographicDegrees": [
+                "2018-07-19T15:18:20Z", 114.22093543536897, 30.357231324330957, 4.398605145091237,
+                "2018-07-19T15:18:30Z", 114.22141487318773, 30.357163497012735, 50
+            ]
+        },
+        "model": {
+            "gltf": "cesium/Models/fire.gltf",
+            "scale": 0.01,
+            "minimumPixelSize": 30
+        }
+    }, {
+        "id": "fragment4",
+        "name": "fragment4",
+        "position": {
+            "cartographicDegrees": [
+                "2018-07-19T15:18:20Z", 114.22093543536897, 30.357231324330957, 4.398605145091237,
+                "2018-07-19T15:18:30Z", -78.0014856509232, 36.99920783028405, 50
+            ]
+        },
+        "model": {
+            "gltf": "cesium/Models/fire.gltf",
+            "scale": 0.01,
+            "minimumPixelSize": 30
+        }
+    }, {
+        "id": "fragment5",
+        "name": "fragment5",
+        "position": {
+            "cartographicDegrees": [
+                "2018-07-19T15:18:20Z", 114.22093543536897, 30.357231324330957, 4.398605145091237,
+                "2018-07-19T15:18:30Z", 114.22107550828065, 30.35752345966616, 50
+            ]
+        },
+        "model": {
+            "gltf": "cesium/Models/fire.gltf",
+            "scale": 0.01,
+            "minimumPixelSize": 30
+        }
+    }, {
+        "id": "fragment6",
+        "name": "fragment6",
+        "position": {
+            "cartographicDegrees": [
+                "2018-07-19T15:18:20Z", 114.22093543536897, 30.357231324330957, 4.398605145091237,
+                "2018-07-19T15:18:30Z", 114.22079738112119, 30.35747810762706, 50
+            ]
+        },
+        "model": {
+            "gltf": "cesium/Models/fire.gltf",
+            "scale": 0.01,
+            "minimumPixelSize": 30
+        }
+    }];
+    var dyn_czml = [{
+        "id": "document",
+        "name": "CZML_Model",
+        "version": "1.0",
+        "clock": {
+            "interval": "2019-03-05T15:00:00Z/",
+            "currentTime": "2019-03-05T15:00:00Z",
+            "multiplier": 1,
+            "range": "LOOP_STOP",
+            "step": "SYSTEM_CLOCK_MULTIPLIER"
+        }
+    }, {
+        "id": "GroundVehicle_model3",
+        "name": "Cesium GroundVehicle",
+        "position": {
+            "cartographicDegrees": [
+                "2019-03-05T15:00:00Z", -123.07428185240943, 44.05051562147769, 100,
+                "2019-03-05T15:00:40Z", -123.07357554718455, 44.05051539625325, 100,
+            ]
+        },
+        "model": {
+            "gltf": "cesium/Models/file.gltf",
+            "scale": 0.04,
+            "minimumPixelSize": 128,
+            // "heightReference": "Cesium.HeightReference.CLAMP_TO_GROUND"
+        }
+    }];
+
+
+    // var entity;
+    // var positionProperty;
+    // var dataSourcePromise = Cesium.CzmlDataSource.load(dyn_czml);
+    // viewer.dataSources.add(dataSourcePromise).then(function(dataSource) {
+    //     // clock.shouldAnimate = true;
+    //     console.log(clock.shouldAnimate);
+    //     console.log("加载完成");
+    //     entity = dataSource.entities.getById('GroundVehicle_model3');
+    //     // positionProperty = entity.position;
+    //     // start();
+    //     viewer.trackedEntity=entity;
+    // });
+    // function start() {
+    //     clock.shouldAnimate = true;
+    //     var objectsToExclude = [entity];
+    //     scene.postRender.addEventListener(function() {
+    //         var position = positionProperty.getValue(clock.currentTime);
+    //         entity.position = scene.clampToHeight(position, objectsToExclude);
+    //     });
+    // }
+
+    function middlePoint(x1, y1, x2, y2, per) {
+        var mx = x1 + (x2 - x1) * per;
+        var my = y1 + (y2 - y1) * per;
+        console.log("起点：" + x1 + "," + y1 + "   " + "终点：" + x2 + "," + y2 + "  per：" + per + "中点：" + mx + "," + my);
+    }
+
+
+    function bus(type) {
+        var fire_type = type.substr(0, 2);
+        if (type.substr(0, 2) == "11") {
+            fire_type = "mix";
+        } else if (type.substr(0, 2) == "01") {
+            fire_type = "smoke";
+        } else {
+            fire_type = "fire";
+        }
+        var dyn_show = type.substr(0, 2) != "00"
+        var model_show;
+        if (type.substr(2, 1) == "1") {
+            model_show = true;
+        } else {
+            model_show = false;
+        }
+        var vertical_show;
+        if (type.substr(3, 1) == "1") {
+            vertical_show = true;
+        } else {
+            vertical_show = false;
+        }
+        var lon = 114.22127847341162;
+        var lat = 30.35997960929486;
+        var bus = viewer.entities.add({
+            id: "bus",
+            position: Cesium.Cartesian3.fromDegrees(lon, lat, 8),
+            orientation: Cesium.Transforms.headingPitchRollQuaternion(
+                Cesium.Cartesian3.fromDegrees(lon, lat, 0),
+                new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(180), Cesium.Math.toRadians(0), Cesium.Math.toRadians(0))
+            ),
+            model: {
+                uri: "cesium/Models/bus.gltf",
+                // color: Cesium.Color.fromAlpha(Cesium.Color.WHITE, 0.4),
+                scale: 0.015
+            },
+            show: model_show,
+        });
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(114.22126724974848, 30.36003180415405, 30.2723903435967614),
+            orientation: {
+                heading: Cesium.Math.toRadians(0.0),
+                pitch: Cesium.Math.toRadians(-90.0),
+                roll: 0.0
+            }
+        });
+
+        if (vertical_show == true) {
+            var wall = Cesium.WallGeometry.fromConstantHeights({
+                positions: Cesium.Cartesian3.fromDegreesArray([
+                    114.22122203614754, 30.36000635381926, 114.22135669731607, 30.3600047893528
+                ]),
+                minimumHeight: 11,
+                maximumHeight: 14
+            });
+            var geometry = Cesium.WallGeometry.createGeometry(wall);
+            var Rectangle = viewer.scene.primitives.add(new Cesium.Primitive({
+                geometryInstances: new Cesium.GeometryInstance({
+                    geometry: geometry
+                }),
+                appearance: new Cesium.EllipsoidSurfaceAppearance({
+                    aboveGround: true,
+                    renderState: {
+                        //blending: Cesium.BlendingState.ADDITIVE_BLEND ,
+                        enabled: true,
+                        face: Cesium.CullFace.FRONT_AND_BACK
+                    }
+                }),
+            }));
+            Rectangle.appearance.material = new Cesium.Material({
+                fabric: {
+                    type: 'Image',
+                    uniforms: {
+                        image: "./BUS/vertical/frame1.png"
+                    }
+                },
+                translucent: true
+            });
+            // Rectangle.appearance.material.uniforms.image
+        }
+
+        if (dyn_show == true) {
+            primitives = [];
+            var id = 0;
+            var height = 10;
+            var highest = height + 3.99;
+            for (; height < highest; height += 0.07) {
+                primitives.push(viewer.scene.primitives.add(new Cesium.Primitive({
+                    geometryInstances: new Cesium.GeometryInstance({
+                        id: id,
+                        geometry: new Cesium.RectangleGeometry({
+                            ellipsoid: Cesium.Ellipsoid.WGS84,
+                            rectangle: Cesium.Rectangle.fromDegrees(114.22122734289528, 30.359996383680393, 114.22134805292754, 30.360016651716435),
+                            // rectangle: Cesium.Rectangle.fromDegrees(114.22160965869033,30.358270990309897,114.22165830903349,30.358454603020643),
+                            height: height,
+                            // rotation: -10,
+                            // extrudedHeight: 1
+                        }),
+                        attributes: {
+                            color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({
+                                alpha: 0.5
+                            }))
+                        }
+                    }),
+                    appearance: new Cesium.EllipsoidSurfaceAppearance({
+                        material: new Cesium.Material({
+                            fabric: {
+                                type: 'Image',
+                                uniforms: {
+                                    image: "./BUS/" + fire_type + "/frame0/image" + id + ".png"
+                                }
+                            },
+                            transport: true
+                        })
+                    })
+                })))
+                id++;
+            }
+            viewer.scene.primitives.add(new Cesium.Primitive({
+                geometryInstances: new Cesium.GeometryInstance({
+                    id: id,
+                    geometry: new Cesium.RectangleGeometry({
+                        ellipsoid: Cesium.Ellipsoid.WGS84,
+                        rectangle: Cesium.Rectangle.fromDegrees(114.22122734289528, 30.359996383680393, 114.22134805292754, 30.360016651716435),
+                        // rectangle: Cesium.Rectangle.fromDegrees(114.22160965869033,30.358270990309897,114.22165830903349,30.358454603020643),
+                        height: height,
+                        // rotation: -10,
+                        // extrudedHeight: 1
+                    }),
+                    attributes: {
+                        color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({
+                            alpha: 0.5
+                        }))
+                    }
+                }),
+                appearance: new Cesium.EllipsoidSurfaceAppearance({
+                    material: new Cesium.Material({
+                        fabric: {
+                            type: 'Image',
+                            uniforms: {
+                                image: "./BUS/" + fire_type + "/frame0/image" + id + ".png"
+                            }
+                        },
+                        transport: true
+                    })
+                })
+            }))
+        }
+        var x = 0;
+        clock.multiplier = 5;
+        timer = setInterval(function () {
+            if (viewer.clockViewModel.shouldAnimate == true && x < 766) {
+                // console.log("加载帧" + x);
+                if (vertical_show == true) {
+                    Rectangle.appearance.material.uniforms.image = "./BUS/vertical/frame" + (parseInt(x / 77) + 1) + ".png"
+                }
+                if (dyn_show == true) {
+                    for (var i = 0; i < 56; i++) {
+                        primitives[i].appearance.material.uniforms.image = "./BUS/" + fire_type + "/frame" + x + "/image" + i + ".png";
+                    }
+                }
+                x++;
+            }
+        }, 100);
+        var temp = 0;
+        var old_mul = 1;
+        changeTimer = setInterval(function () {
+            if (old_mul != clock.multiplier) {
+                window.clearInterval(timer);
+                if (old_mul < 1) {
+                    timer = setInterval(function () {
+                        if (viewer.clockViewModel.shouldAnimate == true && x < 766) {
+                            if (vertical_show == true) {
+                                Rectangle.appearance.material.uniforms.image = "./BUS/vertical/frame" + (parseInt(x / 77) + 1) + ".png"
+                            }
+                            if (dyn_show == true) {
+                                for (var i = 0; i < 56; i++) {
+                                    primitives[i].appearance.material.uniforms.image = "./BUS/" + fire_type + "/frame" + x + "/image" + i + ".png";
+                                }
+                            }
+                            x++;
+                        }
+                        //     viewer.scene.primitives.remove(primitives.pop());
+                        // viewer.entities.remove(house);
+
+                    }, 100 / clock.multiplier);
+                } else {
+                    timer = setInterval(function () {
+                        if (viewer.clockViewModel.shouldAnimate == true && x < 767) {
+                            if (vertical_show == true) {
+                                Rectangle.appearance.material.uniforms.image = "./BUS/vertical/frame" + (parseInt(x / 77) + 1) + ".png"
+                            }
+                            if (dyn_show == true) {
+                                for (var i = 0; i < 56; i++) {
+                                    primitives[i].appearance.material.uniforms.image = "./BUS/" + fire_type + "/frame" + x + "/image" + i + ".png";
+                                }
+                            }
+                            x += Math.ceil(clock.multiplier);
+                        }
+                    }, 100);
+                }
+                old_mul = clock.multiplier;
+            }
+        }, 100);
+        clock.shouldAnimate = true;
+    }
+
+
+    function show_fire(file_name) {
+        var lat = 114.21963472231475;
+        var lon = 30.359554045371883;
+
+        if (file_name == "bus") {
+
+            var bus = viewer.entities.add({
+                id: "bus",
+                position: Cesium.Cartesian3.fromDegrees(lat, lon, 2.2723903435967614),
+                orientation: Cesium.Transforms.headingPitchRollQuaternion(
+                    Cesium.Cartesian3.fromDegrees(lat, lon, 2.2723903435967614),
+                    new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(180), Cesium.Math.toRadians(0), Cesium.Math.toRadians(0))
+                ),
+                model: {
+                    uri: "cesium/Models/bus.gltf",
+                    heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+                    color: Cesium.Color.fromAlpha(Cesium.Color.WHITE, 0.4),
+                    scale: 0.02
+                },
+                show: true,
+            });
+            viewer.camera.setView({
+                destination: Cesium.Cartesian3.fromDegrees(lat, lon, 20.2723903435967614),
+                orientation: {
+                    heading: Cesium.Math.toRadians(-40.0),
+                    pitch: Cesium.Math.toRadians(-60.0),
+                    roll: 0.0
+                }
+            });
+        } else {
+            viewer.camera.setView({
+                destination: Cesium.Cartesian3.fromDegrees(114.21857695568028, 30.359405404026386, 120),
+                orientation: {
+                    heading: Cesium.Math.toRadians(-40.0),
+                    pitch: Cesium.Math.toRadians(-60.0),
+                    roll: 0.0
+                }
+            });
+            var house = viewer.entities.add({
+                id: "house",
+                position: Cesium.Cartesian3.fromDegrees(114.21804414901572, 30.35976800592169, 10.06741790731156),
+                orientation: Cesium.Transforms.headingPitchRollQuaternion(
+                    Cesium.Cartesian3.fromDegrees(114.21804414901572, 30.35976800592169, 10.06741790731156),
+                    new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(180), Cesium.Math.toRadians(0), Cesium.Math.toRadians(0))
+                ),
+                model: {
+                    uri: "cesium/Models/bus.gltf",
+                    // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+                    color: Cesium.Color.fromAlpha(Cesium.Color.WHITE, 0.4),
+                    scale: 0.08
+                },
+                show: true,
+            });
+            primitives = [];
+            var id = 0;
+            var lon = -113.999;
+            var lat = 40.001;
+            var height = 11;
+            for (; height <= 35; height += 1) {
+                primitives.push(viewer.scene.primitives.add(new Cesium.Primitive({
+                    geometryInstances: new Cesium.GeometryInstance({
+                        id: id,
+                        geometry: new Cesium.RectangleGeometry({
+                            ellipsoid: Cesium.Ellipsoid.WGS84,
+                            rectangle: Cesium.Rectangle.fromDegrees(114.21784242174171, 30.359570351833124, 114.21818308677508, 30.35989081794081),
+                            height: height,
+                            // extrudedHeight: 1
+                        }),
+                        attributes: {
+                            color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({
+                                alpha: 0.5
+                            }))
+                        }
+                    }),
+                    appearance: new Cesium.EllipsoidSurfaceAppearance({
+                        material: new Cesium.Material({
+                            fabric: {
+                                type: 'Image',
+                                uniforms: {
+                                    image: "./" + file_name + "/frame0/image" + id + ".png"
+                                }
+                            },
+                            transport: true
+                        })
+                    })
+                })))
+                id++;
+            }
+            var x = 0;
+            clock.multiplier = 5;
+            timer = setInterval(function () {
+                if (viewer.clockViewModel.shouldAnimate == true && x < 1000) {
+                    // console.log("加载帧" + x);
+                    for (var i = 0; i < 25; i++) {
+                        primitives[i].appearance.material.uniforms.image = "./" + file_name + "/frame" + x + "/image" + i + ".png";
+                    }
+                    x++;
+                }
+            }, 100);
+            var temp = 0;
+            var old_mul = 1;
+            changeTimer = setInterval(function () {
+                if (old_mul != clock.multiplier) {
+                    window.clearInterval(timer);
+                    if (old_mul < 1) {
+                        timer = setInterval(function () {
+                            if (viewer.clockViewModel.shouldAnimate == true && x < 1000) {
+                                for (var i = 0; i < 25; i++) {
+                                    primitives[i].appearance.material.uniforms.image = "./" + file_name + "/frame" + x + "/image" + i + ".png";
+                                }
+                                x++;
+                            }
+                            //     viewer.scene.primitives.remove(primitives.pop());
+                            // viewer.entities.remove(house);
+
+                        }, 100 / clock.multiplier);
+                    } else {
+                        timer = setInterval(function () {
+                            if (viewer.clockViewModel.shouldAnimate == true && x < 1000) {
+                                for (var i = 0; i < 25; i++) {
+                                    primitives[i].appearance.material.uniforms.image = "./" + file_name + "/frame" + x + "/image" + i + ".png";
+                                }
+                                x += Math.ceil(clock.multiplier);
+                            }
+                        }, 100);
+                    }
+                    old_mul = clock.multiplier;
+                }
+            }, 100);
+            clock.shouldAnimate = true;
+        }
+    }
+
+    function startCollision(CZML) {
+        var point = viewer.entities.add({
+            point: {
+                outlineColor: Cesium.Color.BLACK,
+            },
+            position: Cesium.Cartesian3.fromDegrees(114.22093543536897, 30.357231324330957, 5),
+            show: false
+        });
+
+        function computeModelMatrix(entity, time) {
+            return entity.computeModelMatrix(time, new Cesium.Matrix4());
+        }
+
+        var emitterModelMatrix = new Cesium.Matrix4();
+        var translation = new Cesium.Cartesian3();
+        var rotation = new Cesium.Quaternion();
+        var hpr = new Cesium.HeadingPitchRoll();
+        var trs = new Cesium.TranslationRotationScale();
+
+        function computeEmitterModelMatrix() {
+            hpr = Cesium.HeadingPitchRoll.fromDegrees(0.0, 0.0, 0.0, hpr);
+            trs.translation = Cesium.Cartesian3.fromElements(0.0, 0.0, 0.0, translation);
+            trs.rotation = Cesium.Quaternion.fromHeadingPitchRoll(hpr, rotation);
+
+            return Cesium.Matrix4.fromTranslationRotationScale(trs, emitterModelMatrix);
+        }
+
+        collision_particleSystem = scene.primitives.add(new Cesium.ParticleSystem({
+            startColor: Cesium.Color.WHITE.withAlpha(1),
+            endColor: Cesium.Color.WHITE.withAlpha(0),
+            // endColor : Cesium.Color.WHITE.withAlpha(0.0),
+            image: 'cesium/Models/fire.png',
+            disableDepthTestDistance: Number.POSITIVE_INFINITY,
+            startScale: 10.0,
+            endScale: 150.0,
+            minimumParticleLife: 2,
+            maximumParticleLife: 3,
+            minimumSpeed: 0,
+            maximumSpeed: 0,
+            imageSize: new Cesium.Cartesian2(5, 5),
+            emissionRate: 0,
+            bursts: [
+                // these burst will occasionally sync to create a multicolored effect
+                new Cesium.ParticleBurst({time: 20.0, minimum: 500, maximum: 500})
+            ],
+            lifetime: 29.9,
+
+            emitter: new Cesium.CircleEmitter(1.0),
+
+            emitterModelMatrix: computeEmitterModelMatrix()
+            // modelMatrix:computeModelMatrix(entity, time),
+
+        }));
+        viewer.scene.preUpdate.addEventListener(function (scene, time) {
+            collision_particleSystem.modelMatrix = computeModelMatrix(point, time);
+
+            // Account for any changes to the emitter model matrix.
+            collision_particleSystem.emitterModelMatrix = computeEmitterModelMatrix();
+
+            // Spin the emitter if enabled.
+        });
+        ds = Cesium.CzmlDataSource.load(CZML);
+        dataSourcePromise = viewer.dataSources.add(ds);
+        dataSourcePromise.then(function (dataSource) {
+            console.log("开始碰撞演示");
+            var mo1 = dataSource.entities.getById('GroundVehicle_model1');
+            var mo2 = dataSource.entities.getById('GroundVehicle_model2');
+            mo1.orientation = new Cesium.VelocityOrientationProperty(mo1.position);
+            mo2.orientation = new Cesium.VelocityOrientationProperty(mo2.position);
+            var positionProperty1 = mo1.position;
+            var positionProperty2 = mo2.position;
+            viewer.dataSources._dataSources
+            if (scene.clampToHeightSupported) {
+                clock.shouldAnimate = true;
+                var objectsToExclude1 = [mo1];
+                var objectsToExclude2 = [mo2];
+                listener = function () {
+                    var position1 = positionProperty1.getValue(clock.currentTime);
+                    mo1.position = scene.clampToHeight(position1, objectsToExclude1);
+                    var position2 = positionProperty2.getValue(clock.currentTime);
+                    mo2.position = scene.clampToHeight(position2, objectsToExclude2);
+                };
+                scene.postRender.addEventListener(listener);
+            } else {
+                console.log('This browser does not support clampToHeight.');
+            }
+        });
+    }
+
+    function startDynRoute(CZML) {
+        console.log(CZML[1].position.cartographicDegrees);
+        dataSourcePromise = viewer.dataSources.add(Cesium.CzmlDataSource.load(CZML));
+        dataSourcePromise.then(function (dataSource) {
+            console.log("开始动态路径演示");
+            var mo3 = dataSource.entities.getById('GroundVehicle_model3');
+            var positionProperty = mo3.position;
+            viewer.trackedEntity = mo3;
+            if (scene.clampToHeightSupported) {
+                clock.shouldAnimate = true;
+                var objectsToExclude = [mo3];
+                scene.postRender.addEventListener(function () {
+                    var po = positionProperty.getValue(clock.currentTime);
+                    mo3.position = scene.clampToHeight(po, objectsToExclude);
+                });
+            } else {
+                console.log('This browser does not support clampToHeight.');
+            }
+            mo3.orientation = new Cesium.VelocityOrientationProperty(mo3.position);
+        });
+    }
+
+
+    var operation_type;
+    var element_image = "cesium/images/left_foot.JPG";
+    var mark_color = Cesium.Color.WHITE;
+    var dataSourcePromise;
+
+    var entity = viewer.entities.add({
+        id: 'GroundVehicle',
+        position: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706, 0),
+        model: {
+            uri: 'cesium/Models/CesiumMilkTruck/CesiumMilkTruck.glb',
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+        },
+        scale: 1.0,
+        minimumPixelSize: 100,
+        show: true,
+        colorBlendMode: Cesium.ColorBlendMode.MIX
+    });
+    // viewer.trackedEntity = entity;
+    var entity1 = viewer.entities.add({
+        id: 'ferrari',
+        position: Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706, 0),
+        model: {
+            uri: 'cesium/Models/mesh_final.gltf',
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+        },
+        scale: 1.0,
+        minimumPixelSize: 100,
+        show: false
+    });
+
+    // viewer.trackedEntity=entity1;
+
+    function timeFormat(date) {
+        var y = date.getFullYear();
+        var mon = date.getMonth() + 1;
+        if (mon.toString().length == 1) {
+            mon = "0" + mon;
+        }
+        ;
+        var d = date.getDay();
+        if (d.toString().length == 1) {
+            d = "0" + d;
+        }
+        ;
+        var h = date.getHours();
+        if (h.toString().length == 1) {
+            h = "0" + h;
+        }
+        ;
+        var min = date.getMinutes();
+        if (min.toString().length == 1) {
+            min = "0" + min;
+        }
+        ;
+        var s = date.getSeconds();
+        if (s.toString().length == 1) {
+            s = "0" + s;
+        }
+        ;
+        var mytimes = y + "-" + mon + "-" + d + "T" + h + ":" + min + ":" + s + "Z";
+        return mytimes;
+    }
+
+    var PolyLinePrimitive = (function () {
+        function _(positions) {
+            this.options = {
+                id: "poly",
+                allowPicking: false,
+                polyline: {
+                    show: true,
+                    // positions : Cesium.Cartesian3.fromDegreesArray(positions),
+                    positions: positions,
+                    clampToGround: true,
+                    material: Cesium.Color.RED,
+                    width: 5,
+                    allowPicking: false,
+                }
+            };
+            this.positions = positions;
+            this._init();
+        }
+
+        _.prototype._init = function () {
+            var _self = this;
+            var _update = function () {
+                return _self.positions;
+            };
+            //实时更新polyline.positions
+            this.options.polyline.positions = new Cesium.CallbackProperty(_update, false);
+            viewer.entities.add(this.options);
+        };
+        return _;
+    })();
+
+    var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+    var positions = [];
+    var poly = undefined;
+    var a = 0;
+    var b = 0;
+    var time = "2018-07-19T15:18:00Z";
+    var endtime;
+    //设置鼠标左键点击事件
+    handler.setInputAction(function (movement) {
+            var longitude;
+            var latitude;
+            var height;
+            var windowPosition = viewer.camera.getPickRay(movement.position);
+            var cartesianCoordinates = viewer.scene.globe.pick(windowPosition, viewer.scene);
+            var pick = viewer.scene.pick(movement.position);
+            // if (scene.pickPositionSupported && Cesium.defined(pickedObject)) {
+            if (cartesianCoordinates != undefined) {
+                if (Cesium.defined(pick)) {
+                    console.log("点击到物体");
+                    console.log(pick);
+                    cartesianCoordinates = viewer.scene.pickPosition(movement.position);
+                } else {
+                    console.log("点击到地面");
+                }
+                var cartoCoordinates = viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesianCoordinates);
+                longitude = Cesium.Math.toDegrees(cartoCoordinates.longitude);
+                latitude = Cesium.Math.toDegrees(cartoCoordinates.latitude);
+                height = cartoCoordinates.height;
+                console.log("经度" + longitude + "纬度" + latitude + '高度：:' + height);
+                if (operation_type == "drawRoute") {
+                    // var ellipsoid = viewer.scene.globe.ellipsoid;
+                    // var cartographic = Cesium.Cartographic.fromDegrees(longitude, latitude, height);
+                    // var cartesian3 = ellipsoid.cartographicToCartesian(cartographic);
+                    if (positions.length == 0) {
+                        positions.push(cartesianCoordinates.clone());
+                    }
+                    positions.push(cartesianCoordinates);
+                    var date = new Date(2019, 2, 1, 15, b, a);
+                    time = timeFormat(date);
+                    endtime = time;
+                    dyn_czml[1].position.cartographicDegrees.push(time, longitude, latitude, height);
+                    if (a == 59) {
+                        a = 0;
+                        b += 1;
+                    } else {
+                        a += 2;
+                    }
+                }
+            }
+            if (operation_type == "mark_elements") {
+                if ($("#elements").val() == "volvo") {
+                    alert("请先选择待绑定要素");
+                } else {
+                    console.log("选择待绑定要素:" + $("#elements").val());
+                    console.log(height);
+                    $.get("/element_location", {
+                        "longitude": longitude,
+                        "latitude": latitude,
+                        "height": height,
+                        "scene_id": $("#scene_id").val(),
+                        "element_type": $("#element_type").val(),
+                        "element_id": $("#elements").val(),
+                        "icon_path": element_image,
+                    }, function (data) {
+                        console.log(data, status);
+                        if (data.status == 1) {
+                            viewer.entities.add({
+                                position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+                                billboard: {
+                                    image: element_image,
+                                    // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+                                    // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+                                    scale: 0.2,
+                                    color: mark_color,
+                                    verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                                    horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+                                    disableDepthTestDistance: Number.POSITIVE_INFINITY
+                                },
+                                properties: {
+                                    type: "added",
+                                    element_type: $("#element_type").val(),
+                                    element_id: $("#elements").val(),
+                                }
+                            });
+                            alert("标定要素位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
+                            operation_type = null;
+
+                        } else {
+                            alert("存入数据库出错，保存要素位置失败");
+                        }
+                    })
+                }
+            }
+            if (operation_type == "locate_model") {
+                var url = "Files/" + $("#models").val();
+                alert("标定模型位置 经度：" + longitude + ",维度：" + latitude + "，高程：" + height);
+                var name = $("#models").find("option:selected").text();
+                var x = viewer.entities.add({
+                    position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+                    model: {
+                        uri: url,
+                        // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                        scale: 0.1,
+                    },
+                    scale: .0,
+                    minimumPixelSize: 100,
+                    properties: {
+                        type: "added",
+                    }
+                });
+                operation_type = null;
+                $.get("/model_location", {
+                    "longitude": longitude,
+                    "latitude": latitude,
+                    "height": height,
+                    "scene_id": $("#scene_id").val(),
+                    "model_name": name
+                }, function (data) {
+                    console.log("更改模型：" + name + "位置");
+                })
+            }
+        },
+        Cesium.ScreenSpaceEventType.LEFT_CLICK
+    )
+    //设置鼠标移动事件
+    handler.setInputAction(function (movement) {
+        if (operation_type == "drawRoute") {
+            var longitude;
+            var latitude;
+            var height;
+            var windowPosition = viewer.camera.getPickRay(movement.endPosition);
+            // var cartesianCoordinates= viewer.scene.pickPosition(movement.endPosition);
+            var cartesianCoordinates = viewer.scene.globe.pick(windowPosition, viewer.scene);
+            var pick = viewer.scene.pick(movement.endPosition);
+            if (cartesianCoordinates != undefined) {
+                if (Cesium.defined(pick)) {
+                    cartesianCoordinates = viewer.scene.pickPosition(movement.endPosition);
+                }
+                var cartoCoordinates = viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesianCoordinates);
+                longitude = Cesium.Math.toDegrees(cartoCoordinates.longitude);
+                latitude = Cesium.Math.toDegrees(cartoCoordinates.latitude);
+                height = cartoCoordinates.height;
+                // console.log(longitude + "/" + latitude + '/' + height);
+                if (positions.length >= 2) {
+                    if (!Cesium.defined(poly)) {
+                        poly = new PolyLinePrimitive(positions);
+                        console.log("开始划线");
+
+                    } else {
+                        positions.pop();
+                        positions.push(cartesianCoordinates);
+                    }
+                }
+            }
+        }
+    }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+    //设置鼠标右键点击事件
+    window.oncontextmenu = function (e) {
+        e.preventDefault();
+    }
+    window.onclick = function (e) {
+        document.querySelector('#menu').style.width = 0;
+    }
+    handler.setInputAction(function (movement) {
+            var pick = viewer.scene.pick(movement.position);
+            if (Cesium.defined(pick) && pick.id != undefined && pick.id.properties != undefined && pick.id.properties.type.toString() == "added") {
+                console.log("点击到物体");
+                var element_type = pick.id.properties._element_type._value;
+                var element_id = pick.id.properties._element_id._value;
+                $("#element_type").val(element_type);
+                $("#elements").append('<option value=' + element_id + ' > 序号' + element_id + '</option>');
+                $("#elements").val(element_id);
+                console.log($("#element_type").val());
+                console.log($("#elements").val());
+                var menu = document.getElementById("menu");
+                menu.style.left = movement.position.x + 'px';
+                menu.style.top = movement.position.y + 'px';
+                menu.style.width = '125px';
+                // window.oncontextmenu = function (e) {
+                //     e.preventDefault();
+                // }
+                // var menu = document.querySelector("#menu");
+                // menu.style.left = movement.position.x + 'px';
+                // menu.style.top = movement.position.y + 'px';
+                // menu.style.width = '125px';
+                // window.onclick = function (e) {
+                //     document.querySelector('#menu').style.width = 0;
+                // }
+            }
+            if (operation_type == "mark_elements") {
+                operation_type = null;
+            }
+            if (operation_type == "drawRoute") {
+                if (positions.length != 0) {
+                    positions.pop();
+                    dyn_czml[0].clock.interval = dyn_czml[0].clock.interval + endtime;
+                    console.log(dyn_czml[0].clock.interval);
+                    startDynRoute(dyn_czml);
+                    operation_type = null;
+                }
+            }
+        },
+        Cesium.ScreenSpaceEventType.RIGHT_CLICK
+    )
+    ;
+    //设置鼠标左键双击事件
+    handler.setInputAction(function (movement) {
+        if (operation_type == "drawRoute") {
+            positions.pop();
+            positions = [];
+            operation_type = null;
+        }
+
+    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+
+
+    Sandcastle.addToolbarButton('创建案件', function () {
+        window
+            .open(
+                "create_case.html",
+                "create_case",
+                "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+
+    }, 'CreateCase');
+
+    Sandcastle.addToolbarButton('创建场景', function () {
+    }, 'CreateScene');
+    Sandcastle.addToolbarButton('自主路线', function () {
+        // viewer.entities.removeAll();
+        // positions=[];
+        show_tileset();
+        alert("开始规划路线，左键点击经过点，右键结束");
+        operation_type = "drawRoute";
+        // viewer.zoomTo(tileset);
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(114.21952507076327, 30.358135859723472, 800),
+            orientation: {
+                heading: 0.0,
+                pitch: Cesium.Math.toRadians(-90.0),
+                roll: 0.0
+            }
+        });
+    }, 'caseMenu');
+    Sandcastle.addToolbarButton('研判标注', function () {
+        $(".Smodel").eq(0).show();
+    }, 'caseMenu');
+
+    Sandcastle.addToolbarButton('地理量测', function () {
+        $(".toolbar_measure").eq(0).show();
+    }, 'caseMenu');
+
+    Sandcastle.addToolbarButton('爆炸效果', function () {
+        startBZ1();
+        viewer.camera.setView({
+            destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
+            orientation: {
+                heading: 6.144391448663251,
+                pitch: -0.6870827796178554,
+                roll: 0.0
+            }
+        });
+    }, 'caseMenu');
+
+    Sandcastle.addToolbarButton('爆炸冲击波', function () {
+        startBZ2();
+        viewer.camera.setView({
+            destination: {x: -2259482.2093426995, y: 5023565.238597119, z: 3204802.0603294484},
+            orientation: {
+                heading: 6.144391448663251,
+                pitch: -0.6870827796178554,
+                roll: 0.0
+            }
+        });
+    }, 'caseMenu');
+
+
+    Sandcastle.addToolbarButton('燃烧模型', function () {
+        window
+            .open(
+                "fire_parameter.html",
+                "fire_parameter",
+                "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    }, 'modelMenu');
+
+    function start_fire() {
+        clearFire();
+        clearCollision();
+        clearExplosion();
+        clearMix();
+        // show_fire($("#fire_type_name").val());
+        bus($("#fire_type_name").val());
+    }
+
+    Sandcastle.addToolbarButton('碰撞模型', function () {
+        window.open(
+            "collision_parameter.html",
+            "collision_parameter",
+            "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    }, 'modelMenu');
+
+    function start_collision() {
+        clearFire();
+        clearExplosion();
+        clearMix();
+        if ("undefined" != typeof (primitives)) {
+            while (primitives.length != 0)
+                viewer.scene.primitives.remove(primitives.pop());
+            viewer.entities.remove(viewer.entities.getById("house"));
+            window.clearInterval(timer);
+            window.clearInterval(changeTimer);
+            console.log("清除燃烧模型");
+        }
+        planeEntities[0].show = false;//清除爆炸模型
+        startCollision(czml);
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(114.22092858514243, 30.357234672988366, 200),
+            orientation: {
+                heading: 0.0,
+                pitch: Cesium.Math.toRadians(-90.0),
+                roll: 0.0
+            }
+        });
+    }
+
+    Sandcastle.addToolbarButton('爆炸模型', function () {
+        window
+            .open(
+                "explosion_parameter.html",
+                "explosion_parameter",
+                "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    }, 'modelMenu');
+
+    function start_explosion() {
+        clearFire();
+        clearCollision();
+        clearMix();
+        // tileset.clippingPlanes = clippingPlanes;
+        planeEntities[0].show = true;
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(114.21930535333072, 30.357892738082274, 500),
+            orientation: {
+                heading: 0.0,
+                pitch: Cesium.Math.toRadians(-90.0),
+                roll: 0.0
+            }
+        });
+    }
+
+    Sandcastle.addToolbarButton('砍杀模型', function () {
+        window
+            .open(
+                "kill_parameter.html",
+                "kill_parameter",
+                "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    }, 'modelMenu');
+
+    // Sandcastle.addToolbarButton('砍杀模型', function () {
+    //
+    // }, 'modelMenu');
+    Sandcastle.addToolbarButton('混合模型', function () {
+        clearFire();
+        clearCollision();
+        clearExplosion();
+        viewer.camera.setView({
+            destination: {
+                x: -2259635.974850741,
+                y: 5023449.2015779745,
+                z: 3204845.1002706015
+            },
+            orientation: {
+                heading: 2.8424653218313556,
+                pitch: -0.8928382126577965,
+                roll: 0
+            }
+        });
+        pz_start();
+    }, 'modelMenu');
+
+    function clearFire() {
+        if ("undefined" != typeof (primitives)) {
+            while (primitives.length != 0)
+                viewer.scene.primitives.remove(primitives.pop());
+            viewer.entities.remove(viewer.entities.getById("house"));
+            window.clearInterval(timer);
+            window.clearInterval(changeTimer);
+            console.log("清除燃烧模型");
+        }
+    }
+
+    function clearCollision() {
+        if ("undefined" != typeof (ds)) {
+            for (var i = 0; i < viewer.dataSources.length; i++) {
+                if (viewer.dataSources.get(i)._name == "CZML_Model") {
+                    viewer.dataSources.remove(viewer.dataSources.get(i), true);
+                }
+            }
+            scene.postRender.removeEventListener(listener);
+            viewer.scene.primitives.remove(collision_particleSystem);
+            console.log("清除碰撞模型");
+        }
+    }
+
+    function clearExplosion() {
+        if (planeEntities[0] != undefined) {
+            planeEntities[0].show = false;//清除爆炸模型
+            clippingPlanes._planes[0]._distance = 80;
+            console.log(clippingPlanes._planes[0]._distance);
+        }
+    }
+
+    function clearMix() {
+        if ("undefined" != typeof (mix_particleSystem)) {
+            for (var i = 0; i < viewer.dataSources.length; i++) {
+                if (viewer.dataSources.get(i)._name) {
+                    var name = viewer.dataSources.get(i)._name;
+                    if (name == "ClampToGround.czml" || name == "ClampToGround.1.czml" || name == "ClampToGround.2.czml") {
+                        viewer.dataSources.remove(viewer.dataSources.get(i), true);
+                    }
+                }
+            }
+            scene.postRender.removeEventListener(mix_listener);
+            viewer.scene.primitives.remove(mix_particleSystem);
+            console.log("清除混合模型");
+        }
+    }
+
+    // Sandcastle.addToolbarButton('加载模型', function () {
+    //     console.log("正在转换OBJ文件");
+    //     $.get("/buttonClicked", {"value": "send to server"}, function (data) {
+    //         alert(data);
+    //         var test = viewer.entities.add({
+    //             id: 'test',
+    //             position: Cesium.Cartesian3.fromDegrees(-122.0744619, 43.0503706, 0),
+    //             model: {
+    //                 uri: 'cesium/Models/test.gltf',
+    //                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+    //             },
+    //             scale: 1.0,
+    //             minimumPixelSize: 100,
+    //             show: true
+    //         });
+    //         viewer.trackedEntity = test;
+    //     })
+    // }, 'caseMenu');
+    Sandcastle.addToolbarButton('上传动力学模型', function () {
+        $("#files").trigger("click");
+
+    }, 'KineticMenu');
+    Sandcastle.addToolbarButton('上传动力学粒子素材', function () {
+        $("#particle_files").trigger("click");
+    }, 'KineticMenu');
+    Sandcastle.addToggleButton('显示', false, function (checked) {
+        dataSource.clustering.enabled = checked;
+    }, 'ModelMeasure');
+    Sandcastle.addToggleButton('标注', false, function (checked) {
+        dataSource.clustering.enabled = checked;
+    }, 'ModelMeasure');
+    Sandcastle.addToggleButton('范围', false, function (checked) {
+        dataSource.clustering.enabled = checked;
+    }, 'ModelMeasure');
+    Sandcastle.addToggleButton('轨迹', false, function (checked) {
+        dataSource.clustering.enabled = checked;
+    }, 'ModelMeasure');
+    Sandcastle.addToolbarButton('标注模式', function () {
+        operation_type = "mark_elements";
+        alert("选择绑定要素和要素图标后后左键点击标定要素位置");
+    }, 'markMenu');
+    Sandcastle.addToolbarButton('导入痕迹', function () {
+
+        $("#element_file").trigger("click");
+        console.log("导入痕迹");
+    }, 'markMenu');
+    Sandcastle.addToolbarButton('新建痕迹', function () {
+
+        $("#element_file").trigger("click");
+        console.log("新建痕迹");
+    }, 'markMenu');
+    Sandcastle.addToolbarButton('标注模式', function () {
+        operation_type = "mark_elements";
+        alert("选择绑定要素和要素图标后后左键点击标定要素位置");
+    }, 'thingMenu');
+    Sandcastle.addToolbarButton('导入物品', function () {
+
+        $("#thing_file").trigger("click");
+        console.log("导入物品");
+    }, 'thingMenu');
+    Sandcastle.addToolbarButton('新建物品', function () {
+
+        $("#thing_file").trigger("click");
+        console.log("新建物品");
+    }, 'thingMenu');
+    Sandcastle.addToolbarButton('标注模式', function () {
+        operation_type = "mark_elements";
+        alert("选择绑定要素和要素图标后后左键点击标定要素位置");
+    }, 'humanMenu');
+    Sandcastle.addToolbarButton('导入主体', function () {
+
+        $("#human_file").trigger("click");
+        console.log("导入主体");
+    }, 'humanMenu');
+    Sandcastle.addToolbarButton('新建主体', function () {
+
+        $("#human_file").trigger("click");
+        console.log("新建主体");
+    }, 'humanMenu');
+    Sandcastle.addToolbarButton('标注模式', function () {
+        operation_type = "mark_elements";
+        alert("选择绑定要素和要素图标后后左键点击标定要素位置");
+    }, 'infoMenu');
+    Sandcastle.addToolbarButton('导入信息', function () {
+
+        $("#info_file").trigger("click");
+        console.log("导入信息");
+    }, 'infoMenu');
+    Sandcastle.addToolbarButton('新建信息', function () {
+
+        $("#info_file").trigger("click");
+        console.log("新建信息");
+    }, 'infoMenu');
+
+    //菜单案件与场景选项逻辑
+    $.get("/get_cases", {"value": "get_cases"}, function (data) {
+        cases = data;
+        cases.forEach(function (json) {
+            $("#case_id").append('<option value=' + json.case_id + ' >' + json.case_id + '</option>');
+        });
+    })
+
+    var json = {
+        "scene_bio_evidence": "bio",
+        "scene_elec_evidence": "elec",
+        "scene_file_evidence": "file",
+        "scene_footprint": "foot",
+        "scene_handprint": "hand",
+        "scene_tool": "tool"
+    }
+
+    function show_model_info() {
+        var json = {
+            "scene_bio_evidence": "bio",
+            "scene_elec_evidence": "elec",
+            "scene_file_evidence": "file",
+            "scene_footprint": "foot",
+            "scene_handprint": "hand",
+            "scene_toolmark": "tool"
+        }
+        window
+            .open(
+                "http://127.0.0.1:3000/web/index?type=" + json[$("#element_type").val()] + "&id=" + $("#elements").val(),
+                "show_element_info",
+                "height=700, width=1000, top=200, left=300,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    }
+
+    function locate_model(path) {
+        alert("点击鼠标左键选定模型位置，右键单击退出模型定位模式");
+        operation_type = "locate_model";
+    }
+
+    function get_scenes(case_id) {
+        console.log("案件id为：" + case_id);
+        $.get("/get_scenes", {"value": case_id}, function (data) {
+            scenes = data;
+            $("#scene_id").find("option").remove();
+            $("#scene_id").append("<option value='volvo' hidden>请选择场景</option>");
+            scenes.forEach(function (json) {
+                $("#scene_id").append('<option value=' + json.scene_id + ' >' + json.scene_id + '</option>');
+            });
+        })
+    }
+
+    function get_element_menu(element_type) {
+        console.log("要素大类为：" + element_type);
+        $("#elements").find("option").remove();
+        $("#elements").append("<option value='volvo' hidden>绑定要素</option>");
+        $.get("/get_elements", {
+            "element_type": $("#element_type").val(),
+            "scene_id": $("#scene_id").val()
+        }, function (data) {
+            if (data.msg != undefined) {
+                alert(data.msg);
+                return;
+            }
+            data.forEach(function (json) {
+                $("#elements").append('<option value=' + json.ID + ' > 序号' + json.ID + '</option>');
+            });
+        })
+    }
+
+    function get_sub_menu(top_name) {
+        console.log("图标大类名为：" + top_name);
+        $("#sub_icon_menu").find("option").remove();
+        $("#sub_icon_menu").append("<option value='volvo' hidden>选择图标子类</option>");
+        $("#icon_menu").find("option").remove();
+        $("#icon_menu").append("<option value='volvo' hidden>选择图标图片</option>");
+        $.get("/get_sub_menu", {"value": top_name}, function (data) {
+            sub_menu = data;
+            sub_menu.forEach(function (sub_name) {
+                $("#sub_icon_menu").append('<option value=' + sub_name + ' >' + sub_name + '</option>');
+            });
+        })
+    }
+
+    function get_icon_menu(sub_name) {
+        $("#icon_menu").find("option").remove();
+        $("#icon_menu").append("<option value='volvo' hidden>选择图标图片</option>");
+        var top_name = document.getElementById("top_icon_menu").value;
+        $.get("/get_icon_menu", {"top_name": top_name, "sub_name": sub_name}, function (data) {
+            icon_menu = data;
+            icon_menu.forEach(function (icon_name) {
+                $("#icon_menu").append('<option value=' + icon_name + ' >' + icon_name + '</option>');
+            });
+        })
+    }
+
+    function get_icon_image(icon_name) {
+        var top_name = document.getElementById("top_icon_menu").value;
+        var sub_name = document.getElementById("sub_icon_menu").value;
+        element_image = "cesium/icons/" + top_name + "/" + sub_name + "/" + icon_name;
+    }
+
+    function select_scene(scene_id) {
+        document.getElementById("operations").style.display = "";
+        $.get("/select_scene", {"value": scene_id}, function (data) {
+            console.log("选择场景号：" + scene_id);
+            for (var i = 0; i < data.kinetic_info.length; i++) {
+                $("#kinetic_model").append('<option value=' + data.kinetic_info[i].id + ' >' + data.kinetic_info[i].kinetic_id + '</option>');
+            }
+            console.log(data);
+            var relevant_info = data.relevant_info;
+            for (var i = 0; i < relevant_info.length; i++) {
+                var longitude = relevant_info[i].start_lon;
+                var latitude = relevant_info[i].start_lat;
+                var height = relevant_info[i].start_height
+                var icon_path = relevant_info[i].icon_path;
+                var id = relevant_info[i].id;
+                var element_type = relevant_info[i].element_type;
+                var element_id = relevant_info[i].element_id;
+                viewer.entities.add({
+                    position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+                    billboard: {
+                        image: icon_path,
+                        // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+                        // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+                        scale: 0.2,
+                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                        horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY
+                    },
+                    properties: {
+                        type: "added",
+                        element_id: element_id,
+                        element_type, element_type
+                    }
+                });
+
+            }
+            if (data.location[0].lon != null && data.location[0].lon != undefined) {
+                set_view(data.location[0].lon, data.location[0].lat);
+            }
+            // data.forEach(function (icon_name) {
+            //     console.log(icon_name);
+            //     $("#icon_menu").append('<option value=' + icon_name + ' >' + icon_name + '</option>');
+            // });
+
+        })
+    }
+
+    function set_view(lon, lat) {
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(lon, lat, 800),
+            orientation: {
+                heading: 0.0,
+                pitch: Cesium.Math.toRadians(-90.0),
+                roll: 0.0
+            }
+        });
+    }
+
+
+    function show_tileset() {
+
+        clippingPlanes = new Cesium.ClippingPlaneCollection({
+            planes: [
+                new Cesium.ClippingPlane(new Cesium.Cartesian3(0.0, 0.0, -1.0), 80.0)
+            ],
+            edgeWidth: 0.0
+        });
+
+        var boundingSphere;
+        tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
+            url: 'cesium/Models/terra_b3dms/tileset.json',
+            maximumScreenSpaceError: 20,
+            maximumNumberOfLoadedTiles: 500,
+            clippingPlanes: clippingPlanes
+        }));
+        tileset.readyPromise.then(function (tileset) {
+            boundingSphere = tileset.boundingSphere;
+            var radius = boundingSphere.radius;
+            var cartographic = Cesium.Cartographic.fromCartesian(boundingSphere.center);
+            var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0.0);
+            var height = 51;
+            var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, height);
+            var translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
+            tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
+            console.log("加载中");
+
+            for (var i = 0; i < clippingPlanes.length; ++i) {
+                var plane = clippingPlanes.get(i);
+                var planeEntity = viewer.entities.add({
+                    position: offset,
+                    plane: {
+                        dimensions: new Cesium.Cartesian2(radius * 0.75, radius * 0.75),
+                        material: new Cesium.ImageMaterialProperty({
+                            image: 'imgs/3.png',
+                            transparent: true
+                        }),
+                        plane: new Cesium.CallbackProperty(createPlaneUpdateFunction(plane), false),
+                        outline: true,
+                        outlineColor: Cesium.Color.WHITE
+                    },
+                    show: false
+                });
+                heatPlane = planeEntity;
+                planeEntities.push(planeEntity);
+            }
+        });
+        // viewer.zoomTo(tileset);
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(116.39025374911425,40.243330047269104, 800),
+            orientation: {
+                heading: 0.0,
+                pitch: Cesium.Math.toRadians(-90.0),
+                roll: 0.0
+            }
+        });
+    }
+
+    show_tileset();
+</script>
+<script src='./js/measuring.js'></script>
+<script src='./js/blast.js'></script>
+<script src='./js/collision.js '></script>
+<script src='./js/modelMark.js'></script>
+<script src='./js/plug-in.js '></script>
+</body>
+</html>

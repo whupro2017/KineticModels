@@ -226,15 +226,10 @@ jQuery(function ($) {
         // alert("How are you doing?");
         $.get("/scene_exists", {"value": currentSceneId}, function (data) {
             console.log("clicked configuration");
-            if (data.msg == undefined) {
-                alert("How are you doing?");
-            } else {
-                alert("How are you doing?" + data.msg);
-            }
             return;
         })
 
-        window.open(visualpage_addr + "configScene.html?scene_id='" + currentSceneId + "'", "show_element_info",
+        window.open(visualpage_addr + "configScene.html?sceneId=" + currentSceneId + "", "show_element_info",
             "height=500, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");
 
         //http://106.15.190.54:8081/involvedGoodsInfo.html?involvedGoodsInfoId=2c91fa9d6ec59058016ec5a7ba38004c

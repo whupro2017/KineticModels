@@ -1400,6 +1400,45 @@
         // }),
         // terrainProvider: Cesium.createWorldTerrain()//加载地势
     });
+    viewer.scene.skyBox = new Cesium.SkyBox({
+        sources: {
+            positiveX: './images/skybox/2/tycho2t3_80_px.jpg',
+            negativeX: './images/skybox/2/tycho2t3_80_mx.jpg',
+            positiveY: './images/skybox/2/tycho2t3_80_py.jpg',
+            negativeY: './images/skybox/2/tycho2t3_80_my.jpg',
+            positiveZ: './images/skybox/2/tycho2t3_80_pz.jpg',
+            negativeZ: './images/skybox/2/tycho2t3_80_mz.jpg'
+        }
+    });
+    // 亮度设置
+    var stages = viewer.scene.postProcessStages;
+    viewer.scene.brightness = viewer.scene.brightness || stages.add(Cesium.PostProcessStageLibrary.createBrightnessStage());
+    viewer.scene.brightness.enabled = true;
+    viewer.scene.brightness.uniforms.brightness = Number(1.5);
+    /*var defaultSkyBox = viewer.scene.skyBox
+    //GroundSkyBox 是重写的skyBox类，可以直接在html中引入使用，
+    //注意如果是用的vue需要在 重写的skyBox类中更换一下导出方式
+    var currentSkyBox = new Cesium.GroundSkyBox({
+        sources: {
+            positiveX: "./images/skybox/bak7/left.jpg",
+            negativeX: "./images/skybox/bak7/right.jpg",
+            positiveY: "./images/skybox/bak7/front.jpg",
+            negativeY: "./images/skybox/bak7/back.jpg",
+            positiveZ: "./images/skybox/bak7/down.jpg",
+            negativeZ: "./images/skybox/bak7/top.jpg"
+        }
+    });
+    //控制高度，在小于2500米的时候显示近景图
+    viewer.scene.postRender.addEventListener(() => {
+        var e = this.viewer.camera.position
+        console.log('height:', Cesium.Cartographic.fromCartesian(e).height)
+        if (Cesium.Cartographic.fromCartesian(e).height < 2500) {
+            // 显示自定义的天空盒
+            viewer.scene.skyBox = currentSkyBox
+        } else {
+            viewer.scene.skyBox = defaultSkyBox
+        }
+    })*/
     viewer._cesiumWidget._creditContainer.style.display = "none";  //	去除版权信息
     viewer.scene.globe.depthTestAgainstTerrain = false;
     // viewer.camera.setView({
@@ -1468,6 +1507,7 @@
 <script src='./js/collision.js '></script>
 <script src='./js/modelMark.js'></script>
 <script src='./js/plug-in.js '></script>
+<script src='./js/groundSkeyBox.js'></script>
 
 <script src='./functions/config.js'></script>
 <script src='./functions/czml.js '></script>      <!--czml相关-->

@@ -73,14 +73,17 @@ function locate_model(path) {
     operation_type = "locate_model";
 }
 
-function get_scenes(case_id) {
-    console.log("案件id为：" + case_id);
-    $.get("/get_scenes", {"value": case_id}, function (data) {
+function get_scenes(idx) {
+    console.log("idx: " + idx);
+    console.log("案件id为：" + casesIdMap.get(idx).cases_id + " Name: " + casesIdMap.get(idx).cases_name);
+    $.get("/get_scenes", {"value": casesIdMap.get(idx).cases_id}, function (data) {
         scenes = data;
-        $("#scene_id").find("option").remove();
-        $("#scene_id").append("<option value='volvo' hidden>ID</option>");
+        $("#case_event_name").find("option").remove();
+        $("#case_event_name").append("<option value='volvo' hidden>ID</option>");
+        let sceneIdx = 0;
         scenes.forEach(function (json) {
-            $("#scene_id").append('<option value=' + json.scene_id + ' >' + json.scene_id + '</option>');
+            $("#case_event_name").append('<option value=' + json.case_event_name + ' >' + json.case_event_name + '</option>');
+            sceneIdMap.set(sceneIdx++, json);
         });
     })
 }
@@ -228,8 +231,6 @@ function get_protect_measure(id) {
             $("#protect_measure_table").append("<tr><td>" + json.SITE_CHANGES_ID + "</td><td>" + json.SITE_CHANGES_NAME + "</td></tr>");
         });               //序列号
     })
-
-
 }
 
 function get_site_changes(id) {
@@ -416,7 +417,6 @@ function get_goods_type(id) {
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
-
 }
 
 function get_extract_method(id) {
@@ -449,7 +449,6 @@ function get_extract_method(id) {
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
-
 }
 
 
@@ -483,7 +482,6 @@ function get_corpse_photo(id) {
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
-
 }
 
 function get_position_photo(id) {
@@ -516,7 +514,6 @@ function get_position_photo(id) {
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
-
 }
 
 function get_case_conclusion_info(id) {
@@ -549,7 +546,6 @@ function get_case_conclusion_info(id) {
         jQuery(table).jqGrid(op_json);
         $(table).jqGrid().trigger('reloadGrid');
     });
-
 }
 
 function get_ele_info(id) {
@@ -602,7 +598,7 @@ function get_involved_goods_info(id) {
 
     $("#involved_goods_info_table").find("tr").remove();
 
-    $.get("/get_involved_goods_info", {}, function (data) {
+    $.get("/get_involved_goods_info", {"base_info_id": currentSceneId}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
@@ -819,13 +815,12 @@ function change_icon_col() {
     });*/
 }
 
-function select_scene(scene_id) {
+function select_scene(selectedIndex) {
+    document.getElementById("SceneConfigureButton").disabled = false;
     document.getElementById("operations").style.display = "";
-    $.get("/select_scene", {"value": scene_id}, function (data) {
-        console.log("选择场景号：" + scene_id);
-        /*for (var i = 0; i < data.kinetic_info.length; i++) {
-            $("#kinetic_model").append('<option value=' + data.kinetic_info[i].id + ' >' + data.kinetic_info[i].kinetic_id + '</option>');
-        }*/
+    currentSceneId = sceneIdMap.get(selectedIndex).base_info_id;
+    $.get("/select_scene", {"value": currentSceneId}, function (data) {
+        console.log("选择场景号：" + currentSceneId);
         console.log(data);
         var relevant_info = data.relevant_info;
         for (var i = 0; i < relevant_info.length; i++) {
@@ -855,21 +850,13 @@ function select_scene(scene_id) {
             });
             console.log(element_id + "<->" + current_type + "<->" + id);
         }
-        if (data.location[0].lon != null && data.location[0].lon != undefined) {
-            set_view(data.location[0].lon, data.location[0].lat);
+        if (data.location.length > 0 && data.location[0].start_lon != null && data.location[0].start_lat != undefined) {
+            set_view(data.location[0].start_lon, data.location[0].start_lat);
         }
-        // data.forEach(function (icon_name) {
-        //     console.log(icon_name);
-        //     $("#icon_menu").append('<option value=' + icon_name + ' >' + icon_name + '</option>');
-        // });
-
     })
     //加载物品标注
-    $.get("/select_thing_scene", {"value": scene_id}, function (data) {
-        console.log("选择场景号：" + scene_id);//选择场景
-        /*for (var i = 0; i < data.kinetic_info.length; i++) {
-            $("#kinetic_model").append('<option value=' + data.kinetic_info[i].id + ' >' + data.kinetic_info[i].kinetic_id + '</option>');
-        }*/
+    $.get("/select_thing_scene", {"value": currentSceneId}, function (data) {
+        console.log("选择场景号：" + currentSceneId);//选择场景
         console.log(data);//
         var relevant_info = data.relevant_info;
         for (var i = 0; i < relevant_info.length; i++) {
@@ -936,38 +923,10 @@ function select_scene(scene_id) {
                 "ry": angle_lat,
                 "rz": angle_height
             });
-
-            // const position = Cesium.Cartesia n3.fromDegrees(longitude, latitude, height);
-            // const hpRoll = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(0), Cesium.Math.toRadians(0), Cesium.Math.toRadians(0));
-            // const orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpRoll);
-            // viewer.entities.add({
-            //     position: position,
-            //     orientation:orientation,
-            //     model: {
-            //         uri: gltf_path,
-            //         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-            //     },
-            //
-            //     properties: {
-            //         type: "added",
-            //         thing_type: thing_type,
-            //         thing_id: thing_id,
-            //         // roll:roll
-            //     },
-            //     scale:10.0,
-            //     minimumPixelSize: 100,
-            //     show: true
-            // });
-
         }
-        if (data.location[0].lon != null && data.location[0].lon != undefined) {
-            set_view(data.location[0].lon, data.location[0].lat);
+        if (data.location.length > 0 && data.location[0].start_lon != null && data.location[0].start_lat != undefined) {
+            set_view(data.location[0].start_lon, data.location[0].start_lat);
         }
-        // data.forEach(function (icon_name) {
-        //     console.log(icon_name);
-        //     $("#icon_menu").append('<option value=' + icon_name + ' >' + icon_name + '</option>');
-        // });
-
     })
 }
 

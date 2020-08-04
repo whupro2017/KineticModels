@@ -201,8 +201,10 @@
 //菜单案件与场景选项逻辑
 $.get("/get_cases", {"value": "get_cases"}, function (data) {
     cases = data;
+    let caseIdx = 0;
     cases.forEach(function (json) {
-        $("#case_id").append('<option value=' + json.case_id + ' >' + json.case_id + '</option>');
+        $("#cases_name").append('<option value=' + json.cases_name + ' >' + json.cases_name + '</option>');
+        casesIdMap.set(caseIdx++, json);
     });
 })
 
@@ -220,10 +222,24 @@ jQuery(function ($) {
         header.css('color', '#ffffff');
     };
 
-    $('#SceneInqueryButton').on('click', function () {
-        alert("How are you doing?");
+    $('#SceneConfigureButton').on('click', function () {
+        // alert("How are you doing?");
+        $.get("/scene_exists", {"value": currentSceneId}, function (data) {
+            console.log("clicked configuration");
+            if (data.msg == undefined) {
+                alert("How are you doing?");
+            } else {
+                alert("How are you doing?" + data.msg);
+            }
+            return;
+        })
+
+        window.open(visualpage_addr + "configScene.html?scene_id='" + currentSceneId + "'", "show_element_info",
+            "height=500, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");
+
         //http://106.15.190.54:8081/involvedGoodsInfo.html?involvedGoodsInfoId=2c91fa9d6ec59058016ec5a7ba38004c
     });
+
     $('#CaseInqueryButton').on('click', function () {
         // Here releases a bug with uncleared header.
         $(grid_selector).jqGrid("clearGridData", true).trigger("reloadGrid");
@@ -232,7 +248,7 @@ jQuery(function ($) {
             alert("resting: " + gridData[i].MARK_GOODS_NAME);
             $(grid_selector).jqGrid("delRowData", i);
         }
-        $.get("/get_mark_goods", {}, function (data) {
+        $.get("/get_mark_goods", {"base_info_id": currentSceneId}, function (data) {
             if (data.msg != undefined) {
                 alert("ajax" + data.msg);
                 return;
@@ -244,7 +260,6 @@ jQuery(function ($) {
                     CREATE_TIME: json.CREATE_TIME,
                     MARK_GOODS_ID: json.MARK_GOODS_ID
                 };
-                //EXTRACT_POSITION: json.EXTRACT_POSITION,
                 if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
                 $(grid_selector).jqGrid("addRowData", counter, rowData);
                 counter++;
@@ -269,11 +284,7 @@ jQuery(function ($) {
                 sorttype: "string",
                 width: 120,
                 editable: false
-                //cellclassname: colorFondo
-                /*rendered: changeColor,
-                formatter: "datetime",
-                formatoptions: {srcformat: "m/d/Y h:i:s", newformat: "m/d/Y h:i:s"}*/
-            }, //cellclassname: colorFondo}
+            },
             {name: 'MARK_GOODS_ID', index: 'MARK_GOODS_ID', width: 80, editable: false}
         ],
         gridview: true,

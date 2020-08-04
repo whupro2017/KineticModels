@@ -71,17 +71,17 @@
                 <table>
                     <tr>
                         <td style="color: white">请选择案件：</td>
-                        <td><select id="case_id" class="case_select" style="width: 50px"
-                                    onchange="get_scenes(this.value)">
+                        <td><select id="cases_name" class="case_select" style="width: 110px"
+                                    onchange="get_scenes(this.selectedIndex)">
                             <option value="volvo" hidden>ID</option>
                         </select></td>
                         <td>
-                            <button id="CaseCreateButton" style="height:25px;width:80px;border: 1px solid white"
+                            <button id="CaseCreateButton" style="height:25px;width:50px;border: 1px solid white"
                                     disabled="disabled">创建
                             </button>
                         </td>
                         <td>
-                            <button id="CaseInqueryButton" style="height:25px;width:80px;border: 1px solid white">查询
+                            <button id="CaseInqueryButton" style="height:25px;width:50px;border: 1px solid white">查询
                             </button>
                         </td>
                     </tr>
@@ -95,17 +95,18 @@
                 <table>
                     <tr>
                         <td style="color: white">请选择场景：</td>
-                        <td><select id="scene_id" class="case_select" style="width: 50px"
-                                    onchange="select_scene(this.value)">
+                        <td><select id="case_event_name" class="case_select" style="width: 110px"
+                                    onchange="select_scene(this.selectedIndex)">
                             <option value="" hidden>ID</option>
                         </select></td>
                         <td>
-                            <button id="SceneCreateButton" style="height:25px;width:80px;border: 1px solid white"
-                                    disabled="disabled">创建
+                            <button id="SceneUploadButton" style="height:25px;width:50px;border: 1px solid white"
+                                    disabled="disabled">上传
                             </button>
                         </td>
                         <td>
-                            <button id="SceneInqueryButton" style="height:25px;width:80px;border: 1px solid white">查询
+                            <button id="SceneConfigureButton" style="height:25px;width:50px;border: 1px solid white"
+                                    disabled=true>配置
                             </button>
                         </td>
                     </tr>
@@ -1475,6 +1476,9 @@
     Cesium.knockout.applyBindings(viewModel, toolbar_hpr); // 绑定监控
 
     let objectMap = new Map();
+    let casesIdMap = new Map();
+    let sceneIdMap = new Map();
+    let currentSceneId = "";
 
     var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
         Cesium.Cartesian3.fromDegrees(114.22139307626317, 30.357628207462255, 2.289440174119258)

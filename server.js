@@ -96,7 +96,6 @@ app.get("/get_dat_arr", function (req, res) {
         readl(i);
     }
 
-
     var fRead = fs.createReadStream('public/cesium/trace/frame' + num + '.dat');
     var objReadline = readline.createInterface({input: fRead});
     var arr = new Array();
@@ -130,7 +129,6 @@ connection.connect();
 
 var case_id;
 
-
 app.get("/buttonClicked", function (req, res) {
     var nodeCmd = require('node-cmd');
     var data = "send to client";
@@ -157,17 +155,19 @@ app.get("/buttonClicked", function (req, res) {
     )
     console.log(req.query.value); //get param
 });
+
 app.get("/get_cases", function (req, res) {
-    connection.query('SELECT case_id from case_t', function (error, results, fields) {
+    connection.query('SELECT cases_name, cases_id from cases_set', function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
     });
 })
+
 app.get("/get_scenes", function (req, res) {
     console.log("选定案件号：" + req.query.value);
     case_id = req.query.value;
-    connection.query('SELECT scene_id from scene_t where case_id=' + req.query.value, function (error, results, fields) {
+    connection.query('SELECT case_event_name, base_info_id from inquest_base_info where cases_id=\"' + req.query.value + "\"", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -176,17 +176,37 @@ app.get("/get_scenes", function (req, res) {
 
 var scene_id;
 
+app.get("/scene_exists", function (req, res) {
+    scene_id = req.query.value;
+    connection.query('SELECT scene_path from scene_t where scene_id=\'' + scene_id + '\'', function (error, results, fields) {
+        if (results.length == 0) {
+            connection.query('SELECT CASES_ID FROM inquest_base_info where base_info_id=\'' + scene_id + '\'', function (error, results, fields) {
+                if (error) return console.error(error)
+                let case_id = results[0].CASES_ID;
+                console.log('SELECT scene_path from scene_t where scene_id=\'' + scene_id + '\'');
+                connection.query('INSERT INTO scene_t (scene_id, case_id) value(\'' + scene_id + '\', \'' + case_id + '\')', function (error, results, fields) {
+                    if (error) return console.error(error);
+                    res.end();
+                });
+            })
+        } else
+            console.log('found scene: ' + scene_id);
+        res.end();
+    })
+})
+
 app.get("/select_scene", function (req, res) {
     console.log("选定场景号：" + req.query.value);
     scene_id = req.query.value;
     data = {};
-    connection.query('SELECT id,kinetic_id from kinetic_t where scene_id=' + req.query.value, function (error, results, fields) {
+    connection.query('SELECT id,kinetic_id from kinetic_t where scene_id=\'' + req.query.value + '\'', function (error, results, fields) {
         if (error) return console.error(error);
         data.kinetic_info = results;
-        connection.query('SELECT lon,lat from scene_t where scene_id=' + req.query.value, function (error, results, fields) {
+        console.log('SELECT start_lon,start_lat,start_height,angle_lon,angle_lat,angle_height,scene_path from scene_t where scene_id=\'' + req.query.value + '\'');
+        connection.query('SELECT start_lon,start_lat,start_height,angle_lon,angle_lat,angle_height,scene_path from scene_t where scene_id=\'' + req.query.value + '\'', function (error, results, fields) {
             if (error) return console.error(error);
             data.location = results;
-            connection.query('SELECT id,element_type,element_id,icon_path,start_lon,start_lat,start_height from relevant_t where scene_id=' + req.query.value, function (error, results, fields) {
+            connection.query('SELECT id,element_type,element_id,icon_path,start_lon,start_lat,start_height from relevant_t where scene_id=\'' + req.query.value + '\'', function (error, results, fields) {
                 if (error) return console.error(error);
                 data.relevant_info = results;
                 // console.log(data);
@@ -195,21 +215,19 @@ app.get("/select_scene", function (req, res) {
             });
         });
     });
-
 })
-
 
 app.get("/select_thing_scene", function (req, res) {
     // console.log("选定场景号：" + req.query.value);
     scene_id = req.query.value;
     data = {};
-    connection.query('SELECT id,kinetic_id from kinetic_t where scene_id=' + req.query.value, function (error, results, fields) {
+    connection.query('SELECT id,kinetic_id from kinetic_t where scene_id=\'' + req.query.value + '\'', function (error, results, fields) {
         if (error) return console.error(error);
         data.kinetic_info = results;
-        connection.query('SELECT lon,lat from scene_t where scene_id=' + req.query.value, function (error, results, fields) {
+        connection.query('SELECT start_lon,start_lat,start_height,angle_lon,angle_lat,angle_height from scene_t where scene_id=\'' + req.query.value + '\'', function (error, results, fields) {
             if (error) return console.error(error);
             data.location = results;
-            connection.query('SELECT id,thing_type,thing_id,gltf_path,scale,start_lon,start_lat,start_height,end_lon,end_lat,end_height,angle_lon,angle_lat,angle_height from thing_relevant where sceneid=' + req.query.value, function (error, results, fields) {
+            connection.query('SELECT id,thing_type,thing_id,gltf_path,scale,start_lon,start_lat,start_height,end_lon,end_lat,end_height,angle_lon,angle_lat,angle_height from thing_relevant where sceneid=\'' + req.query.value + '\'', function (error, results, fields) {
                 if (error) return console.error(error);
                 data.relevant_info = results;
                 // console.log(data);
@@ -218,7 +236,6 @@ app.get("/select_thing_scene", function (req, res) {
             });
         });
     });
-
 })
 
 
@@ -231,6 +248,7 @@ app.get("/get_mark_info", function (req, res) {
         res.end();
     });
 })
+
 app.get("/get_sub_icon_menu", function (req, res) {
     fs.readdir('public/cesium/icons/' + req.query.value, function (err, files) {
         if (err) {
@@ -255,7 +273,6 @@ app.get("/get_things", function (req, res) {
     });
 })
 
-
 app.get("/get_icon_menu", function (req, res) {
     fs.readdir('public/cesium/icons/' + req.query.top_name + '/' + req.query.sub_name, function (err, files) {
         if (err) {
@@ -267,7 +284,6 @@ app.get("/get_icon_menu", function (req, res) {
         res.end();
     });
 })
-
 
 app.get("/sub_thing_menu", function (req, res) {
     fs.readdir('public/cesium/Models/model/' + req.query.top_name + '/' + req.query.sub_name, function (err, files) {
@@ -309,7 +325,6 @@ app.get("/get_elements", function (req, res) {
     });
 })
 
-
 // app.get("/get_things", function (req, res) {//新增内容
 //     var thing_type = req.query.thing_type;
 //     var scene_id = req.query.scene_id;
@@ -327,7 +342,6 @@ app.get("/get_elements", function (req, res) {
 //         res.end();
 //     });
 // })
-
 
 app.get('/model_location', function (req, res, next) {
     var longitude = req.query.longitude;
@@ -1154,7 +1168,11 @@ app.get('/get_full_photo', function (req, res, next) {
 });
 app.get('/get_mark_goods', function (req, res, next) {
     //form表单
-    connection.query("SELECT MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE from mark_goods", function (error, results, fields) {
+    let currentSceneId = req.query.base_info_id;
+    if (currentSceneId == undefined) currentSceneId = "";
+    else currentSceneId = " where base_info_id=\'" + currentSceneId + "\'";
+    console.log("SELECT MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE from mark_goods" + currentSceneId + ";");
+    connection.query("SELECT MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE from mark_goods" + currentSceneId + ";", function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();
@@ -1297,8 +1315,12 @@ app.get('/get_ele_info', function (req, res, next) {
     });
 });
 app.get('/get_involved_goods_info', function (req, res, next) {
+    let currentSceneId = req.query.base_info_id;
+    if (currentSceneId == undefined) currentSceneId = "";
+    else currentSceneId = " where base_info_id=\'" + currentSceneId + "\'";
+    console.log("SELECT INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from involved_goods_info" + currentSceneId);
     //form表单
-    connection.query("SELECT INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from involved_goods_info", function (error, results, fields) {
+    connection.query("SELECT INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from involved_goods_info" + currentSceneId, function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();

@@ -182,7 +182,7 @@ function onMarkThings(longitude, latitude, height, thing_mark_id) {
         // "heading": heading,
         // "pitch":pitch,
         // "roll":roll,
-        "scene_id": $("#scene_id").val(),
+        "scene_id": currentSceneId, //$("#scene_id").val(),
         "thing_type": $("#thing_type").val(),
         "thing_id": $("#things").val(),
         "gltf_path": thing_gltf,
@@ -218,7 +218,7 @@ function onMarkThings(longitude, latitude, height, thing_mark_id) {
         }
     })
     $.get('/thing_location_latest', {
-        "scene_id": $("#scene_id").val(),
+        "scene_id": currentSceneId, //$("#scene_id").val(),
         "gltf_path": thing_gltf
     }, function (data) {
         alert(data)
@@ -256,7 +256,7 @@ function onLocateModel(longitude, latitude, height) {
         "longitude": longitude,
         "latitude": latitude,
         "height": height,
-        "scene_id": $("#scene_id").val(),
+        "scene_id": currentSceneId, //$("#scene_id").val(),
         "model_name": name
     }, function (data) {
         console.log("更改模型：" + name + "位置");

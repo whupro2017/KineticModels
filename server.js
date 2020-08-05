@@ -883,7 +883,7 @@ app.get('/element_location', function (req, res, next) {//左键点击绑定要�
     var element_type = req.query.element_type;
     var element_id = req.query.element_id;
     var icon_path = req.query.icon_path;
-    connection.query("INSERT into relevant_t (scene_id,element_id,icon_path,start_lon,start_lat,start_height,element_type) value (" + scene_id + ",'" + element_id + "','" + icon_path + "','" + longitude + "','" + latitude + "','" + height + "','" + element_type + "')", function (error, results, fields) {
+    connection.query("INSERT into relevant_t (scene_id,element_id,icon_path,start_lon,start_lat,start_height,element_type) value ('" + scene_id + "','" + element_id + "','" + icon_path + "','" + longitude + "','" + latitude + "','" + height + "','" + element_type + "')", function (error, results, fields) {
         if (error) {
             var data = {status: 0};
             // c.end();
@@ -891,7 +891,7 @@ app.get('/element_location', function (req, res, next) {//左键点击绑定要�
             res.end();
             return console.error(error);
         }
-        connection.query("UPDATE  scene_t SET lon=" + longitude + ",lat=" + latitude + " WHERE scene_id=" + scene_id + "", function (error, results, fields) {
+        connection.query("UPDATE  scene_t SET start_lon=" + longitude + ",start_lat=" + latitude + ",start_height=" + 5000 + " WHERE scene_id='" + scene_id + "'", function (error, results, fields) {
             if (error) {
                 var data = {status: 0};
                 // c.end();

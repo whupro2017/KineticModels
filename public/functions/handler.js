@@ -122,7 +122,7 @@ function onMarkElements(longitude, latitude, height) {
         "longitude": longitude,
         "latitude": latitude,
         "height": height,
-        "scene_id": $("#scene_id").val(),
+        "scene_id": currentSceneId, //$("#scene_id").val(),
         "element_type": activeObject.element_type,
         "element_id": activeObject.element_id,
         "icon_path": element_image,
@@ -501,7 +501,8 @@ handler.setInputAction(function (movement) {
                 startDynRoute(dyn_czml);
                 operation_type = null;
             }
-        } else*/ if (operation_type == "drawRoute") {
+        } else*/
+        if (operation_type == "drawRoute") {
             const input = [
                 /*{"lon":105.92575,"lat":26.2586},
                 {"lon":105.92575,"lat":26.2586},

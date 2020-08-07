@@ -203,7 +203,7 @@ app.get("/select_scene", function (req, res) {
         if (error) return console.error(error);
         data.kinetic_info = results;
         console.log('SELECT start_lon,start_lat,start_height,angle_lon,angle_lat,angle_height,scene_path from scene_t where scene_id=\'' + req.query.value + '\'');
-        connection.query('SELECT start_lon,start_lat,start_height,angle_lon,angle_lat,angle_height,scene_path from scene_t where scene_id=\'' + req.query.value + '\'', function (error, results, fields) {
+        connection.query('SELECT scale,start_lon,start_lat,start_height,angle_lon,angle_lat,angle_height,scene_path from scene_t where scene_id=\'' + req.query.value + '\'', function (error, results, fields) {
             if (error) return console.error(error);
             data.location = results;
             connection.query('SELECT id,element_type,element_id,icon_path,start_lon,start_lat,start_height from relevant_t where scene_id=\'' + req.query.value + '\'', function (error, results, fields) {

@@ -1479,6 +1479,16 @@
     let casesIdMap = new Map();
     let sceneIdMap = new Map();
     let currentSceneId = "";
+    let scenePosition = {
+        "scale": 1.0,
+        "offsetX": .0,
+        "offsetY": .0,
+        "offsetZ": .0,
+        "rotateX": .0,
+        "rotateY": .0,
+        "rotateZ": .0,
+        "tilepath": ""
+    }
 
     var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
         Cesium.Cartesian3.fromDegrees(114.22139307626317, 30.357628207462255, 2.289440174119258)

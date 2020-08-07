@@ -850,8 +850,19 @@ function select_scene(selectedIndex) {
             });
             console.log(element_id + "<->" + current_type + "<->" + id);
         }
+        console.log("to be or not to be" + data.location.length);
         if (data.location.length > 0 && data.location[0].start_lon != null && data.location[0].start_lat != undefined) {
-            set_view(data.location[0].start_lon, data.location[0].start_lat);
+            //set_view(data.location[0].start_lon, data.location[0].start_lat);
+            scenePosition.scale = data.location[0].scale;
+            scenePosition.offsetX = data.location[0].start_lon;
+            scenePosition.offsetY = data.location[0].start_lat;
+            scenePosition.offsetZ = data.location[0].start_height;
+            scenePosition.rotateX = data.location[0].angle_lon;
+            scenePosition.rotateY = data.location[0].angle_lat;
+            scenePosition.rotateZ = data.location[0].angle_height;
+            scenePosition.tilepath = data.location[0].scene_path;
+            console.log(scenePosition.offsetX + ":" + scenePosition.offsetY);
+            show_tileset();
         }
     })
     //加载物品标注

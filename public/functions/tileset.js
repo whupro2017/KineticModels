@@ -73,20 +73,33 @@ function show_tileset() {
         clippingPlanes: clippingPlanes
     }));
     tileset.readyPromise.then(function (tileset) {
-        var position = Cesium.Cartesian3.fromDegrees(scenePosition.offsetX, scenePosition.offsetY, scenePosition.offsetZ);//62.4);
-        var mat = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-        //alert(position.toString())
-        var scale = Cesium.Matrix4.fromUniformScale(scenePosition.scale)
-        Cesium.Matrix4.multiply(mat, scale, mat);
-        const m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(scenePosition.rotateX));
-        Cesium.Matrix4.multiplyByMatrix3(mat, m1, mat);
-        const m2 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(scenePosition.rotateY));
-        Cesium.Matrix4.multiplyByMatrix3(mat, m2, mat);
-        const m3 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(scenePosition.rotateZ));
-        Cesium.Matrix4.multiplyByMatrix3(mat, m3, mat);
+        if (scenePosition.absoluteX != .0 || scenePosition.absoluteY != 0) {
+            boundingSphere = tileset.boundingSphere;
+            var radius = boundingSphere.radius;
+            var cartographic = Cesium.Cartographic.fromCartesian(boundingSphere.center);
+            var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0.0);
+            var height = 10;
+            var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, height);
+            var translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
+            tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
+            //alert(cartographic.longitude + ", " + cartographic.latitude + ", " + clippingPlanes.length + "\n," + tileset.modelMatrix.toString());
+            console.log("原始坐标基础加载中");
+        } else {
+            var position = Cesium.Cartesian3.fromDegrees(scenePosition.offsetX, scenePosition.offsetY, scenePosition.offsetZ);//62.4);
+            var mat = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+            //alert(position.toString())
+            var scale = Cesium.Matrix4.fromUniformScale(scenePosition.scale)
+            Cesium.Matrix4.multiply(mat, scale, mat);
+            const m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(scenePosition.rotateX));
+            Cesium.Matrix4.multiplyByMatrix3(mat, m1, mat);
+            const m2 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(scenePosition.rotateY));
+            Cesium.Matrix4.multiplyByMatrix3(mat, m2, mat);
+            const m3 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(scenePosition.rotateZ));
+            Cesium.Matrix4.multiplyByMatrix3(mat, m3, mat);
 
-        tileset._root.transform = mat;
-        console.log("加载中");
+            tileset._root.transform = mat;
+            console.log("变换坐标加载中");
+        }
 
         var boundingSphere = tileset.boundingSphere;
         var radius = boundingSphere.radius;
@@ -110,16 +123,27 @@ function show_tileset() {
             heatPlane = planeEntity;
             planeEntities.push(planeEntity);
         }
-    });
 
-    var boundingSphere = tileset.boundingSphere;
-    var cartographic = Cesium.Cartographic.fromCartesian(boundingSphere.center);
-    viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(cartographic.longitude, cartographic.latitude, cartographic.height),
-        orientation: {
-            heading: 0.0,
-            pitch: Cesium.Math.toRadians(-90.0),
-            roll: 0.0
+        if (scenePosition.absoluteX != .0 || scenePosition.absoluteY != 0) {
+            viewer.camera.setView({
+                destination: Cesium.Cartesian3.fromDegrees(scenePosition.absoluteX, scenePosition.absoluteY, 1500),
+                orientation: {
+                    heading: 0.0,
+                    pitch: Cesium.Math.toRadians(-90.0),
+                    roll: 0.0
+                }
+            });
+            console.log("原始坐标基础加载" + scenePosition.absoluteX + "," + scenePosition.absoluteY + "," + scenePosition.absoluteZ);
+        } else {
+            viewer.camera.setView({
+                destination: Cesium.Cartesian3.fromDegrees(scenePosition.offsetX, scenePosition.offsetY, 1500),
+                orientation: {
+                    heading: 0.0,
+                    pitch: Cesium.Math.toRadians(-90.0),
+                    roll: 0.0
+                }
+            });
+            console.log("变换坐标加载" + scenePosition.offsetX + "," + scenePosition.offsetY + "," + scenePosition.offsetZ);
         }
     });
 }

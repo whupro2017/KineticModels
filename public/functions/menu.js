@@ -80,7 +80,7 @@ function get_scenes(idx) {
         scenes = data;
         $("#case_event_name").find("option").remove();
         $("#case_event_name").append("<option value='volvo' hidden>ID</option>");
-        let sceneIdx = 0;
+        let sceneIdx = 1;
         scenes.forEach(function (json) {
             $("#case_event_name").append('<option value=' + json.case_event_name + ' >' + json.case_event_name + '</option>');
             sceneIdMap.set(sceneIdx++, json);
@@ -818,9 +818,10 @@ function change_icon_col() {
 function select_scene(selectedIndex) {
     document.getElementById("SceneConfigureButton").disabled = false;
     document.getElementById("operations").style.display = "";
+    console.log("选择场景: " + selectedIndex);
     currentSceneId = sceneIdMap.get(selectedIndex).base_info_id;
+    console.log("选择场景号：" + currentSceneId);
     $.get("/select_scene", {"value": currentSceneId}, function (data) {
-        console.log("选择场景号：" + currentSceneId);
         console.log(data);
         var relevant_info = data.relevant_info;
         for (var i = 0; i < relevant_info.length; i++) {
@@ -857,6 +858,9 @@ function select_scene(selectedIndex) {
             scenePosition.offsetX = data.location[0].start_lon;
             scenePosition.offsetY = data.location[0].start_lat;
             scenePosition.offsetZ = data.location[0].start_height;
+            scenePosition.absoluteX = data.location[0].end_lon;
+            scenePosition.absoluteY = data.location[0].end_lat;
+            scenePosition.absoluteZ = data.location[0].end_height;
             scenePosition.rotateX = data.location[0].angle_lon;
             scenePosition.rotateY = data.location[0].angle_lat;
             scenePosition.rotateZ = data.location[0].angle_height;

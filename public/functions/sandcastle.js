@@ -222,6 +222,40 @@ jQuery(function ($) {
         header.css('color', '#ffffff');
     };
 
+    $('#SceneAdjustButton').on('click', function () {
+        $.get("/scene_exists", {"value": currentSceneId}, function (data) {
+            console.log("clicked adjustment");
+            if (data.length != 1 || data[0].scene_path == "") {
+                alert('The scene ' + currentSceneId + " did not have a valid path, configure it first");
+                return;
+            } else {
+                const tilepath = data[0].scene_path;
+                console.log('准备读取tileset信息：' + tilepath);
+                try {
+                    tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
+                        url: tilepath,
+                        maximumScreenSpaceError: 20,
+                        maximumNumberOfLoadedTiles: 500,
+                        clippingPlanes: clippingPlanes
+                    }));
+                    tileset.readyPromise.then(function (tileset) {
+                        boundingSphere = tileset.boundingSphere;
+                        var cartographic = Cesium.Cartographic.fromCartesian(boundingSphere.center);
+                        var longitude = Cesium.Math.toDegrees(cartographic.longitude);
+                        var latitude = Cesium.Math.toDegrees(cartographic.latitude);
+                        var height = cartographic.height;
+                        if (longitude > 120 || longitude < 100 || latitude > 50 || latitude < 10)
+                            alert(longitude + ", " + latitude + ", " + height + ", 场景坐标系需要纠偏");
+                        else
+                            alert(longitude + ", " + latitude + ", " + height + ", 请填充至配置项中");
+                    });
+                } catch (e) {
+                    alert("加载数据" + data + '失败' + e.toString());
+                }
+            }
+        })
+    });
+
     $('#SceneConfigureButton').on('click', function () {
         // alert("How are you doing?");
         $.get("/scene_exists", {"value": currentSceneId}, function (data) {

@@ -178,36 +178,54 @@ var scene_id;
 
 app.get("/scene_exists", function (req, res) {
     scene_id = req.query.value;
+    data = {};
     connection.query('SELECT scene_path from scene_t where scene_id=\'' + scene_id + '\'', function (error, results, fields) {
         if (results.length == 0) {
             connection.query('SELECT CASES_ID FROM inquest_base_info where base_info_id=\'' + scene_id + '\'', function (error, results, fields) {
                 if (error) return console.error(error)
                 let case_id = results[0].CASES_ID;
-                console.log('SELECT scene_path from scene_t where scene_id=\'' + scene_id + '\'');
+                console.log('INSERT INTO scene_t (scene_id, case_id) value(\'' + scene_id + '\', \'' + case_id + '\')');
                 connection.query('INSERT INTO scene_t (scene_id, case_id) value(\'' + scene_id + '\', \'' + case_id + '\')', function (error, results, fields) {
                     if (error) return console.error(error);
                     res.end();
                 });
             })
-        } else
+            console.log('insert pseudo scene: ' + scene_id);
+        } else {
             console.log('found scene: ' + scene_id);
-        res.end();
-    })
-})
+            data = results;
+            res.send(data);
+            res.end();
+        }
+    });
+});
 
 app.get("/select_scene", function (req, res) {
     console.log("选定场景号：" + req.query.value);
     scene_id = req.query.value;
     data = {};
     connection.query('SELECT id,kinetic_id from kinetic_t where scene_id=\'' + req.query.value + '\'', function (error, results, fields) {
-        if (error) return console.error(error);
+        if (error) {
+            console.assert(error);
+            return console.error(error);
+        }
         data.kinetic_info = results;
-        console.log('SELECT start_lon,start_lat,start_height,end_lon,end_lat,end_height,angle_lon,angle_lat,angle_height,scene_path from scene_t where scene_id=\'' + req.query.value + '\'');
+        //console.log('SELECT start_lon,start_lat,start_height,end_lon,end_lat,end_height,angle_lon,angle_lat,angle_height,scene_path from scene_t where scene_id=\'' + req.query.value + '\'');
         connection.query('SELECT scale,start_lon,start_lat,start_height,end_lon,end_lat,end_height,angle_lon,angle_lat,angle_height,scene_path from scene_t where scene_id=\'' + req.query.value + '\'', function (error, results, fields) {
-            if (error) return console.error(error);
+            if (error) {
+                console.assert(error);
+                return console.error(error);
+            }
+            console.log(results[0].start_lon + "," + results[0].start_lat + "," + results[0].start_height + ","
+                + results[0].end_lon + "," + results[0].end_lat + "," + results[0].end_height + ","
+                + results[0].angle_lon + "," + results[0].angle_lat + "," + results[0].angle_height + ","
+                + results[0].scene_path + "," + results[0].scale);
             data.location = results;
             connection.query('SELECT id,element_type,element_id,icon_path,start_lon,start_lat,start_height from relevant_t where scene_id=\'' + req.query.value + '\'', function (error, results, fields) {
-                if (error) return console.error(error);
+                if (error) {
+                    console.assert(error);
+                    return console.error(error);
+                }
                 data.relevant_info = results;
                 // console.log(data);
                 res.send(data);
@@ -950,7 +968,7 @@ app.get('/thing_location_latest', function (req, res, next) {
     var scene_id = req.query.scene_id;
     var gltf_path = req.query.gltf_path;
     console.log("@@@@@@@@@@@@@@@@" + scene_id + ":" + gltf_path);
-    connection.query("SELECT id, scale, start_lon, start_lat, start_height, angle_lon, angle_lat, angle_height from thing_relevant where gltf_path=" + "\"" + gltf_path + "\" AND sceneid=" + scene_id + " order by id desc limit 1", function (error, results, fields) {
+    connection.query("SELECT id, scale, start_lon, start_lat, start_height, angle_lon, angle_lat, angle_height from thing_relevant where gltf_path=" + "\"" + gltf_path + "\" AND sceneid=\'" + scene_id + "\' order by id desc limit 1", function (error, results, fields) {
         if (error) {
             console.log('Error when refresh latest object: ' + scene_id + ":" + gltf_path)
             return console.error(error);
@@ -975,7 +993,8 @@ app.get('/thing_location', function (req, res, next) {//新增内容
     var roll = req.query.roll;
     var thing_mark_id = req.query.id;
     //新增thing_relevant,设置自己的属性
-    connection.query("INSERT into thing_relevant (sceneid,thing_id,gltf_path,start_lon,start_lat,start_height,thing_type,thing_mark_id) value (" + scene_id + ",'" + thing_id + "','" + gltf_path + "','" + longitude + "','" + latitude + "','" + height + "','" + thing_type + "','" + thing_mark_id + "')", function (error, results, fields) {
+    console.log("INSERT into thing_relevant (sceneid,thing_id,gltf_path,start_lon,start_lat,start_height,thing_type,thing_mark_id) value ('" + scene_id + "','" + thing_id + "','" + gltf_path + "'," + longitude + "," + latitude + "," + height + ",'" + thing_type + "','" + thing_mark_id + "')");
+    connection.query("INSERT into thing_relevant (sceneid,thing_id,gltf_path,start_lon,start_lat,start_height,thing_type,thing_mark_id) value ('" + scene_id + "','" + thing_id + "','" + gltf_path + "'," + longitude + "," + latitude + "," + height + ",'" + thing_type + "','" + thing_mark_id + "')", function (error, results, fields) {
         if (error) {
             var data = {status: 1};
             // c.end();
@@ -983,7 +1002,7 @@ app.get('/thing_location', function (req, res, next) {//新增内容
             res.end();
             return console.error(error);
         }
-        connection.query("UPDATE scene_t SET lon=" + longitude + ",lat=" + latitude + " WHERE scene_id=" + scene_id + "", function (error, results, fields) {
+        /*connection.query("UPDATE scene_t SET start_lon=" + longitude + ",start_lat=" + latitude + " WHERE scene_id=\'" + scene_id + "\'", function (error, results, fields) {
             if (error) {
                 var data = {status: 0};
                 // c.end();
@@ -996,7 +1015,7 @@ app.get('/thing_location', function (req, res, next) {//新增内容
             console.log("存储要素位置成功");//存储要素位置成功
             res.send(data);
             res.end();
-        });
+        });*/
     });
 })
 

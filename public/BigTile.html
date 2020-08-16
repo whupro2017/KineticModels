@@ -53,18 +53,23 @@
         navigationInstructionsInitiallyVisible: false,
         navigationHelpButton: false,     //是否显示帮助信息控件
         selectionIndicator: false,        //是否显示指示器组件
-        terrainProvider: Cesium.createWorldTerrain(),//加载地势
+        //terrainProvider: Cesium.createWorldTerrain(),//加载地势
         // imageryProvider: new Cesium.createTileMapServiceImageryProvider({
         //     url: 'cesium/googleTMS',
         // })
     });
+    /*var clippingPlanes = new Cesium.ClippingPlaneCollection({
+        planes: [
+            new Cesium.ClippingPlane(new Cesium.Cartesian3(0.0, 0.0, -1.0), 80.0)
+        ],
+        edgeWidth: 0.0
+    });*/
     var boundingSphere;
     var tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
         url: 'cesium/Models/BigtIles/tileset.json',
         maximumScreenSpaceError: 20,
         maximumNumberOfLoadedTiles: 500,
-        // clippingPlanes: clippingPlanes
-
+        //clippingPlanes: clippingPlanes
     }));
     tileset.readyPromise.then(function (tileset) {
         boundingSphere = tileset.boundingSphere;
@@ -75,10 +80,52 @@
         var height = 80;
         var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, height);
         var translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
+        /*var mat = Cesium.Matrix4.fromTranslation(translation);
+        var scale = Cesium.Matrix4.fromUniformScale(2.5)
+        Cesium.Matrix4.multiply(mat, scale, mat);
+        tileset.modelMatrix = mat;*/
         tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
         console.log("加载中");
-        viewer.camera.viewBoundingSphere(tileset.boundingSphere, new Cesium.HeadingPitchRange(0, -0.5, 0));
-        viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+        /*var longitude = Cesium.Math.toDegrees(cartographic.longitude);
+        var latitude = Cesium.Math.toDegrees(cartographic.latitude);
+        var height = cartographic.height;
+        if (longitude > 120 || longitude < 100 || latitude > 50 || latitude < 10)
+            alert(longitude + ", " + latitude + ", " + height + ", 场景坐标系需要纠偏");
+        else
+            alert(longitude + ", " + latitude + ", " + height + ", 请填充至配置项中");*/
+        /*viewer.camera.viewBoundingSphere(tileset.boundingSphere, new Cesium.HeadingPitchRange(0, -0.5, 0));
+        viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);*/
+        /*var boundingSphere = tileset.boundingSphere;
+        var radius = boundingSphere.radius;
+        var cartographic = Cesium.Cartographic.fromCartesian(boundingSphere.center);
+        for (var i = 0; i < clippingPlanes.length; ++i) {
+            var plane = clippingPlanes.get(i);
+            var planeEntity = viewer.entities.add({
+                position: offset,
+                plane: {
+                    dimensions: new Cesium.Cartesian2(radius * 0.75, radius * 0.75),
+                    material: new Cesium.ImageMaterialProperty({
+                        image: 'imgs/3.png',
+                        transparent: true
+                    }),
+                    plane: new Cesium.CallbackProperty(createPlaneUpdateFunction(plane), false),
+                    outline: true,
+                    outlineColor: Cesium.Color.WHITE
+                },
+                show: false
+            });
+            heatPlane = planeEntity;
+            planeEntities.push(planeEntity);
+        }*/
+
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(104.9985215450909, 30.235583359113026, 1500),
+            orientation: {
+                heading: 0.0,
+                pitch: Cesium.Math.toRadians(-90.0),
+                roll: 0.0
+            }
+        });
     });
 
 </script>

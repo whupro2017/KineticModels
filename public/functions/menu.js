@@ -781,7 +781,7 @@ function get_model_menu(sub_name) {
 function get_model(icon_name) {
     var top_name = document.getElementById("top_model_menu").value;
     var sub_name = document.getElementById("sub_model_menu").value;
-    thing_gltf = "cesium/Models/model/" + top_name + "/" + sub_name + "/" + icon_name + "/model.glb";
+    thing_gltf = "cesium/Models/model/" + top_name + "/" + sub_name + "/" + icon_name + "/model.gltf";
     operation_type = undefined;
     console.log(thing_gltf)
 }
@@ -821,8 +821,12 @@ function select_scene(selectedIndex) {
     console.log("选择场景: " + selectedIndex);
     currentSceneId = sceneIdMap.get(selectedIndex).base_info_id;
     console.log("选择场景号：" + currentSceneId);
+    $.get("/scene_exists", {"value": currentSceneId}, function (data) {
+        console.log("created configuration");
+        return;
+    })
     $.get("/select_scene", {"value": currentSceneId}, function (data) {
-        console.log(data);
+        console.log("Output:" + data);
         var relevant_info = data.relevant_info;
         for (var i = 0; i < relevant_info.length; i++) {
             var longitude = relevant_info[i].start_lon;
@@ -851,8 +855,12 @@ function select_scene(selectedIndex) {
             });
             console.log(element_id + "<->" + current_type + "<->" + id);
         }
-        console.log("to be or not to be" + data.location.length);
-        if (data.location.length > 0 && data.location[0].start_lon != null && data.location[0].start_lat != undefined) {
+        console.log("to be or not to be: " + data.location.length);
+        if (data.location.length > 0 && data.location[0].start_lon != undefined && data.location[0].start_lat != undefined
+            && data.location[0].start_height != undefined && data.location[0].end_lon != undefined
+            && data.location[0].end_lat != undefined && data.location[0].end_height != undefined
+            && data.location[0].angle_lon != undefined && data.location[0].angle_lat != undefined
+            && data.location[0].angle_height != undefined && data.location[0].scene_path != undefined) {
             //set_view(data.location[0].start_lon, data.location[0].start_lat);
             scenePosition.scale = data.location[0].scale;
             scenePosition.offsetX = data.location[0].start_lon;
@@ -865,10 +873,13 @@ function select_scene(selectedIndex) {
             scenePosition.rotateY = data.location[0].angle_lat;
             scenePosition.rotateZ = data.location[0].angle_height;
             scenePosition.tilepath = data.location[0].scene_path;
-            console.log(scenePosition.offsetX + ":" + scenePosition.offsetY);
+            console.log(scenePosition.offsetX + "," + scenePosition.offsetY + "," + scenePosition.offsetZ + ","
+                + scenePosition.absoluteX + "," + scenePosition.absoluteY + "," + scenePosition.absoluteZ + ","
+                + scenePosition.tilepath
+                + "," + scenePosition.rotateX + "," + scenePosition.rotateY + "," + scenePosition.rotateZ);
             show_tileset();
         }
-    })
+    }, "json");
     //加载物品标注
     $.get("/select_thing_scene", {"value": currentSceneId}, function (data) {
         console.log("选择场景号：" + currentSceneId);//选择场景

@@ -59,18 +59,18 @@
 
 function show_tileset() {
     console.log("Refresh view: " + scenePosition.offsetX + "," + scenePosition.offsetY + "," + scenePosition.offsetZ + "," + scenePosition.tilepath);
-    clippingPlanes = new Cesium.ClippingPlaneCollection({
+    /*clippingPlanes = new Cesium.ClippingPlaneCollection({
         planes: [
             new Cesium.ClippingPlane(new Cesium.Cartesian3(0.0, 0.0, -1.0), 80.0)
         ],
         edgeWidth: 0.0
-    });
+    });*/
 
     tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
         url: scenePosition.tilepath,
         maximumScreenSpaceError: 20,
         maximumNumberOfLoadedTiles: 500,
-        clippingPlanes: clippingPlanes
+        //clippingPlanes: clippingPlanes
     }));
     tileset.readyPromise.then(function (tileset) {
         if (scenePosition.absoluteX != .0 || scenePosition.absoluteY != 0) {
@@ -78,9 +78,13 @@ function show_tileset() {
             var radius = boundingSphere.radius;
             var cartographic = Cesium.Cartographic.fromCartesian(boundingSphere.center);
             var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0.0);
-            var height = 10;
+            var height = scenePosition.absoluteZ;
             var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, height);
             var translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
+            /*var mat = Cesium.Matrix4.fromTranslation(translation);
+            var scale = Cesium.Matrix4.fromUniformScale(100)
+            Cesium.Matrix4.multiply(mat, scale, mat);
+            tileset.modelMatrix = mat;*/
             tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
             //alert(cartographic.longitude + ", " + cartographic.latitude + ", " + clippingPlanes.length + "\n," + tileset.modelMatrix.toString());
             console.log("原始坐标基础加载中");
@@ -101,7 +105,7 @@ function show_tileset() {
             console.log("变换坐标加载中");
         }
 
-        var boundingSphere = tileset.boundingSphere;
+        /*var boundingSphere = tileset.boundingSphere;
         var radius = boundingSphere.radius;
         var cartographic = Cesium.Cartographic.fromCartesian(boundingSphere.center);
         for (var i = 0; i < clippingPlanes.length; ++i) {
@@ -122,7 +126,7 @@ function show_tileset() {
             });
             heatPlane = planeEntity;
             planeEntities.push(planeEntity);
-        }
+        }*/
 
         if (scenePosition.absoluteX != .0 || scenePosition.absoluteY != 0) {
             viewer.camera.setView({

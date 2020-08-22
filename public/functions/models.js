@@ -88,6 +88,8 @@ function explodeModelClose() {
 }
 
 function display_selected() {
+    select_scene(document.getElementById("case_event_name").selectedIndex);
+    show_tileset();
     operation_type = "display_selected";
 }
 
@@ -186,7 +188,7 @@ function update_model_pos(position, entity) {
 
 function update_model_hpr(entity) {
     Cesium.knockout.getObservable(viewModel, 'Enlarge').subscribe(function (Enlarge) {
-        Enlarge = Number(Enlarge);
+        Enlarge = Number(Enlarge).toFixed(8);
         console.log(Enlarge);
         if (isNaN(Enlarge) || entity.id != currentPickedObject.id) {
             return;
@@ -195,7 +197,7 @@ function update_model_hpr(entity) {
     });
 
     Cesium.knockout.getObservable(viewModel, 'OffsetX').subscribe(function (OffsetX) {
-        OffsetX = Number(OffsetX);
+        OffsetX = Number(OffsetX).toFixed(8);
         if (isNaN(OffsetX) || entity.id != currentPickedObject.id) {
             return;
         }
@@ -210,7 +212,7 @@ function update_model_hpr(entity) {
     });
 
     Cesium.knockout.getObservable(viewModel, 'OffsetY').subscribe(function (OffsetY) {
-        OffsetY = Number(OffsetY);
+        OffsetY = Number(OffsetY).toFixed(8);
         if (isNaN(OffsetY) || entity.id != currentPickedObject.id) {
             return;
         }
@@ -225,7 +227,7 @@ function update_model_hpr(entity) {
     });
 
     Cesium.knockout.getObservable(viewModel, 'OffsetZ').subscribe(function (OffsetZ) {
-        OffsetZ = Number(OffsetZ);
+        OffsetZ = Number(OffsetZ).toFixed(8);
         if (isNaN(OffsetZ) || entity.id != currentPickedObject.id) {
             return;
         }
@@ -240,7 +242,7 @@ function update_model_hpr(entity) {
     });
 
     Cesium.knockout.getObservable(viewModel, 'RotateX').subscribe(function (RotateX) {
-        RotateX = Number(RotateX);
+        RotateX = Number(RotateX).toFixed(8);
         if (isNaN(RotateX) || entity.id != currentPickedObject.id) {
             return;
         }
@@ -251,7 +253,7 @@ function update_model_hpr(entity) {
     });
 
     Cesium.knockout.getObservable(viewModel, 'RotateY').subscribe(function (RotateY) {
-        RotateY = Number(RotateY);
+        RotateY = Number(RotateY).toFixed(8);
         if (isNaN(RotateY) || entity.id != currentPickedObject.id) {
             return;
         }
@@ -262,7 +264,7 @@ function update_model_hpr(entity) {
     });
 
     Cesium.knockout.getObservable(viewModel, 'RotateZ').subscribe(function (RotateZ) {
-        RotateZ = Number(RotateZ);
+        RotateZ = Number(RotateZ).toFixed(8);
         if (isNaN(RotateZ) || entity.id != currentPickedObject.id) {
             return;
         }

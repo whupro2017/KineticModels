@@ -356,23 +356,24 @@ function onAdjustModel(pick) {
         // entity3为一个哑对象，这里为了调整viewModel的项
         currentPickedObject = entity3;
         Cesium.knockout.track(viewModel);
-        viewModel.Enlarge = pick.primitive.scale;
-        viewModel.OffsetX = info.lng - objectMap.get(pick.primitive.id).lng;
-        viewModel.OffsetY = info.lat - objectMap.get(pick.primitive.id).lat;
-        viewModel.OffsetZ = info.height - objectMap.get(pick.primitive.id).height;
-        viewModel.RotateX = info.rx;
-        viewModel.OffsetY = info.ry;
-        viewModel.OffsetZ = info.rx;
+        viewModel.Enlarge = Number(pick.primitive.scale.toFixed(8));
+        viewModel.OffsetX = Number(info.lng.toFixed(8) - objectMap.get(pick.primitive.id).lng.toFixed(8));
+        viewModel.OffsetY = Number(info.lat.toFixed(8) - objectMap.get(pick.primitive.id).lat.toFixed(8));
+        viewModel.OffsetZ = Number(info.height.toFixed(8) - objectMap.get(pick.primitive.id).height.toFixed(8));
+        viewModel.RotateX = Number(info.rx.toFixed(8));
+        viewModel.RotateY = Number(info.ry.toFixed(8));
+        viewModel.RotateZ = Number(info.rx.toFixed(8));
         Cesium.knockout.track(viewModel);
 
         console.log(info);
         currentPickedObject = pick.primitive;
-        /*$("#OffsetX").val(info.lng);
-        $("#OffsetY").val(info.lat);
-        $("#OffsetZ").val(info.height);
-        $("#RotateX").val(info.rx);
-        $("#RotateY").val(info.ry);
-        $("#RotateZ").val(info.rz);*/
+        $("#Enlarge").val(parseFloat(info.Enlarge).toFixed(8));
+        $("#OffsetX").val(parseFloat(info.lng).toFixed(8));
+        $("#OffsetY").val(parseFloat(info.lat).toFixed(8));
+        $("#OffsetZ").val(parseFloat(info.height).toFixed(8));
+        $("#RotateX").val(parseFloat(info.rx).toFixed(8));
+        $("#RotateY").val(parseFloat(info.ry).toFixed(8));
+        $("#RotateZ").val(parseFloat(info.rz).toFixed(8));
         update_model_hpr(pick.primitive);
         originPickedObject = pick.primitive;
     }

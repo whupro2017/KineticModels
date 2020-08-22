@@ -927,13 +927,13 @@ app.get('/element_location', function (req, res, next) {//左键点击绑定要�
 })
 
 app.get('/adjust_thing_location', function (req, res, next) {
-    var longitude = req.query.longitude;
-    var latitude = req.query.latitude;
-    var height = req.query.height;
-    var scale = req.query.scale;
-    var angle_lon = req.query.rx;
-    var angle_lat = req.query.ry;
-    var angle_height = req.query.rz;
+    var longitude = parseFloat(req.query.longitude).toFixed(8);
+    var latitude = parseFloat(req.query.latitude).toFixed(8);
+    var height = parseFloat(req.query.height).toFixed(8);
+    var scale = parseFloat(req.query.scale).toFixed(8);
+    var angle_lon = parseFloat(req.query.rx).toFixed(8);
+    var angle_lat = parseFloat(req.query.ry).toFixed(8);
+    var angle_height = parseFloat(req.query.rz).toFixed(8);
     var id = req.query.id;
     connection.query("UPDATE thing_relevant SET scale=" + scale +
         ",start_lon=" + longitude +

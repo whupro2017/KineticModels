@@ -58,6 +58,18 @@
 }*/
 
 function show_tileset() {
+    /*viewer.scene.primitives.removeAll();
+    viewer.entities.removeAll();*/
+    //var primitives = viewer.scene.primitives;
+    if (currentTileset != null) {
+        viewer.scene.primitives.remove(currentTileset);
+        // for (var i = 0; i < primitives.length; i++) {
+        //     if (primitives._primitives[i].isEqualTo(currentTileset)/*primitives._primitives[i]._url == url*/) {
+        //         alert("Release " + primitives._primitives[i].url);
+        //         viewer.scene.primitives.remove(primitives._primitives[i]);
+        //     }
+        // }
+    }
     console.log("Refresh view: " + scenePosition.offsetX + "," + scenePosition.offsetY + "," + scenePosition.offsetZ + "," + scenePosition.tilepath);
     /*clippingPlanes = new Cesium.ClippingPlaneCollection({
         planes: [
@@ -66,13 +78,13 @@ function show_tileset() {
         edgeWidth: 0.0
     });*/
 
-    tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
+    currentTileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
         url: scenePosition.tilepath,
         maximumScreenSpaceError: 20,
         maximumNumberOfLoadedTiles: 500,
         //clippingPlanes: clippingPlanes
     }));
-    tileset.readyPromise.then(function (tileset) {
+    currentTileset.readyPromise.then(function (tileset) {
         if (scenePosition.absoluteX != .0 || scenePosition.absoluteY != 0) {
             boundingSphere = tileset.boundingSphere;
             var radius = boundingSphere.radius;

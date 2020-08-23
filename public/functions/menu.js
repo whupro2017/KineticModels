@@ -711,6 +711,19 @@ function show_specific_thing() {
         "height=400, width=410, top=340, left=200,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 }
 
+function get_kinetic(model_category) {
+    console.log("will address " + model_category);
+    let options = document.getElementById("sub_kinetic_menu").options;
+    for (var i = 1; i < options.length; i++) options.remove(i);
+    $.get("/get_kinetic_set", {"value": model_category}, function (data) {
+        console.log(data);
+        sub_menu = data;
+        sub_menu.forEach(function (it) {
+            $("#sub_kinetic_menu").append('<option value=' + it.KSETID + ' >' + it.KSETNAME + '(' + it.KSETID + ")" + '</option>');
+        })
+    })
+}
+
 function get_kinetic_set(kinetic_name) {
 
 }
@@ -1155,7 +1168,7 @@ $(document).ready(function () {
         $("#upload_files").click()
     })
     $("#create_kinetic").click(function () {
-        window.open(visualpage_addr + "createKineticModel.html?markGoodsId='xyz'", "show_element_info",
+        window.open(visualpage_addr + "createKineticModel.html?MODEL_CATEGORY=燃烧模型", "show_element_info",
             "height=500, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");
         //$("#files").click()
     })

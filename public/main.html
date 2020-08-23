@@ -295,7 +295,8 @@
                 <table>
                     <tr>
                         <td>
-                            <select id="kinetic_model" class="case_select" style="width: 80px; margin-left: 20px;">
+                            <select id="kinetic_model" class="case_select" style="width: 80px; margin-left: 20px;"
+                                    onchange="get_kinetic(options[selectedIndex].text)">
                                 <option value="volvo" hidden>模型大类</option>
                                 <option id="burning_set" value="volvo">燃烧模型</option>
                                 <option id="boom_set" value="volvo">爆炸模型</option>
@@ -1169,7 +1170,7 @@
                                                                              height="25px" title="范围"></button>
                         </td>
                         <td>
-                            <button id="relate" class="charts" onclick="mdoelrelation()"><img src="icons/relate.png"
+                            <button id="relate" class="charts" onclick="modelrelation()"><img src="icons/relate.png"
                                                                                               width="25px"
                                                                                               height="25px"
                                                                                               title="关联"></button>
@@ -1179,8 +1180,10 @@
                                                                               height="25px" title="对齐"></button>
                         </td>
                         <td>
-                            <button id="measure" class="charts" onclick=""><img src="icons/measure.png" width="25px"
-                                                                                height="25px" title="测量"></button>
+                            <button id="measure" class="charts" onclick="modelbinding()"><img src="icons/measure.png"
+                                                                                              width="25px"
+                                                                                              height="25px" title="绑定">
+                            </button>
                         </td>
                     </tr>
                 </table>

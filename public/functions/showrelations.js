@@ -1,4 +1,4 @@
-function mdoelrelation() {
+function modelrelation() {
     showdog();
     showwaveblue();
     showwavegreen();
@@ -6,8 +6,12 @@ function mdoelrelation() {
     // showrelation()
 }
 
+function modelbinding() {
 
-function  showrelation() {
+}
+
+
+function showrelation() {
     // var viewer=ysc.createNormalCesium("cesiumContainer",{});
     // var lat = 30.598026044;
     // var lon = 114.302312702;
@@ -49,38 +53,39 @@ function  showrelation() {
         }
     };
     //中心点 和散点 都是 entity point 做的 有需要的话 可以用其他的来做。
-    ysc.creatFlyLinesAndPoints(viewer,data,function (id) {
+    ysc.creatFlyLinesAndPoints(viewer, data, function (id) {
         alert(id);
     });
 }
+
 function showwavered() {
     // var viewer=ysc.createNormalCesium("cesiumContainer",{});
-    var lon=114.22374911095045;
-    var lat=30.357474991097224;
-    ysc.addCircleRipple(viewer,{ //默认只绘制两个圆圈叠加 如遇绘制多个，请自行源码内添加。
-        id:"redwave",
-        lon:lon,
-        lat:lat,
-        height:0,
-        maxR:3000,
-        minR:0,//最好为0
-        deviationR:20,//差值 差值也大 速度越快
-        eachInterval:1500,//两个圈的时间间隔
-        imageUrl:"cesium/ysc/images/redCircle2.png"
+    var lon = 114.22374911095045;
+    var lat = 30.357474991097224;
+    ysc.addCircleRipple(viewer, { //默认只绘制两个圆圈叠加 如遇绘制多个，请自行源码内添加。
+        id: "redwave",
+        lon: lon,
+        lat: lat,
+        height: 0,
+        maxR: 3000,
+        minR: 0,//最好为0
+        deviationR: 20,//差值 差值也大 速度越快
+        eachInterval: 1500,//两个圈的时间间隔
+        imageUrl: "cesium/ysc/images/redCircle2.png"
     });
 
     //如果添加中心线的话：
     viewer.entities.add({
-        name:"",
+        name: "",
         polyline: {
             positions: Cesium.Cartesian3.fromDegreesArrayHeights([
-                lon,lat,0,
-                lon,lat, 5000,]
+                lon, lat, 0,
+                lon, lat, 5000,]
             ),
             width: 4,
-            material : new Cesium.PolylineGlowMaterialProperty({ //发光线
-                glowPower : 0.1,
-                color : Cesium.Color.RED
+            material: new Cesium.PolylineGlowMaterialProperty({ //发光线
+                glowPower: 0.1,
+                color: Cesium.Color.RED
             })
         }
     });
@@ -113,44 +118,48 @@ function showwavegreen() {
     //     duration: 3//3秒到达战场
     // });
 }
+
 function showwaveblue() {
-    var oneDiv =$("#one");
+    var oneDiv = $("#one");
     var scratch = new Cesium.Cartesian2(); //cesium二维笛卡尔 笛卡尔二维坐标系就是我们熟知的而二维坐标系；三维也如此
-    var divPosition = Cesium.Cartesian3.fromDegrees(114.19546052231226,30.32516669700495,200);
-    viewer.scene.preRender.addEventListener(function() {
+    var divPosition = Cesium.Cartesian3.fromDegrees(114.19546052231226, 30.32516669700495, 200);
+    viewer.scene.preRender.addEventListener(function () {
         var canvasPosition = viewer.scene.cartesianToCanvasCoordinates(divPosition, scratch);//cartesianToCanvasCoordinates 笛卡尔坐标（3维度）到画布坐标
         if (Cesium.defined(canvasPosition)) {
             oneDiv.css({
-                top:canvasPosition.y,
-                left:canvasPosition.x
+                top: canvasPosition.y,
+                left: canvasPosition.x
             });
         }
     });
 
     /** 六添加椭圆面*/
     var rotation = Cesium.Math.toRadians(50);
+
     function getRotationValue() {
         rotation += 0.4;
         return rotation;
     }
+
     var blueEllipse = viewer.entities.add({
-        position:Cesium.Cartesian3.fromDegrees(114.22374911095045,30.357474991097224),
-        name : 'Blue translucent, rotated, and extruded ellipse with outline',
-        ellipse : {
-            semiMinorAxis : 30.0, //半短轴
-            semiMajorAxis : 30.0, //半长轴
+        position: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224),
+        name: 'Blue translucent, rotated, and extruded ellipse with outline',
+        ellipse: {
+            semiMinorAxis: 30.0, //半短轴
+            semiMajorAxis: 30.0, //半长轴
             height: 40.0,//距离地球球面高度
             material: new Cesium.ImageMaterialProperty({
-                image:"cesium/ysc/images/circle1.png",
+                image: "cesium/ysc/images/circle1.png",
                 transparent: true//别忘了把允许透明打开
             }),
             rotation: new Cesium.CallbackProperty(getRotationValue, false),
             stRotation: new Cesium.CallbackProperty(getRotationValue, false),
-            outline:8,//windows 下 不能为1 可以置为false
+            outline: 8,//windows 下 不能为1 可以置为false
         }
     });
 }
-function  showdog() {
+
+function showdog() {
     // var viewer=ysc.createNormalCesium("cesiumContainer",{});
     // var lat = 30.598026044;
     // var lon = 114.302312702;
@@ -176,13 +185,13 @@ function  showdog() {
             name: 'yscNoNeedEntity',
             polyline: {
                 width: 3,//线宽度
-                clampToGround:true,
+                clampToGround: true,
                 material: [Cesium.Color.LIGHTSEAGREEN, 1],//混合颜色、(红绿混合透明后 就是黄色了)3000秒发射间隔,单纯材质无法展示飞行动态。所以去掉了。
             }
         }
     };
     //中心点 和散点 都是 entity point 做的 有需要的话 可以用其他的来做。
-    ysc.creatFlyLinesAndPoints(viewer,data,function (id) {
+    ysc.creatFlyLinesAndPoints(viewer, data, function (id) {
         alert(id);
     });
 }

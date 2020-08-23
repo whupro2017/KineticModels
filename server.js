@@ -267,6 +267,16 @@ app.get("/get_mark_info", function (req, res) {
     });
 })
 
+app.get("/get_kinetic_set", function (req, res) {
+    console.log(req.query.value);
+    connection.query("SELECT KSETID, KSETNAME from kinetic_set where MODEL_CATEGORY=\'" + req.query.value + "\'", function (error, results, fields) {
+        if (error) throw error;
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+})
+
 app.get("/get_sub_icon_menu", function (req, res) {
     fs.readdir('public/cesium/icons/' + req.query.value, function (err, files) {
         if (err) {

@@ -1436,6 +1436,22 @@
     Cesium.knockout.applyBindings(viewModel, toolbar_hpr); // 绑定监控
 
     let objectMap = new Map();
+    let casesIdMap = new Map();
+    /*let sceneIdMap = new Map();
+    let currentSceneId = "";
+    let scenePosition = {
+        "scale": 1.0,
+        "offsetX": .0,
+        "offsetY": .0,
+        "offsetZ": .0,
+        "absoluteX": .0,
+        "absoluteY": .0,
+        "absoluteZ": .0,
+        "rotateX": .0,
+        "rotateY": .0,
+        "rotateZ": .0,
+        "tilepath": ""
+    };*/
 
     var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
         Cesium.Cartesian3.fromDegrees(114.22139307626317, 30.357628207462255, 2.289440174119258)
@@ -1454,7 +1470,7 @@
     var originPickedObject, currentPickedObject;
 
     viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224, 700.0)
+        destination: Cesium.Cartesian3.fromDegrees(105.93257833333334, 26.2545366666666, 1500)
     });//初始视角
 
     //update_model_hpr(entity3);

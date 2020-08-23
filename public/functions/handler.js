@@ -312,9 +312,9 @@ function getInfoFromModelMatrix(entity, info) {
     info.lng = lng;
     info.lat = lat;
     info.height = height;
-    info.rx = heading;
-    info.ry = pitch;
-    info.rz = roll;
+    info.rx = pitch;
+    info.ry = roll;
+    info.rz = -heading;
 }
 
 function onAdjustModel(pick) {
@@ -362,7 +362,14 @@ function onAdjustModel(pick) {
         viewModel.OffsetZ = Number(info.height.toFixed(8) - objectMap.get(pick.primitive.id).height.toFixed(8));
         viewModel.RotateX = Number(info.rx.toFixed(8));
         viewModel.RotateY = Number(info.ry.toFixed(8));
-        viewModel.RotateZ = Number(info.rx.toFixed(8));
+        viewModel.RotateZ = Number(info.rz.toFixed(8));
+        originParam.scale = viewModel.Enlarge;
+        originParam.lng = viewModel.OffsetX;
+        originParam.lat = viewModel.OffsetY;
+        originParam.height = viewModel.OffsetZ;
+        originParam.rx = viewModel.RotateX;
+        originParam.ry = viewModel.RotateY;
+        originParam.rz = viewModel.RotateZ;
         Cesium.knockout.track(viewModel);
 
         console.log(info);

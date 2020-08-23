@@ -816,6 +816,14 @@ function change_icon_col() {
 }
 
 function select_scene(selectedIndex) {
+    viewer.entities.removeAll();
+    var primitives = viewer.scene.primitives;
+    for (var i = 0; i < primitives.length; i++) {
+        if (primitives._primitives[i] != undefined) {
+            if (primitives._primitives[i].scale != null) viewer.scene.primitives.remove(primitives._primitives[i]);
+        }
+    }
+    //viewer.scene.primitives.removeAll();
     document.getElementById("SceneConfigureButton").disabled = false;
     document.getElementById("operations").style.display = "";
     console.log("选择场景: " + selectedIndex);
@@ -825,7 +833,67 @@ function select_scene(selectedIndex) {
         console.log("created configuration");
         return;
     })
-    $.get("/select_scene", {"value": currentSceneId}, function (data) {
+    $.ajax({
+        url: '/select_scene',
+        data: {"value": currentSceneId},
+        success: function (result) {
+            console.log("Output:" + result);
+            var relevant_info = result.relevant_info;
+            for (var i = 0; i < relevant_info.length; i++) {
+                var longitude = relevant_info[i].start_lon;
+                var latitude = relevant_info[i].start_lat;
+                var height = relevant_info[i].start_height
+                var icon_path = relevant_info[i].icon_path;
+                var id = relevant_info[i].id;
+                var current_type = relevant_info[i].element_type;
+                var element_id = relevant_info[i].element_id;
+                viewer.entities.add({
+                    position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+                    billboard: {
+                        image: icon_path,
+                        // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+                        // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+                        scale: 0.2,
+                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                        horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY
+                    },
+                    properties: {
+                        type: "added",
+                        element_id: element_id,
+                        element_type: current_type
+                    }
+                });
+                console.log(element_id + "<->" + current_type + "<->" + id);
+            }
+            console.log("to be or not to be: " + result.location.length);
+            if (result.location.length > 0 && result.location[0].start_lon != undefined && result.location[0].start_lat != undefined
+                && result.location[0].start_height != undefined && result.location[0].end_lon != undefined
+                && result.location[0].end_lat != undefined && result.location[0].end_height != undefined
+                && result.location[0].angle_lon != undefined && result.location[0].angle_lat != undefined
+                && result.location[0].angle_height != undefined && result.location[0].scene_path != undefined) {
+                //set_view(result.location[0].start_lon, result.location[0].start_lat);
+                scenePosition.scale = result.location[0].scale;
+                scenePosition.offsetX = result.location[0].start_lon;
+                scenePosition.offsetY = result.location[0].start_lat;
+                scenePosition.offsetZ = result.location[0].start_height;
+                scenePosition.absoluteX = result.location[0].end_lon;
+                scenePosition.absoluteY = result.location[0].end_lat;
+                scenePosition.absoluteZ = result.location[0].end_height;
+                scenePosition.rotateX = result.location[0].angle_lon;
+                scenePosition.rotateY = result.location[0].angle_lat;
+                scenePosition.rotateZ = result.location[0].angle_height;
+                scenePosition.tilepath = result.location[0].scene_path;
+                console.log(scenePosition.offsetX + "," + scenePosition.offsetY + "," + scenePosition.offsetZ + ","
+                    + scenePosition.absoluteX + "," + scenePosition.absoluteY + "," + scenePosition.absoluteZ + ","
+                    + scenePosition.tilepath
+                    + "," + scenePosition.rotateX + "," + scenePosition.rotateY + "," + scenePosition.rotateZ);
+                show_tileset();
+            }
+        },
+        async: false
+    });
+    /*$.get("/select_scene", {"value": currentSceneId}, function (data) {
         console.log("Output:" + data);
         var relevant_info = data.relevant_info;
         for (var i = 0; i < relevant_info.length; i++) {
@@ -879,7 +947,7 @@ function select_scene(selectedIndex) {
                 + "," + scenePosition.rotateX + "," + scenePosition.rotateY + "," + scenePosition.rotateZ);
             show_tileset();
         }
-    }, "json");
+    }, "json");*/
     //加载物品标注
     $.get("/select_thing_scene", {"value": currentSceneId}, function (data) {
         console.log("选择场景号：" + currentSceneId);//选择场景

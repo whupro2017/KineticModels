@@ -714,7 +714,7 @@ function show_specific_thing() {
 function get_kinetic(model_category) {
     console.log("will address " + model_category);
     let options = document.getElementById("sub_kinetic_menu").options;
-    for (var i = 1; i < options.length; i++) options.remove(i);
+    for (var i = options.length - 1; i >= 1; i--) options.remove(i);
     $.get("/get_kinetic_set", {"value": model_category}, function (data) {
         console.log(data);
         sub_menu = data;
@@ -849,6 +849,10 @@ function select_scene(selectedIndex) {
     $.ajax({
         url: '/select_scene',
         data: {"value": currentSceneId},
+        async: false,
+        complete: function (msg) {
+            console.log('complete');
+        },
         success: function (result) {
             console.log("Output:" + result);
             var relevant_info = result.relevant_info;
@@ -903,8 +907,7 @@ function select_scene(selectedIndex) {
                     + "," + scenePosition.rotateX + "," + scenePosition.rotateY + "," + scenePosition.rotateZ);
                 show_tileset();
             }
-        },
-        async: false
+        }
     });
     /*$.get("/select_scene", {"value": currentSceneId}, function (data) {
         console.log("Output:" + data);

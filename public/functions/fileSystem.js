@@ -17,6 +17,8 @@ $(function () {
         var flag = true;
         var start;
         var ajaxNum = 0;
+        var date = new Date();
+        var suffix = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getTime() + '/';
         for (var m = 0; m < ss.length; m++) { //循环添加进度条
             efileName = ss[m].name;
             var pathnameArray = efileName.split('/');
@@ -46,6 +48,7 @@ $(function () {
             // }
             var formData = new FormData();
             formData.append('files', ss[j]); //将该file对象添加到formData对象中
+            formData.set('suffix', suffix);
             $.ajax({
                 url: 'update_transform',
                 type: 'POST',
@@ -53,6 +56,7 @@ $(function () {
                 data: {},//需要什么参数，自己配置
                 data: formData,//文件以formData形式传入
                 processData: false,
+                async: false,
                 //必须false才会自动加上正确的Content-Type
                 contentType: false,
                 /*  beforeSend:beforeSend,//发送请求
@@ -106,6 +110,8 @@ $(function () {
         total_num = ss.length;
         done = 0;
         finished = 0;
+        var date = new Date();
+        var suffix = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getTime() + '/';
         for (var m = 0; m < total_num; m++) { //循环添加进度条
             sendfile(ss[m]);
         }
@@ -113,12 +119,14 @@ $(function () {
         function sendfile(target_file) {
             var formData = new FormData();
             formData.append('files', target_file); //将该file对象添加到formData对象中
+            formData.set('suffix', suffix)
             $.ajax({
                 url: 'upload_things',
                 type: 'POST',
                 cache: false,
                 data: {},//需要什么参数，自己配置
                 data: formData,//文件以formData形式传入
+                async: false,
                 processData: false,
                 contentType: false,
                 xhr: function () {   //监听用于上传显示进度

@@ -289,9 +289,75 @@
                 <summary class="main_summary">
                     <p class="first_button">动力学</p>
                 </summary>
-                <input type="button" class="second_button" value="新建动力学模型" id="create_kinetic">
-                <input type="button" class="second_button" value="上传场数据集合" id="upload_kinetic">
-                <input type="button" class="second_button" value="上传动力学要素" id="upload_kinetic_element">
+                <table>
+                    <tr>
+                        <td>
+                            <input style="width: 108px" align="center" type="button" class="second_button"
+                                   value="新建动力学模型" id="create_kinetic">
+                        </td>
+                        <td>
+                            <button style="height:20px;width:50px;color: white;border: 1px solid white"
+                                    onClick="modelParamterize()">关联
+                            </button>
+                        </td>
+                        <td>
+                            <button style="height:20px;width:50px;color: white;border: 1px solid white"
+                                    onClick="modelConfiguration()">配置
+                            </button>
+                        </td>
+                        <td>
+                            <button style="height:20px;width:50px;color: white;border: 1px solid white"
+                                    onClick="modelModifyClose1()">删除
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td>
+                            <input style="width: 108px" align="center" type="button" class="second_button"
+                                   value="上传场数据集合" id="upload_kinetic">
+                        </td>
+                        <td>
+                            <button style="height:20px;width:50px;color: white;border: 1px solid white"
+                                    onClick="modelModifyDone1()">关联
+                            </button>
+                        </td>
+                        <td>
+                            <button style="height:20px;width:50px;color: white;border: 1px solid white"
+                                    onClick="modelModifyDone1()">配置
+                            </button>
+                        </td>
+                        <td>
+                            <button style="height:20px;width:50px;color: white;border: 1px solid white"
+                                    onClick="modelModifyClose1()">删除
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td>
+                            <input style="width: 108px" align="center" type="button" class="second_button"
+                                   value="上传动力学要素" id="upload_kinetic_element">
+                        </td>
+                        <td>
+                            <button style="height:20px;width:50px;color: white;border: 1px solid white"
+                                    onClick="modelModifyDone1()">关联
+                            </button>
+                        </td>
+                        <td>
+                            <button style="height:20px;width:50px;color: white;border: 1px solid white"
+                                    onClick="modelModifyDone1()">配置
+                            </button>
+                        </td>
+                        <td>
+                            <button style="height:20px;width:50px;color: white;border: 1px solid white"
+                                    onClick="modelModifyClose1()">删除
+                            </button>
+                        </td>
+                    </tr>
+                </table>
                 <table>
                     <tr>
                         <td>
@@ -739,7 +805,6 @@
             </button>
             <button type="button" class="Ssubmit" onclick="addModelInfo()">提交</button>
             <button type="button" class="Sdropout" onclick="stopModel()">退出</button>
-
         </div>
     </div>
 
@@ -756,7 +821,6 @@
                         </select>
                     </td>
                 </tr>
-
                 <tr>
                     <td style="padding-left:5px;padding-top:10px;color: #ffffcc">门窗开关：</td>
                     <td style="padding-left:4px;padding-top:10px">
@@ -766,7 +830,6 @@
                         </select>
                     </td>
                 </tr>
-
                 <tr>
                     <td style="padding-left:5px;padding-top:10px;color: #ffffcc">燃剂类型：</td>
                     <td style="padding-left:4px;padding-top:10px">
@@ -777,7 +840,6 @@
                         </select>
                     </td>
                 </tr>
-
                 <tr>
                     <td style="padding-left:5px;padding-top:10px;color: #ffffcc">燃剂容量：</td>
                     <td style="padding-left:4px;padding-top:10px">
@@ -822,9 +884,13 @@
             </table>
         </div>
         <div style="background-color: transparent; float:top;padding-top: 10px;text-align:center" align="center">
+            <button id="fireParam"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="fireModelParam()">保存
+            </button>
             <button id="fireAdd"
                     style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
-                    onClick="fireModelConfirm()">确定
+                    onClick="fireModelConfirm()">执行
             </button>
             <!--            <button id="close" style="height:25px;width:65px" onClick="window.close()">取消</button>-->
             <button id="fireExit"
@@ -836,7 +902,6 @@
     <div class="collisionMenuShow" id="collisionMenuShow">
         <div class="collisionModel">
             <table style="background-color:transparent;">
-
                 <tr>
                     <td style="padding-left:5px;padding-top:10px;color: white">身高：</td>
                     <td style="padding-left:4px;padding-top:10px">
@@ -847,7 +912,6 @@
                         </select>
                     </td>
                 </tr>
-
                 <tr>
                     <td style="padding-left:5px;padding-top:10px;color: white">姿态方向：</td>
                     <td style="padding-left:4px;padding-top:10px">
@@ -867,7 +931,6 @@
                         </select>
                     </td>
                 </tr>
-
                 <tr>
                     <td style="padding-left:5px;padding-top:10px;color: white">道路位置：</td>
                     <td style="padding-left:4px;padding-top:10px">
@@ -888,8 +951,11 @@
                 </tr>
             </table>
         </div>
-
         <div style="background-color: transparent; float:top;padding-top: 20px;text-align:center" align="center">
+            <button id="collisionParam"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="collisionModelParam()">保存
+            </button>
             <button id="collisionAdd"
                     style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
                     onClick="collisionModelConfirm()">确定
@@ -904,7 +970,6 @@
     <div class="explodeMenuShow" id="explodeMenuShow">
         <div class="explodeModel">
             <table style="background-color:transparent;">
-
                 <tr>
                     <td style="padding-left:5px;padding-top:10px;color: white">结构体：</td>
                     <td style="padding-left:4px;padding-top:10px">
@@ -917,7 +982,6 @@
                         </select>
                     </td>
                 </tr>
-
                 <tr>
                     <td style="padding-left:5px;padding-top:10px;color: white">爆点位置：</td>
                     <td style="padding-left:4px;padding-top:10px">
@@ -937,7 +1001,6 @@
                         </select>
                     </td>
                 </tr>
-
                 <tr>
                     <td style="padding-left:5px;padding-top:10px;color: white">炸药当量：</td>
                     <td style="padding-left:4px;padding-top:10px">
@@ -950,8 +1013,11 @@
                 </tr>
             </table>
         </div>
-
         <div style="background-color: transparent; float:top;padding-top: 20px;text-align:center" align="center">
+            <button id="explodeParam"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="explodeModelParam()">保存
+            </button>
             <button id="explodeAdd"
                     style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
                     onClick="explodeModelConfirm()">确定
@@ -1080,6 +1146,10 @@
             </table>
         </div>
         <div style="background-color: transparent; float:top;padding-top: 20px;text-align:center" align="center">
+            <button id="killParam"
+                    style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
+                    onClick="killModelParam()">保存
+            </button>
             <button id="killAdd"
                     style="height:20px;width:50px;color: white;background-color: transparent;border: 1px solid white"
                     onClick="killModelConfirm()">确定
@@ -1456,6 +1526,9 @@
     // });
     var scene = viewer.scene;
     var clock = viewer.clock;
+
+    var currentUploaded = "";
+    var currentParticle = "";
 
     var operation_type;
     var element_image = "cesium/images/left_foot.JPG";

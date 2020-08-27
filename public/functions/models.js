@@ -31,6 +31,88 @@ function fireModelConfirm() {
     window.close();
 }
 
+function fireModelParam() {
+    var intype = "";
+    intype += document.getElementById("position").selectedIndex;
+    intype += document.getElementById("door_status").selectedIndex;
+    intype += document.getElementById("fuel").selectedIndex;
+    intype += document.getElementById("capacity").selectedIndex;
+    intype += document.getElementById("material").selectedIndex;
+    intype += document.getElementById("duration").selectedIndex;
+    var outype = "";
+    outype += document.getElementById("fire_output").checked ? 1 : 0;
+    outype += document.getElementById("smoke_output").checked ? 1 : 0;
+    outype += document.getElementById("model_output").checked ? 1 : 0;
+    outype += document.getElementById("temperature_output").checked ? 1 : 0;
+    let index = document.getElementById("sub_kinetic_menu").selectedIndex;
+    let setid = document.getElementById("sub_kinetic_menu").options[index].value;
+    $.get("/update_kinetic", {
+        "KSETID": setid,
+        "CONFIG": intype + "," + outype
+    }, function (data) {
+        console.log("更改模型：" + name + "位置");
+    })
+    alert(intype + "," + outype);
+}
+
+function collisionModelParam() {
+    var intype = "";
+    intype += document.getElementById("height").selectedIndex;
+    intype += document.getElementById("posture").selectedIndex;
+    intype += document.getElementById("car_type").selectedIndex;
+    intype += document.getElementById("roadPosition").selectedIndex;
+    intype += document.getElementById("trace").selectedIndex;
+    var outype = "";
+    let index = document.getElementById("sub_kinetic_menu").selectedIndex;
+    let setid = document.getElementById("sub_kinetic_menu").options[index].value;
+    $.get("/update_kinetic", {
+        "KSETID": setid,
+        "CONFIG": intype + "," + outype
+    }, function (data) {
+        console.log("更改模型：" + name + "位置");
+    })
+    alert(intype + "," + outype);
+}
+
+function explodeModelParam() {
+    var intype = "";
+    intype += document.getElementById("structure").selectedIndex;
+    intype += document.getElementById("explodePosition").selectedIndex;
+    intype += document.getElementById("type").selectedIndex;
+    intype += document.getElementById("weight").selectedIndex;
+    var outype = "";
+    let index = document.getElementById("sub_kinetic_menu").selectedIndex;
+    let setid = document.getElementById("sub_kinetic_menu").options[index].value;
+    $.get("/update_kinetic", {
+        "KSETID": setid,
+        "CONFIG": intype + "," + outype
+    }, function (data) {
+        console.log("更改模型：" + name + "位置");
+    })
+    alert(intype + "," + outype);
+}
+
+function killModelParam() {
+    var intype = "";
+    intype += document.getElementById("criminal").selectedIndex;
+    intype += document.getElementById("victim").selectedIndex;
+    intype += document.getElementById("victim_posture").selectedIndex;
+    intype += document.getElementById("criminal_posture").selectedIndex;
+    intype += document.getElementById("knife").selectedIndex;
+    intype += document.getElementById("environment").selectedIndex;
+    intype += document.getElementById("wound").selectedIndex;
+    var outype = "";
+    let index = document.getElementById("sub_kinetic_menu").selectedIndex;
+    let setid = document.getElementById("sub_kinetic_menu").options[index].value;
+    $.get("/update_kinetic", {
+        "KSETID": setid,
+        "CONFIG": intype + "," + outype
+    }, function (data) {
+        console.log("更改模型：" + name + "位置");
+    })
+    alert(intype + "," + outype);
+}
+
 function fireModelClose() {
     cleanAll();
     $(".caseMenuShow").eq(0).hide();
@@ -120,6 +202,41 @@ function stru_changed() {
             $("#position").append('<option value=10 >后备箱</option>');
             $("#position").append('<option value=11 >底盘</option>');
             break;
+    }
+}
+
+function modelParamterize() {
+    console.log("选择索引" + document.getElementById("kinetic_model").selectedIndex);
+    if (document.getElementById("kinetic_model").selectedIndex == 0 || document.getElementById("sub_kinetic_menu").selectedIndex == 0)
+        alert("请选定模型的要素集");
+    else {
+        switch (document.getElementById("kinetic_model").selectedIndex) {
+            case 1:
+                document.getElementById('caseMenuShow').style.cssText = "display:block";
+                break;
+            case 2:
+                document.getElementById('explodeMenuShow').style.cssText = "display:block";
+                break;
+            case 3:
+                document.getElementById('collisionMenuShow').style.cssText = "display:block";
+                break;
+            case 4:
+                document.getElementById('killMenuShow').style.cssText = "display:block";
+                break;
+            default:
+                alert("请选定模型的要素集");
+        }
+    }
+}
+
+function modelConfiguration() {
+    if (document.getElementById("kinetic_model").selectedIndex == 0 || document.getElementById("sub_kinetic_menu").selectedIndex == 0)
+        alert("请选定模型的要素集");
+    else {
+        let index = document.getElementById("sub_kinetic_menu").selectedIndex;
+        let setid = document.getElementById("sub_kinetic_menu").options[index].value;
+        window.open(visualpage_addr + "createKineticModel.html?KSETID=" + setid, "show_element_info");//,
+        //"height=500, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");
     }
 }
 

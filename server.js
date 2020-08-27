@@ -174,6 +174,16 @@ app.get("/get_scenes", function (req, res) {
     });
 })
 
+app.get("/update_kinetic", function (req, res) {
+    console.log("选定案件号：" + req.query.value);
+    let ksetid = req.query.KSETID;
+    connection.query('UPDATE kinetic_set set CONFIG=\'' + req.query.CONFIG + '\' where KSETID=' + ksetid + "", function (error, results, fields) {
+        if (error) throw error;
+        res.send(results);
+        res.end();
+    });
+})
+
 var scene_id;
 
 app.get("/scene_exists", function (req, res) {
@@ -1687,6 +1697,23 @@ var file_folder;
 var first_file;
 var file_prefix;
 
+function initdirs(dirpath) {
+    var subpath = dirpath;
+    var pathnameArray = subpath.split('/');
+    var newpath = '';
+    for (var j = 0; j < pathnameArray.length; j++) {
+        newpath = path.join(newpath, pathnameArray[j]);
+        if (!fs.existsSync(newpath)) {
+            try {
+                fs.mkdirSync(newpath, 0o777);
+                ("成功创建目录" + newpath);
+            } catch (e) {
+                console.log(e.name + ": " + e.message);
+            }
+        }
+    }
+}
+
 app.post('/update_transform', function (req, res, next) {
     //form表单
     var form = new formidable.IncomingForm();
@@ -1695,11 +1722,28 @@ app.post('/update_transform', function (req, res, next) {
     form.encoding = 'utf-8';
     form.maxFileSize = 4 * 1024 * 1024 * 1024;
     //上传文件路径,采用path路径拼接
-    form.uploadDir = path.join(__dirname, 'public/particle_source');
+    var dirpath = 'public/particle_source/';
+    console.log(dirpath);
+    initdirs(dirpath);
+    form.uploadDir = path.join(__dirname, dirpath);
     //如果上传文件夹（多个文件）需将 默认值改为TRUE
     form.multiples = true;
     form.parse(req, function (err, fields, files) {
-        var folderPath = form.uploadDir;
+        var suffix = fields.suffix;
+        var rootdir = form.uploadDir;
+        var suffixArray = suffix.split('/');
+        for (var j = 0; j < suffixArray.length - 1; j++) {
+            rootdir = path.join(rootdir, suffixArray[j]);
+            if (!fs.existsSync(rootdir)) {
+                try {
+                    fs.mkdirSync(rootdir, 0o777);
+                    ("成功创建目录" + rootdir);
+                } catch (e) {
+                    console.log(e.name + ": " + e.message);
+                }
+            }
+        }
+        var folderPath = form.uploadDir + suffix;
         var file = files.files;
         var pathnameArray = file.name.split('/');
         for (var j = 0; j < pathnameArray.length - 1; j++) {
@@ -1737,7 +1781,7 @@ app.post('/update_transform', function (req, res, next) {
         } else if (filename.split(".")[1] == "dat") {
             var number = parseInt(filename.split(".")[0].split(file_prefix)[1]);
             console.log(number + ":" + max_x + ":" + max_y + ":" + max_z + ":" + file_folder + ":" + file_prefix + number);
-            MyClass.transform(number, max_x, max_y, max_z, file_folder, (error, info) => {
+            MyClass.transform(number, max_x, max_y, max_z, suffix + file_folder, (error, info) => {
                 if (error) {
                     console.log('put name Error: ', error);
                     var data = {target: 1, msg: number + "帧转换失败"};
@@ -1758,7 +1802,6 @@ app.post('/update_transform', function (req, res, next) {
     });
 });
 
-
 //一般文件上传函数，存于public/Files文件夹，Files文件夹（如无请新建）被项目忽略，如还未设置请项目根目录下.gitignore文件（如无请新建）中添加文本public/Files
 app.post('/upload_things', function (req, res, next) {
     //form表单
@@ -1768,12 +1811,29 @@ app.post('/upload_things', function (req, res, next) {
         form.keepExtensions = true;
         form.encoding = 'utf-8';
         form.maxFileSize = 4 * 1024 * 1024 * 1024;
+        var dirpath = 'public/Files/';
         //上传文件路径,采用path路径拼接
-        form.uploadDir = path.join(__dirname, 'public/Files');
+        initdirs(dirpath);
+        form.uploadDir = path.join(__dirname, dirpath);
         //如果上传文件夹（多个文件）需将 默认值改为TRUE
         form.multiples = true;
         form.parse(req, function (err, fields, files) {
-            var folderPath = form.uploadDir;
+            var suffix = fields.suffix;
+            var rootdir = form.uploadDir;
+            var file = files.files;
+            var suffixArray = suffix.split('/');
+            for (var j = 0; j < suffixArray.length - 1; j++) {
+                rootdir = path.join(rootdir, suffixArray[j]);
+                if (!fs.existsSync(rootdir)) {
+                    try {
+                        fs.mkdirSync(rootdir, 0o777);
+                        ("成功创建目录" + rootdir);
+                    } catch (e) {
+                        console.log(e.name + ": " + e.message);
+                    }
+                }
+            }
+            var folderPath = form.uploadDir + suffix;
             var file = files.files;
             var pathnameArray = file.name.split('/');
             for (var j = 0; j < pathnameArray.length - 1; j++) {
@@ -1796,6 +1856,7 @@ app.post('/upload_things', function (req, res, next) {
             res.send(data);
             res.end();
         })
+        currentUploaded = dirpath;
     } catch (error) {
         console.log(error.name + ": " + error.message);
         var data = {status: 0, msg: filename + "上传失败"};
@@ -1805,13 +1866,15 @@ app.post('/upload_things', function (req, res, next) {
     }
 });
 
-
 app.post('/uploads_particle', function (req, res, next) {
     var form = new formidable.IncomingForm();
     form.keepExtensions = true;
     form.encoding = 'utf-8';
     form.maxFileSize = 4 * 1024 * 1024 * 1024;
-    form.uploadDir = path.join(__dirname, 'public/particle_source');
+    var suffix = req.data.get('name');
+    var dirpath = 'public/particle_source/' + suffix;
+    initdirs(dirpath);
+    form.uploadDir = path.join(__dirname, dirpath);
     form.multiples = true;
     form.parse(req, function (err, fields, files) {
         console.log("开始上传粒子");

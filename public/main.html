@@ -9,6 +9,7 @@
     <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <title>Vport</title>
     <script src="cesium/Cesium.js"></script>
     <script src="cesium/Sandcastle-header.js"></script>
@@ -411,6 +412,16 @@
                 <input type="button" class="second_button" value="电子数据">
                 <input type="button" class="second_button" value="物品">
                 <input type="button" class="second_button" value="其他"-->
+            </details>
+        </div>
+
+        <div id="corpse">
+            <details>
+                <summary class="main_summary">
+                    <p class="first_button">尸体</p>
+                </summary>
+                <input type="button" class="second_button" value="尸体尸块"
+                       onclick="get_corpse_info('corpse_info')">
             </details>
         </div>
 
@@ -1555,6 +1566,7 @@
     let objectMap = new Map();
     let casesIdMap = new Map();
     let sceneIdMap = new Map();
+    let currentCaseId = "";
     let currentSceneId = "";
     let scenePosition = {
         "scale": 1.0,

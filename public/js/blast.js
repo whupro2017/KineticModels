@@ -85,7 +85,7 @@ function startBZ1()
         var lefty=centery+Math.sin(height*Math.PI/pCount)*length;
         var rightx=centerx-Math.cos(height*Math.PI/pCount)*length;
         var righty=centery-Math.sin(height*Math.PI/pCount)*length;
-    
+
             var wall = Cesium.WallGeometry.fromConstantHeights({
                 positions: Cesium.Cartesian3.fromDegreesArray([
                     leftx,lefty,rightx,righty
@@ -101,7 +101,7 @@ function startBZ1()
                 appearance: new Cesium.EllipsoidSurfaceAppearance({
                     aboveGround: true,
                     renderState:{
-                        //blending: Cesium.BlendingState.ADDITIVE_BLEND ,  
+                        //blending: Cesium.BlendingState.ADDITIVE_BLEND ,
                         enabled : true,
                 face : Cesium.CullFace.FRONT_AND_BACK
                     }
@@ -121,7 +121,7 @@ function startBZ1()
     }
     var x=1;
     var timer_bz = setInterval(function() {
-    
+
         for (var i = 0; i < pCount; i++) {
             p1[i].appearance.material.uniforms.image = "./img/bz/d"+x+".png"
         }
@@ -140,20 +140,20 @@ function startBZ2()
     for (var height = 0; height < pCount; height += 1) {
 
 
-        var centerx=114.217
-        , centery=30.3595;
+        var centerx=114.21823
+        , centery=30.36038;
         var length=0.0002;
         var leftx=centerx+Math.cos(height*Math.PI/pCount)*length;
         var lefty=centery+Math.sin(height*Math.PI/pCount)*length;
         var rightx=centerx-Math.cos(height*Math.PI/pCount)*length;
         var righty=centery-Math.sin(height*Math.PI/pCount)*length;
-    
+
             var wall = Cesium.WallGeometry.fromConstantHeights({
                 positions: Cesium.Cartesian3.fromDegreesArray([
                     leftx,lefty,rightx,righty
                 ]),
-                minimumHeight: 0,
-                maximumHeight: 20.0
+                minimumHeight: 12,
+                maximumHeight: 32.0
             });
             var geometry = Cesium.WallGeometry.createGeometry(wall);
             var Rectangle = viewer.scene.primitives.add(new Cesium.Primitive({
@@ -163,7 +163,7 @@ function startBZ2()
                 appearance: new Cesium.EllipsoidSurfaceAppearance({
                     aboveGround: true,
                     renderState:{
-                        //blending: Cesium.BlendingState.ADDITIVE_BLEND ,  
+                        //blending: Cesium.BlendingState.ADDITIVE_BLEND ,
                         enabled : true,
                 face : Cesium.CullFace.FRONT_AND_BACK
                     }
@@ -183,7 +183,7 @@ function startBZ2()
     }
     var x=1;
     var timer_bz = setInterval(function() {
-    
+
         for (var i = 0; i < pCount; i++) {
             p1[i].appearance.material.uniforms.image = "./img/bz/p"+x+".png"
         }

@@ -201,7 +201,7 @@
 //菜单案件与场景选项逻辑
 $.get("/get_cases", {"value": "get_cases"}, function (data) {
     cases = data;
-    let caseIdx = 0;
+    let caseIdx = 1;
     cases.forEach(function (json) {
         $("#cases_name").append('<option value=' + json.cases_name + ' >' + json.cases_name + '</option>');
         casesIdMap.set(caseIdx++, json);

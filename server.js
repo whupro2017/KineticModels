@@ -116,10 +116,16 @@ app.get("/get_dat_arr", function (req, res) {
 })
 
 var connection = mysql.createConnection({
-    host: '127.0.0.1',
+    /*host: '127.0.0.1',
     user: 'root',
     password: 'czl887',
-    database: 'pointcloud'
+    database: 'pointcloud'*/
+    host: '39.105.89.57',
+    port: 3303,
+    user: 'wuzheng',
+    password: 'wuzheng',
+    database: 'wuzheng',
+    connectionLimit: 20
     /*host: '172.17.0.153',
     user: 'wuzheng',
     password: '111111',
@@ -226,7 +232,7 @@ app.get("/select_scene", function (req, res) {
                 console.assert(error);
                 return console.error(error);
             }
-            console.log(results[0].start_lon + "," + results[0].start_lat + "," + results[0].start_height + ","
+            console.log("pos " + results[0].start_lon + "," + results[0].start_lat + "," + results[0].start_height + ","
                 + results[0].end_lon + "," + results[0].end_lat + "," + results[0].end_height + ","
                 + results[0].angle_lon + "," + results[0].angle_lat + "," + results[0].angle_height + ","
                 + results[0].scene_path + "," + results[0].scale);
@@ -237,11 +243,24 @@ app.get("/select_scene", function (req, res) {
                     return console.error(error);
                 }
                 data.relevant_info = results;
-                // console.log(data);
+                for (var i = 0; i < results.length; i++) {
+                    console.log("\t" + results[i].id + "," + results[i].element_id);
+                }
+                console.log("---------------------------------------------------------------------------------------");
+                let vlocat = data.location;
+                console.log("pos " + vlocat[0].start_lon + "," + vlocat[0].start_lat + "," + vlocat[0].start_height + ","
+                    + vlocat[0].end_lon + "," + vlocat[0].end_lat + "," + vlocat[0].end_height + ","
+                    + vlocat[0].angle_lon + "," + vlocat[0].angle_lat + "," + vlocat[0].angle_height + ","
+                    + vlocat[0].scene_path + "," + vlocat[0].scale);
+                let verify = data.relevant_info;
+                for (var i = 0; i < results.length; i++) {
+                    console.log("\t" + verify[i].id + "," + verify[i].element_id);
+                }
+                //console.log(data);
                 res.send(data);
                 res.end();
             });
-        });
+        }, dataType = 'json');
     });
 })
 
@@ -1377,8 +1396,9 @@ app.get('/get_involved_goods_info', function (req, res, next) {
 });
 app.get('/get_involved_person_info', function (req, res, next) {
     //form表单
-    connection.query("SELECT INVOLVED_PERSON_INFO_ID,INVOLVED_PERSON_CODE,INVOLVED_PERSON_NAME,SEX,AGE,NATION,NATIONALITY,POSTURE,HEIGHT,CLOTHES_SITUATION,PHY_FUN,CARD_TYPE,DOMICILE,CARD_NUMBER,CURRENT_ADDRESS,WORK_UNIT,UNIT_ADDRESS,PHONE,JOB_DUTIES,BASE_INFO_ID,TYPE_ID,INVESTIGATION_TIME,INVESTIGATION_PERSION,INVESTIGATION_ADDRESS,REMARKS,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_SOURCES,DATA_STATE,RELATION_CORPSE,RELATION_PERSON from involved_person_info", function (error, results, fields) {
-        if (error) {
+    console.log(req.query.base_info_id);
+    connection.query("SELECT INVOLVED_PERSON_INFO_ID,INVOLVED_PERSON_CODE,INVOLVED_PERSON_NAME,SEX,AGE,NATION,NATIONALITY,POSTURE,HEIGHT,CLOTHES_SITUATION,PHY_FUN,CARD_TYPE,DOMICILE,CARD_NUMBER,CURRENT_ADDRESS,WORK_UNIT,UNIT_ADDRESS,PHONE,JOB_DUTIES,BASE_INFO_ID,INVESTIGATION_TIME,INVESTIGATION_PERSION,INVESTIGATION_ADDRESS,REMARKS,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_SOURCES,DATA_STATE,RELATION_CORPSE,RELATION_PERSON from involved_person_info where BASE_INFO_ID=\'" + req.query.base_info_id + "\'", function (error, results, fields) {
+        if (error) {//TYPE_ID,
             var data = {msg: "读取数据库错误"};
             // c.end();
             res.send(data);

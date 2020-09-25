@@ -20,6 +20,8 @@ var json = {
 var redirect_pages = {
     "mark_goods": "markGoods",
     "involved_goods_info": "involvedGoodsInfo",
+    "involved_person_info": "involvedPersonInfo",
+    "corpse_info": "bodyBasic",
     "scene_file_evidence": "file",
     "scene_footprint": "foot",
     "scene_handprint": "hand",
@@ -28,6 +30,8 @@ var redirect_pages = {
 var redirect_title = {
     "mark_goods": "markGoods",
     "involved_goods_info": "involvedGoodsInfo",
+    "involved_person_info": "involvedPersonInfo",
+    "corpse_info": "body",
     "scene_file_evidence": "file",
     "scene_footprint": "foot",
     "scene_handprint": "hand",
@@ -76,6 +80,7 @@ function locate_model(path) {
 function get_scenes(idx) {
     console.log("idx: " + idx);
     console.log("案件id为：" + casesIdMap.get(idx).cases_id + " Name: " + casesIdMap.get(idx).cases_name);
+    currentCaseId = casesIdMap.get(idx).cases_id;
     $.get("/get_scenes", {"value": casesIdMap.get(idx).cases_id}, function (data) {
         scenes = data;
         $("#case_event_name").find("option").remove();
@@ -181,7 +186,6 @@ function get_field_commander(id) {
     } else {
         x.style.cssText = "display:block"
     }
-
 
     $.get("/get_field_commander", {}, function (data) {
         if (data.msg != undefined) {
@@ -451,7 +455,6 @@ function get_extract_method(id) {
     });
 }
 
-
 function get_corpse_photo(id) {
     table = "#corpse_photo_table";
     $(".full_view").css("display", "none");
@@ -580,6 +583,59 @@ function get_ele_info(id) {
     });
 }
 
+function get_corpse_info(id) {
+    table = "#corpse_info_table";
+    $(".full_view").css("display", "none");
+    var x = document.getElementById(id);
+    if (x.style.display == "block") {
+        x.style.cssText = "display:none"
+    } else {
+        x.style.cssText = "display:block"
+    }
+
+    $("#corpse_info_table").find("tr").remove();
+
+    $.get("/get_corpse_info", {"base_info_id": currentSceneId}, function (data) {
+        if (data.msg != undefined) {
+            alert(data.msg);
+            return;
+        }
+        console.log(data);
+
+        jQuery(table).jqGrid({
+            //direction: "rtl",
+            datatype: "local",
+            data: data,
+            height: 240,
+            colColor: 'white',
+            colNames: ['尸体名称', '体位信息', '尸体ID'],
+            colModel: [
+                {name: 'CORPSE_INFO_NAME', index: 'CORPSE_INFO_NAME', width: 60, editable: false},//cellclassname: colorFondo},
+                {name: 'CORPSE_FIND_PLACE', index: 'CORPSE_FIND_PLACE', width: 120, editable: false},
+                {name: 'CORPSE_INFO_ID', index: 'CORPSE_INFO_ID', width: 80, editable: false}
+            ],
+            gridview: true,
+            viewrecords: true,
+            toppager: false,
+            multiselect: true,
+            multiboxonly: true,
+            autowidth: false,
+            fixed: true,
+            onSelectRow: function (id) {
+                var grid_selector = "#corpse_info_table";
+                //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                var rowid = $(grid_selector).getGridParam("selrow");
+                var rowData = $(grid_selector).getRowData(rowid);
+                activeObject.element_type = 'corpse_info';
+                activeObject.element_id = rowData.CORPSE_INFO_ID;
+                alert(rowData.CORPSE_INFO_NAME + ":" + rowData.CORPSE_INFO_ID + ":" + activeObject.element_type);
+                operation_type = "mark_elements";
+            },
+        });
+        $(table).jqGrid().trigger('reloadGrid');
+    });
+}
+
 function get_involved_goods_info(id) {
     table = "#involved_goods_info_table";
     $(".full_view").css("display", "none");
@@ -650,6 +706,67 @@ function get_involved_goods_info(id) {
 }
 
 function get_involved_person_info(id) {
+    table = "#involved_goods_person_table";
+    $(".full_view").css("display", "none");
+    var x = document.getElementById(id);
+    if (x.style.display == "block") {
+        x.style.cssText = "display:none"
+    } else {
+        x.style.cssText = "display:block"
+    }
+
+    $("#involved_goods_person_table").find("tr").remove();
+    console.log("Current scene: " + currentSceneId + " current case: " + currentCaseId);
+    $.get("/get_involved_person_info", {"base_info_id": currentCaseId}, function (data) {
+        if (data.msg != undefined) {
+            alert(data.msg);
+            return;
+        }
+        console.log(data);
+
+        jQuery(table).jqGrid({
+            //direction: "rtl",
+            datatype: "local",
+            data: data,
+            height: 240,
+            colColor: 'white',
+            colNames: ['人员名称', '创建时间', '人员ID'],
+            colModel: [
+                {name: 'INVOLVED_PERSON_NAME', index: 'INVOLVED_PERSON_NAME', width: 60, editable: false},//cellclassname: colorFondo},
+                {
+                    name: 'CREATE_TIME',
+                    index: 'CREATE_TIME',
+                    sortable: true,
+                    sorttype: "string",
+                    width: 120,
+                    editable: false
+                },
+                {name: 'INVOLVED_PERSON_INFO_ID', index: 'INVOLVED_PERSON_INFO_ID', width: 80, editable: false}
+            ],
+            gridview: true,
+            viewrecords: true,
+            toppager: false,
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+            autowidth: false,
+            fixed: true,
+            onSelectRow: function (id) {
+                var grid_selector = "#involved_goods_person_table";
+                //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                var rowid = $(grid_selector).getGridParam("selrow");
+                var rowData = $(grid_selector).getRowData(rowid);
+                activeObject.element_type = 'involved_person_info';
+                activeObject.element_id = rowData.INVOLVED_PERSON_INFO_ID;
+                alert(rowData.INVOLVED_PERSON_NAME + ":" + rowData.INVOLVED_PERSON_INFO_ID + ":" + activeObject.element_type);
+                operation_type = "mark_elements";
+            },
+        });
+        $(table).jqGrid().trigger('reloadGrid');
+    });
+}
+
+function get_involved_person_info1(id) {
     $(".full_view").css("display", "none");
     var x = document.getElementById(id);
     if (x.style.display == "block") {
@@ -660,7 +777,7 @@ function get_involved_person_info(id) {
 
     $("#involved_person_info_table").find("tr").remove();
     $("#involved_person_info_table").append("<tr><td>涉案人员信息ID</td><td>涉案人名字</td></tr>")
-    $.get("/get_involved_person_info", {}, function (data) {
+    $.get("/get_involved_person_info", {"value": id}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
@@ -828,33 +945,19 @@ function change_icon_col() {
     });*/
 }
 
-function select_scene(selectedIndex) {
-    viewer.entities.removeAll();
-    var primitives = viewer.scene.primitives;
-    for (var i = 0; i < primitives.length; i++) {
-        if (primitives._primitives[i] != undefined) {
-            if (primitives._primitives[i].scale != null) viewer.scene.primitives.remove(primitives._primitives[i]);
-        }
-    }
-    //viewer.scene.primitives.removeAll();
-    document.getElementById("SceneConfigureButton").disabled = false;
-    document.getElementById("operations").style.display = "";
-    console.log("选择场景: " + selectedIndex);
-    currentSceneId = sceneIdMap.get(selectedIndex).base_info_id;
-    console.log("选择场景号：" + currentSceneId);
-    $.get("/scene_exists", {"value": currentSceneId}, function (data) {
-        console.log("created configuration");
-        return;
-    })
+function updateScene() {
     $.ajax({
+        async: false, cache: false, global: false,
+        type: 'GET',
         url: '/select_scene',
+        dataType: "json",
         data: {"value": currentSceneId},
-        async: false,
         complete: function (msg) {
             console.log('complete');
         },
         success: function (result) {
-            console.log("Output:" + result);
+            console.log("Output:" + result.toString());
+            console.log("Output:" + result.relevant_info);
             var relevant_info = result.relevant_info;
             for (var i = 0; i < relevant_info.length; i++) {
                 var longitude = relevant_info[i].start_lon;
@@ -883,6 +986,7 @@ function select_scene(selectedIndex) {
                 });
                 console.log(element_id + "<->" + current_type + "<->" + id);
             }
+
             console.log("to be or not to be: " + result.location.length);
             if (result.location.length > 0 && result.location[0].start_lon != undefined && result.location[0].start_lat != undefined
                 && result.location[0].start_height != undefined && result.location[0].end_lon != undefined
@@ -909,135 +1013,120 @@ function select_scene(selectedIndex) {
             }
         }
     });
-    /*$.get("/select_scene", {"value": currentSceneId}, function (data) {
-        console.log("Output:" + data);
-        var relevant_info = data.relevant_info;
-        for (var i = 0; i < relevant_info.length; i++) {
-            var longitude = relevant_info[i].start_lon;
-            var latitude = relevant_info[i].start_lat;
-            var height = relevant_info[i].start_height
-            var icon_path = relevant_info[i].icon_path;
-            var id = relevant_info[i].id;
-            var current_type = relevant_info[i].element_type;
-            var element_id = relevant_info[i].element_id;
-            viewer.entities.add({
-                position: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
-                billboard: {
-                    image: icon_path,
-                    // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
-                    // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-                    scale: 0.2,
-                    verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                    horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
-                    disableDepthTestDistance: Number.POSITIVE_INFINITY
-                },
-                properties: {
-                    type: "added",
-                    element_id: element_id,
-                    element_type: current_type
-                }
-            });
-            console.log(element_id + "<->" + current_type + "<->" + id);
+}
+
+function select_scene(selectedIndex) {
+    viewer.entities.removeAll();
+    var primitives = viewer.scene.primitives;
+    for (var i = 0; i < primitives.length; i++) {
+        if (primitives._primitives[i] != undefined) {
+            if (primitives._primitives[i].scale != null) viewer.scene.primitives.remove(primitives._primitives[i]);
         }
-        console.log("to be or not to be: " + data.location.length);
-        if (data.location.length > 0 && data.location[0].start_lon != undefined && data.location[0].start_lat != undefined
-            && data.location[0].start_height != undefined && data.location[0].end_lon != undefined
-            && data.location[0].end_lat != undefined && data.location[0].end_height != undefined
-            && data.location[0].angle_lon != undefined && data.location[0].angle_lat != undefined
-            && data.location[0].angle_height != undefined && data.location[0].scene_path != undefined) {
-            //set_view(data.location[0].start_lon, data.location[0].start_lat);
-            scenePosition.scale = data.location[0].scale;
-            scenePosition.offsetX = data.location[0].start_lon;
-            scenePosition.offsetY = data.location[0].start_lat;
-            scenePosition.offsetZ = data.location[0].start_height;
-            scenePosition.absoluteX = data.location[0].end_lon;
-            scenePosition.absoluteY = data.location[0].end_lat;
-            scenePosition.absoluteZ = data.location[0].end_height;
-            scenePosition.rotateX = data.location[0].angle_lon;
-            scenePosition.rotateY = data.location[0].angle_lat;
-            scenePosition.rotateZ = data.location[0].angle_height;
-            scenePosition.tilepath = data.location[0].scene_path;
-            console.log(scenePosition.offsetX + "," + scenePosition.offsetY + "," + scenePosition.offsetZ + ","
-                + scenePosition.absoluteX + "," + scenePosition.absoluteY + "," + scenePosition.absoluteZ + ","
-                + scenePosition.tilepath
-                + "," + scenePosition.rotateX + "," + scenePosition.rotateY + "," + scenePosition.rotateZ);
-            show_tileset();
+    }
+    //viewer.scene.primitives.removeAll();
+    document.getElementById("SceneConfigureButton").disabled = false;
+    document.getElementById("operations").style.display = "";
+    console.log("选择场景: " + selectedIndex);
+    currentSceneId = sceneIdMap.get(selectedIndex).base_info_id;
+    console.log("选择场景号：" + currentSceneId);
+    $.ajax({
+        async: false, cache: false, global: false,
+        type: 'GET',
+        url: "/scene_exists",
+        data: {"value": currentSceneId},
+        complete: function (msg) {
+            console.log('complete');
+        },
+        success: function (data) {
+            console.log("created configuration");
+            return;
         }
-    }, "json");*/
+    });
+    updateScene();
     //加载物品标注
-    $.get("/select_thing_scene", {"value": currentSceneId}, function (data) {
-        console.log("选择场景号：" + currentSceneId);//选择场景
-        console.log(data);//
-        var relevant_info = data.relevant_info;
-        for (var i = 0; i < relevant_info.length; i++) {
-            var scale = relevant_info[i].scale;
-            var longitude = relevant_info[i].start_lon;
-            var latitude = relevant_info[i].start_lat;
-            var height = relevant_info[i].start_height;
-            var end_lon = relevant_info[i].end_lon;
-            var end_lat = relevant_info[i].end_lat;
-            var end_height = relevant_info[i].end_height;
-            var angle_lon = relevant_info[i].angle_lon;
-            var angle_lat = relevant_info[i].angle_lat;
-            var angle_height = relevant_info[i].angle_height;
-            var gltf_path = relevant_info[i].gltf_path;
-            var id = relevant_info[i].id;
-            var thing_type = relevant_info[i].thing_type;
-            var thing_id = relevant_info[i].thing_id;
-            var heading = relevant_info[i].heading;
-            var pitch = relevant_info[i].pitch;
-            var roll = relevant_info[i].roll;
-            var thing_mark_id = relevant_info[i].thing_mark_id;
+    $.ajax({
+        async: false, cache: false, global: false,
+        type: 'GET',
+        url: "/select_thing_scene",
+        dataType: "json",
+        data: {"value": currentSceneId},
+        complete: function (msg) {
+            console.log('complete');
+        },
+        success: function (data) {
+            console.log("选择场景号：" + currentSceneId);//选择场景
+            console.log(data);//
+            var relevant_info = data.relevant_info;
+            for (var i = 0; i < relevant_info.length; i++) {
+                var scale = relevant_info[i].scale;
+                var longitude = relevant_info[i].start_lon;
+                var latitude = relevant_info[i].start_lat;
+                var height = relevant_info[i].start_height;
+                var end_lon = relevant_info[i].end_lon;
+                var end_lat = relevant_info[i].end_lat;
+                var end_height = relevant_info[i].end_height;
+                var angle_lon = relevant_info[i].angle_lon;
+                var angle_lat = relevant_info[i].angle_lat;
+                var angle_height = relevant_info[i].angle_height;
+                var gltf_path = relevant_info[i].gltf_path;
+                var id = relevant_info[i].id;
+                var thing_type = relevant_info[i].thing_type;
+                var thing_id = relevant_info[i].thing_id;
+                var heading = relevant_info[i].heading;
+                var pitch = relevant_info[i].pitch;
+                var roll = relevant_info[i].roll;
+                var thing_mark_id = relevant_info[i].thing_mark_id;
 
-            var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
-                Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
-            );
+                var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
+                    Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
+                );
 
-            var m = Cesium.Transforms.eastNorthUpToFixedFrame(Cesium.Cartesian3.fromDegrees(longitude, latitude, height));
-            const m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(angle_lon));
-            Cesium.Matrix4.multiplyByMatrix3(m, m1, m);
-            const m2 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(angle_lat));
-            Cesium.Matrix4.multiplyByMatrix3(m, m2, m);
-            const m3 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(angle_height));
-            Cesium.Matrix4.multiplyByMatrix3(m, m3, m);
+                var m = Cesium.Transforms.eastNorthUpToFixedFrame(Cesium.Cartesian3.fromDegrees(longitude, latitude, height));
+                const m1 = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(angle_lon));
+                Cesium.Matrix4.multiplyByMatrix3(m, m1, m);
+                const m2 = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(angle_lat));
+                Cesium.Matrix4.multiplyByMatrix3(m, m2, m);
+                const m3 = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(angle_height));
+                Cesium.Matrix4.multiplyByMatrix3(m, m3, m);
 
-            const mat3 = Cesium.Matrix4.getRotation(m, new Cesium.Matrix3());
+                const mat3 = Cesium.Matrix4.getRotation(m, new Cesium.Matrix3());
 
-            var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
-                    url: gltf_path,
-                    id: id,
-                    modelMatrix: m,
-                    // minimumPixelSize : 512,
-                    scale: scale
-                    // maximumScale : 200000
-                })
-            );
+                var entity4 = viewer.scene.primitives.add(Cesium.Model.fromGltf({    //fromGltf方法：从Gltf资源加载模型
+                        url: gltf_path,
+                        id: id,
+                        modelMatrix: m,
+                        // minimumPixelSize : 512,
+                        scale: scale
+                        // maximumScale : 200000
+                    })
+                );
 
-            originModelMadrix = entity4.modelMatrix.clone();
-            originParam = {
-                "scale": scale,
-                "lng": longitude,
-                "lat": latitude,
-                "height": height,
-                "rx": angle_lon,
-                "ry": angle_lat,
-                "rz": angle_height
-            };
+                originModelMadrix = entity4.modelMatrix.clone();
+                originParam = {
+                    "scale": scale,
+                    "lng": longitude,
+                    "lat": latitude,
+                    "height": height,
+                    "rx": angle_lon,
+                    "ry": angle_lat,
+                    "rz": angle_height
+                };
 
-            objectMap.set(id, {
-                "scale": scale,
-                "lng": longitude,
-                "lat": latitude,
-                "height": height,
-                "rx": angle_lon,
-                "ry": angle_lat,
-                "rz": angle_height
-            });
+                objectMap.set(id, {
+                    "scale": scale,
+                    "lng": longitude,
+                    "lat": latitude,
+                    "height": height,
+                    "rx": angle_lon,
+                    "ry": angle_lat,
+                    "rz": angle_height
+                });
+            }
+            if (data.location.length > 0 && data.location[0].start_lon != null && data.location[0].start_lat != undefined) {
+                set_view(data.location[0].start_lon, data.location[0].start_lat);
+            }
         }
-        if (data.location.length > 0 && data.location[0].start_lon != null && data.location[0].start_lat != undefined) {
-            set_view(data.location[0].start_lon, data.location[0].start_lat);
-        }
-    })
+    });
 }
 
 function set_view(lon, lat) {
@@ -1111,7 +1200,8 @@ function explosiveshow() {
 function waveshow() {
     startBZ2();
     viewer.camera.setView({
-        destination: {x: -2259482.2093426995, y: 5023565.238597119, z: 3204802.0603294484},
+        //destination: {x: -2259482.2093426995, y: 5023565.238597119, z: 3204802.0603294484},
+        destination: {x: -2259782.2093426995, y: 5023765.238597119, z: 3204802.0603294484},
         orientation: {
             heading: 6.144391448663251,
             pitch: -0.6870827796178554,

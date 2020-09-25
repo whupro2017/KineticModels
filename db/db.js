@@ -8,15 +8,17 @@
  */
 const mysql = require('mysql');
 const pool = mysql.createPool({
-    host: '127.0.0.1',
+    /*host: '127.0.0.1',
     user: 'root',
     password: 'czl887',
     database: 'pointcloud',
-    connectionLimit: 10,
-    /*host: '172.17.0.153',
+    connectionLimit: 10,*/
+    host: '39.105.89.57',
+    port: 3303,
     user: 'wuzheng',
-    password: '111111',
-    database: 'wuzheng0727'*/
+    password: 'wuzheng',
+    database: 'wuzheng',
+    connectionLimit: 20
 });
 
 /**六张表

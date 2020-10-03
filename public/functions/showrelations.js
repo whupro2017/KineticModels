@@ -1,8 +1,8 @@
 function modelrelation() {
     showdog();
-    showwaveblue(114.19546052231226, 30.32516669700495);
-    showwavegreen(114.23039417448082, 30.314405350785258);
-    showwavered(114.22374911095045, 30.357474991097224);
+    showwaveblue(114.19546052231226, 30.32516669700495, 500);
+    showwavegreen(114.23039417448082, 30.314405350785258, 1500);
+    showwavered(114.22374911095045, 30.357474991097224, 3000);
     // showrelation()
 }
 
@@ -58,7 +58,7 @@ function showrelation() {
     });
 }
 
-function showwavered(x, y) {
+function showwavered(x, y, r) {
     // var viewer=ysc.createNormalCesium("cesiumContainer",{});
     var lon = x;
     var lat = y;
@@ -66,17 +66,18 @@ function showwavered(x, y) {
         id: "redwave",
         lon: lon,
         lat: lat,
-        height: 0,
-        maxR: 3000,
+        height: 10,
+        maxR: r,
         minR: 0,//最好为0
-        deviationR: 20,//差值 差值也大 速度越快
-        eachInterval: 1500,//两个圈的时间间隔
+        deviationR: (r / 1000 == 0) ? 1 : (r / 1000),//差值 差值也大 速度越快
+        eachInterval: r * 4 / 5,//两个圈的时间间隔
         imageUrl: "cesium/ysc/images/redCircle2.png"
     });
+    rippleList.push("redwave");
 
     //如果添加中心线的话：
     viewer.entities.add({
-        name: "",
+        name: "polarline",
         polyline: {
             positions: Cesium.Cartesian3.fromDegreesArrayHeights([
                 lon, lat, 0,
@@ -89,19 +90,77 @@ function showwavered(x, y) {
             })
         }
     });
+    rippleList.push("polarline");
     // viewer.zoomTo(viewer.entities);
 }
 
-function showwavegreen(x, y) {
+function showCicleFire(x, y, r) {
+    // var viewer=ysc.createNormalCesium("cesiumContainer",{});
+    var lon = x;
+    var lat = y;
+    ysc.addCircleRipple(viewer, { //默认只绘制两个圆圈叠加 如遇绘制多个，请自行源码内添加。
+        id: "rainbow",
+        lon: lon,
+        lat: lat,
+        height: 10,
+        maxR: r,
+        minR: 0,//最好为0
+        deviationR: (r / 1000 == 0) ? 1 : (r / 1000),//差值 差值也大 速度越快
+        eachInterval: r * 4 / 5,//两个圈的时间间隔
+        imageUrl: "cesium/ysc/images/fire.png"
+    });
+    rippleList.push("ciclefire");
+
+    //如果添加中心线的话：
+    viewer.entities.add({
+        name: "polarline",
+        polyline: {
+            positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+                lon, lat, 0,
+                lon, lat, 5000,]
+            ),
+            width: 4,
+            material: new Cesium.PolylineGlowMaterialProperty({ //发光线
+                glowPower: 0.1,
+                color: Cesium.Color.RED
+            })
+        }
+    });
+    rippleList.push("polarline");
+    // viewer.zoomTo(viewer.entities);
+}
+
+function showcirleBlue(x, y, r) {
+    var id = x + "," + y;
+    var lon = x;
+    var lat = y;
+    ysc.addCircleRipple(viewer, { //默认只绘制两个圆圈叠加 如遇绘制多个，请自行源码内添加。
+        id: id,
+        lon: lon,
+        lat: lat,
+        height: 10,
+        maxR: r,
+        minR: 0,//最好为0
+        deviationR: (r / 1000 == 0) ? 1 : (r / 1000),//差值 差值也大 速度越快
+        eachInterval: r * 4 / 5,//两个圈的时间间隔
+        imageUrl: "cesium/ysc/images/circle2.png"
+    });
+    rippleList.push(id);
+}
+
+function showwavegreen(x, y, r) {
     // var viewer = ysc.createNormalCesium("cesiumContainer", {});
     //添加圆形放大扫描。
+    var id = x + "," + y;
     var circleScan = ysc.addCircleScan(viewer, {
+        id: id,
         lon: x,//经度
         lat: y, //纬度
-        scanColor: new Cesium.Color(0, 1.0, 0, 1),
-        r: 1500,//扫描半径
+        scanColor: new Cesium.Color(0, 1.0, 0, 0.5),
+        r: r,//扫描半径
         interval: 4000//时间间隔
     });
+    rippleList.push(id);
 
     // setTimeout(function () {
     //     viewer.scene.postProcessStages.remove(circleScan); //消除;
@@ -119,10 +178,10 @@ function showwavegreen(x, y) {
     // });
 }
 
-function showwaveblue(x, y) {
+function showwaveblue(x, y, r) {
     var oneDiv = $("#one");
     var scratch = new Cesium.Cartesian2(); //cesium二维笛卡尔 笛卡尔二维坐标系就是我们熟知的而二维坐标系；三维也如此
-    var divPosition = Cesium.Cartesian3.fromDegrees(x, y, 500);
+    var divPosition = Cesium.Cartesian3.fromDegrees(x, y, r);
     viewer.scene.preRender.addEventListener(function () {
         var canvasPosition = viewer.scene.cartesianToCanvasCoordinates(divPosition, scratch);//cartesianToCanvasCoordinates 笛卡尔坐标（3维度）到画布坐标
         if (Cesium.defined(canvasPosition)) {

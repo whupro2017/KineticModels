@@ -77,6 +77,15 @@ function locate_model(path) {
     operation_type = "locate_model";
 }
 
+function emptyRipple() {
+    do {
+        var item = rippleList.shift();
+        viewer.entities.removeById(item);
+        console.log("Removed: " + item);
+    } while (item != null);
+    viewer.entities.removeAll();
+}
+
 function get_scenes(idx) {
     console.log("idx: " + idx);
     console.log("案件id为：" + casesIdMap.get(idx).cases_id + " Name: " + casesIdMap.get(idx).cases_name);
@@ -98,7 +107,7 @@ function get_scenes(idx) {
             if (json.site_type == '0') {
                 center_lon = json.end_lon;
                 center_lat = json.end_lat;
-                alert("hit center for scene: " + casesIdMap.get(idx).cases_id + ' data: ' + data.toString());
+                // alert("hit center for scene: " + casesIdMap.get(idx).cases_id + ' data: ' + data.toString());
             }
         })
         case_scenes.forEach(function (json) {
@@ -107,7 +116,18 @@ function get_scenes(idx) {
             if (Math.abs(json.end_lat - center_lat) > limit_lat)
                 limit_lat = Math.abs(json.end_lat - center_lat);
         });
-        alert(center_lon + ", " + center_lat + ", " + limit_lon * 111000 + ", " + limit_lat * 111000);
+        // alert(center_lon + ", " + center_lat + ", " + limit_lon * 111000 + ", " + limit_lat * 111000);
+        if (limit_lon == 0) limit_lon = (1000).toFixed(2) / 444000;
+        if (limit_lat == 0) limit_lat = (1000).toFixed(2) / 444000;
+        emptyRipple();
+        set_view(center_lon, center_lat, Math.max(limit_lon, limit_lat) * 444000);
+        case_scenes.forEach(function (json) {
+            if (json.site_type == '0') {
+                showwavered(json.end_lon, json.end_lat, Math.max(limit_lon, limit_lat) * 55000);
+            } else {
+                showcirleBlue(json.end_lon, json.end_lat, Math.max(limit_lon, limit_lat) * 55000);
+            }
+        })
     })
 }
 
@@ -977,6 +997,7 @@ function change_icon_col() {
 }
 
 function updateScene() {
+    emptyRipple();
     $.ajax({
         async: false, cache: false, global: false,
         type: 'GET',
@@ -1047,7 +1068,7 @@ function updateScene() {
 }
 
 function select_scene(selectedIndex) {
-    viewer.entities.removeAll();
+    emptyRipple();
     var primitives = viewer.scene.primitives;
     for (var i = 0; i < primitives.length; i++) {
         if (primitives._primitives[i] != undefined) {
@@ -1058,6 +1079,10 @@ function select_scene(selectedIndex) {
     document.getElementById("SceneConfigureButton").disabled = false;
     document.getElementById("operations").style.display = "";
     console.log("选择场景: " + selectedIndex);
+    if (sceneIdMap.get(selectedIndex) == null) {
+        alert("请先选择场景");
+        return;
+    }
     currentSceneId = sceneIdMap.get(selectedIndex).base_info_id;
     console.log("选择场景号：" + currentSceneId);
     $.ajax({
@@ -1154,15 +1179,19 @@ function select_scene(selectedIndex) {
                 });
             }
             if (data.location.length > 0 && data.location[0].start_lon != null && data.location[0].start_lat != undefined) {
-                set_view(data.location[0].start_lon, data.location[0].start_lat);
+                if (data.location[0].start_height < 100)
+                    set_view(data.location[0].start_lon, data.location[0].start_lat, 800);
+                else
+                    set_view(data.location[0].start_lon, data.location[0].start_lat, data.location[0].start_height);
             }
         }
     });
 }
 
-function set_view(lon, lat) {
+function set_view(lon, lat, height) {
+    // alert(lon + ", " + lat + ", " + height);
     viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(lon, lat, 800),
+        destination: Cesium.Cartesian3.fromDegrees(lon, lat, height),
         orientation: {
             heading: 0.0,
             pitch: Cesium.Math.toRadians(-90.0),

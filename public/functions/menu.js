@@ -592,26 +592,25 @@ function get_corpse_info(id) {
     } else {
         x.style.cssText = "display:block"
     }
-
-    $("#corpse_info_table").find("tr").remove();
+    // $("#corpse_info_table").find("tr").remove();
 
     $.get("/get_corpse_info", {"base_info_id": currentSceneId}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
         }
-        console.log(data);
+        console.log("foreend" + data);
 
         jQuery(table).jqGrid({
             //direction: "rtl",
             datatype: "local",
             data: data,
-            height: 240,
+            height: 250,
             colColor: 'white',
             colNames: ['尸体名称', '体位信息', '尸体ID'],
             colModel: [
                 {name: 'CORPSE_INFO_NAME', index: 'CORPSE_INFO_NAME', width: 60, editable: false},//cellclassname: colorFondo},
-                {name: 'CORPSE_FIND_PLACE', index: 'CORPSE_FIND_PLACE', width: 120, editable: false},
+                {name: 'CORPSE_FIND_PLACE', index: 'CORPSE_FIND_PLACE', width: 130, editable: false},
                 {name: 'CORPSE_INFO_ID', index: 'CORPSE_INFO_ID', width: 80, editable: false}
             ],
             gridview: true,
@@ -632,6 +631,21 @@ function get_corpse_info(id) {
                 operation_type = "mark_elements";
             },
         });
+        var gridData = $(table).jqGrid("getRowData");
+        for (var i = gridData.length; i >= 0; i--) {
+            $(table).jqGrid("delRowData", i);
+        }
+        let counter = 0;
+        data.forEach(function (json) {
+            var rowData = {
+                CORPSE_INFO_NAME: json.CORPSE_INFO_NAME,
+                CORPSE_FIND_PLACE: json.CORPSE_FIND_PLACE,
+                CORPSE_INFO_ID: json.CORPSE_INFO_ID
+            };
+            // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+            $(table).jqGrid("addRowData", counter, rowData);
+            counter++;
+        });
         $(table).jqGrid().trigger('reloadGrid');
     });
 }
@@ -645,16 +659,8 @@ function get_involved_goods_info(id) {
     } else {
         x.style.cssText = "display:block"
     }
-    // $("#site_changes_button").click(function(){
-    //     $("#site_changes").toggle();
-    // });
-    //表内容修改
-    // document.getElementById("site_changes_table").rows[0].cells[0].innerText = "现场变动ID"
-    // document.getElementById("site_changes_table").rows[0].cells[1].innerText = "现场变动名称"
 
-    $("#involved_goods_info_table").find("tr").remove();
-
-    $.get("/get_involved_goods_info", {"base_info_id": currentSceneId}, function (data) {
+    $.get("/get_involved_goods_info", {"base_info_id": currentCaseId}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
@@ -665,7 +671,7 @@ function get_involved_goods_info(id) {
             //direction: "rtl",
             datatype: "local",
             data: data,
-            height: 240,
+            height: 250,
             colColor: 'white',
             colNames: ['物品名称', '创建时间', '物品ID'],
             colModel: [
@@ -675,7 +681,7 @@ function get_involved_goods_info(id) {
                     index: 'CREATE_TIME',
                     sortable: true,
                     sorttype: "string",
-                    width: 120,
+                    width: 130,
                     editable: false
                 },
                 {name: 'INVOLVED_GOODS_INFO_ID', index: 'INVOLVED_GOODS_INFO_ID', width: 80, editable: false}
@@ -701,6 +707,21 @@ function get_involved_goods_info(id) {
                 //document.getElementById('ematerial_show_all').value = '此处显示案件编号为 ' + cid + ' 的案件素材';
             },
         });
+        var gridData = $(table).jqGrid("getRowData");
+        for (var i = gridData.length; i >= 0; i--) {
+            $(table).jqGrid("delRowData", i);
+        }
+        let counter = 0;
+        data.forEach(function (json) {
+            var rowData = {
+                INVOLVED_GOODS_NAME: json.INVOLVED_GOODS_NAME,
+                CREATE_TIME: json.CREATE_TIME,
+                INVOLVED_GOODS_INFO_ID: json.INVOLVED_GOODS_INFO_ID
+            };
+            // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+            $(table).jqGrid("addRowData", counter, rowData);
+            counter++;
+        });
         $(table).jqGrid().trigger('reloadGrid');
     });
 }
@@ -715,7 +736,6 @@ function get_involved_person_info(id) {
         x.style.cssText = "display:block"
     }
 
-    $("#involved_goods_person_table").find("tr").remove();
     console.log("Current scene: " + currentSceneId + " current case: " + currentCaseId);
     $.get("/get_involved_person_info", {"base_info_id": currentCaseId}, function (data) {
         if (data.msg != undefined) {
@@ -728,7 +748,7 @@ function get_involved_person_info(id) {
             //direction: "rtl",
             datatype: "local",
             data: data,
-            height: 240,
+            height: 250,
             colColor: 'white',
             colNames: ['人员名称', '创建时间', '人员ID'],
             colModel: [
@@ -738,7 +758,7 @@ function get_involved_person_info(id) {
                     index: 'CREATE_TIME',
                     sortable: true,
                     sorttype: "string",
-                    width: 120,
+                    width: 130,
                     editable: false
                 },
                 {name: 'INVOLVED_PERSON_INFO_ID', index: 'INVOLVED_PERSON_INFO_ID', width: 80, editable: false}
@@ -762,30 +782,23 @@ function get_involved_person_info(id) {
                 operation_type = "mark_elements";
             },
         });
+        var gridData = $(table).jqGrid("getRowData");
+        for (var i = gridData.length; i >= 0; i--) {
+            $(table).jqGrid("delRowData", i);
+        }
+        let counter = 0;
+        data.forEach(function (json) {
+            var rowData = {
+                INVOLVED_PERSON_NAME: json.INVOLVED_PERSON_NAME,
+                CREATE_TIME: json.CREATE_TIME,
+                INVOLVED_PERSON_INFO_ID: json.INVOLVED_PERSON_INFO_ID
+            };
+            // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+            $(table).jqGrid("addRowData", counter, rowData);
+            counter++;
+        });
         $(table).jqGrid().trigger('reloadGrid');
     });
-}
-
-function get_involved_person_info1(id) {
-    $(".full_view").css("display", "none");
-    var x = document.getElementById(id);
-    if (x.style.display == "block") {
-        x.style.cssText = "display:none"
-    } else {
-        x.style.cssText = "display:block"
-    }
-
-    $("#involved_person_info_table").find("tr").remove();
-    $("#involved_person_info_table").append("<tr><td>涉案人员信息ID</td><td>涉案人名字</td></tr>")
-    $.get("/get_involved_person_info", {"value": id}, function (data) {
-        if (data.msg != undefined) {
-            alert(data.msg);
-            return;
-        }
-        data.forEach(function (json) {
-            $("#involved_person_info_table").append("<tr><td>" + json.INVOLVED_PERSON_INFO_ID + "</td><td>" + json.INVOLVED_PERSON_NAME + "</td></tr>");
-        });               //序列号
-    })
 }
 
 // function get_thing_menu(thing_type) {

@@ -772,7 +772,7 @@ app.get('/store_corpse_info', function (req, res, next) {//尸体信息
     connection.query("set foreign_key_checks = 0")
     connection.query("DELETE from corpse_info")
     for (var i in form) {
-        connection.query("INSERT into corpse_info (CORPSE_INFO_ID,BASE_INFO_ID,CORPSE_INFO_CODE,CORPSE_INFO_NAME,CORPSE_FIND_PLACE,CORPSE_FEATURES,SCENE_BLOODSTAIN_SITUATION,SCENE_ES_SURVEY,CLOTHES_SITUATION,CORPSE_INCLUSIONS,CORPSE_COSTUMES,DEATH_NATURE,LETHAL_REASON,DEATH_TIME,CORPSE_INJURING_FORM,FEATURES_DESCRIBE,CREATE_PERSION_ID,CREATE_TIME,CORPSE_COMPLETION,DATA_STATE,UPDATE_TIME) value (" + "'" + form[i].尸体ID + "','" + form[i].勘验基础信息ID + "','" + form[i].尸体编号 + "','" + form[i].尸体名称 + "','" + form[i].尸体发现地点 + "','" + form[i].尸体姿态 + "','" + form[i].现场血迹情况 + "','" + form[i].现场环境情况 + "','" + form[i].随身物品 + "','" + form[i].尸体盛装物 + "','" + form[i].尸体包裹物 + "','" + form[i].死亡性质 + "','" + form[i].致死原因 + "','" + form[i].死亡时间推论 + "','" + form[i].尸体加害形式 + "','" + form[i].特征描述 + "','" + form[i].创建人ID + "','" + form[i].创建时间 + "','" + form[i].尸体完整度 + "','" + form[i].数据状态 + "','" + form[i].修改时间 + "')", function (error, results, fields) {//新网页数据
+        connection.query("INSERT into corpse_info (CORPSE_INFO_ID,BASE_INFO_ID,CORPSE_INFO_CODE,CORPSE_INFO_NAME,CORPSE_FIND_PLACE,CORPSE_FEATURES,SCENE_BLOODSTAIN_SITUATION,SCENE_ES_SURVEY,CLOTHES_SITUATION,CORPSE_INCLUSIONS,CORPSE_COSTUMES,DEATH_NATURE,LETHAL_REASON,DEATH_TIME_START,DEATH_TIME_END,CORPSE_INJURING_FORM,FEATURES_DESCRIBE,CREATE_PERSION_ID,CREATE_TIME,CORPSE_COMPLETION,DATA_STATE,UPDATE_TIME) value (" + "'" + form[i].尸体ID + "','" + form[i].勘验基础信息ID + "','" + form[i].尸体编号 + "','" + form[i].尸体名称 + "','" + form[i].尸体发现地点 + "','" + form[i].尸体姿态 + "','" + form[i].现场血迹情况 + "','" + form[i].现场环境情况 + "','" + form[i].随身物品 + "','" + form[i].尸体盛装物 + "','" + form[i].尸体包裹物 + "','" + form[i].死亡性质 + "','" + form[i].致死原因 + "','" + form[i].死亡时间推论 + "','" + form[i].尸体加害形式 + "','" + form[i].特征描述 + "','" + form[i].创建人ID + "','" + form[i].创建时间 + "','" + form[i].尸体完整度 + "','" + form[i].数据状态 + "','" + form[i].修改时间 + "')", function (error, results, fields) {//新网页数据
             if (error) {
                 var data = {msg: "写入数据库错误，上传失败"};
                 // c.end();
@@ -1283,8 +1283,11 @@ app.get('/get_extract_method', function (req, res, next) {
     });
 });
 app.get('/get_corpse_info', function (req, res, next) {
-    //form表单
-    connection.query("SELECT CORPSE_INFO_ID,BASE_INFO_ID,CORPSE_INFO_CODE,CORPSE_INFO_NAME,CORPSE_FIND_PLACE,CORPSE_FEATURES,SCENE_BLOODSTAIN_SITUATION,SCENE_ES_SURVEY,CLOTHES_SITUATION,CORPSE_INCLUSIONS,CORPSE_COSTUMES,DEATH_NATURE,LETHAL_REASON,DEATH_TIME,CORPSE_INJURING_FORM,FEATURES_DESCRIBE,CREATE_PERSION_ID,CREATE_TIME,CORPSE_COMPLETION,DATA_STATE,UPDATE_TIME from corpse_info", function (error, results, fields) {
+    let currentSceneId = req.query.base_info_id;
+    if (currentSceneId == undefined) currentSceneId = "";
+    else currentSceneId = " where base_info_id=\'" + currentSceneId + "\'";
+    console.log("SELECT CORPSE_INFO_ID,BASE_INFO_ID,CORPSE_INFO_CODE,CORPSE_INFO_NAME,CORPSE_FIND_PLACE,CORPSE_FEATURES,SCENE_BLOODSTAIN_SITUATION,SCENE_ES_SURVEY,CLOTHES_SITUATION,CORPSE_INCLUSIONS,CORPSE_COSTUMES,DEATH_NATURE,LETHAL_REASON,DEATH_TIME_START,DEATH_TIME_END,CORPSE_INJURING_FORM,FEATURES_DESCRIBE,CREATE_PERSION_ID,CREATE_TIME,CORPSE_COMPLETION,DATA_STATE,UPDATE_TIME from corpse_info" + currentSceneId);
+    connection.query("SELECT CORPSE_INFO_ID,BASE_INFO_ID,CORPSE_INFO_CODE,CORPSE_INFO_NAME,CORPSE_FIND_PLACE,CORPSE_FEATURES,SCENE_BLOODSTAIN_SITUATION,SCENE_ES_SURVEY,CLOTHES_SITUATION,CORPSE_INCLUSIONS,CORPSE_COSTUMES,DEATH_NATURE,LETHAL_REASON,DEATH_TIME_START,DEATH_TIME_END,CORPSE_INJURING_FORM,FEATURES_DESCRIBE,CREATE_PERSION_ID,CREATE_TIME,CORPSE_COMPLETION,DATA_STATE,UPDATE_TIME from corpse_info" + currentSceneId, function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();
@@ -1396,8 +1399,11 @@ app.get('/get_involved_goods_info', function (req, res, next) {
 });
 app.get('/get_involved_person_info', function (req, res, next) {
     //form表单
+    let currentSceneId = req.query.base_info_id;
+    if (currentSceneId == undefined) currentSceneId = "";
+    else currentSceneId = " where base_info_id=\'" + currentSceneId + "\'";
     console.log(req.query.base_info_id);
-    connection.query("SELECT INVOLVED_PERSON_INFO_ID,INVOLVED_PERSON_CODE,INVOLVED_PERSON_NAME,SEX,AGE,NATION,NATIONALITY,POSTURE,HEIGHT,CLOTHES_SITUATION,PHY_FUN,CARD_TYPE,DOMICILE,CARD_NUMBER,CURRENT_ADDRESS,WORK_UNIT,UNIT_ADDRESS,PHONE,JOB_DUTIES,BASE_INFO_ID,INVESTIGATION_TIME,INVESTIGATION_PERSION,INVESTIGATION_ADDRESS,REMARKS,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_SOURCES,DATA_STATE,RELATION_CORPSE,RELATION_PERSON from involved_person_info where BASE_INFO_ID=\'" + req.query.base_info_id + "\'", function (error, results, fields) {
+    connection.query("SELECT INVOLVED_PERSON_INFO_ID,INVOLVED_PERSON_CODE,INVOLVED_PERSON_NAME,SEX,AGE,NATION,NATIONALITY,POSTURE,HEIGHT,CLOTHES_SITUATION,PHY_FUN,CARD_TYPE,DOMICILE,CARD_NUMBER,CURRENT_ADDRESS,WORK_UNIT,UNIT_ADDRESS,PHONE,JOB_DUTIES,BASE_INFO_ID,INVESTIGATION_TIME,INVESTIGATION_PERSION,INVESTIGATION_ADDRESS,REMARKS,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_SOURCES,DATA_STATE,RELATION_CORPSE,RELATION_PERSON from involved_person_info" + currentSceneId, function (error, results, fields) {
         if (error) {//TYPE_ID,
             var data = {msg: "读取数据库错误"};
             // c.end();

@@ -1,8 +1,8 @@
 function modelrelation() {
     showdog();
-    showwaveblue();
-    showwavegreen();
-    showwavered();
+    showwaveblue(114.19546052231226, 30.32516669700495);
+    showwavegreen(114.23039417448082, 30.314405350785258);
+    showwavered(114.22374911095045, 30.357474991097224);
     // showrelation()
 }
 
@@ -58,10 +58,10 @@ function showrelation() {
     });
 }
 
-function showwavered() {
+function showwavered(x, y) {
     // var viewer=ysc.createNormalCesium("cesiumContainer",{});
-    var lon = 114.22374911095045;
-    var lat = 30.357474991097224;
+    var lon = x;
+    var lat = y;
     ysc.addCircleRipple(viewer, { //默认只绘制两个圆圈叠加 如遇绘制多个，请自行源码内添加。
         id: "redwave",
         lon: lon,
@@ -92,12 +92,12 @@ function showwavered() {
     // viewer.zoomTo(viewer.entities);
 }
 
-function showwavegreen() {
+function showwavegreen(x, y) {
     // var viewer = ysc.createNormalCesium("cesiumContainer", {});
     //添加圆形放大扫描。
     var circleScan = ysc.addCircleScan(viewer, {
-        lon: 114.23039417448082,//经度
-        lat: 30.314405350785258, //纬度
+        lon: x,//经度
+        lat: y, //纬度
         scanColor: new Cesium.Color(0, 1.0, 0, 1),
         r: 1500,//扫描半径
         interval: 4000//时间间隔
@@ -119,10 +119,10 @@ function showwavegreen() {
     // });
 }
 
-function showwaveblue() {
+function showwaveblue(x, y) {
     var oneDiv = $("#one");
     var scratch = new Cesium.Cartesian2(); //cesium二维笛卡尔 笛卡尔二维坐标系就是我们熟知的而二维坐标系；三维也如此
-    var divPosition = Cesium.Cartesian3.fromDegrees(114.19546052231226, 30.32516669700495, 200);
+    var divPosition = Cesium.Cartesian3.fromDegrees(x, y, 500);
     viewer.scene.preRender.addEventListener(function () {
         var canvasPosition = viewer.scene.cartesianToCanvasCoordinates(divPosition, scratch);//cartesianToCanvasCoordinates 笛卡尔坐标（3维度）到画布坐标
         if (Cesium.defined(canvasPosition)) {
@@ -142,7 +142,7 @@ function showwaveblue() {
     }
 
     var blueEllipse = viewer.entities.add({
-        position: Cesium.Cartesian3.fromDegrees(114.22374911095045, 30.357474991097224),
+        position: Cesium.Cartesian3.fromDegrees(x, y),
         name: 'Blue translucent, rotated, and extruded ellipse with outline',
         ellipse: {
             semiMinorAxis: 30.0, //半短轴

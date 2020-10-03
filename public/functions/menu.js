@@ -105,16 +105,16 @@ function get_scenes(idx) {
         case_scenes = data;
         case_scenes.forEach(function (json) {
             if (json.site_type == '0') {
-                center_lon = json.end_lon;
-                center_lat = json.end_lat;
+                center_lon = json.start_lon;
+                center_lat = json.start_lat;
                 // alert("hit center for scene: " + casesIdMap.get(idx).cases_id + ' data: ' + data.toString());
             }
         })
         case_scenes.forEach(function (json) {
-            if (Math.abs(json.end_lon - center_lon) > limit_lon)
-                limit_lon = Math.abs(json.end_lon - center_lon);
-            if (Math.abs(json.end_lat - center_lat) > limit_lat)
-                limit_lat = Math.abs(json.end_lat - center_lat);
+            if (Math.abs(json.start_lon - center_lon) > limit_lon)
+                limit_lon = Math.abs(json.start_lon - center_lon);
+            if (Math.abs(json.start_lat - center_lat) > limit_lat)
+                limit_lat = Math.abs(json.start_lat - center_lat);
         });
         // alert(center_lon + ", " + center_lat + ", " + limit_lon * 111000 + ", " + limit_lat * 111000);
         if (limit_lon == 0) limit_lon = (1000).toFixed(2) / 444000;
@@ -123,9 +123,9 @@ function get_scenes(idx) {
         set_view(center_lon, center_lat, Math.max(limit_lon, limit_lat) * 444000);
         case_scenes.forEach(function (json) {
             if (json.site_type == '0') {
-                showwavered(json.end_lon, json.end_lat, Math.max(limit_lon, limit_lat) * 55000);
+                showwavered(json.start_lon, json.start_lat, Math.max(limit_lon, limit_lat) * 55000);
             } else {
-                showcirleBlue(json.end_lon, json.end_lat, Math.max(limit_lon, limit_lat) * 55000);
+                showcirleBlue(json.start_lon, json.start_lat, Math.max(limit_lon, limit_lat) * 55000);
             }
         })
     })

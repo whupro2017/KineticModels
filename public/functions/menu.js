@@ -91,6 +91,24 @@ function get_scenes(idx) {
             sceneIdMap.set(sceneIdx++, json);
         });
     })
+    let limit_lon = 0, limit_lat = 0, center_lon = 0, center_lat = 0;
+    $.get("/get_case_scenes", {"value": casesIdMap.get(idx).cases_id}, function (data) {
+        case_scenes = data;
+        case_scenes.forEach(function (json) {
+            if (json.site_type == '0') {
+                center_lon = json.end_lon;
+                center_lat = json.end_lat;
+                alert("hit center for scene: " + casesIdMap.get(idx).cases_id + ' data: ' + data.toString());
+            }
+        })
+        case_scenes.forEach(function (json) {
+            if (Math.abs(json.end_lon - center_lon) > limit_lon)
+                limit_lon = Math.abs(json.end_lon - center_lon);
+            if (Math.abs(json.end_lat - center_lat) > limit_lat)
+                limit_lat = Math.abs(json.end_lat - center_lat);
+        });
+        alert(center_lon + ", " + center_lat + ", " + limit_lon * 111000 + ", " + limit_lat * 111000);
+    })
 }
 
 function get_element_menu(element_type) {

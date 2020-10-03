@@ -192,6 +192,17 @@ app.get("/update_kinetic", function (req, res) {
 
 var scene_id;
 
+app.get("/get_case_scenes", function (req, res) {
+    case_id = req.query.value;
+    console.log('SELECT scene_id, start_lon, start_lat, start_height, end_lon, end_lat, end_height, site_type from scene_t, inquest_base_info where cases_id=\'' + req.query.value + '\' and scene_id = base_info_id');
+    connection.query('SELECT scene_id, start_lon, start_lat, start_height, end_lon, end_lat, end_height, site_type from scene_t, inquest_base_info where cases_id=\'' + req.query.value + '\' and scene_id = base_info_id', function (error, results, fields) {
+        if (error) throw error;
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+})
+
 app.get("/scene_exists", function (req, res) {
     scene_id = req.query.value;
     data = {};

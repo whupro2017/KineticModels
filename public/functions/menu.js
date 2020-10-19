@@ -74,8 +74,59 @@ function show_model_info() {
 }
 
 function show_element_relation() {
+    var jsonseries = '';
+    // let obj = JSON.parse(jsonseries);
     $.get("/get_relation_from_mark_goods", {"value": activeObject.element_id}, function (data) {
-        alert(data.toString());
+        // alert(data.toString());
+        // let markgoods = '';
+        // obj.push(markgoods);
+        data.forEach(function (json) {
+            console.log(json.MARK_GOODS_NAME + "," + json.EXTRACT_POSITION + "," + json.CREATE_TIME);
+        });
+    })
+    $.get("/get_relation_to_mark_goods", {"value": activeObject.element_id}, function (data) {
+        // alert(data.toString());
+        // let markgoods = '';
+        // obj.push(markgoods);
+        data.forEach(function (json) {
+            console.log(json.MARK_GOODS_NAME + "," + json.EXTRACT_POSITION + "," + json.CREATE_TIME);
+        });
+    })
+    $.get("/get_relation_from_involved_goods", {"value": activeObject.element_id}, function (data) {
+        // alert(data.toString());
+        data.forEach(function (json) {
+            console.log(json.INVOLVED_GOODS_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+        });
+    })
+    $.get("/get_relation_to_involved_goods", {"value": activeObject.element_id}, function (data) {
+        // alert(data.toString());
+        data.forEach(function (json) {
+            console.log(json.INVOLVED_GOODS_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+        });
+    })
+    $.get("/get_relation_from_corpse", {"value": activeObject.element_id}, function (data) {
+        // alert(data.toString());
+        data.forEach(function (json) {
+            console.log(json.CORPSE_INFO_NAME + "," + json.CORPSE_INFORMATION + "," + json.CREATE_TIME);
+        });
+    })
+    $.get("/get_relation_to_corpse", {"value": activeObject.element_id}, function (data) {
+        // alert(data.toString());
+        data.forEach(function (json) {
+            console.log(json.CORPSE_INFO_NAME + "," + json.CORPSE_INFORMATION + "," + json.CREATE_TIME);
+        });
+    })
+    $.get("/get_relation_from_person", {"value": activeObject.element_id}, function (data) {
+        // alert(data.toString());
+        data.forEach(function (json) {
+            console.log(json.INVOLVED_PERSON_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+        });
+    })
+    $.get("/get_relation_to_person", {"value": activeObject.element_id}, function (data) {
+        // alert(data.toString());
+        data.forEach(function (json) {
+            console.log(json.INVOLVED_PERSON_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+        });
     })
 }
 

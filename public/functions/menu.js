@@ -66,10 +66,17 @@ http://localhost:8089/medium.html?mediumId=2c91facc6ece8724016ecf93b72b003c
 */
 
 function show_model_info() {
+    console.log(activeObject.element_type + "," + activeObject.element_id);
     window.open(visualpage_addr + redirect_pages[activeObject.element_type] + ".html?" +
         redirect_title[activeObject.element_type] + "Id=" + activeObject.element_id,
         "show_element_info",
         "height=700, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");
+}
+
+function show_element_relation() {
+    $.get("/get_relation_from_mark_goods", {"value": activeObject.element_id}, function (data) {
+        alert(data.toString());
+    })
 }
 
 function locate_model(path) {

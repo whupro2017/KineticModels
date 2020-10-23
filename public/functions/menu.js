@@ -73,7 +73,24 @@ function show_model_info() {
         "height=700, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");
 }
 
+function addTypedSymbol(point, type) {
+    symbolList.push(viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(point.lon, point.lat, point.height),
+        billboard: {
+            image: "../imgs/" + type + ".png",
+            // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+            // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+            scale: 0.5,
+            // color: Cesium.Color.BLUE,
+            verticalOrigin: Cesium.VerticalOrigin.MIDDLE,
+            horizontalOrigin: Cesium.HorizontalOrigin.MIDDLE,
+            disableDepthTestDistance: Number.POSITIVE_INFINITY
+        }
+    }));
+}
+
 function show_element_relation() {
+    emptySymbol();
     var jsonseries = '';
     // let obj = JSON.parse(jsonseries);
     $.get("/get_relation_from_mark_goods", {"value": activeObject.element_id}, function (data) {
@@ -81,7 +98,12 @@ function show_element_relation() {
         // let markgoods = '';
         // obj.push(markgoods);
         data.forEach(function (json) {
-            console.log(json.MARK_GOODS_NAME + "," + json.EXTRACT_POSITION + "," + json.CREATE_TIME);
+            console.log("from mark" + json.MARK_GOODS_NAME + "," + json.EXTRACT_POSITION + "," + json.CREATE_TIME);
+            if (json.START_LON == undefined) {
+                alert("来源痕迹<" + json.MARK_GOODS_NAME + ">被关联、但尚未标定");
+            } else {
+                addTypedSymbol({"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}, 'fromGood')
+            }
         });
     })
     $.get("/get_relation_to_mark_goods", {"value": activeObject.element_id}, function (data) {
@@ -89,43 +111,86 @@ function show_element_relation() {
         // let markgoods = '';
         // obj.push(markgoods);
         data.forEach(function (json) {
-            console.log(json.MARK_GOODS_NAME + "," + json.EXTRACT_POSITION + "," + json.CREATE_TIME);
+            console.log("to mark" + json.MARK_GOODS_NAME + "," + json.EXTRACT_POSITION + "," + json.CREATE_TIME);
+            if (json.START_LON == undefined) {
+                alert("目标物品<" + json.MARK_GOODS_NAME + ">被关联、但尚未标定");
+            } else {
+                addTypedSymbol({"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}, 'toGood')
+            }
         });
     })
     $.get("/get_relation_from_involved_goods", {"value": activeObject.element_id}, function (data) {
         // alert(data.toString());
         data.forEach(function (json) {
-            console.log(json.INVOLVED_GOODS_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+            console.log("from goods" + json.INVOLVED_GOODS_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+            if (json.START_LON == undefined) {
+                alert("来源物品<" + json.INVOLVED_GOODS_NAME + ">被关联、但尚未标定");
+            } else {
+                addTypedSymbol({"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}, 'fromThing')
+            }
         });
     })
     $.get("/get_relation_to_involved_goods", {"value": activeObject.element_id}, function (data) {
         // alert(data.toString());
         data.forEach(function (json) {
-            console.log(json.INVOLVED_GOODS_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+            console.log("to goods" + json.INVOLVED_GOODS_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+            if (json.START_LON == undefined) {
+                alert("目标物品<" + json.INVOLVED_GOODS_NAME + ">被关联、但尚未标定");
+            } else {
+                addTypedSymbol({"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}, 'toGood')
+            }
         });
     })
     $.get("/get_relation_from_corpse", {"value": activeObject.element_id}, function (data) {
         // alert(data.toString());
         data.forEach(function (json) {
-            console.log(json.CORPSE_INFO_NAME + "," + json.CORPSE_INFORMATION + "," + json.CREATE_TIME);
+            console.log("from corpse" + json.CORPSE_INFO_NAME + "," + json.CORPSE_INFORMATION + "," + json.CREATE_TIME);
+            if (json.START_LON == undefined) {
+                alert("来源尸体<" + json.CORPSE_INFO_NAME + ">被关联、但尚未标定");
+            } else {
+                addTypedSymbol({
+                    "lon": json.START_LON,
+                    "lat": json.START_LAT,
+                    "height": json.START_HEIGHT
+                }, 'fromCorpse')
+            }
         });
     })
     $.get("/get_relation_to_corpse", {"value": activeObject.element_id}, function (data) {
         // alert(data.toString());
         data.forEach(function (json) {
-            console.log(json.CORPSE_INFO_NAME + "," + json.CORPSE_INFORMATION + "," + json.CREATE_TIME);
+            console.log("to corpse" + json.CORPSE_INFO_NAME + "," + json.CORPSE_INFORMATION + "," + json.CREATE_TIME);
+            if (json.START_LON == undefined) {
+                alert("目标尸体<" + json.CORPSE_INFO_NAME + ">被关联、但尚未标定");
+            } else {
+                addTypedSymbol({"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}, 'toCorpse')
+            }
         });
     })
     $.get("/get_relation_from_person", {"value": activeObject.element_id}, function (data) {
         // alert(data.toString());
         data.forEach(function (json) {
-            console.log(json.INVOLVED_PERSON_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+            console.log("from person" + json.INVOLVED_PERSON_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+            if (json.START_LON == undefined) {
+                console.log("来源涉案人<" + json.INVOLVED_PERSON_NAME + ">被关联、但尚未标定");
+            } else {
+                addTypedSymbol({
+                    "lon": json.START_LON,
+                    "lat": json.START_LAT,
+                    "height": json.START_HEIGHT
+                }, 'fromPerson')
+            }
         });
     })
     $.get("/get_relation_to_person", {"value": activeObject.element_id}, function (data) {
         // alert(data.toString());
         data.forEach(function (json) {
-            console.log(json.INVOLVED_PERSON_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+            console.log("to person" + json.INVOLVED_PERSON_NAME + "," + json.REMARKS + "," + json.CREATE_TIME);
+            if (json.START_LON == undefined) {
+                console.log("目标涉案人<" + json.INVOLVED_PERSON_NAME + ">被关联、但尚未标定");
+            } else {
+                addTypedSymbol({"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}, 'toPerson')
+            }
         });
     })
 }
@@ -142,6 +207,15 @@ function emptyRipple() {
         console.log("Removed: " + item);
     } while (item != null);
     viewer.entities.removeAll();
+}
+
+function emptySymbol() {
+    var item = symbolList.shift();
+    while (item != null) {
+        viewer.entities.removeById(item.id);
+        console.log("Removed: " + item);
+        item = symbolList.shift();
+    }
 }
 
 function get_scenes(idx) {
@@ -1084,8 +1158,8 @@ function updateScene() {
                         // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
                         // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
                         scale: 0.2,
-                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                        horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+                        verticalOrigin: Cesium.VerticalOrigin.MIDDLE,
+                        horizontalOrigin: Cesium.HorizontalOrigin.MIDDLE,
                         disableDepthTestDistance: Number.POSITIVE_INFINITY
                     },
                     properties: {

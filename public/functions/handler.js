@@ -137,8 +137,8 @@ function onMarkElements(longitude, latitude, height) {
                     // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
                     scale: 0.2,
                     color: mark_color,
-                    verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                    horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+                    verticalOrigin: Cesium.VerticalOrigin.MIDDLE,
+                    horizontalOrigin: Cesium.HorizontalOrigin.MIDDLE,
                     disableDepthTestDistance: Number.POSITIVE_INFINITY
                 },
                 properties: {

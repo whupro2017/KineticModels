@@ -172,7 +172,7 @@ app.get("/get_cases", function (req, res) {
 
 app.get("/get_relation_to_mark_goods", function (req, res) {
     let obj_id = req.query.value;
-    connection.query('SELECT MARK_GOODS_NAME, EXTRACT_POSITION, CREATE_TIME FROM DATA_RELATION, MARK_GOODS WHERE MAIN_DATA_ID=\"' + req.query.value + "\" AND MARK_GOODS_ID = DATA_ID", function (error, results, fields) {
+    connection.query('SELECT START_LON, START_LAT, START_HEIGHT, MARK_GOODS_NAME, EXTRACT_POSITION, CREATE_TIME FROM MARK_GOODS, DATA_RELATION LEFT JOIN relevant_t on element_id = DATA_ID WHERE MAIN_DATA_ID=\"' + req.query.value + "\" AND MARK_GOODS_ID = DATA_ID", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -181,7 +181,7 @@ app.get("/get_relation_to_mark_goods", function (req, res) {
 
 app.get("/get_relation_to_person", function (req, res) {
     let obj_id = req.query.value;
-    connection.query('SELECT INVOLVED_PERSON_NAME, REMARKS, CREATE_TIME FROM DATA_RELATION, INVOLVED_PERSON_INFO WHERE MAIN_DATA_ID=\"' + req.query.value + "\" AND INVOLVED_PERSON_INFO_ID = DATA_ID", function (error, results, fields) {
+    connection.query('SELECT START_LON, START_LAT, START_HEIGHT, INVOLVED_PERSON_NAME, REMARKS, CREATE_TIME FROM INVOLVED_PERSON_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = DATA_ID WHERE MAIN_DATA_ID=\"' + req.query.value + "\" AND INVOLVED_PERSON_INFO_ID = DATA_ID", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -190,7 +190,7 @@ app.get("/get_relation_to_person", function (req, res) {
 
 app.get("/get_relation_to_involved_goods", function (req, res) {
     let obj_id = req.query.value;
-    connection.query('SELECT INVOLVED_GOODS_NAME, REMARKS, CREATE_TIME FROM DATA_RELATION, INVOLVED_GOODS_INFO WHERE MAIN_DATA_ID=\"' + req.query.value + "\" AND INVOLVED_GOODS_INFO_ID = DATA_ID", function (error, results, fields) {
+    connection.query('SELECT START_LON, START_LAT, START_HEIGHT, INVOLVED_GOODS_NAME, REMARKS, CREATE_TIME FROM INVOLVED_GOODS_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = DATA_ID WHERE MAIN_DATA_ID=\"' + req.query.value + "\" AND INVOLVED_GOODS_INFO_ID = DATA_ID", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -199,7 +199,7 @@ app.get("/get_relation_to_involved_goods", function (req, res) {
 
 app.get("/get_relation_to_corpse", function (req, res) {
     let obj_id = req.query.value;
-    connection.query('SELECT CORPSE_INFO_NAME, CORPSE_INFORMATION, CREATE_TIME FROM DATA_RELATION, CORPSE_INFO WHERE MAIN_DATA_ID=\"' + req.query.value + "\" AND CORPSE_INFO_ID = DATA_ID", function (error, results, fields) {
+    connection.query('SELECT START_LON, START_LAT, START_HEIGHT, CORPSE_INFO_NAME, CORPSE_INFORMATION, CREATE_TIME FROM CORPSE_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = DATA_ID WHERE MAIN_DATA_ID=\"' + req.query.value + "\" AND CORPSE_INFO_ID = DATA_ID", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -208,16 +208,20 @@ app.get("/get_relation_to_corpse", function (req, res) {
 
 app.get("/get_relation_from_mark_goods", function (req, res) {
     let obj_id = req.query.value;
-    connection.query('SELECT MARK_GOODS_NAME, EXTRACT_POSITION, CREATE_TIME FROM DATA_RELATION, MARK_GOODS WHERE DATA_ID=\"' + req.query.value + "\" AND MARK_GOODS_ID = MAIN_DATA_ID", function (error, results, fields) {
+    connection.query('SELECT START_LON, START_LAT, START_HEIGHT, MARK_GOODS_NAME, EXTRACT_POSITION, CREATE_TIME FROM MARK_GOODS, DATA_RELATION LEFT JOIN relevant_t on element_id = MAIN_DATA_ID WHERE DATA_ID=\"' + req.query.value + "\" AND MARK_GOODS_ID = MAIN_DATA_ID", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
     });
 })
 
+app.get("/get_mark_goods_cords", function (req, res) {
+    connection.query('SELECT')
+})
+
 app.get("/get_relation_from_person", function (req, res) {
     let obj_id = req.query.value;
-    connection.query('SELECT INVOLVED_PERSON_NAME, REMARKS, CREATE_TIME FROM DATA_RELATION, INVOLVED_PERSON_INFO WHERE DATA_ID=\"' + req.query.value + "\" AND INVOLVED_PERSON_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
+    connection.query('SELECT START_LON, START_LAT, START_HEIGHT, INVOLVED_PERSON_NAME, REMARKS, CREATE_TIME FROM INVOLVED_PERSON_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = MAIN_DATA_ID WHERE DATA_ID=\"' + req.query.value + "\" AND INVOLVED_PERSON_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -226,7 +230,7 @@ app.get("/get_relation_from_person", function (req, res) {
 
 app.get("/get_relation_from_involved_goods", function (req, res) {
     let obj_id = req.query.value;
-    connection.query('SELECT INVOLVED_GOODS_NAME, REMARKS, CREATE_TIME FROM DATA_RELATION, INVOLVED_GOODS_INFO WHERE DATA_ID=\"' + req.query.value + "\" AND INVOLVED_GOODS_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
+    connection.query('SELECT START_LON, START_LAT, START_HEIGHT, INVOLVED_GOODS_NAME, REMARKS, CREATE_TIME FROM INVOLVED_GOODS_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = MAIN_DATA_ID WHERE DATA_ID=\"' + req.query.value + "\" AND INVOLVED_GOODS_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -235,7 +239,7 @@ app.get("/get_relation_from_involved_goods", function (req, res) {
 
 app.get("/get_relation_from_corpse", function (req, res) {
     let obj_id = req.query.value;
-    connection.query('SELECT CORPSE_INFO_NAME, CORPSE_INFORMATION, CREATE_TIME FROM DATA_RELATION, CORPSE_INFO WHERE DATA_ID=\"' + req.query.value + "\" AND CORPSE_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
+    connection.query('SELECT START_LON, START_LAT, START_HEIGHT, CORPSE_INFO_NAME, CORPSE_INFORMATION, CREATE_TIME FROM CORPSE_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = MAIN_DATA_ID WHERE DATA_ID=\"' + req.query.value + "\" AND CORPSE_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();

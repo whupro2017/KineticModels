@@ -215,8 +215,21 @@ app.get("/get_relation_from_mark_goods", function (req, res) {
     });
 })
 
-app.get("/get_mark_goods_cords", function (req, res) {
-    connection.query('SELECT')
+var fieldTableKeyMapping = {
+    "mark_goods": ["MARK_GOODS_NAME", "MARK_GOODS", "MARK_GOODS_ID"],
+    "involved_goods_info": ["INVOLVED_GOODS_NAME", "INVOLVED_GOODS_INFO", "INVOLVED_GOODS_INFO_ID"],
+    "corpse_info": ["CORPSE_INFO_NAME", "CORPSE_INFO", "CORPSE_INFO_ID"],
+    "involved_person_info": ["INVOLVED_PERSON_NAME", "INVOLVED_PERSON_INFO", "INVOLVED_PERSON_INFO_ID"]
+}
+
+app.get("/get_object_name", function (req, res) {
+    console.log("XXXXXXXXXXXXXX " + req.query.key + " " + req.query.value + " " + req.query.toString());
+    let map = fieldTableKeyMapping[req.query.key];
+    connection.query('SELECT ' + map[0] + " as name from " + map[1] + " where " + map[2] + " = \"" + req.query.value + "\"", function (error, results, fields) {
+        if (error) throw error;
+        res.send(results);
+        res.end();
+    });
 })
 
 app.get("/get_relation_from_person", function (req, res) {

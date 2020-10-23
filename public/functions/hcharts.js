@@ -25,9 +25,11 @@ function pie() {
     }
 }
 
-function bubble() {
+function bubble(show) {
     var x = document.getElementById("bubble");
-    if (x.style.display == "block") {
+    if (show) {
+        x.style.cssText = "display:block"
+    } else if (x.style.display == "block") {
         x.style.cssText = "display:none"
     } else {
         x.style.cssText = "display:block"
@@ -340,7 +342,7 @@ function pieshow() {
     pie();
 }
 
-function bubbleshow(jsonseries) {
+function bubbleshow(jsonseries, show) {
     chart = new Highcharts.Chart({
         colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
             '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
@@ -440,7 +442,7 @@ function bubbleshow(jsonseries) {
             name: '信息', data: [{name: '录音', value: 581.0}, {name: '视频', value: 312.0}, {name: '基站', value: 327.0}]
         }]*/
     })
-    bubble();
+    bubble(show);
 }
 
 $(function () {

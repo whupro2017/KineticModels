@@ -393,8 +393,9 @@ function bubbleshow(jsonseries, show) {
                 zMin: 0,
                 zMax: 1000,
                 layoutAlgorithm: {
+                    // 分类展示
                     splitSeries: false,
-                    gravitationalConstant: 0.2
+                    gravitationalConstant: 0.05
                 },
                 dataLabels: {
                     enabled: true,
@@ -402,7 +403,7 @@ function bubbleshow(jsonseries, show) {
                     filter: {
                         property: 'y',
                         operator: '>',
-                        value: 250
+                        value: 200
                     },
                     style: {
                         color: 'black',

@@ -93,19 +93,7 @@ function addTypedSymbol(point, type, size) {
 
 function show_element_relation() {
     emptySymbol();
-    var dataseries = [{
-        name: '痕迹',
-        data: []
-    }, {
-        name: '物品',
-        data: []
-    }, {
-        name: '尸体',
-        data: []
-    }, {
-        name: '嫌疑人',
-        data: []
-    }];
+    var dataseries = [{name: '痕迹', data: []}, {name: '物品', data: []}, {name: '尸体', data: []}, {name: '嫌疑人', data: []}];
     let object_name = "";
     let object_lon, object_lat, object_height = .0;
     $.get("/get_object_name_position", {

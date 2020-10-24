@@ -162,7 +162,8 @@ function show_tileset() {
             console.log("变换坐标加载" + scenePosition.offsetX + "," + scenePosition.offsetY + "," + scenePosition.offsetZ);
         }
     });
-    if (activeObject != undefined) {
+    if (activeObject != undefined && activeObject.element_id != "undefined" && activeObject.element_type != "undefined") {
+        console.log("++++++++++++++++++ " + activeObject.element_type + ", " + activeObject.element_id);
         show_element_relation();
     }
 }

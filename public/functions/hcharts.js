@@ -344,7 +344,9 @@ function pieshow() {
 
 function bubbleshow(jsonseries, show) {
     chart = new Highcharts.Chart({
-        colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+        /*colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+            '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],*/
+        colors: ['#eeee00', '#90ee7e', '#BF0000', '#00eeee', '#aaeeee', '#ff0066',
             '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
         chart: {
             renderTo: 'container4',
@@ -408,10 +410,37 @@ function bubbleshow(jsonseries, show) {
                         fontWeight: 'normal'
                     }
                 }
+            },
+            series: {
+                point: {
+                    events: {
+                        click: function (e) {
+                            var clickedInfo = e.point.options;
+                            // alert(clickedInfo.position.lon + "," + clickedInfo.position.lat + "clicked");
+                            var currentPosition = viewer.camera.positionCartographic;
+                            if (currentSymbol != undefined) {
+                                viewer.entities.removeById(currentSymbol.id);
+                            }
+                            currentSymbol = viewer.entities.add({
+                                position: Cesium.Cartesian3.fromDegrees(clickedInfo.position.lon, clickedInfo.position.lat, clickedInfo.position.height),
+                                billboard: {
+                                    image: "../imgs/other2.png",
+                                    scale: 0.6,
+                                    verticalOrigin: Cesium.VerticalOrigin.MIDDLE,
+                                    horizontalOrigin: Cesium.HorizontalOrigin.MIDDLE,
+                                    disableDepthTestDistance: Number.POSITIVE_INFINITY
+                                }
+                            });
+                            viewer.camera.flyTo({
+                                destination: Cesium.Cartesian3.fromDegrees(clickedInfo.position.lon, clickedInfo.position.lat, currentPosition.height)
+                            });
+                        }
+                    }
+                }
             }
         },
         legend: {
-            enabled: false,
+            enabled: true,
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             itemStyle: {
                 color: '#E0E0E3'
@@ -429,18 +458,6 @@ function bubbleshow(jsonseries, show) {
             }
         },
         series: jsonseries
-        /*[{
-            name: '痕迹',
-            data: [{name: '血液', value: 332.0}, {name: '足迹', value: 334.0}, {name: '手印', value: 734.0}]
-        }, {
-            name: '物品',
-            data: [{name: '地板', value: 445.0}, {name: '扶手', value: 327.0}, {name: '门窗', value: 618.0}]
-        }, {
-            name: '主体',
-            data: [{name: '被害人1', value: 778.0}, {name: '被害人2', value: 318.0}, {name: '嫌疑人', value: 324.0}]
-        }, {
-            name: '信息', data: [{name: '录音', value: 581.0}, {name: '视频', value: 312.0}, {name: '基站', value: 327.0}]
-        }]*/
     })
     bubble(show);
 }

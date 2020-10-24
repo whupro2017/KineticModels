@@ -1454,7 +1454,29 @@
     <div id="container3" style="height: 245px;width: 470px;"></div>
 </div>
 <div id="bubble">
-    <div id="container4" style="height: 490px;width: 470px;"></div>
+    <div style="background: rgba(0, 0, 0, 0.8)">
+        <table>
+            <tr>
+                <td>
+                    <img src="imgs/fromGood.png" width="30px" height="30px" title="痕迹">
+                </td>
+                <td style="color: white; text-align: left" width="80px">痕迹</td>
+                <td>
+                    <img src="imgs/fromThing.png" width="30px" height="30px" title="物品">
+                </td>
+                <td style="color: white; text-align: left" width="80px">物品</td>
+                <td>
+                    <img src="imgs/fromCorpse.png" width="30px" height="30px" title="尸体">
+                </td>
+                <td style="color: white; text-align: left" width="80px">尸体</td>
+                <td>
+                    <img src="imgs/fromPerson.png" width="30px" height="30px" title="涉案人">
+                </td>
+                <td style="color: white; text-align: left" width="80px">涉案人</td>
+            </tr>
+        </table>
+    </div>
+    <div id="container4" style="height: 450px;width: 470px;"></div>
 </div>
 
 <div>
@@ -1569,6 +1591,7 @@
     let sceneIdMap = new Map();
     let rippleList = new Array();
     let symbolList = new Array();
+    let currentSymbol = undefined;
     let currentCaseId = "";
     let currentSceneId = "";
     let scenePosition = {

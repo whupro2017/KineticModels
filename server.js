@@ -222,10 +222,10 @@ var fieldTableKeyMapping = {
     "involved_person_info": ["INVOLVED_PERSON_NAME", "INVOLVED_PERSON_INFO", "INVOLVED_PERSON_INFO_ID"]
 }
 
-app.get("/get_object_name", function (req, res) {
+app.get("/get_object_name_position", function (req, res) {
     console.log("XXXXXXXXXXXXXX " + req.query.key + " " + req.query.value + " " + req.query.toString());
     let map = fieldTableKeyMapping[req.query.key];
-    connection.query('SELECT ' + map[0] + " as name from " + map[1] + " where " + map[2] + " = \"" + req.query.value + "\"", function (error, results, fields) {
+    connection.query('SELECT start_lon, start_lat, start_height,' + map[0] + " as name from relevant_t, " + map[1] + " where element_id = " + map[2] + " and " + map[2] + " = \"" + req.query.value + "\"", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -234,7 +234,7 @@ app.get("/get_object_name", function (req, res) {
 
 app.get("/get_relation_from_person", function (req, res) {
     let obj_id = req.query.value;
-    connection.query('SELECT START_LON, START_LAT, START_HEIGHT, INVOLVED_PERSON_NAME, REMARKS, CREATE_TIME FROM INVOLVED_PERSON_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = MAIN_DATA_ID WHERE DATA_ID=\"' + req.query.value + "\" AND INVOLVED_PERSON_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
+    connection.query('SELECT ELEMENT_ID, START_LON, START_LAT, START_HEIGHT, INVOLVED_PERSON_NAME, REMARKS, CREATE_TIME FROM INVOLVED_PERSON_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = MAIN_DATA_ID WHERE DATA_ID=\"' + req.query.value + "\" AND INVOLVED_PERSON_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -243,7 +243,7 @@ app.get("/get_relation_from_person", function (req, res) {
 
 app.get("/get_relation_from_involved_goods", function (req, res) {
     let obj_id = req.query.value;
-    connection.query('SELECT START_LON, START_LAT, START_HEIGHT, INVOLVED_GOODS_NAME, REMARKS, CREATE_TIME FROM INVOLVED_GOODS_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = MAIN_DATA_ID WHERE DATA_ID=\"' + req.query.value + "\" AND INVOLVED_GOODS_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
+    connection.query('SELECT ELEMENT_ID, START_LON, START_LAT, START_HEIGHT, INVOLVED_GOODS_NAME, REMARKS, CREATE_TIME FROM INVOLVED_GOODS_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = MAIN_DATA_ID WHERE DATA_ID=\"' + req.query.value + "\" AND INVOLVED_GOODS_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -252,7 +252,7 @@ app.get("/get_relation_from_involved_goods", function (req, res) {
 
 app.get("/get_relation_from_corpse", function (req, res) {
     let obj_id = req.query.value;
-    connection.query('SELECT START_LON, START_LAT, START_HEIGHT, CORPSE_INFO_NAME, CORPSE_INFORMATION, CREATE_TIME FROM CORPSE_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = MAIN_DATA_ID WHERE DATA_ID=\"' + req.query.value + "\" AND CORPSE_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
+    connection.query('SELECT ELEMENT_ID, START_LON, START_LAT, START_HEIGHT, CORPSE_INFO_NAME, CORPSE_INFORMATION, CREATE_TIME FROM CORPSE_INFO, DATA_RELATION LEFT JOIN relevant_t on element_id = MAIN_DATA_ID WHERE DATA_ID=\"' + req.query.value + "\" AND CORPSE_INFO_ID = MAIN_DATA_ID", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();

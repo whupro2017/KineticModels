@@ -73,14 +73,16 @@ function show_model_info() {
         "height=700, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");
 }
 
-function addTypedSymbol(point, type) {
+function addTypedSymbol(point, type, size) {
+    if (size == undefined)
+        size = 0.5
     symbolList.push(viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(point.lon, point.lat, point.height),
         billboard: {
             image: "../imgs/" + type + ".png",
             // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
             // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-            scale: 0.5,
+            scale: size,
             // color: Cesium.Color.BLUE,
             verticalOrigin: Cesium.VerticalOrigin.MIDDLE,
             horizontalOrigin: Cesium.HorizontalOrigin.MIDDLE,
@@ -105,24 +107,60 @@ function show_element_relation() {
         data: []
     }];
     let object_name = "";
-    $.get("/get_object_name", {"key": activeObject.element_type, "value": activeObject.element_id}, function (data) {
+    let object_lon, object_lat, object_height = .0;
+    $.get("/get_object_name_position", {
+        "key": activeObject.element_type,
+        "value": activeObject.element_id
+    }, function (data) {
         if (data.length == 0)
             alert("类型：" + activeObject.element_type + "主键：" + activeObject.element_id + "无效");
-        else
+        else {
             object_name = data[0].name;
+            object_lon = data[0].start_lon;
+            object_lat = data[0].start_lat;
+            object_height = data[0].start_height;
+        }
 
         switch (activeObject.element_type) {
             case "mark_goods":
-                dataseries[0].data.push({name: object_name, value: 150});
+                dataseries[0].data.push({
+                    name: object_name,
+                    value: 600,
+                    id: activeObject.element_id,
+                    type: activeObject.element_type,
+                    position: {"lon": object_lon, "lat": object_lat, "height": object_height}
+                });
+                addTypedSymbol({"lon": object_lon, "lat": object_lat, "height": object_height}, 'good', 0.65);
                 break;
             case "involved_goods_info":
-                dataseries[1].data.push({name: object_name, value: 150});
+                dataseries[1].data.push({
+                    name: object_name,
+                    value: 600,
+                    id: activeObject.element_id,
+                    type: activeObject.element_type,
+                    position: {"lon": object_lon, "lat": object_lat, "height": object_height}
+                });
+                addTypedSymbol({"lon": object_lon, "lat": object_lat, "height": object_height}, 'thing', 0.65);
                 break;
             case "corpse_info":
-                dataseries[2].data.push({name: object_name, value: 150});
+                dataseries[2].data.push({
+                    name: object_name,
+                    value: 600,
+                    id: activeObject.element_id,
+                    type: activeObject.element_type,
+                    position: {"lon": object_lon, "lat": object_lat, "height": object_height}
+                });
+                addTypedSymbol({"lon": object_lon, "lat": object_lat, "height": object_height}, 'corpse', 0.65);
                 break;
             case "involved_person_info":
-                dataseries[3].data.push({name: object_name, value: 150});
+                dataseries[3].data.push({
+                    name: object_name,
+                    value: 600,
+                    id: activeObject.element_id,
+                    type: activeObject.element_type,
+                    position: {"lon": object_lon, "lat": object_lat, "height": object_height}
+                });
+                addTypedSymbol({"lon": object_lon, "lat": object_lat, "height": object_height}, 'person', 0.65);
                 break;
             case "scene_file_evidence":
             case "scene_footprint":
@@ -154,7 +192,13 @@ function show_element_relation() {
                 alert("来源痕迹<" + json.MARK_GOODS_NAME + ">被关联、但尚未标定");
             } else {
                 addTypedSymbol({"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}, 'fromGood');
-                dataseries[0].data.push({name: json.MARK_GOODS_NAME, value: 100});
+                dataseries[0].data.push({
+                    name: json.MARK_GOODS_NAME,
+                    value: 200,
+                    id: json.ELEMENT_ID,
+                    type: 'mark_goods',
+                    position: {"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}
+                });
             }
         });
         bubbleshow(dataseries, true);
@@ -169,7 +213,13 @@ function show_element_relation() {
                 alert("目标物品<" + json.MARK_GOODS_NAME + ">被关联、但尚未标定");
             } else {
                 addTypedSymbol({"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}, 'toGood');
-                dataseries[0].data.push({name: json.MARK_GOODS_NAME, value: 100});
+                dataseries[0].data.push({
+                    name: json.MARK_GOODS_NAME,
+                    value: 200,
+                    id: json.ELEMENT_ID,
+                    type: 'mark_goods',
+                    position: {"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}
+                });
             }
         });
         bubbleshow(dataseries, true);
@@ -186,7 +236,13 @@ function show_element_relation() {
                     "lat": json.START_LAT,
                     "height": json.START_HEIGHT
                 }, 'fromThing');
-                dataseries[1].data.push({name: json.INVOLVED_GOODS_NAME, value: 100});
+                dataseries[1].data.push({
+                    name: json.INVOLVED_GOODS_NAME,
+                    value: 200,
+                    id: json.ELEMENT_ID,
+                    type: 'involved_goods_info',
+                    position: {"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}
+                });
             }
         });
         bubbleshow(dataseries, true);
@@ -199,7 +255,13 @@ function show_element_relation() {
                 alert("目标物品<" + json.INVOLVED_GOODS_NAME + ">被关联、但尚未标定");
             } else {
                 addTypedSymbol({"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}, 'toGood');
-                dataseries[1].data.push({name: json.INVOLVED_GOODS_NAME, value: 100});
+                dataseries[1].data.push({
+                    name: json.INVOLVED_GOODS_NAME,
+                    value: 200,
+                    id: json.ELEMENT_ID,
+                    type: 'involved_goods_info',
+                    position: {"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}
+                });
             }
         });
         bubbleshow(dataseries, true);
@@ -216,7 +278,13 @@ function show_element_relation() {
                     "lat": json.START_LAT,
                     "height": json.START_HEIGHT
                 }, 'fromCorpse');
-                dataseries[2].data.push({name: json.CORPSE_INFO_NAME, value: 100});
+                dataseries[2].data.push({
+                    name: json.CORPSE_INFO_NAME,
+                    value: 200,
+                    id: json.ELEMENT_ID,
+                    type: 'corpse_info',
+                    position: {"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}
+                });
             }
         });
         bubbleshow(dataseries, true);
@@ -229,7 +297,13 @@ function show_element_relation() {
                 alert("目标尸体<" + json.CORPSE_INFO_NAME + ">被关联、但尚未标定");
             } else {
                 addTypedSymbol({"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}, 'toCorpse');
-                dataseries[2].data.push({name: json.CORPSE_INFO_NAME, value: 100});
+                dataseries[2].data.push({
+                    name: json.CORPSE_INFO_NAME,
+                    value: 200,
+                    id: json.ELEMENT_ID,
+                    type: 'corpse_info',
+                    position: {"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}
+                });
             }
         });
         bubbleshow(dataseries, true);
@@ -246,7 +320,13 @@ function show_element_relation() {
                     "lat": json.START_LAT,
                     "height": json.START_HEIGHT
                 }, 'fromPerson');
-                dataseries[3].data.push({name: json.INVOLVED_PERSON_NAME, value: 100});
+                dataseries[3].data.push({
+                    name: json.INVOLVED_PERSON_NAME,
+                    value: 200,
+                    id: json.ELEMENT_ID,
+                    type: 'involved_person_info',
+                    position: {"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}
+                });
             }
         });
         bubbleshow(dataseries, true);
@@ -259,7 +339,13 @@ function show_element_relation() {
                 console.log("目标涉案人<" + json.INVOLVED_PERSON_NAME + ">被关联、但尚未标定");
             } else {
                 addTypedSymbol({"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}, 'toPerson');
-                dataseries[3].data.push({name: json.INVOLVED_PERSON_NAME, value: 100});
+                dataseries[3].data.push({
+                    name: json.INVOLVED_PERSON_NAME,
+                    value: 200,
+                    id: json.ELEMENT_ID,
+                    type: 'involved_person_info',
+                    position: {"lon": json.START_LON, "lat": json.START_LAT, "height": json.START_HEIGHT}
+                });
             }
         });
         bubbleshow(dataseries, true);

@@ -269,6 +269,15 @@ app.get("/get_scenes", function (req, res) {
     });
 })
 
+app.get("/get_scene_by_person", function (req, res) {
+    console.log("当前个人信息：" + req.query.value);
+    connection.query('SELECT S.SCENE_CODE, S.SCENE_SEQ, S.BASE_INFO_ID, S.SITE_NAME, S.GOODS_ID, R.START_LON, R.START_LAT, R.START_HEIGHT, GOODS_ID, ELEMENT_ID FROM SCENARIO_QUALI S, inquest_base_info I, RELEVANT_T R WHERE S.MAIN_DATA_ID = \"' + req.query.value + '\" AND S.BASE_INFO_ID = I.CASES_ID AND I.BASE_INFO_ID = R.scene_id AND S.GOODS_ID = R.ELEMENT_ID', function (error, results, fields) {
+        if (error) throw error;
+        res.send(results);
+        res.end();
+    });
+})
+
 app.get("/update_kinetic", function (req, res) {
     console.log("选定案件号：" + req.query.value);
     let ksetid = req.query.KSETID;

@@ -350,6 +350,53 @@ function show_element_relation() {
     bubbleshow(visualseries, true);*/
 }
 
+function singlePersonHandler(data) {
+    const input = [];
+    var i = 0;
+    data.forEach(function (json) {
+        console.log((i++) + ":" + JSON.stringify(json));
+        input.push({"lon": json.START_LON, "lat": json.START_LAT});
+    });
+    console.log((data.length));
+    console.log(JSON.stringify(data));
+    for (var idx = 0; idx < input.length; idx++) {
+        var pos = input[idx];
+        positions.push(Cesium.Cartesian3.fromDegrees(pos.lon, pos.lat, 0));
+        var date = new Date(2019, 2, 1, 15, b, a);
+        time = timeFormat(date);
+        var cartoCoordinates = viewer.scene.globe.ellipsoid.cartesianToCartographic(Cesium.Cartesian3.fromDegrees(pos.lon, pos.lat, 0));
+        const longitude = Cesium.Math.toDegrees(cartoCoordinates.longitude);
+        const latitude = Cesium.Math.toDegrees(cartoCoordinates.latitude);
+        const height = cartoCoordinates.height;
+        endtime = time;
+        dyn_czml[1].position.cartographicDegrees.push(time, longitude, latitude, height);
+        if (a == 59) {
+            a = 0;
+            b += 1;
+        } else {
+            a += 2;
+        }
+        console.log(pos.lon + ", " + pos.lat + ", " + 15, +"|" + longitude + "," + latitude + ", " + height);
+    }
+
+    positions.pop();
+    dyn_czml[0].clock.interval = dyn_czml[0].clock.interval + endtime;
+    console.log(dyn_czml[0].clock.interval);
+    startDynRoute(dyn_czml);
+}
+
+function scenevisualization() {
+    if (activeObject.element_type == "undefined" || activeObject.element_type != "involved_person_info") {
+        alert('必须首先以嫌疑人为炒作对象！而不是类型：' + activeObject.element_type);
+        return;
+    }
+    $.get("/get_scene_by_person", {
+        "value": activeObject.element_id
+    }, function (data) {
+        singlePersonHandler(data);
+    });
+}
+
 function locate_model(path) {
     alert("点击鼠标左键选定模型位置，右键单击退出模型定位模式");
     operation_type = "locate_model";

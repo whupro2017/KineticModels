@@ -115,23 +115,62 @@ app.get("/get_dat_arr", function (req, res) {
     });
 })
 
-var connection = mysql.createConnection({
-    /*host: '127.0.0.1',
-    user: 'root',
-    password: 'czl887',
-    database: 'pointcloud'*/
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+logger.debug("Some debug messages");
+
+var coninfo = {
     host: '39.105.89.57',
     port: 3303,
     user: 'wuzheng',
     password: 'wuzheng',
     database: 'wuzheng',
     connectionLimit: 20
-    /*host: '172.17.0.153',
-    user: 'wuzheng',
-    password: '111111',
-    database: 'wuzheng0727'*/
-});
-connection.connect();
+}
+
+// 用于保存数据连接实例
+var connection = null;
+
+var pingInterval;
+
+// 如果数据连接出错，则重新连接
+function handleError(err) {
+    logger.info(err.stack || err);
+    connect();
+}
+
+// 建立数据库连接
+function connect() {
+    if (connection !== null) {
+        connection.destroy();
+        connection = null;
+    }
+
+    connection = mysql.createConnection(coninfo);
+    connection.connect(function (err) {
+        if (err) {
+            logger.info("error when connecting to db,reConnecting after 2 seconds:", err);
+            setTimeout(connect, 2000);
+        }
+    });
+    connection.on("error", handleError);
+
+    // 每个小时ping一次数据库，保持数据库连接状态
+    clearInterval(pingInterval);
+    pingInterval = setInterval(() => {
+        datetime = new Date();
+        console.log('ping... at ' + datetime.getFullYear() + "-" + datetime.getMonth() + "-" + datetime.getDay() + " " + datetime.getHours() + ":" + datetime.getMinutes() + ":" + datetime.getSeconds());
+        connection.ping((err) => {
+            if (err) {
+                console.log('ping error: ' + JSON.stringify(err));
+            }
+        });
+    }, 30000);
+}
+
+connect();
+module.exports = connection;
 
 var case_id;
 

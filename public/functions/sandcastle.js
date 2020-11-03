@@ -202,6 +202,9 @@
 $.get("/get_cases", {"value": "get_cases"}, function (data) {
     cases = data;
     let caseIdx = 1;
+    /*if (predefinedCaseId != undefined) {
+        console.log("Current CaseId: " + predefinedCaseId);
+    }*/
     cases.forEach(function (json) {
         $("#cases_name").append('<option value=' + json.cases_name + ' >' + json.cases_name + '</option>');
         casesIdMap.set(caseIdx++, json);
@@ -297,6 +300,40 @@ jQuery(function ($) {
         })
     });
 
+    jQuery(document).ready(function (req, res) {
+        const urlParams = new URLSearchParams(document.URL.toString());
+        var desiredScene = urlParams.get("sceneId");
+        var desiredPerson = urlParams.get("personId");
+        var desiredCase = urlParams.get("caseId");
+        var typevar = urlParams.get("type");
+        if (desiredPerson != undefined) {
+            console.log("by personId: " + desiredPerson);
+            activeObject.element_type = "involved_person_info";
+            activeObject.element_id = desiredPerson;
+            $.get("/get_scene_by_person", {"value": desiredPerson}, function (data) {
+                console.log(data.length + ":" + data[0].cases_id);
+                // var i = 0;
+                data.forEach(function (json) {
+                    // console.log((i++) + ":" + JSON.stringify(json));
+                    desiredCase = json.BASE_INFO_ID;
+                    desiredScene = json.SCENE_ID;
+                });
+                console.log("by person's: " + desiredCase + "->" + desiredScene + "->" + desiredPerson);
+                triggerCaseScene(desiredCase, desiredScene, desiredPerson);
+            });
+        } else if (desiredScene != undefined) {
+            console.log("by sceneid: " + desiredScene);
+            $.get("/get_case_by_scene", {"value": desiredScene}, function (data) {
+                console.log(data.length);
+                desiredCase = data[0].cases_id;
+                console.log("by caseid: " + desiredCase);
+                triggerCaseScene(desiredCase, desiredScene, desiredPerson);
+            });
+        } else if (desiredCase != undefined) {
+            triggerCaseScene(desiredCase, desiredScene, desiredPerson);
+        }
+    });
+
     jQuery(grid_selector).jqGrid({
         //direction: "rtl",
         datatype: "json",
@@ -353,6 +390,51 @@ jQuery(function ($) {
         fixed: true
     });
 });
+
+function triggerCaseScene(desiredCase, desiredScene, desiredPerson) {
+    console.log("pseudo click on case_name");
+    var selectedIdx = -1;
+    var currentId = 1;
+    $.get("/get_cases", {"value": "get_cases"}, function (data) {
+        console.log(data.length);
+        data.forEach(function (json) {
+            if (desiredCase.normalize() === json.cases_id.normalize())
+                selectedIdx = currentId;
+            // console.log("\t" + currentId + ":" + json.cases_id + "<->" + desiredCase);
+            currentId++;
+        });
+        if (selectedIdx >= 0 && selectedIdx < casesIdMap.size) {
+            var select = document.getElementById("cases_name");
+            select.selectedIndex = selectedIdx;
+            console.log("by caseid: " + desiredCase + " at: " + selectedIdx + " out of: " + currentId);
+            select.onchange(get_scenes(selectedIdx));
+        }
+        if (desiredScene != undefined) {
+            currentId = 1;
+            selectedIdx = -1;
+            $.get("/get_scenes", {"value": desiredCase}, function (data) {
+                console.log(data.length);
+                data.forEach(function (json) {
+                    if (desiredScene.normalize() === json.base_info_id.normalize())
+                        selectedIdx = currentId;
+                    console.log("\t" + currentId + ":" + json.base_info_id + "<->" + desiredScene);
+                    currentId++;
+                });
+                console.log("^^^^^^^^^^^^^^^^^^ try to remove: " + rippleList.length);
+                if (selectedIdx >= 0 && selectedIdx < data.length) {
+                    var select = document.getElementById("case_event_name");
+                    select.selectedIndex = selectedIdx;
+                    console.log("by caseid: " + desiredCase + " at: " + selectedIdx + " out of: " + currentId);
+                    // select.onchange(select_scene(selectedIdx));
+                    display_selected();
+                    if (desiredPerson != undefined) {
+                        scenevisualization();
+                    }
+                }
+            });
+        }
+    })
+}
 
 function mark_thing() {
     // if (operation_type == undefined)

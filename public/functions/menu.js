@@ -387,7 +387,7 @@ function singlePersonHandler(data) {
 
 function scenevisualization() {
     if (activeObject.element_type == "undefined" || activeObject.element_type != "involved_person_info") {
-        alert('必须首先以嫌疑人为炒作对象！而不是类型：' + activeObject.element_type);
+        alert('必须首先以嫌疑人为操作对象！而不是类型：' + activeObject.element_type);
         return;
     }
     $.get("/get_scene_by_person", {

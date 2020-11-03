@@ -1,4 +1,6 @@
 var express = require("express");
+var http = require('http');
+var url = require('url')
 var fs = require('fs');
 var formidable = require('formidable');
 var util = require('util');
@@ -34,9 +36,54 @@ const server = http.createServer(requestListener);
 server.listen(port, () => {
     console.log(`server running at ${port}/`);
 });*/
-app.use(express.static("public")).listen(8080);
-console.log("server started at 'http://127.0.0.1:8080/main.html'")
 
+// app.use(express.static("public")).listen(8080);
+
+/*
+    阶段一：
+    录入数据阶段：localhost:8080/main.html?replay=1&sceneId=8a8a8a8d7520e9930175262a9e44005b&type=1
+    阶段二：
+    情景研判阶段：localhost:8080/main.html?replay=1&personId=8a8a8a8d7520e9930175263b70e400aa&type=1
+    阶段三：
+    案件重建阶段：localhost:8080/main.html?replay=1&caseId=8a8a8a8d7520e993017526281b120058&type=1
+*/
+
+// app.use(express.static("public"));
+
+let predefinedCaseId = "hello";
+let predefinedSceneId = "hello";
+let predefinedPersonId = "hello";
+let predefinedType = "hello";
+
+app.use(express.static("public"), (req, res, next) => {
+    predefinedCaseId = req.param('caseId');
+    predefinedSceneId = req.param('sceneId');
+    predefinedPersonId = req.param('personId');
+    predefinedType = req.param('type');
+    if (predefinedPersonId != undefined) {
+        console.log("************************** person: " + predefinedPersonId + "," + predefinedType);
+    } else if (predefinedSceneId != undefined) {
+        console.log("************************** scene: " + predefinedSceneId + "," + predefinedType);
+    } else if (predefinedCaseId != undefined) {
+        console.log('************************** case: ' + predefinedCaseId + "," + predefinedType);
+    } else {
+        console.log("trigger: " + req.url + "," + predefinedCaseId);
+        next();
+    }
+}).listen(8080, (req, res, next) => {
+    predefinedCaseId = 9001;
+    console.log("server started at 'http://127.0.0.1:8080/main.html'")
+});
+
+// app.use(express.static("public")).listen(8080);
+// http.createServer(function (req, res) {
+//     const queryObject = url.parse(req.url, true).query;
+//     console.log(queryObject);
+// }).listen(8080);
+// let server = app.use(express.static("public")).listen(8080, function (req, res) {
+//     const queryObject = url.parse(req.getUrl(), true);
+//     console.log(queryObject);
+// });
 
 // c.on('ready', function () {
 //     console.log("ftp连'接成功");
@@ -201,7 +248,16 @@ app.get("/buttonClicked", function (req, res) {
     console.log(req.query.value); //get param
 });
 
+app.get("/get_case_by_scene", function (req, res) {
+    connection.query('SELECT cases_id from inquest_base_info where base_info_id = \"' + req.query.value + '\"', function (error, results, fields) {
+        if (error) throw error;
+        res.send(results);
+        res.end();
+    });
+})
+
 app.get("/get_cases", function (req, res) {
+    console.log("**********************" + req.query.name);
     connection.query('SELECT cases_name, cases_id from cases_set where DATA_STATE = 0', function (error, results, fields) {
         if (error) throw error;
         res.send(results);
@@ -299,7 +355,7 @@ app.get("/get_relation_from_corpse", function (req, res) {
 })
 
 app.get("/get_scenes", function (req, res) {
-    console.log("选定案件号：" + req.query.value);
+    console.log("选定案件号：" + req.query.value + "," + predefinedCaseId);
     case_id = req.query.value;
     connection.query('SELECT case_event_name, base_info_id from inquest_base_info where cases_id=\"' + req.query.value + "\"", function (error, results, fields) {
         if (error) throw error;
@@ -310,7 +366,7 @@ app.get("/get_scenes", function (req, res) {
 
 app.get("/get_scene_by_person", function (req, res) {
     console.log("当前个人信息：" + req.query.value);
-    connection.query('SELECT S.SCENE_CODE, S.SCENE_SEQ, S.BASE_INFO_ID, S.SITE_NAME, S.GOODS_ID, R.START_LON, R.START_LAT, R.START_HEIGHT, GOODS_ID, ELEMENT_ID FROM SCENARIO_QUALI S, inquest_base_info I, RELEVANT_T R WHERE S.MAIN_DATA_ID = \"' + req.query.value + '\" AND S.BASE_INFO_ID = I.CASES_ID AND I.BASE_INFO_ID = R.scene_id AND S.GOODS_ID = R.ELEMENT_ID', function (error, results, fields) {
+    connection.query('SELECT S.SCENE_CODE, S.SCENE_SEQ, I.BASE_INFO_ID as SCENE_ID, S.BASE_INFO_ID, S.SITE_NAME, S.GOODS_ID, R.START_LON, R.START_LAT, R.START_HEIGHT, GOODS_ID, ELEMENT_ID FROM SCENARIO_QUALI S, inquest_base_info I, RELEVANT_T R WHERE S.MAIN_DATA_ID = \"' + req.query.value + '\" AND S.BASE_INFO_ID = I.CASES_ID AND I.BASE_INFO_ID = R.scene_id AND S.GOODS_ID = R.ELEMENT_ID', function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -1373,6 +1429,7 @@ app.get('/get_full_photo', function (req, res, next) {
     });
 });
 app.get('/get_mark_goods', function (req, res, next) {
+    console.log("get_mark_goods triggered!");
     //form表单
     let currentSceneId = req.query.base_info_id;
     if (currentSceneId == undefined) currentSceneId = "";

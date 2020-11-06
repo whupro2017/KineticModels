@@ -67,7 +67,7 @@ app.use(express.static("public"), (req, res, next) => {
     } else if (predefinedCaseId != undefined) {
         console.log('************************** case: ' + predefinedCaseId + "," + predefinedType);
     } else {
-        console.log("trigger: " + req.url + "," + predefinedCaseId);
+        console.log("trigger: " + req.url);
         next();
     }
 }).listen(8080, (req, res, next) => {
@@ -355,7 +355,7 @@ app.get("/get_relation_from_corpse", function (req, res) {
 })
 
 app.get("/get_scenes", function (req, res) {
-    console.log("选定案件号：" + req.query.value + "," + predefinedCaseId);
+    console.log("选定案件号：" + req.query.value);
     case_id = req.query.value;
     connection.query('SELECT case_event_name, base_info_id from inquest_base_info where cases_id=\"' + req.query.value + "\"", function (error, results, fields) {
         if (error) throw error;

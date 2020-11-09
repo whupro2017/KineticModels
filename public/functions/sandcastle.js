@@ -400,10 +400,10 @@ function triggerCaseScene(desiredCase, desiredScene, desiredPerson) {
         data.forEach(function (json) {
             if (desiredCase.normalize() === json.cases_id.normalize())
                 selectedIdx = currentId;
-            // console.log("\t" + currentId + ":" + json.cases_id + "<->" + desiredCase);
+            console.log("\t" + currentId + ":" + json.cases_id + "<->" + desiredCase);
             currentId++;
         });
-        if (selectedIdx >= 0 && selectedIdx < casesIdMap.size) {
+        if (selectedIdx >= 0 && selectedIdx <= casesIdMap.size) {
             var select = document.getElementById("cases_name");
             select.selectedIndex = selectedIdx;
             console.log("by caseid: " + desiredCase + " at: " + selectedIdx + " out of: " + currentId);

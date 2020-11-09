@@ -73,19 +73,19 @@ function show_tileset() {
     console.log("Refresh view: " + scenePosition.offsetX + "," + scenePosition.offsetY + "," + scenePosition.offsetZ + "," + scenePosition.tilepath);
 
     // should consider w/o
-    clippingPlanes = new Cesium.ClippingPlaneCollection({
+    /*clippingPlanes = new Cesium.ClippingPlaneCollection({
         planes: [
             new Cesium.ClippingPlane(new Cesium.Cartesian3(0.0, 0.0, -1.0), 80.0)
         ],
         edgeWidth: 0.0
-    });
+    });*/
 
     currentTileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
         url: scenePosition.tilepath,
         maximumScreenSpaceError: 20,
         maximumNumberOfLoadedTiles: 500,
         // should consider w/o
-        clippingPlanes: clippingPlanes
+        /*clippingPlanes: clippingPlanes*/
     }));
     currentTileset.readyPromise.then(function (tileset) {
         if (scenePosition.absoluteX != .0 || scenePosition.absoluteY != 0) {
@@ -121,7 +121,7 @@ function show_tileset() {
         }
 
         // should consider w/o
-        var boundingSphere = tileset.boundingSphere;
+        /*var boundingSphere = tileset.boundingSphere;
         var radius = boundingSphere.radius;
         var cartographic = Cesium.Cartographic.fromCartesian(boundingSphere.center);
         for (var i = 0; i < clippingPlanes.length; ++i) {
@@ -142,7 +142,7 @@ function show_tileset() {
             });
             heatPlane = planeEntity;
             planeEntities.push(planeEntity);
-        }
+        }*/
 
         if (scenePosition.absoluteX != .0 || scenePosition.absoluteY != 0) {
             viewer.camera.setView({

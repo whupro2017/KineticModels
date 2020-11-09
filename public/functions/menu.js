@@ -1600,7 +1600,7 @@ function explosiveshow() {
     };
     //通过model1,model2设置参数
     var model1 = 'single';
-    var model2 = Models[model1][1];
+    var model2 = Models[model1][2];
     var location = [114.2169971748,30.3595086389];
     soilBlast(model1,model2,location);
     // show_layers();

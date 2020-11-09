@@ -1580,15 +1580,30 @@ function routeshow() {
 }
 
 function explosiveshow() {
-    startBZ1();
-    viewer.camera.setView({
-        destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
-        orientation: {
-            heading: 6.144391448663251,
-            pitch: -0.6870827796178554,
-            roll: 0.0
-        }
-    });
+    // startBZ1();
+    // viewer.camera.setView({
+    //     destination: {x: -2259556.172741972, y: 5023532.150760894, z: 3204801.7784513133},
+    //     orientation: {
+    //         heading: 6.144391448663251,
+    //         pitch: -0.6870827796178554,
+    //         roll: 0.0
+    //     }
+    // });
+    var Models = {
+        // "Concrete_hang_TNT":["0.5kg","1kg","2.5kg","2kg","3kg","4kg","6kg","8kg","12kg"],
+        "TNT1kg":["ne6","ne10","ne15","ne20","ne25","ne40","ne50","ne60","ne70","ne90"],
+        //"1.0kg"error
+        "TNT30cm":["0.2kg","0.5kg","1.0kg","1.5kg","2.0kg","3.0kg"],
+        "ruhua":["0.2kg","0.5kg","1.0kg","1.5kg","2.0kg","3kg","4kg","5kg","6kg","8kg"],
+        //上面三组数据模型一致
+        "single":["hang_2.5kgTNT","overground_2.5kgTNT","soilExplosion"]
+    };
+    //通过model1,model2设置参数
+    var model1 = 'single';
+    var model2 = Models[model1][1];
+    var location = [114.2169971748,30.3595086389];
+    soilBlast(model1,model2,location);
+    // show_layers();
 }
 
 function waveshow() {

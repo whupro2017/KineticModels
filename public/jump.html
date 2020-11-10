@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<script type="text/javascript">
+    var fulls = "left=0,screenX=0,top=0,screenY=0,scrollbars=1"; //定义弹出窗口的参数
+
+    var Sys = {};
+    var ua = navigator.userAgent.toLowerCase();
+    var re = /(msie|firefox|chrome|opera|version).*?([\d.]+)/;
+    var m = ua.match(re);
+    try {
+        Sys.browser = m[1].replace(/version/, "'safari");
+        Sys.ver = m[2];
+    } catch (e) {
+        console.log("getBrowserInfo fail.")
+    }
+    console.log(m)
+
+    if (window.screen) {
+        if (m.indexOf('fireofx') >= 0) {
+            var ah = screen.availHeight - 30;
+            var aw = screen.availWidth - 10;
+            fulls += ",height=" + ah;
+            fulls += ",innerHeight=" + ah;
+            fulls += ",width=" + aw;
+            fulls += ",innerWidth=" + aw;
+            fulls += ",resizable"
+        } else if (m.indexOf('chrome') >= 0) {
+            fulls = "fullscreen=1,secondscreen=1,screenindex=1";
+        }
+    } else {
+        if (m.indexOf('fireofx') >= 0) {
+            console.log("Chrome browser!")
+            fulls += ",resizable"; // 对于不支持screen属性的浏览器，可以手工进行最大化。 manually
+        }
+    }
+
+    function openNewWindow(url, name) {
+        console.log(fulls);
+        myWindow = window.open(url, name, fulls);
+        if (screen.availLeft > -1) {  //判断左屏还是右屏
+            myWindow.moveTo(-1000, 0); //1000是根据自己环境来设定的，应该有更好的方式。
+        } else {
+            myWindow.moveTo(1000, 0);
+        }
+    }
+
+    function goDemo() {
+        openNewWindow('http://localhost:8080/main.html?replay=1&sceneId=8a8a8a8d7520e9930175262a9e44005b&type=1', '');
+    }
+</script>
+
+<body>
+<h1>这是主屏</h1>
+<button onclick="goDemo()">跳到副屏</button>
+</body>
+
+</html>

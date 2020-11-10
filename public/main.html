@@ -1501,8 +1501,11 @@
         navigationInstructionsInitiallyVisible: false,
         navigationHelpButton: false,     //是否显示帮助信息控件
         selectionIndicator: false,        //是否显示指示器组件
-        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        imageryProvider: /*new Cesium.ArcGisMapServerImageryProvider({
             url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+        })*/
+        new Cesium.createTileMapServiceImageryProvider({
+            url: 'public/data/sky/tileset.xml'
         }),
         /*terrainProvider: new Cesium.CesiumTerrainProvider({
             url: 'http://localhost:9000/terrain/47a16750140a11eabbe9d917023534d8'

@@ -171,7 +171,7 @@ function explodeModelClose() {
 
 function display_selected() {
     select_scene(document.getElementById("case_event_name").selectedIndex);
-    show_tileset();
+    // show_tileset();
     operation_type = "display_selected";
 }
 

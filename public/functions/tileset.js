@@ -154,6 +154,9 @@ function show_tileset() {
                 }
             });
             console.log("原始坐标基础加载" + scenePosition.absoluteX + "," + scenePosition.absoluteY + "," + scenePosition.absoluteZ);
+            viewer.camera.flyTo({
+                destination: Cesium.Cartesian3.fromDegrees(scenePosition.absoluteX, scenePosition.absoluteY, 1500)
+            });
         } else {
             viewer.camera.setView({
                 destination: Cesium.Cartesian3.fromDegrees(scenePosition.offsetX, scenePosition.offsetY, 1500),
@@ -164,6 +167,9 @@ function show_tileset() {
                 }
             });
             console.log("变换坐标加载" + scenePosition.offsetX + "," + scenePosition.offsetY + "," + scenePosition.offsetZ);
+            viewer.camera.flyTo({
+                destination: Cesium.Cartesian3.fromDegrees(scenePosition.offsetX, scenePosition.offsetY, 1500)
+            });
         }
     });
     if (activeObject != undefined && activeObject.element_id != "undefined" && activeObject.element_type != "undefined") {
@@ -172,4 +178,4 @@ function show_tileset() {
     }
 }
 
-show_tileset();
+// show_tileset();

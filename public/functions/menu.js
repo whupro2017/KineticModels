@@ -22,6 +22,8 @@ var redirect_pages = {
     "involved_goods_info": "involvedGoodsInfo",
     "involved_person_info": "involvedPersonInfo",
     "corpse_info": "bodyBasic",
+    "ele_info": "eleInfo",
+    "medium_info": "medium",
     "scene_file_evidence": "file",
     "scene_footprint": "foot",
     "scene_handprint": "hand",
@@ -32,10 +34,17 @@ var redirect_title = {
     "involved_goods_info": "involvedGoodsInfo",
     "involved_person_info": "involvedPersonInfo",
     "corpse_info": "body",
+    "ele_info": "eleInfo",
+    "medium_info": "mediumInfo",
     "scene_file_evidence": "file",
     "scene_footprint": "foot",
     "scene_handprint": "hand",
     "scene_toolmark": "tool"
+}
+var sexmapping = {
+    '0': '未知',
+    '1': '男',
+    '2': '女'
 }
 
 /*
@@ -430,7 +439,7 @@ function get_scenes(idx) {
         $("#case_event_name").append("<option value='volvo' hidden>ID</option>");
         let sceneIdx = 1;
         scenes.forEach(function (json) {
-            $("#case_event_name").append('<option value=' + json.case_event_name + ' >' + json.case_event_name + '</option>');
+            $("#case_event_name").append('<option value=' + json.case_event_name + ' >' + json.site_name + '</option>');
             sceneIdMap.set(sceneIdx++, json);
         });
     })
@@ -441,20 +450,44 @@ function get_scenes(idx) {
             if (json.site_type == '0') {
                 center_lon = json.start_lon;
                 center_lat = json.start_lat;
+                /*scenePosition.scale = json.scale;
+                scenePosition.offsetX = json.start_lon;
+                scenePosition.offsetY = json.start_lat;
+                scenePosition.offsetZ = json.start_height;
+                scenePosition.absoluteX = json.end_lon;
+                scenePosition.absoluteY = json.end_lat;
+                scenePosition.absoluteZ = json.end_height;
+                scenePosition.rotateX = json.angle_lon;
+                scenePosition.rotateY = json.angle_lat;
+                scenePosition.rotateZ = json.angle_height;
+                scenePosition.tilepath = json.scene_path;*/
                 // alert("hit center for scene: " + casesIdMap.get(idx).cases_id + ' data: ' + data.toString());
             }
-        })
-        case_scenes.forEach(function (json) {
-            if (Math.abs(json.start_lon - center_lon) > limit_lon)
-                limit_lon = Math.abs(json.start_lon - center_lon);
-            if (Math.abs(json.start_lat - center_lat) > limit_lat)
-                limit_lat = Math.abs(json.start_lat - center_lat);
         });
+        if (center_lon === 0 || center_lat === 0) {
+            if (case_scenes.length > 0) {
+                // alert("idx: " + idx);
+                center_lon = case_scenes[0].start_lon;
+                center_lat = case_scenes[0].start_lat;
+            }
+        }
+        case_scenes.forEach(function (json) {
+            if (json.site_type != '0' && Math.abs(json.start_lon - center_lon) > limit_lon) {
+                limit_lon = Math.abs(json.start_lon - center_lon);
+            }
+            if (json.site_type != '0' && Math.abs(json.start_lat - center_lat) > limit_lat) {
+                limit_lat = Math.abs(json.start_lat - center_lat);
+            }
+        });
+        /*}*/
         // alert(center_lon + ", " + center_lat + ", " + limit_lon * 111000 + ", " + limit_lat * 111000);
         if (limit_lon == 0) limit_lon = (1000).toFixed(2) / 444000;
         if (limit_lat == 0) limit_lat = (1000).toFixed(2) / 444000;
         emptyRipple();
         set_view(center_lon, center_lat, Math.max(limit_lon, limit_lat) * 444000);
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(center_lon, center_lat, 3000)
+        });
         case_scenes.forEach(function (json) {
             if (json.site_type == '0') {
                 showwavered(json.start_lon, json.start_lat, Math.max(limit_lon, limit_lat) * 55000);
@@ -518,7 +551,7 @@ function get_inquest_base_info(id) {
         x.style.cssText = "display:block"
     }
 
-    $.get("/get_inquest_base_info", {}, function (data) {
+    $.get("/get_inquest_base_info", {"value": currentSceneId}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
@@ -559,7 +592,7 @@ function get_field_commander(id) {
         x.style.cssText = "display:block"
     }
 
-    $.get("/get_field_commander", {}, function (data) {
+    $.get("/get_field_commander", {"value": currentSceneId}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
@@ -619,7 +652,7 @@ function get_site_changes(id) {
         x.style.cssText = "display:block"
     }
 
-    $.get("/get_site_changes", {}, function (data) {
+    $.get("/get_site_changes", {"value": currentSceneId}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
@@ -901,7 +934,7 @@ function get_case_conclusion_info(id) {
         x.style.cssText = "display:block"
     }
 
-    $.get("/get_case_conclusion_info", {}, function (data) {
+    $.get("/get_case_conclusion_info", {"value": currentCaseId}, function (data) {
         if (data.msg != undefined) {
             alert(data.msg);
             return;
@@ -955,6 +988,79 @@ function get_ele_info(id) {
     });
 }
 
+function mark_goods(id) {
+    table = "#mark_goods_table";
+    $(".full_view").css("display", "none");
+    var x = document.getElementById(id);
+    if (x.style.display == "block") {
+        x.style.cssText = "display:none"
+    } else {
+        x.style.cssText = "display:block"
+    }
+    console.log("Current scene: " + currentSceneId + " current case: " + currentCaseId);
+    $.get("/get_mark_goods", {"value": currentSceneId}, function (data) {
+        if (data.msg != undefined) {
+            alert(data.msg);
+            return;
+        }
+        console.log(data);
+
+        jQuery(table).jqGrid({
+            //direction: "rtl",
+            datatype: "local",
+            data: data,
+            height: 250,
+            colColor: 'white',
+            colNames: ['痕迹名称', '编号', '提取位置', 'ID'],
+            colModel: [
+                {name: 'MARK_GOODS_NAME', index: 'MARK_GOODS_NAME', width: 60, editable: false},//cellclassname: colorFondo},
+                {name: 'EXTRACT_POSITION', index: 'EXTRACT_POSITION', width: 130, editable: false},
+                {name: 'MARK_GOODS_CODE', index: 'MARK_GOODS_CODE', width: 80, editable: false},
+                {name: 'MARK_GOODS_ID', index: 'MARK_GOODS_ID', width: 0, editable: false, hidden: true}
+            ],
+            gridview: true,
+            viewrecords: true,
+            toppager: false,
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+            autowidth: false,
+            fixed: true,
+            beforeSelectRow: function () {
+                $("#mark_goods_table").jqGrid('resetSelection');
+                return (true);
+            },
+            onSelectRow: function (id) {
+                var grid_selector = "#mark_goods_table";
+                //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                var rowid = $(grid_selector).getGridParam("selrow");
+                var rowData = $(grid_selector).getRowData(rowid);
+                activeObject.element_type = 'mark_goods';
+                activeObject.element_id = rowData.MARK_GOODS_ID;
+                alert(rowData.MARK_GOODS_NAME + ":" + rowData.MARK_GOODS_ID + ":" + activeObject.element_type);
+                operation_type = "mark_elements";
+            },
+        });
+        var gridData = $(table).jqGrid("getRowData");
+        for (var i = gridData.length; i >= 0; i--) {
+            $(table).jqGrid("delRowData", i);
+        }
+        let counter = 0;
+        data.forEach(function (json) {
+            var rowData = {
+                MARK_GOODS_NAME: json.MARK_GOODS_NAME,
+                EXTRACT_POSITION: json.EXTRACT_POSITION,
+                MARK_GOODS_CODE: json.MARK_GOODS_CODE,
+                MARK_GOODS_ID: json.MARK_GOODS_ID
+            };
+            // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+            $(table).jqGrid("addRowData", counter, rowData);
+            counter++;
+        });
+        $(table).jqGrid().trigger('reloadGrid');
+    });
+}
+
 function get_corpse_info(id) {
     table = "#corpse_info_table";
     $(".full_view").css("display", "none");
@@ -979,11 +1085,12 @@ function get_corpse_info(id) {
             data: data,
             height: 250,
             colColor: 'white',
-            colNames: ['尸体名称', '体位信息', '尸体ID'],
+            colNames: ['尸体名称', '编号', '发现地点', 'ID'],
             colModel: [
                 {name: 'CORPSE_INFO_NAME', index: 'CORPSE_INFO_NAME', width: 60, editable: false},//cellclassname: colorFondo},
+                {name: 'CORPSE_INFO_CODE', index: 'CORPSE_INFO_CODE', width: 80, editable: false},
                 {name: 'CORPSE_FIND_PLACE', index: 'CORPSE_FIND_PLACE', width: 130, editable: false},
-                {name: 'CORPSE_INFO_ID', index: 'CORPSE_INFO_ID', width: 80, editable: false}
+                {name: 'CORPSE_INFO_ID', index: 'CORPSE_INFO_ID', width: 0, editable: false, hidden: true}
             ],
             gridview: true,
             viewrecords: true,
@@ -992,9 +1099,13 @@ function get_corpse_info(id) {
             multiboxonly: true,
             autowidth: false,
             fixed: true,
+            beforeSelectRow: function () {
+                $("#corpse_info_table").jqGrid('resetSelection');
+                return (true);
+            },
             onSelectRow: function (id) {
                 var grid_selector = "#corpse_info_table";
-                //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                // var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
                 var rowid = $(grid_selector).getGridParam("selrow");
                 var rowData = $(grid_selector).getRowData(rowid);
                 activeObject.element_type = 'corpse_info';
@@ -1011,6 +1122,7 @@ function get_corpse_info(id) {
         data.forEach(function (json) {
             var rowData = {
                 CORPSE_INFO_NAME: json.CORPSE_INFO_NAME,
+                CORPSE_INFO_CODE: json.CORPSE_INFO_CODE,
                 CORPSE_FIND_PLACE: json.CORPSE_FIND_PLACE,
                 CORPSE_INFO_ID: json.CORPSE_INFO_ID
             };
@@ -1045,18 +1157,26 @@ function get_involved_goods_info(id) {
             data: data,
             height: 250,
             colColor: 'white',
-            colNames: ['物品名称', '创建时间', '物品ID'],
+            colNames: ['物品名称', '编号', '提取位置', 'ID'],
             colModel: [
-                {name: 'INVOLVED_GOODS_NAME', index: 'INVOLVED_GOODS_NAME', width: 60, editable: false},//cellclassname: colorFondo},
-                {
+                {name: 'INVOLVED_GOODS_NAME', index: 'INVOLVED_GOODS_NAME', width: 80, editable: false},//cellclassname: colorFondo},
+                {name: 'INVOLVED_GOODS_CODE', index: 'INVOLVED_GOODS_CODE', width: 110, editable: false},
+                /*{
                     name: 'CREATE_TIME',
                     index: 'CREATE_TIME',
                     sortable: true,
                     sorttype: "string",
                     width: 130,
                     editable: false
-                },
-                {name: 'INVOLVED_GOODS_INFO_ID', index: 'INVOLVED_GOODS_INFO_ID', width: 80, editable: false}
+                },*/
+                {name: 'EXTRACT_POSITION', index: 'EXTRACT_POSITION', width: 80, editable: false},
+                {
+                    name: 'INVOLVED_GOODS_INFO_ID',
+                    index: 'INVOLVED_GOODS_INFO_ID',
+                    width: 0,
+                    editable: false,
+                    hidden: true
+                }
             ],
             gridview: true,
             viewrecords: true,
@@ -1066,6 +1186,10 @@ function get_involved_goods_info(id) {
             multiboxonly: true,
             autowidth: false,
             fixed: true,
+            beforeSelectRow: function () {
+                $("#involved_goods_info_table").jqGrid('resetSelection');
+                return (true);
+            },
             onSelectRow: function (id) {
                 var grid_selector = "#involved_goods_info_table";
                 //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
@@ -1087,7 +1211,8 @@ function get_involved_goods_info(id) {
         data.forEach(function (json) {
             var rowData = {
                 INVOLVED_GOODS_NAME: json.INVOLVED_GOODS_NAME,
-                CREATE_TIME: json.CREATE_TIME,
+                INVOLVED_GOODS_CODE: json.INVOLVED_GOODS_CODE,
+                EXTRACT_POSITION: json.EXTRACT_POSITION,
                 INVOLVED_GOODS_INFO_ID: json.INVOLVED_GOODS_INFO_ID
             };
             // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
@@ -1122,18 +1247,19 @@ function get_involved_person_info(id) {
             data: data,
             height: 250,
             colColor: 'white',
-            colNames: ['人员名称', '创建时间', '人员ID'],
+            colNames: ['人员名称', '性别', '年龄', '人员编号', 'ID'],
             colModel: [
                 {name: 'INVOLVED_PERSON_NAME', index: 'INVOLVED_PERSON_NAME', width: 60, editable: false},//cellclassname: colorFondo},
+                {name: 'SEX', index: 'SEX', width: 40, editable: false},
+                {name: 'AGE', index: 'AGE', width: 60, editable: false},
+                {name: 'INVOLVED_PERSON_CODE', index: 'INVOLVED_PERSON_CODE', width: 110, editable: false},
                 {
-                    name: 'CREATE_TIME',
-                    index: 'CREATE_TIME',
-                    sortable: true,
-                    sorttype: "string",
-                    width: 130,
-                    editable: false
-                },
-                {name: 'INVOLVED_PERSON_INFO_ID', index: 'INVOLVED_PERSON_INFO_ID', width: 80, editable: false}
+                    name: 'INVOLVED_PERSON_INFO_ID',
+                    index: 'INVOLVED_PERSON_INFO_ID',
+                    width: 0,
+                    editable: false,
+                    hidden: true
+                }
             ],
             gridview: true,
             viewrecords: true,
@@ -1143,6 +1269,10 @@ function get_involved_person_info(id) {
             multiboxonly: true,
             autowidth: false,
             fixed: true,
+            beforeSelectRow: function () {
+                $("#involved_goods_person_table").jqGrid('resetSelection');
+                return (true);
+            },
             onSelectRow: function (id) {
                 var grid_selector = "#involved_goods_person_table";
                 //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
@@ -1162,8 +1292,484 @@ function get_involved_person_info(id) {
         data.forEach(function (json) {
             var rowData = {
                 INVOLVED_PERSON_NAME: json.INVOLVED_PERSON_NAME,
-                CREATE_TIME: json.CREATE_TIME,
+                SEX: sexmapping[json.SEX],
+                AGE: json.AGE,
+                INVOLVED_PERSON_CODE: json.INVOLVED_PERSON_CODE,
                 INVOLVED_PERSON_INFO_ID: json.INVOLVED_PERSON_INFO_ID
+            };
+            // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+            $(table).jqGrid("addRowData", counter, rowData);
+            counter++;
+        });
+        $(table).jqGrid().trigger('reloadGrid');
+    });
+}
+
+function get_wifi_media_info(id) {
+    table = "#wifi_media_info_table";
+    $(".full_view").css("display", "none");
+    var x = document.getElementById(id);
+    if (x.style.display == "block") {
+        x.style.cssText = "display:none"
+    } else {
+        x.style.cssText = "display:block"
+    }
+
+    console.log("Current scene: " + currentSceneId + " current case: " + currentCaseId);
+    $.get("/get_wifi_media_info", {"base_info_id": currentSceneId}, function (data) {
+        if (data.msg != undefined) {
+            alert(data.msg);
+            return;
+        }
+        console.log(data);
+
+        jQuery(table).jqGrid({
+            //direction: "rtl",
+            datatype: "local",
+            data: data,
+            height: 250,
+            colColor: 'white',
+            colNames: ['WIFI名称', '编号', '提取位置', 'ID'],
+            colModel: [
+                {name: 'MEDIA_NAME', index: 'MEDIA_NAME', width: 60, editable: false},
+                {name: 'MEDIA_CODE', index: 'MEDIA_CODE', width: 80, editable: false},
+                {name: 'EXTRACT_LOCATION', index: 'EXTRACT_LOCATION', width: 130, editable: false},
+                {
+                    name: 'MEDIA_ENVIRONMENT_INFO_ID',
+                    index: 'MEDIA_ENVIRONMENT_INFO_ID',
+                    width: 0,
+                    editable: false,
+                    hidden: true
+                }
+            ],
+            gridview: true,
+            viewrecords: true,
+            toppager: false,
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+            autowidth: false,
+            fixed: true,
+            beforeSelectRow: function () {
+                $("#wifi_media_info_table").jqGrid('resetSelection');
+                return (true);
+            },
+            onSelectRow: function (id) {
+                var grid_selector = "#wifi_media_info_table";
+                //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                var rowid = $(grid_selector).getGridParam("selrow");
+                var rowData = $(grid_selector).getRowData(rowid);
+                activeObject.element_type = 'ele_info';
+                activeObject.element_id = rowData.MEDIA_ENVIRONMENT_INFO_ID;
+                alert(rowData.MEDIA_NAME + ":" + rowData.MEDIA_ENVIRONMENT_INFO_ID + ":" + activeObject.element_type);
+                operation_type = "mark_elements";
+            },
+        });
+        var gridData = $(table).jqGrid("getRowData");
+        for (var i = gridData.length; i >= 0; i--) {
+            $(table).jqGrid("delRowData", i);
+        }
+        let counter = 0;
+        data.forEach(function (json) {
+            var rowData = {
+                MEDIA_NAME: json.MEDIA_NAME,
+                EXTRACT_LOCATION: json.EXTRACT_LOCATION,
+                MEDIA_CODE: json.MEDIA_CODE,
+                MEDIA_ENVIRONMENT_INFO_ID: json.MEDIA_ENVIRONMENT_INFO_ID
+            };
+            // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+            $(table).jqGrid("addRowData", counter, rowData);
+            counter++;
+        });
+        $(table).jqGrid().trigger('reloadGrid');
+    });
+}
+
+function get_base_media_info(id) {
+    table = "#base_media_info_table";
+    $(".full_view").css("display", "none");
+    var x = document.getElementById(id);
+    if (x.style.display == "block") {
+        x.style.cssText = "display:none"
+    } else {
+        x.style.cssText = "display:block"
+    }
+
+    console.log("Current scene: " + currentSceneId + " current case: " + currentCaseId);
+    $.get("/get_base_media_info", {"base_info_id": currentSceneId}, function (data) {
+        if (data.msg != undefined) {
+            alert(data.msg);
+            return;
+        }
+        console.log(data);
+
+        jQuery(table).jqGrid({
+            //direction: "rtl",
+            datatype: "local",
+            data: data,
+            height: 250,
+            colColor: 'white',
+            colNames: ['基站名称', '编号', '提取位置', 'ID'],
+            colModel: [
+                {name: 'MEDIA_NAME', index: 'MEDIA_NAME', width: 60, editable: false},
+                {name: 'MEDIA_CODE', index: 'MEDIA_CODE', width: 80, editable: false},
+                {name: 'EXTRACT_LOCATION', index: 'EXTRACT_LOCATION', width: 130, editable: false},
+                {
+                    name: 'MEDIA_ENVIRONMENT_INFO_ID',
+                    index: 'MEDIA_ENVIRONMENT_INFO_ID',
+                    width: 0,
+                    editable: false,
+                    hidden: true
+                }
+            ],
+            gridview: true,
+            viewrecords: true,
+            toppager: false,
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+            autowidth: false,
+            fixed: true,
+            beforeSelectRow: function () {
+                $("#base_media_info_table").jqGrid('resetSelection');
+                return (true);
+            },
+            onSelectRow: function (id) {
+                var grid_selector = "#base_media_info_table";
+                //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                var rowid = $(grid_selector).getGridParam("selrow");
+                var rowData = $(grid_selector).getRowData(rowid);
+                activeObject.element_type = 'ele_info';
+                activeObject.element_id = rowData.MEDIA_ENVIRONMENT_INFO_ID;
+                alert(rowData.MEDIA_NAME + ":" + rowData.MEDIA_ENVIRONMENT_INFO_ID + ":" + activeObject.element_type);
+                operation_type = "mark_elements";
+            },
+        });
+        var gridData = $(table).jqGrid("getRowData");
+        for (var i = gridData.length; i >= 0; i--) {
+            $(table).jqGrid("delRowData", i);
+        }
+        let counter = 0;
+        data.forEach(function (json) {
+            var rowData = {
+                MEDIA_NAME: json.MEDIA_NAME,
+                EXTRACT_LOCATION: json.EXTRACT_LOCATION,
+                MEDIA_CODE: json.MEDIA_CODE,
+                MEDIA_ENVIRONMENT_INFO_ID: json.MEDIA_ENVIRONMENT_INFO_ID
+            };
+            // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+            $(table).jqGrid("addRowData", counter, rowData);
+            counter++;
+        });
+        $(table).jqGrid().trigger('reloadGrid');
+    });
+}
+
+function get_bluetooth_media_info(id) {
+    table = "#bluetooth_media_info_table";
+    $(".full_view").css("display", "none");
+    var x = document.getElementById(id);
+    if (x.style.display == "block") {
+        x.style.cssText = "display:none"
+    } else {
+        x.style.cssText = "display:block"
+    }
+
+    console.log("Current scene: " + currentSceneId + " current case: " + currentCaseId);
+    $.get("/get_bluetooth_media_info", {"base_info_id": currentSceneId}, function (data) {
+        if (data.msg != undefined) {
+            alert(data.msg);
+            return;
+        }
+        console.log(data);
+
+        jQuery(table).jqGrid({
+            //direction: "rtl",
+            datatype: "local",
+            data: data,
+            height: 250,
+            colColor: 'white',
+            colNames: ['蓝牙名称', '编号', '提取位置', 'ID'],
+            colModel: [
+                {name: 'MEDIA_NAME', index: 'MEDIA_NAME', width: 60, editable: false},
+                {name: 'MEDIA_CODE', index: 'MEDIA_CODE', width: 80, editable: false},
+                {name: 'EXTRACT_LOCATION', index: 'EXTRACT_LOCATION', width: 130, editable: false},
+                {
+                    name: 'MEDIA_ENVIRONMENT_INFO_ID',
+                    index: 'MEDIA_ENVIRONMENT_INFO_ID',
+                    width: 0,
+                    editable: false,
+                    hidden: true
+                }
+            ],
+            gridview: true,
+            viewrecords: true,
+            toppager: false,
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+            autowidth: false,
+            fixed: true,
+            beforeSelectRow: function () {
+                $("#bluebooth_media_info_table").jqGrid('resetSelection');
+                return (true);
+            },
+            onSelectRow: function (id) {
+                var grid_selector = "#bluebooth_media_info_table";
+                //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                var rowid = $(grid_selector).getGridParam("selrow");
+                var rowData = $(grid_selector).getRowData(rowid);
+                activeObject.element_type = 'ele_info';
+                activeObject.element_id = rowData.MEDIA_ENVIRONMENT_INFO_ID;
+                alert(rowData.MEDIA_NAME + ":" + rowData.MEDIA_ENVIRONMENT_INFO_ID + ":" + activeObject.element_type);
+                operation_type = "mark_elements";
+            },
+        });
+        var gridData = $(table).jqGrid("getRowData");
+        for (var i = gridData.length; i >= 0; i--) {
+            $(table).jqGrid("delRowData", i);
+        }
+        let counter = 0;
+        data.forEach(function (json) {
+            var rowData = {
+                MEDIA_NAME: json.MEDIA_NAME,
+                EXTRACT_LOCATION: json.EXTRACT_LOCATION,
+                MEDIA_CODE: json.MEDIA_CODE,
+                MEDIA_ENVIRONMENT_INFO_ID: json.MEDIA_ENVIRONMENT_INFO_ID
+            };
+            // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+            $(table).jqGrid("addRowData", counter, rowData);
+            counter++;
+        });
+        $(table).jqGrid().trigger('reloadGrid');
+    });
+}
+
+function get_rfid_media_info(id) {
+    table = "#rfid_media_info_table";
+    $(".full_view").css("display", "none");
+    var x = document.getElementById(id);
+    if (x.style.display == "block") {
+        x.style.cssText = "display:none"
+    } else {
+        x.style.cssText = "display:block"
+    }
+
+    console.log("Current scene: " + currentSceneId + " current case: " + currentCaseId);
+    $.get("/get_rfid_media_info", {"base_info_id": currentSceneId}, function (data) {
+        if (data.msg != undefined) {
+            alert(data.msg);
+            return;
+        }
+        console.log(data);
+
+        jQuery(table).jqGrid({
+            //direction: "rtl",
+            datatype: "local",
+            data: data,
+            height: 250,
+            colColor: 'white',
+            colNames: ['RFID名称', '编号', '提取位置', 'ID'],
+            colModel: [
+                {name: 'MEDIA_NAME', index: 'MEDIA_NAME', width: 60, editable: false},
+                {name: 'MEDIA_CODE', index: 'MEDIA_CODE', width: 80, editable: false},
+                {name: 'EXTRACT_LOCATION', index: 'EXTRACT_LOCATION', width: 130, editable: false},
+                {
+                    name: 'MEDIA_ENVIRONMENT_INFO_ID',
+                    index: 'MEDIA_ENVIRONMENT_INFO_ID',
+                    width: 0,
+                    editable: false,
+                    hidden: true
+                }
+            ],
+            gridview: true,
+            viewrecords: true,
+            toppager: false,
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+            autowidth: false,
+            fixed: true,
+            beforeSelectRow: function () {
+                $("#rfid_media_info_table").jqGrid('resetSelection');
+                return (true);
+            },
+            onSelectRow: function (id) {
+                var grid_selector = "#rfid_media_info_table";
+                //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                var rowid = $(grid_selector).getGridParam("selrow");
+                var rowData = $(grid_selector).getRowData(rowid);
+                activeObject.element_type = 'ele_info';
+                activeObject.element_id = rowData.MEDIA_ENVIRONMENT_INFO_ID;
+                alert(rowData.MEDIA_NAME + ":" + rowData.MEDIA_ENVIRONMENT_INFO_ID + ":" + activeObject.element_type);
+                operation_type = "mark_elements";
+            },
+        });
+        var gridData = $(table).jqGrid("getRowData");
+        for (var i = gridData.length; i >= 0; i--) {
+            $(table).jqGrid("delRowData", i);
+        }
+        let counter = 0;
+        data.forEach(function (json) {
+            var rowData = {
+                MEDIA_NAME: json.MEDIA_NAME,
+                EXTRACT_LOCATION: json.EXTRACT_LOCATION,
+                MEDIA_CODE: json.MEDIA_CODE,
+                MEDIA_ENVIRONMENT_INFO_ID: json.MEDIA_ENVIRONMENT_INFO_ID
+            };
+            // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+            $(table).jqGrid("addRowData", counter, rowData);
+            counter++;
+        });
+        $(table).jqGrid().trigger('reloadGrid');
+    });
+}
+
+function get_medium_info(id) {
+    table = "#medium_info_table";
+    $(".full_view").css("display", "none");
+    var x = document.getElementById(id);
+    if (x.style.display == "block") {
+        x.style.cssText = "display:none"
+    } else {
+        x.style.cssText = "display:block"
+    }
+
+    console.log("Current scene: " + currentSceneId + " current case: " + currentCaseId);
+    $.get("/get_medium_info", {"case_id": currentCaseId}, function (data) {
+        if (data.msg != undefined) {
+            alert(data.msg);
+            return;
+        }
+        console.log(data);
+
+        jQuery(table).jqGrid({
+            //direction: "rtl",
+            datatype: "local",
+            data: data,
+            height: 250,
+            colColor: 'white',
+            colNames: ['媒介名称', '编号', '提取位置', 'ID'],
+            colModel: [
+                {name: 'MEDIUM_INFO_NAME', index: 'MEDIUM_INFO_NAME', width: 60, editable: false},
+                {name: 'MEDIUM_CODE', index: 'MEDIUM_CODE', width: 80, editable: false},
+                {name: 'EXTRACT_POSITION', index: 'EXTRACT_POSITION', width: 130, editable: false},
+                {name: 'MEDIUM_INFO_ID', index: 'MEDIUM_INFO_ID', width: 0, editable: false, hidden: true}
+            ],
+            gridview: true,
+            viewrecords: true,
+            toppager: false,
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+            autowidth: false,
+            fixed: true,
+            beforeSelectRow: function () {
+                $("#medium_info_table").jqGrid('resetSelection');
+                return (true);
+            },
+            onSelectRow: function (id) {
+                var grid_selector = "#medium_info_table";
+                //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                var rowid = $(grid_selector).getGridParam("selrow");
+                var rowData = $(grid_selector).getRowData(rowid);
+                activeObject.element_type = 'medium_info';
+                activeObject.element_id = rowData.MEDIUM_INFO_ID;
+                alert(rowData.MEDIUM_INFO_NAME + ":" + rowData.MEDIUM_INFO_ID + ":" + activeObject.element_type);
+                operation_type = "mark_elements";
+            },
+        });
+        var gridData = $(table).jqGrid("getRowData");
+        for (var i = gridData.length; i >= 0; i--) {
+            $(table).jqGrid("delRowData", i);
+        }
+        let counter = 0;
+        data.forEach(function (json) {
+            var rowData = {
+                MEDIUM_INFO_NAME: json.MEDIUM_INFO_NAME,
+                EXTRACT_POSITION: json.EXTRACT_POSITION,
+                MEDIUM_CODE: json.MEDIUM_CODE,
+                MEDIUM_INFO_ID: json.MEDIUM_INFO_ID
+            };
+            // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
+            $(table).jqGrid("addRowData", counter, rowData);
+            counter++;
+        });
+        $(table).jqGrid().trigger('reloadGrid');
+    });
+}
+
+function get_media_info(id) {
+    table = "#media_info_table";
+    $(".full_view").css("display", "none");
+    var x = document.getElementById(id);
+    if (x.style.display == "block") {
+        x.style.cssText = "display:none"
+    } else {
+        x.style.cssText = "display:block"
+    }
+
+    console.log("Current scene: " + currentSceneId + " current case: " + currentCaseId);
+    $.get("/get_media_info", {"base_info_id": currentSceneId}, function (data) {
+        if (data.msg != undefined) {
+            alert(data.msg);
+            return;
+        }
+        console.log(data);
+
+        jQuery(table).jqGrid({
+            //direction: "rtl",
+            datatype: "local",
+            data: data,
+            height: 250,
+            colColor: 'white',
+            colNames: ['媒介名称', '编号', '提取位置', 'ID'],
+            colModel: [
+                {name: 'MEDIA_NAME', index: 'MEDIA_NAME', width: 60, editable: false},
+                {name: 'MEDIA_CODE', index: 'MEDIA_CODE', width: 80, editable: false},
+                {name: 'EXTRACT_LOCATION', index: 'EXTRACT_LOCATION', width: 130, editable: false},
+                {
+                    name: 'MEDIA_ENVIRONMENT_INFO_ID',
+                    index: 'MEDIA_ENVIRONMENT_INFO_ID',
+                    width: 0,
+                    editable: false,
+                    hidden: true
+                }
+            ],
+            gridview: true,
+            viewrecords: true,
+            toppager: false,
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+            autowidth: false,
+            fixed: true,
+            beforeSelectRow: function () {
+                $("#media_info_table").jqGrid('resetSelection');
+                return (true);
+            },
+            onSelectRow: function (id) {
+                var grid_selector = "#media_info_table";
+                //var selecs = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                var rowid = $(grid_selector).getGridParam("selrow");
+                var rowData = $(grid_selector).getRowData(rowid);
+                activeObject.element_type = 'medium_info';
+                activeObject.element_id = rowData.MEDIA_ENVIRONMENT_INFO_ID;
+                alert(rowData.MEDIA_NAME + ":" + rowData.MEDIA_ENVIRONMENT_INFO_ID + ":" + activeObject.element_type);
+                operation_type = "mark_elements";
+            },
+        });
+        var gridData = $(table).jqGrid("getRowData");
+        for (var i = gridData.length; i >= 0; i--) {
+            $(table).jqGrid("delRowData", i);
+        }
+        let counter = 0;
+        data.forEach(function (json) {
+            var rowData = {
+                MEDIA_NAME: json.MEDIA_NAME,
+                EXTRACT_LOCATION: json.EXTRACT_LOCATION,
+                MEDIA_CODE: json.MEDIA_CODE,
+                MEDIA_ENVIRONMENT_INFO_ID: json.MEDIA_ENVIRONMENT_INFO_ID
             };
             // if (counter < 2) alert("put: " + counter + ":" + rowData.MARK_GOODS_NAME);
             $(table).jqGrid("addRowData", counter, rowData);
@@ -1444,7 +2050,7 @@ function select_scene(selectedIndex) {
             console.log('complete');
         },
         success: function (data) {
-            console.log("选择场景号：" + currentSceneId);//选择场景
+            console.log("update 选择场景号：" + currentSceneId);//选择场景
             console.log(data);//
             var relevant_info = data.relevant_info;
             for (var i = 0; i < relevant_info.length; i++) {
@@ -1591,18 +2197,18 @@ function explosiveshow() {
     // });
     var Models = {
         // "Concrete_hang_TNT":["0.5kg","1kg","2.5kg","2kg","3kg","4kg","6kg","8kg","12kg"],
-        "TNT1kg":["ne6","ne10","ne15","ne20","ne25","ne40","ne50","ne60","ne70","ne90"],
+        "TNT1kg": ["ne6", "ne10", "ne15", "ne20", "ne25", "ne40", "ne50", "ne60", "ne70", "ne90"],
         //"1.0kg"error
-        "TNT30cm":["0.2kg","0.5kg","1.0kg","1.5kg","2.0kg","3.0kg"],
-        "ruhua":["0.2kg","0.5kg","1.0kg","1.5kg","2.0kg","3kg","4kg","5kg","6kg","8kg"],
+        "TNT30cm": ["0.2kg", "0.5kg", "1.0kg", "1.5kg", "2.0kg", "3.0kg"],
+        "ruhua": ["0.2kg", "0.5kg", "1.0kg", "1.5kg", "2.0kg", "3kg", "4kg", "5kg", "6kg", "8kg"],
         //上面三组数据模型一致
-        "single":["hang_2.5kgTNT","overground_2.5kgTNT","soilExplosion"]
+        "single": ["hang_2.5kgTNT", "overground_2.5kgTNT", "soilExplosion"]
     };
     //通过model1,model2设置参数
     var model1 = 'single';
     var model2 = Models[model1][2];
-    var location = [114.2169971748,30.3595086389];
-    soilBlast(model1,model2,location);
+    var location = [114.2169971748, 30.3595086389];
+    soilBlast(model1, model2, location);
     // show_layers();
 }
 
@@ -1631,35 +2237,6 @@ function mark_site_changes(id) {
 function get_operation_type() {
     console.log(operation_type);
     operation_type = "mark_things";
-}
-
-function mark_goods(id) {
-    $(".full_view").css("display", "none");
-    var x = document.getElementById(id);
-    if (x.style.display == "block") {
-        x.style.cssText = "display:none"
-    } else {
-        x.style.cssText = "display:block"
-    }
-    // $("#site_changes_button").click(function(){
-    //     $("#site_changes").toggle();
-    // });
-    //表内容修改
-    // document.getElementById("site_changes_table").rows[0].cells[0].innerText = "现场变动ID"
-    // document.getElementById("site_changes_table").rows[0].cells[1].innerText = "现场变动名称"
-
-    $("#mark_goods_table").find("tr").remove();
-    //$("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>痕迹描述</td></tr>")
-    // $("#mark_goods_table").append("<tr><td>痕迹物品ID</td><td>物品名称</td><td>物品类型ID</td><td>提取方法ID</td><td>基础勘验信息ID</td><td>提取时间</td><td>提取人</td><td>创建时间</td><td>创建人ID</td><td>数据状态</td><td>描述</td><td>修改时间</td></tr>")
-    /*$.get("/get_mark_goods", {}, function (data) {
-        if (data.msg != undefined) {
-            alert(data.msg);
-            return;
-        }
-        data.forEach(function (json) {
-            $("#mark_goods_table").append("<tr><td>" + json.MARK_GOODS_ID + "</td><td>" + json.MARK_GOODS_DESCRIBE + "</td></tr>");
-        });               //序列号
-    })*/
 }
 
 $(document).ready(function () {

@@ -41,11 +41,14 @@ server.listen(port, () => {
 
 /*
     阶段一：
-    录入数据阶段：localhost:8080/main.html?replay=1&sceneId=8a8a8a8d7520e9930175262a9e44005b&type=1
+    录入数据阶段：localhost:8080/main.html?replay=1&sceneId=8a8a8a8d7520e9930175271c1b64034b&type=1
+               localhost:8080/main.html?replay=1&sceneId=46565d848bda4f7891afe9e6c924c1f7&type=1
+               localhost:8080/main.html?replay=1&sceneId=8a8a8a8d7520e9930175262a9e44005b&type=1
     阶段二：
     情景研判阶段：localhost:8080/main.html?replay=1&personId=8a8a8a8d7520e9930175263b70e400aa&type=1
     阶段三：
     案件重建阶段：localhost:8080/main.html?replay=1&caseId=8a8a8a8d7520e993017526281b120058&type=1
+               localhost:8080/main.html?replay=1&caseId=8a8a8a30752f054301752f5acbcf0009&type=1
 */
 
 // app.use(express.static("public"));
@@ -168,18 +171,18 @@ logger.level = 'debug';
 logger.debug("Some debug messages");
 
 var coninfo = {
-    /*host: '39.105.89.57',
+    host: '39.105.89.57',
     port: 3303,
     user: 'wuzheng',
     password: 'wuzheng',
     database: 'wuzheng',
-    connectionLimit: 20*/
-    host: '192.168.0.170',
+    connectionLimit: 20
+    /*host: '192.168.0.170',
     port: 3306,
     user: 'root',
     password: '111111',
     database: 'wuzheng',
-    connectionLimit: 20
+    connectionLimit: 20*/
 }
 
 // 用于保存数据连接实例
@@ -363,7 +366,7 @@ app.get("/get_relation_from_corpse", function (req, res) {
 app.get("/get_scenes", function (req, res) {
     console.log("选定案件号：" + req.query.value);
     case_id = req.query.value;
-    connection.query('SELECT case_event_name, base_info_id from inquest_base_info where cases_id=\"' + req.query.value + "\"", function (error, results, fields) {
+    connection.query('SELECT case_event_name, base_info_id, site_name from inquest_base_info where cases_id=\"' + req.query.value + "\"", function (error, results, fields) {
         if (error) throw error;
         res.send(results);
         res.end();
@@ -1308,9 +1311,10 @@ app.get('/get_site_changes', function (req, res, next) {
     });
 });
 app.get('/get_inquest_base_info', function (req, res, next) {
+    console.log(req.query.value);
     //form表单
     // CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION
-    connection.query("SELECT BASE_INFO_ID,FIELD_SURVEY_NUMBER,CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION from inquest_base_info", function (error, results, fields) {
+    connection.query("SELECT BASE_INFO_ID,FIELD_SURVEY_NUMBER,CASE_EVENT_CODE,HAPPENING_PLACE,INQUEST_START_TIME,INQUEST_END_TIME,FIELD_SURVEY_PERSON,FIELD_COMMANDER_ID,PROTECTIVE_MEASURES,SITE_CHANGES_ID,CREATE_TIME,CREATE_PERSION_ID,LONGITUDE,LATITUDE,WEATHER_CONDITION from inquest_base_info where base_info_id = \'" + req.query.value + "\'", function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();
@@ -1328,7 +1332,7 @@ app.get('/get_inquest_base_info', function (req, res, next) {
 });
 app.get('/get_field_commander', function (req, res, next) {
     //form表单
-    connection.query("SELECT FIELD_COMMANDER_ID,FIELD_COMMANDER_NAME from field_commander", function (error, results, fields) {
+    connection.query("SELECT FIELD_COMMANDER_ID, FIELD_SURVEY_PERSON from INQUEST_BASE_INFO WHERE BASE_INFO_ID=\'" + req.query.value + "\'", function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();
@@ -1364,7 +1368,7 @@ app.get('/get_protect_measure', function (req, res, next) {
 });
 app.get('/get_site_changes', function (req, res, next) {
     //form表单
-    connection.query("SELECT SITE_CHANGES_ID,SITE_CHANGES_NAME from site_changes", function (error, results, fields) {
+    connection.query("SELECT SITE_CHNAGES_TEXT, SITE_CHANGES_NAME from site_changes, inquest_base_info where BASE_INFO_ID=\'" + req.query.value + "\' and SITE_TYPE = SITE_CHANGES_ID", function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();
@@ -1418,7 +1422,7 @@ app.get('/get_weather', function (req, res, next) {
 });
 app.get('/get_full_photo', function (req, res, next) {
     //form表单
-    connection.query("SELECT FULL_PHOTO_ID,FULL_PHOTO_NAME,FULL_PHOTO_CONTENT,MARK_GOODS_ID,CREATE_TIME from full_photo", function (error, results, fields) {
+    connection.query("SELECT FULL_PHOTO_ID,FULL_PHOTO_NAME,FULL_PHOTO_CONTENT,MARK_GOODS_ID,CREATE_TIME from full_photo where ", function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();
@@ -1437,11 +1441,11 @@ app.get('/get_full_photo', function (req, res, next) {
 app.get('/get_mark_goods', function (req, res, next) {
     console.log("get_mark_goods triggered!");
     //form表单
-    let currentSceneId = req.query.base_info_id;
+    let currentSceneId = req.query.value; //req.query.base_info_id;
     if (currentSceneId == undefined) currentSceneId = "";
     else currentSceneId = " where base_info_id=\'" + currentSceneId + "\'";
-    console.log("SELECT MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE from mark_goods" + currentSceneId + ";");
-    connection.query("SELECT MARK_GOODS_ID,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE from mark_goods" + currentSceneId + ";", function (error, results, fields) {
+    console.log("SELECT MARK_GOODS_ID,EXTRACT_POSITION,MARK_GOODS_CODE,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE from mark_goods" + currentSceneId + ";");
+    connection.query("SELECT MARK_GOODS_ID,EXTRACT_POSITION,MARK_GOODS_CODE,MARK_GOODS_NAME,GOODS_TYPE_ID,EXTRACT_METHOD_ID,BASE_INFO_ID,EXTRACT_TIME,EXTRACT_PERSON,CREATE_TIME,CREATE_PERSION_ID,DATA_STATE,MARK_GOODS_DESCRIBE from mark_goods" + currentSceneId + ";", function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();
@@ -1551,8 +1555,9 @@ app.get('/get_position_photo', function (req, res, next) {
     });
 });
 app.get('/get_case_conclusion_info', function (req, res, next) {
+    console.log("conclusion: " + req.query.value);
     //form表单
-    connection.query("SELECT BASE_INFO_ID,MOTIVATION,CRIME_TOOLS,CRIME_TIME,CRIME_ADDRESS,VICTIME,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from case_conclusion_info", function (error, results, fields) {
+    connection.query("SELECT BASE_INFO_ID,MOTIVATION,CRIME_TOOLS,CRIME_TIME,CRIME_ADDRESS,VICTIME,CREATE_PERSON_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from case_conclusion_info where base_info_id = \'" + req.query.value + "\'", function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();
@@ -1590,9 +1595,9 @@ app.get('/get_involved_goods_info', function (req, res, next) {
     let currentSceneId = req.query.base_info_id;
     if (currentSceneId == undefined) currentSceneId = "";
     else currentSceneId = " where base_info_id=\'" + currentSceneId + "\'";
-    console.log("SELECT INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from involved_goods_info" + currentSceneId);
+    console.log("SELECT INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_CODE,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from involved_goods_info" + currentSceneId);
     //form表单
-    connection.query("SELECT INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from involved_goods_info" + currentSceneId, function (error, results, fields) {
+    connection.query("SELECT INVOLVED_GOODS_INFO_ID,INVOLVED_GOODS_CODE,INVOLVED_GOODS_NAME,EXTRACT_POSITION,BASE_INFO_ID,CREATE_PERSION_ID,CREATE_TIME,UPDATE_TIME,DATA_STATE from involved_goods_info" + currentSceneId, function (error, results, fields) {
         if (error) {
             var data = {msg: "读取数据库错误"};
             // c.end();
@@ -1653,7 +1658,128 @@ app.get('/get_thing_info', function (req, res, next) {//新增内容
 
 });
 
-
+app.get('/get_wifi_media_info', function (req, res, next) {
+    //form表单
+    console.log("SELECT m.MEDIA_NAME as MEDIA_NAME, m.EXTRACT_LOCATION as EXTRACT_LOCATION , m.MEDIA_CODE as MEDIA_CODE, m.MEDIA_ENVIRONMENT_INFO_ID as MEDIA_ENVIRONMENT_INFO_ID from wifi_info w, media_environment_info m where m.BASE_INFO_ID=\'" + req.query.base_info_id + "\' and w.MEDIA_ENVIRONMENT_INFO_ID = m.MEDIA_ENVIRONMENT_INFO_ID");
+    if (req.query.base_info_id == undefined) alert("请选选定场景！");
+    console.log(req.query.base_info_id);
+    connection.query("SELECT m.MEDIA_NAME as MEDIA_NAME, m.EXTRACT_LOCATION as EXTRACT_LOCATION , m.MEDIA_CODE as MEDIA_CODE, m.MEDIA_ENVIRONMENT_INFO_ID as MEDIA_ENVIRONMENT_INFO_ID from wifi_info w, media_environment_info m where m.BASE_INFO_ID=\'" + req.query.base_info_id + "\' and w.MEDIA_ENVIRONMENT_INFO_ID = m.MEDIA_ENVIRONMENT_INFO_ID", function (error, results, fields) {
+        if (error) {//TYPE_ID,
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+});
+app.get('/get_base_media_info', function (req, res, next) {
+    //form表单
+    console.log("SELECT m.MEDIA_NAME as MEDIA_NAME, m.EXTRACT_LOCATION as EXTRACT_LOCATION , m.MEDIA_CODE as MEDIA_CODE, m.MEDIA_ENVIRONMENT_INFO_ID as MEDIA_ENVIRONMENT_INFO_ID from base_station_info b, media_environment_info m where m.BASE_INFO_ID=\'" + req.query.base_info_id + "\' and b.MEDIA_ENVIRONMENT_INFO_ID = m.MEDIA_ENVIRONMENT_INFO_ID");
+    if (req.query.base_info_id == undefined) alert("请选选定场景！");
+    console.log(req.query.base_info_id);
+    connection.query("SELECT m.MEDIA_NAME as MEDIA_NAME, m.EXTRACT_LOCATION as EXTRACT_LOCATION , m.MEDIA_CODE as MEDIA_CODE, m.MEDIA_ENVIRONMENT_INFO_ID as MEDIA_ENVIRONMENT_INFO_ID from base_station_info b, media_environment_info m where m.BASE_INFO_ID=\'" + req.query.base_info_id + "\' and b.MEDIA_ENVIRONMENT_INFO_ID = m.MEDIA_ENVIRONMENT_INFO_ID", function (error, results, fields) {
+        if (error) {//TYPE_ID,
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+});
+app.get('/get_bluetooth_media_info', function (req, res, next) {
+    //form表单
+    if (req.query.base_info_id == undefined) alert("请选选定场景！");
+    console.log(req.query.base_info_id);
+    connection.query("SELECT m.MEDIA_NAME as MEDIA_NAME, m.EXTRACT_LOCATION as EXTRACT_LOCATION , m.MEDIA_CODE as MEDIA_CODE, m.MEDIA_ENVIRONMENT_INFO_ID as MEDIA_ENVIRONMENT_INFO_ID from bluetooth_info b, media_environment_info m where m.BASE_INFO_ID=\'" + req.query.base_info_id + "\' and b.MEDIA_ENVIRONMENT_INFO_ID = m.MEDIA_ENVIRONMENT_INFO_ID", function (error, results, fields) {
+        if (error) {//TYPE_ID,
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+});
+app.get('/get_rfid_media_info', function (req, res, next) {
+    //form表单
+    if (req.query.base_info_id == undefined) alert("请选选定场景！");
+    console.log(req.query.base_info_id);
+    connection.query("SELECT m.MEDIA_NAME as MEDIA_NAME, m.EXTRACT_LOCATION as EXTRACT_LOCATION , m.MEDIA_CODE as MEDIA_CODE, m.MEDIA_ENVIRONMENT_INFO_ID as MEDIA_ENVIRONMENT_INFO_ID from rfid_info r, media_environment_info m where m.BASE_INFO_ID=\'" + req.query.base_info_id + "\' and r.MEDIA_ENVIRONMENT_INFO_ID = m.MEDIA_ENVIRONMENT_INFO_ID", function (error, results, fields) {
+        if (error) {//TYPE_ID,
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+});
+app.get('/get_medium_info', function (req, res, next) {
+    //form表单
+    if (req.query.case_id == undefined) alert("请选选定场景！");
+    console.log("SELECT MEDIUM_INFO_ID, MEDIUM_INFO_NAME, EXTRACT_POSITION, MEDIUM_CODE from medium_info where BASE_INFO_ID=\'" + req.query.case_id + "\'");
+    connection.query("SELECT MEDIUM_INFO_ID, MEDIUM_INFO_NAME, EXTRACT_POSITION, MEDIUM_CODE from medium_info where BASE_INFO_ID=\'" + req.query.case_id + "\'", function (error, results, fields) {
+        if (error) {//TYPE_ID,
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+});
+app.get('/get_media_info', function (req, res, next) {
+    //form表单
+    if (req.query.base_info_id == undefined) alert("请选选定场景！");
+    console.log("SELECT MEDIA_ENVIRONMENT_INFO_ID, MEDIA_NAME, EXTRACT_LOCATION, MEDIA_CODE from media_environment_info where BASE_INFO_ID=\'" + req.query.base_info_id + "\'");
+    connection.query("SELECT MEDIA_ENVIRONMENT_INFO_ID, MEDIA_NAME, EXTRACT_LOCATION, MEDIA_CODE from media_environment_info where BASE_INFO_ID=\'" + req.query.base_info_id + "\' and MEDIA_TYPE=\'1\'", function (error, results, fields) {
+        if (error) {//TYPE_ID,
+            var data = {msg: "读取数据库错误"};
+            // c.end();
+            res.send(data);
+            res.end();
+            return console.error(error);
+        }
+        var data = {msg: "读取数据库成功"};
+        // c.end();
+        console.log(data);
+        console.log(results);
+        res.send(results);
+        res.end();
+    });
+});
 app.get('/update_element_info', function (req, res, next) {
     //form表单
     var element_type = req.query.element_type;

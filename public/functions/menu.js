@@ -2246,6 +2246,10 @@ $(document).ready(function () {
     $("#upload_kinetic_element").click(function () {
         $("#upload_files").click()
     })
+    $("#model_upload").click(function () {
+        console.log("上传模型并自动转换模型数据")
+        $("#automatic_upload_model").click()
+    })
     $("#create_kinetic").click(function () {
         window.open(visualpage_addr + "createKineticModel.html?MODEL_CATEGORY=燃烧模型", "show_element_info",
             "height=500, width=1000, top=200, left=450, toolbar=no, menubar=no, directories=no, scrollbars=no, resizable=no, location=no, status=no");

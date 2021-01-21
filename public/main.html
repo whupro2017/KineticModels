@@ -64,6 +64,8 @@
                 <!--</form>-->
                 <input type="file" id="fileMutiply" name="fileMutiply" style="display:none" webkitdirectory>
                 <input type="file" id="upload_files" name="upload_files" style="display:none" webkitdirectory>
+                <input type="file" id="automatic_upload_model" name="automatic_upload_model" style="display:none"
+                       multiple="multiple">
                 <!--<form action="/upload" , enctype="multipart/form-data" method="post" style="display:none">-->
                 <!--<input type="file" name="upload" multiple="multipart">-->
                 <!--<input type="submit" value="确认上传文件">-->
@@ -1449,8 +1451,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <button id="model_upload" class="charts" onclick=""><img src="icons/upload.png" width="30px"
-                                                                                 height="30px" title="新建"></button>
+                        <button id="model_upload" class="charts" onclick="model_upload"><img src="icons/upload.png"
+                                                                                             width="30px"
+                                                                                             height="30px" title="新建">
+                        </button>
                     </td>
                     <td>
                         <button id="model_create" class="charts" onclick=""><img src="icons/create.png" width="30px"
@@ -1537,7 +1541,14 @@
         //     url: 'cesium/googleTMS',
         // }),
         // terrainProvider: Cesium.createWorldTerrain()//加载地势
+        baseLayerPicker: false
     });
+    /*viewer.imageryLayers.addImageryProvider(
+        new Cesium.createTileMapServiceImageryProvider({
+            url: '/tiles'
+        })
+    );*/
+    // blackMarble.alpha = 0.5;
     var currentTileset = null;
     viewer.scene.skyBox = new Cesium.SkyBox({
         sources: {

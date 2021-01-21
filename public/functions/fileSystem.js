@@ -154,6 +154,56 @@ $(function () {
         }
     })
 
+    $("#automatic_upload_model").change(function Start_upload() {
+        console.log("选择上传文件夹");
+        var ss = this.files; //获取当前选择的文件对象
+        total_num = ss.length;
+        done = 0;
+        finished = 0;
+        var date = new Date();
+        var suffix = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getTime() + '/';
+        for (var m = 0; m < total_num; m++) { //循环添加进度条
+            sendfile(ss[m]);
+        }
+
+        function sendfile(target_file) {
+            var formData = new FormData();
+            formData.append('files', target_file); //将该file对象添加到formData对象中
+            formData.set('suffix', suffix)
+            $.ajax({
+                url: 'upload_and_translate',
+                type: 'POST',
+                cache: false,
+                data: {},//需要什么参数，自己配置
+                data: formData,//文件以formData形式传入
+                async: false,
+                processData: false,
+                contentType: false,
+                xhr: function () {   //监听用于上传显示进度
+                    var xhr = $.ajaxSettings.xhr();
+                    if (onprogress && xhr.upload) {
+                        xhr.upload.addEventListener("progress", onprogress, false);
+                        return xhr;
+                    }
+                },
+                success: function (data) {
+                    if (data.status == 1) {
+                        finished += 1;
+                    } else {
+                        console.log(data.msg);
+                    }
+                    done = done + 1;
+                    if (done == total_num) {
+                        alert("上传" + finished + "/" + total_num + "完成 " + data.msg + " " + data.path);
+                    }
+                },
+                error: function (xhr) {
+                    alert("fs2上传出错");
+                }
+            });
+        }
+    })
+
     function onprogress(evt) {
         var loaded = evt.loaded;   //已经上传大小情况
         var tot = evt.total;   //附件总大小

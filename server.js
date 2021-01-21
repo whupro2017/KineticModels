@@ -9,9 +9,9 @@ var mysql = require('mysql');
 var service = require('./service');
 var app = express();
 var readline = require('readline');
-var java = require('java')
-java.classpath.push('javaClass')
-var MyClass = java.import('Single');
+// var java = require('java')
+// java.classpath.push('javaClass')
+// var MyClass = java.import('Single');
 
 /*const http = require('http');
 //const hostname = '127.0.0.1';
@@ -77,6 +77,8 @@ app.use(express.static("public"), (req, res, next) => {
     predefinedCaseId = 9001;
     console.log("server started at 'http://127.0.0.1:8080/main.html'")
 });
+
+// app.use('/tiles', express.static(path.join('F:/Tiles/武汉市腾讯_瓦片：TMS', 'tiles')));
 
 // app.use(express.static("public")).listen(8080);
 // http.createServer(function (req, res) {
@@ -171,12 +173,24 @@ logger.level = 'debug';
 logger.debug("Some debug messages");
 
 var coninfo = {
-    host: '39.105.89.57',
+    host: '127.0.0.1',
+    port: 3306,
+    user: 'root',
+    password: '111111',
+    database: 'wuzheng',
+    connectionLimit: 20
+    /*host: '106.15.190.54',
+    port: 3306,
+    user: 'wuzheng',
+    password: '111111',
+    database: 'wuzheng',
+    connectionLimit: 20*/
+    /*host: '39.105.89.57',
     port: 3303,
     user: 'wuzheng',
     password: 'wuzheng',
     database: 'wuzheng',
-    connectionLimit: 20
+    connectionLimit: 20*/
     /*host: '192.168.0.170',
     port: 3306,
     user: 'root',
@@ -1161,7 +1175,7 @@ app.get('/element_location', function (req, res, next) {//左键点击绑定要�
             res.end();
             return console.error(error);
         }
-        connection.query("UPDATE  scene_t SET start_lon=" + longitude + ",start_lat=" + latitude + ",start_height=" + 5000 + " WHERE scene_id='" + scene_id + "'", function (error, results, fields) {
+        /*connection.query("UPDATE  scene_t SET start_lon=" + longitude + ",start_lat=" + latitude + ",start_height=" + 5000 + " WHERE scene_id='" + scene_id + "'", function (error, results, fields) {
             if (error) {
                 var data = {status: 0};
                 // c.end();
@@ -1174,7 +1188,12 @@ app.get('/element_location', function (req, res, next) {//左键点击绑定要�
             console.log("存储要素位置成功");
             res.send(data);
             res.end();
-        });
+        });*/
+        var data = {status: 1};
+        // c.end();
+        console.log("存储要素位置成功");
+        res.send(data);
+        res.end();
     });
 })
 
@@ -2166,6 +2185,71 @@ app.post('/update_transform', function (req, res, next) {
 });
 
 //一般文件上传函数，存于public/Files文件夹，Files文件夹（如无请新建）被项目忽略，如还未设置请项目根目录下.gitignore文件（如无请新建）中添加文本public/Files
+app.post('/upload_and_translate', function (req, res, next) {
+    //form表单
+    try {
+        var form = new formidable.IncomingForm();
+        //保留后缀
+        form.keepExtensions = true;
+        form.encoding = 'utf-8';
+        form.maxFileSize = 4 * 1024 * 1024 * 1024;
+        var dirpath = 'public/Files/';
+        //上传文件路径,采用path路径拼接
+        initdirs(dirpath);
+        form.uploadDir = path.join(__dirname, dirpath);
+        //如果上传文件夹（多个文件）需将 默认值改为TRUE
+        form.multiples = true;
+        form.parse(req, function (err, fields, files) {
+            var suffix = fields.suffix;
+            var rootdir = form.uploadDir;
+            var file = files.files;
+            var suffixArray = suffix.split('/');
+            for (var j = 0; j < suffixArray.length - 1; j++) {
+                rootdir = path.join(rootdir, suffixArray[j]);
+                if (!fs.existsSync(rootdir)) {
+                    try {
+                        fs.mkdirSync(rootdir, 0o777);
+                        ("成功创建目录" + rootdir);
+                    } catch (e) {
+                        console.log(e.name + ": " + e.message);
+                    }
+                }
+            }
+            var folderPath = form.uploadDir + suffix;
+            var file = files.files;
+            var pathnameArray = file.name.split('/');
+            for (var j = 0; j < pathnameArray.length - 1; j++) {
+                folderPath = path.join(folderPath, pathnameArray[j]);
+                if (!fs.existsSync(folderPath)) {
+                    try {
+                        fs.mkdirSync(folderPath, 0o777);
+                        ("成功创建目录" + folderPath);
+                    } catch (e) {
+                        console.log(e.name + ": " + e.message);
+                    }
+                }
+            }
+            var filename = pathnameArray[pathnameArray.length - 1];
+            var newpath = path.join(folderPath, filename);
+            fs.renameSync(file.path, newpath);
+            var data = {status: 1, msg: filename, path: output};
+            var output = translateAndMove(newpath, data, res);
+            console.log(newpath);
+            // c.end();
+            // res.send(data);
+            // res.end();
+        })
+        currentUploaded = dirpath;
+    } catch (error) {
+        console.log(error.name + ": " + error.message);
+        var data = {status: 0, msg: filename + "上传失败"};
+        // c.end();
+        res.send(data);
+        res.end();
+    }
+});
+
+//一般文件上传函数，存于public/Files文件夹，Files文件夹（如无请新建）被项目忽略，如还未设置请项目根目录下.gitignore文件（如无请新建）中添加文本public/Files
 app.post('/upload_things', function (req, res, next) {
     //form表单
     try {
@@ -2214,7 +2298,7 @@ app.post('/upload_things', function (req, res, next) {
             var newpath = path.join(folderPath, filename);
             fs.renameSync(file.path, newpath);
             // console.log(newpath);
-            var data = {status: 1, msg: filename + "上传成功"};
+            var data = {status: 1, msg: filename + "上传成功", path: newpath};
             // c.end();
             res.send(data);
             res.end();
@@ -2294,3 +2378,156 @@ app.post('/uploads_particle', function (req, res, next) {
         // }
     });
 });
+
+function translateOsg(path, target, data, res) {
+    var nodeCmd = require('node-cmd');
+    const pos = path.lastIndexOf("\\");
+    const parent = path.substr(0, pos);
+    const dirName = parent + "ts";
+    console.log('node_modules\\3dtiles\\3dtiles\\3dtile.exe -f osgb -i ' + parent + ' -o ' + dirName);
+    nodeCmd.get(
+        'node_modules\\3dtiles\\3dtiles\\3dtile.exe -f osgb -i ' + parent + ' -o ' + dirName,
+        function (err, stdout, stderr) {
+            if (err) {
+                console.log("转换出错：" + err.toString());
+                data.msg += "转换出错：" + err.toString();
+                res.send(data);
+                res.end();
+            } else {
+                move3dtiles(dirName, data, res);
+                console.log("移动成功");
+            }
+        }
+    )
+}
+
+function translateObj(path, target, data, res) {
+    var nodeCmd = require('node-cmd');
+    console.log('node node_modules\\obj23dtiles\\bin\\obj23dtiles.js -i ' + path + ' --tileset -o ' + target);
+    nodeCmd.get(
+        'node node_modules\\obj23dtiles\\bin\\obj23dtiles.js -i ' + path + ' --tileset -o ' + target,
+        function (err, stdout, stderr) {
+            if (err) {
+                console.log("转换出错：" + err.toString());
+                data.msg += "转换出错：" + err.toString();
+                res.send(data);
+                res.end();
+            } else {
+                /*var fs = require('fs');
+                fs.rmdir(function (err) {
+                    if (err) {
+                        console.log(err);
+                        data.msg += "清除出错：" + err.toString();
+                        res.send(data);
+                        res.end();
+                    } else console.log('删除目录' + 'public\\models\\' + target + '成功');*/
+                move3dtiles('Batched' + target, data, res);
+                /*}, 'public\\models\\' + target);*/
+                console.log("移动成功");
+            }
+        }
+    )
+}
+
+function move3dtiles(path, data, res) {
+    var nodeCmd = require('node-cmd');
+    console.log('mv ' + path + ' public\\models\\' + path);
+    nodeCmd.get(
+        'mv ' + path + ' public\\models\\' + path,
+        function (err, stdout, stderr) {
+            if (err) {
+                console.log("出错：" + err.toString());
+                data.msg += "移动出错：" + err.toString();
+                res.send(data);
+                res.send();
+            } else {
+                console.log("转换成功");
+                data.msg += "转换成功!" + path;
+                res.send(data);
+                res.send();
+            }
+        }
+    )
+}
+
+function extractArch(path, data, res) {
+    var nodeCmd = require('node-cmd');
+    console.log('"d:\\Program Files\\WinRAR\\UnRAR.exe" x ' + path);
+    nodeCmd.get(
+        '"d:\\Program Files\\WinRAR\\UnRAR.exe" x ' + path,
+        function (err, stdout, stderr) {
+            if (err) {
+                console.log("解压出错：" + err.toString());
+                data.msg += "解压出错：" + err.toString();
+                res.send(data);
+                res.end();
+            } else {
+                console.log("解压成功");
+                const fs = require('fs');
+                let pos = path.lastIndexOf('\\');
+                let fileName = path.substr(pos + 1);
+                let dirName = fileName.substr(0, fileName.lastIndexOf('.'));
+                const files = fs.readdirSync(dirName);
+                let ext = null;
+                for (let i = 0; i < files.length; i++) {
+                    let pos = files[i].lastIndexOf('\\');
+                    let fileName = files[i].substr(pos + 1);
+                    let fileExt = fileName.substr(fileName.lastIndexOf(".") + 1, fileName.length);
+                    console.log("转换：" + dirName + "\\" + fileName);
+                    if (fileExt != null && fileExt == 'obj') {
+                        ext = 'obj';
+                        translateAndMove(dirName + "\\" + fileName, data, res);
+                        break;
+                    }
+                }
+                if (ext == null || ext != 'obj') {
+                    for (let i = 0; i < files.length; i++) {
+                        let pos = files[i].lastIndexOf('\\');
+                        let fileName = files[i].substr(pos + 1);
+                        let fileExt = fileName.substr(fileName.lastIndexOf(".") + 1, fileName.length);
+                        if (fileExt != null && fileExt == 'xml') {
+                            ext = 'xml';
+                            translateAndMove(dirName + "\\" + fileName, data, res);
+                            break;
+                        }
+                    }
+                }
+                console.log('提取到类型：' + ext);
+            }
+        }
+    )
+}
+
+function translateAndMove(path, data, res) {
+    console.log(path);
+    // path = path.replace('/\\/g', '/');
+    // path = path.replace('/\//g', '\\');
+    console.log(path)
+    let pos = path.lastIndexOf('\\');
+    console.log(pos)
+    let fileName = path.substr(pos + 1);
+    let fileOutput = fileName.substr(0, fileName.lastIndexOf("."));
+    let fileExt = fileName.substr(fileName.lastIndexOf(".") + 1, fileName.length);
+    let dirPath = path.substr(0, pos);
+    let dpos = dirPath.lastIndexOf('\\');
+    console.log(dpos + ":" + pos + ":" + path.substr(dpos + 1, path.length) + " " + __dirname);
+    console.log('cd node_modules\\obj23dtiles; node bin\\obj23dtiles.js -i ' + path + ' --tileset -o ' +
+        path.substr(dpos + 1, pos - dpos - 1));
+    switch (fileExt) {
+        case 'obj':
+            translateObj(path, fileOutput, data, res);
+            break;
+        case 'xml':
+            translateOsg(path, fileOutput, data, res);
+            break;
+        case 'rar':
+            extractArch(path, data, res);
+            break;
+        default:
+            console.log(fileExt + "!目前支持obj格式或osg的rar压缩格式文件！");
+            data.msg += fileExt + "!目前支持obj格式或osg的rar压缩格式文件！";
+            res.send(data);
+            res.end();
+    }
+    console.log("文件" + path + "转换完成，您的模型输出为：" + fileOutput);
+}

@@ -1528,6 +1528,17 @@
         navigationInstructionsInitiallyVisible: false,
         navigationHelpButton: false,     //是否显示帮助信息控件
         selectionIndicator: false,        //是否显示指示器组件
+        /*imageryProvider : new Cesium.UrlTemplateImageryProvider({
+            url : 'https://p2.map.gtimg.com/sateTiles/{z}/{sx}/{sy}/{x}_{reverseY}.jpg?version=229',
+            customTags : {
+                sx: function(imageryProvider, x, y, level) {
+                    return x>>4;
+                },
+                sy:function(imageryProvider, x, y, level) {
+                    return ((1<<level)-y)>>4;
+                }
+            }
+        }),*/
         imageryProvider: /*new Cesium.ArcGisMapServerImageryProvider({
             url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
         })*/

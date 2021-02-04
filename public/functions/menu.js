@@ -378,7 +378,7 @@ function singlePersonHandler(data) {
         const latitude = Cesium.Math.toDegrees(cartoCoordinates.latitude);
         const height = cartoCoordinates.height;
         endtime = time;
-        dyn_czml[1].position.cartographicDegrees.push(time, longitude, latitude, height);
+        scene_czml[1].position.cartographicDegrees.push(time, longitude, latitude, height);
         if (a == 59) {
             a = 0;
             b += 1;
@@ -389,9 +389,9 @@ function singlePersonHandler(data) {
     }
 
     positions.pop();
-    dyn_czml[0].clock.interval = dyn_czml[0].clock.interval + endtime;
-    console.log(dyn_czml[0].clock.interval);
-    startDynRoute(dyn_czml);
+    scene_czml[0].clock.interval = scene_czml[0].clock.interval + endtime;
+    console.log(scene_czml[0].clock.interval);
+    startDynRoute(scene_czml);
 }
 
 function scenevisualization() {
